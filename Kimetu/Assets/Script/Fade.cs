@@ -9,6 +9,12 @@ public struct FadeData
     public float fadeOutTime; //フェードイン時間
     public Color fadeColor; //フェード色
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="fadeOutTime">フェードアウト時間</param>
+    /// <param name="fadeInTime">フェードイン時間</param>
+    /// <param name="color">フェード色</param>
     public FadeData(float fadeOutTime, float fadeInTime, Color color)
     {
         this.fadeOutTime = fadeOutTime;
