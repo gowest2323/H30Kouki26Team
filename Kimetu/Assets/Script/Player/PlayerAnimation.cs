@@ -21,5 +21,27 @@ public class PlayerAnimation  {
         anim.SetBool("Run", false);
     }
 
+    public void StartAttackAnimation()
+    {
+        anim.SetTrigger("Attack");
+    }
+
+    public void StartGuardAnimation()
+    {
+        anim.SetBool("Guard", true);
+    }
+
+    public void StopGuardAnimation()
+    {
+        anim.SetBool("Guard", false);
+    }
+
+    public void StartAvoidAnimation()
+    {
+        anim.SetTrigger("Avoid");
+    }
+
+
+
 
 }
