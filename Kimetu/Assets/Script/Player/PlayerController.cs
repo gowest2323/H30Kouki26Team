@@ -12,11 +12,19 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Move();
+		Attack();
+	}
+
+	private void Move() {
 		var dir = new Vector3(
 			Input.GetAxis("Horizontal"),
 			0,
 			Input.GetAxis("Vertical")
 		);
 		action.Move(dir);
+	}
+
+	private void Attack() {
 	}
 }
