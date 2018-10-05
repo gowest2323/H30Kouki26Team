@@ -6,12 +6,14 @@ using System.Linq;
 public enum SceneName
 {
 GamePlay,
+Title,
 }
 public static class SceneNameManager
 {
     public static Dictionary<SceneName, string> scenenames = new Dictionary<SceneName, string> 
 {
     {SceneName.GamePlay,"GamePlay"},
+    {SceneName.Title,"Title"},
 };
     public static bool Equals(SceneName scenename, string name)
     {
