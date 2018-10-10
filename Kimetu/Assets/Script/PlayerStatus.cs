@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStatus : Status {
-    public int stamina { private set; get; }
-    public int maxStamina { private set; get; }
+    private int stamina;
+
+    [SerializeField]
+    private int maxStamina;
+
+    public override void Start() {
+        base.Start();
+        this.stamina = maxStamina;
+    }
 
     public void OnHit()
     {
