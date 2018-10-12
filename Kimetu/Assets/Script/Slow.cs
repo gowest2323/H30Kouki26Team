@@ -17,6 +17,8 @@ public class Slow : MonoBehaviour
     private float slowTime = 2f;
     //スローリスト
     private List<CharacterAnimation> slowAnimationList = new List<CharacterAnimation>();
+    //スロー中か？
+    private bool isSlow = false;
 
 
     //インスタンス
@@ -64,6 +66,7 @@ public class Slow : MonoBehaviour
 
     private IEnumerator SlowCoroutine(float waitSeconds, List<CharacterAnimation> slowAnimList)
     {
+        isSlow = true;
         //アニメーションリストの再生速度をスローに
         foreach (var anim in slowAnimList)
         {
@@ -79,20 +82,16 @@ public class Slow : MonoBehaviour
         }
         //スローリストをクリア
         slowAnimList.Clear();
+        isSlow = false;
     }
 
 
     public void PlayerAttacked(CharacterAnimation playerAnimation)
     {
-        //スロー中のアニメーションに
-        foreach (var anim in slowAnimationList)
+        //スロー中
+        if (isSlow)
         {
-            //プレイヤーがあったら
-            if (anim == playerAnimation)
-            {
-                //再生速度変更
-                anim.speed = playerSpeed;
-            }
+            playerAnimation.speed = playerSpeed;
         }
     }
 
