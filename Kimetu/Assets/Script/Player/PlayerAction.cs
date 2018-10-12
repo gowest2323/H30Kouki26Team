@@ -24,4 +24,8 @@ public class PlayerAction {
 		transform.position += dir * 10 * Time.deltaTime;
 		transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
 	}
+
+	public void Attack() {
+		playerAnimation.StartAttackAnimation();
+	}
 }

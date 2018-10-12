@@ -26,5 +26,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Attack() {
+		if(Input.GetKey(KeyCode.Z)) {
+			action.Attack();
+		}
 	}
 }
