@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAction {
+public class PlayerAction : MonoBehaviour {
 	private PlayerAnimation playerAnimation;
-	private Transform transform;
+	private PlayerState state;
+	private bool isGuard;
+	private float counterTime;
+	private float counterOccuredTime;
 
-	public PlayerAction(PlayerAnimation playerAnimation, Transform transform) {
-		this.playerAnimation = playerAnimation;
-		this.transform = transform;
+	void Start() {
+		this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
+		this.isGuard = false;
+		this.counterTime = -1;
+		this.counterOccuredTime = -1;
+		this.state = PlayerState.Idle;
 	}
+
 
 	public void Move(Vector3 dir) {
 		//こうしないとコントローラのスティックがニュートラルに戻った時、
@@ -25,7 +32,42 @@ public class PlayerAction {
 		transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
 	}
 
+	/// <summary>
+	/// 攻撃を開始します。
+	/// </summary>
 	public void Attack() {
 		playerAnimation.StartAttackAnimation();
+	}
+
+	/// <summary>
+	/// ガードを開始します。
+	/// </summary>
+	public void GuardStart() {
+		this.isGuard = true;
+		this.state = PlayerState.Defence;
+		//TODO:ここでガードモーションに入る
+	}
+
+	/// <summary>
+	/// ガードを終了します。
+	/// </summary>
+	public void GuardEnd() {
+		this.isGuard = false;
+		this.state = PlayerState.Idle;
+	}
+
+	/// <summary>
+	/// 回避行動を実行します。
+	/// 数秒後に自動で回避状態は解除されます。
+	/// </summary>
+	public void Avoid() {
+		this.state = PlayerState.Avoid;
+		//TODO:コルーチンなどを開始する
+		//TODO:回避行動中は他のアクションを実行できないように
+	}
+
+	public void OnHit(Weapon weapon) {
+		//TODO:ここでダメージアニメーションを開始する
+		//TODO:HPを減らす
 	}
 }

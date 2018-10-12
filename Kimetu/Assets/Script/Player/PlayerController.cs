@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.action = new PlayerAction(new PlayerAnimation(GetComponent<Animator>()), transform);
+		this.action = GetComponent<PlayerAction>();
 	}
 	
 	// Update is called once per frame
