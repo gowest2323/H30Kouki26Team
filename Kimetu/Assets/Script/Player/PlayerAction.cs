@@ -81,6 +81,8 @@ public class PlayerAction : MonoBehaviour {
     {
         if (isAvoid) yield break;
 
+        isAvoid = true;
+
         //何の方向もない時
         if (dir == Vector3.zero)
         {
@@ -89,7 +91,7 @@ public class PlayerAction : MonoBehaviour {
             //後ろに移動
             for(float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
             {
-                transform.position -= -transform.forward * 30 * Time.deltaTime;
+                transform.position += -transform.forward * 5 * Time.deltaTime;
                 yield return null;
             }
 
@@ -126,7 +128,7 @@ public class PlayerAction : MonoBehaviour {
         //向いている方向(正規化)に移動
         for (float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
         {
-            transform.position += dir.normalized * 30 * Time.deltaTime;
+            transform.position += dir.normalized * 5 * Time.deltaTime;
             yield return null;
         }
 
