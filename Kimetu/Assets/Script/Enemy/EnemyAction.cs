@@ -1,22 +1,47 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAction : MonoBehaviour {
-	private EnemyAnimation enemyAnimation;
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(EnemyStatus))]
 
-	// Use this for initialization
-	void Start () {
-		this.enemyAnimation = new EnemyAnimation(GetComponent<Animator>());
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+public class EnemyAction : MonoBehaviour, IDamageable
+{
+    private EnemyAnimation enemyAnimation; //アニメーション管理
+    private Status status; //ステータス管理
 
-	public void OnHit(Weapon weapon) {
-		//TODO:ここでダメージアニメーションを開始する
-		//TODO:HPを減らす
-	}
+    // Use this for initialization
+    void Start()
+    {
+        this.enemyAnimation = new EnemyAnimation(GetComponent<Animator>());
+        status = GetComponent<Status>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    /// <summary>
+    /// 攻撃されたときに呼ばれる
+    /// </summary>
+    /// <param name="damageSource">ダメージ情報</param>
+    public void OnHit(DamageSource damageSource)
+    {
+        status.Damage(damageSource.damage);
+
+        //死亡したら倒れるモーション
+        if (status.IsDead())
+        {
+            Destroy(this.gameObject);
+            //enemyAnimation.Start...();
+        }
+        //まだ生きていたらダメージモーション
+        else
+        {
+            //enemyAnimation.StartDamageAnimation();
+        }
+    }
 }
