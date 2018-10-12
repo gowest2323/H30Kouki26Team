@@ -6,8 +6,11 @@ using UnityEngine;
 public class Sword : Weapon
 {
     private int attackNum; //現在の攻撃回数
-    private PlayerAnimation playerAnimation;
+    private PlayerAnimation playerAnimation; //プレイヤーのアニメーション管理
 
+    /// <summary>
+    /// プレイヤーのアニメーション管理クラスの設定
+    /// </summary>
     public void SetPlayerAnimation(PlayerAnimation animation)
     {
         this.playerAnimation = animation;
@@ -19,6 +22,7 @@ public class Sword : Weapon
     public override void AttackStart()
     {
         attackNum++;
+        //playerAnimation.StartAttackAnimation();
     }
 
     /// <summary>
