@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class EnemyAction : MonoBehaviour, IDamageable
 {
-    private EnemyAnimation enemyAnimation;
-    private Status status;
+    private EnemyAnimation enemyAnimation; //アニメーション管理
+    private Status status; //ステータス管理
 
     // Use this for initialization
     void Start()
@@ -21,13 +21,17 @@ public class EnemyAction : MonoBehaviour, IDamageable
 
     }
 
+    /// <summary>
+    /// 攻撃されたときに呼ばれる
+    /// </summary>
+    /// <param name="damageSource">ダメージ情報</param>
     public void OnHit(DamageSource damageSource)
     {
         status.Damage(damageSource.damage);
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
-            //TODO: 倒れるモーションを再生
+            Destroy(this.gameObject);
             //enemyAnimation.Start...();
         }
         //まだ生きていたらダメージモーション
