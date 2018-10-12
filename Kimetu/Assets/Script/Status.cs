@@ -28,7 +28,7 @@ public class Status : MonoBehaviour
     /// <returns></returns>
     public float GetHPRatio()
     {
-        return ((float)maxHP / (float)hp);
+        return ((float)hp / (float)maxHP);
     }
 
     public void Damage(int power)
