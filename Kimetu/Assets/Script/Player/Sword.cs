@@ -47,7 +47,7 @@ public class Sword : Weapon
         {
             //衝突したときの最近点を衝突点とする
             Vector3 hitPos = other.ClosestPointOnBounds(this.transform.position);
-            DamageSource damage = new DamageSource(hitPos, power, holder);
+            DamageSource damage = new DamageSource(hitPos, power, holderObjectDamagable);
             //相手に当たったと通知
             other.gameObject.GetComponent<IDamageable>().OnHit(damage);
         }

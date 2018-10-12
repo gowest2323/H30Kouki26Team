@@ -23,7 +23,11 @@ public class EnemyAction : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
+    }
 
+    public void Attack()
+    {
+        StartCoroutine(AttackStart());
     }
 
     /// <summary>
@@ -45,5 +49,17 @@ public class EnemyAction : MonoBehaviour, IDamageable
         {
             //enemyAnimation.StartDamageAnimation();
         }
+    }
+
+    private IEnumerator AttackStart()
+    {
+        weapon.AttackStart();
+        yield return new WaitForSeconds(1.0f);
+        weapon.AttackEnd();
+    }
+
+    public void Countered()
+    {
+        Destroy(this.gameObject);
     }
 }

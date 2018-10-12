@@ -2,32 +2,58 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
-	private PlayerAction action;
+public class PlayerController : MonoBehaviour
+{
+    private PlayerAction action;
 
-	// Use this for initialization
-	void Start () {
-		this.action = GetComponent<PlayerAction>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		Move();
-		Attack();
-	}
+    // Use this for initialization
+    void Start()
+    {
+        this.action = GetComponent<PlayerAction>();
+    }
 
-	private void Move() {
-		var dir = new Vector3(
-			Input.GetAxis("Horizontal"),
-			0,
-			Input.GetAxis("Vertical")
-		);
-		action.Move(dir);
-	}
+    // Update is called once per frame
+    void Update()
+    {
+        Move();
+        Attack();
+        Guard();
+    }
 
-	private void Attack() {
-		if(Input.GetKey(KeyCode.Z)) {
-			action.Attack();
-		}
-	}
+    private void Move()
+    {
+        var dir = new Vector3(
+            Input.GetAxis("Horizontal"),
+            0,
+            Input.GetAxis("Vertical")
+        );
+        action.Move(dir);
+    }
+
+    private void Attack()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            action.Attack();
+        }
+    }
+
+    /// <summary>
+    /// ガード処理
+    /// </summary>
+    private void Guard()
+    {
+        //押し初めにガード開始
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.Log("guard start");
+            action.GuardStart();            
+        }
+        //離した瞬間にガード終了
+        else if (Input.GetKeyUp(KeyCode.G))
+        {
+            Debug.Log("guard end");
+            action.GuardEnd();
+        }
+    }
 }
