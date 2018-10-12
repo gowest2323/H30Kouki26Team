@@ -12,6 +12,13 @@ public abstract class Weapon : MonoBehaviour
 
     [SerializeField, Header("攻撃力")]
     protected int power;
+    protected Collider weaponCollider; //武器のあたり判定
+
+    protected virtual void Start()
+    {
+        weaponCollider = GetComponent<Collider>();
+        weaponCollider.enabled = false;
+    }
 
     /// <summary>
     /// 攻撃開始時に呼ばれる
