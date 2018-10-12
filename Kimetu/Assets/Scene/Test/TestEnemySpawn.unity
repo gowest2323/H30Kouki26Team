@@ -448,9 +448,25 @@ Prefab:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 114351484781314656, guid: 6fce2862b0f7041c6af957383b8930ae,
+        type: 2}
+      propertyPath: holderObject
+      value: 
+      objectReference: {fileID: 1288175681}
+    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
+        type: 2}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 1149424054}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &1149424054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114351484781314656, guid: 6fce2862b0f7041c6af957383b8930ae,
+    type: 2}
+  m_PrefabInternal: {fileID: 973709447}
+  m_Script: {fileID: 11500000, guid: 47a7f4fb6a51929499f34f98ea74f586, type: 3}
 --- !u!1 &1204397247
 GameObject:
   m_ObjectHideFlags: 0

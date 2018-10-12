@@ -55,9 +55,24 @@ public class PlayerAnimation :CharacterAnimation {
         anim.SetBool("Guard", false);
     }
 
-    public void StartAvoidAnimation()
+    public void StartForwardAvoidAnimation()
     {
-        anim.SetTrigger("Avoid");
+        anim.SetTrigger("ForwardAvoid");
+    }
+
+    public void StartRightAvoidAnimation()
+    {
+        anim.SetTrigger("RightAvoid");
+    }
+
+    public void StartLeftAvoidAnimation()
+    {
+        anim.SetTrigger("LeftAvoid");
+    }
+
+    public void StartBackAvoidAnimation()
+    {
+        anim.SetTrigger("BackAvoid");
     }
 
 
