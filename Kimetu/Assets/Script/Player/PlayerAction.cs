@@ -94,17 +94,28 @@ public class PlayerAction : MonoBehaviour, IDamageable
     /// <param name="damageSource"></param>
     public void OnHit(DamageSource damageSource)
     {
-        status.Damage(damageSource.damage);
-        //死亡したら倒れるモーション
-        if (status.IsDead())
+        if (state == PlayerState.Defence)
         {
-            Destroy(this.gameObject);
-            //playerAnimation.Start...();
+
         }
-        //まだ生きていたらダメージモーション
+        else if (state == PlayerState.Avoid)
+        {
+
+        }
         else
         {
-            //playerAnimation.StartDamageAnimation();
+            status.Damage(damageSource.damage);
+            //死亡したら倒れるモーション
+            if (status.IsDead())
+            {
+                Destroy(this.gameObject);
+                //playerAnimation.Start...();
+            }
+            //まだ生きていたらダメージモーション
+            else
+            {
+                //playerAnimation.StartDamageAnimation();
+            }
         }
     }
 }
