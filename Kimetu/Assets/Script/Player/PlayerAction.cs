@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAction {
+public class PlayerAction : MonoBehaviour {
 	private PlayerAnimation playerAnimation;
-	private Transform transform;
 	private PlayerState state;
 	private bool isGuard;
 	private float counterTime;
 	private float counterOccuredTime;
 
-	public PlayerAction(PlayerAnimation playerAnimation, Transform transform) {
-		this.playerAnimation = playerAnimation;
-		this.transform = transform;
+	void Start() {
+		this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
+		this.isGuard = false;
+		this.counterTime = -1;
+		this.counterOccuredTime = -1;
+		this.state = PlayerState.Idle;
 	}
+
 
 	public void Move(Vector3 dir) {
 		//こうしないとコントローラのスティックがニュートラルに戻った時、
