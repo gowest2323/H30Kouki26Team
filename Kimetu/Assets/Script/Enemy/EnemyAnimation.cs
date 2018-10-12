@@ -39,7 +39,9 @@ public class EnemyAnimation :CharacterAnimation {
         enemyAnim.SetTrigger("Attack");
     }
 
-
-
-
+    public void StratDamageAnimation()
+    {
+        enemyAnim.SetTrigger("Damage");
+    }
+    
 }
