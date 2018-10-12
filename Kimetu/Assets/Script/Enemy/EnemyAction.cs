@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(EnemyStatus))]
+
 public class EnemyAction : MonoBehaviour, IDamageable
 {
     private EnemyAnimation enemyAnimation; //アニメーション管理
@@ -28,6 +31,7 @@ public class EnemyAction : MonoBehaviour, IDamageable
     public void OnHit(DamageSource damageSource)
     {
         status.Damage(damageSource.damage);
+
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
