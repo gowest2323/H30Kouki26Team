@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 181005 何
@@ -19,6 +20,25 @@ public class InputExtend : MonoBehaviour
     }
 
     private static Dictionary<Command, float> dict;
+
+    public static bool isCreated = false;//生成されたか？
+
+    private void Awake()
+    {
+        //シーン切替を検知
+        SceneManager.sceneLoaded += SceneLoaded;
+
+        //1つしか存在しない
+        if (!isCreated)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            isCreated = true;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -88,5 +108,26 @@ public class InputExtend : MonoBehaviour
             return false;
     }
 
+    /// <summary>
+    /// リセット
+    /// </summary>
+    public static void ResetAllButtonState()
+    {
+        for (int i = 0; i < System.Enum.GetNames(typeof(Command)).Length; i++)
+        {
+            //秒数リセット
+            dict[((Command)i)] = 0;
+        }
+    }
 
+    /// <summary>
+    /// シーンが呼ばれた時呼ばれるメソッド
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="mode"></param>
+    private void SceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log(scene.name + " Loaded");
+        ResetAllButtonState();
+    }
 }
