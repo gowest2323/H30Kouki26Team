@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAction : MonoBehaviour {
+	[SerializeField]
+	private Weapon weapon;
 	private PlayerAnimation playerAnimation;
 	private PlayerState state;
 	private bool isGuard;
@@ -36,6 +38,8 @@ public class PlayerAction : MonoBehaviour {
 	/// 攻撃を開始します。
 	/// </summary>
 	public void Attack() {
+		this.state = PlayerState.Attack;
+		StartCoroutine(StartAttack());
 		playerAnimation.StartAttackAnimation();
 	}
 
@@ -69,5 +73,11 @@ public class PlayerAction : MonoBehaviour {
 	public void OnHit(Weapon weapon) {
 		//TODO:ここでダメージアニメーションを開始する
 		//TODO:HPを減らす
+	}
+
+	private IEnumerator StartAttack() {
+		weapon.AttackStart();
+		yield return new WaitForSeconds(1);
+		weapon.AttackEnd();
 	}
 }
