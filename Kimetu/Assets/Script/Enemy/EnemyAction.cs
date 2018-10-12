@@ -10,6 +10,8 @@ public class EnemyAction : MonoBehaviour, IDamageable
 {
     private EnemyAnimation enemyAnimation; //アニメーション管理
     private Status status; //ステータス管理
+    [SerializeField]
+    private Weapon weapon;
 
     // Use this for initialization
     void Start()
