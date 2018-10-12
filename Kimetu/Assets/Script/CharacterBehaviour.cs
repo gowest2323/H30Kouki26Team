@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CharacterBehviour
+[System.Serializable]
+public abstract class CharacterBehaviour : MonoBehaviour
 {
     protected float speed; //移動速度
 
     /// <summary>
     /// 移動処理
     /// </summary>
-    public abstract void Move(); 
+    public abstract void Move();
 
     /// <summary>
     /// 攻撃処理
