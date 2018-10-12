@@ -5,14 +5,11 @@ using UnityEngine;
 public class DamageSource {
 	public Vector3 attackPosition { private set; get; }
 	public int damage { private set; get; }
+    public CharacterBehaviour attackCharacter { private set; get; } //攻撃をしたキャラクター
 
-	public DamageSource(Vector3 attackPosition, int damage) {
+	public DamageSource(Vector3 attackPosition, int damage,CharacterBehaviour attackCharacter) {
 		this.attackPosition = attackPosition;
 		this.damage = damage;
-	}
-
-	public static DamageSource Create(Vector3 attackPosition, int damage) {
-		//必要ないけど設計書に合わせて
-		return new DamageSource(attackPosition, damage);
+        this.attackCharacter = attackCharacter;
 	}
 }
