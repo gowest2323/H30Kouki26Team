@@ -12,6 +12,7 @@ EditorOnly,
 MainCamera,
 Player,
 GameController,
+Enemy,
 }
 public static class TagNameManager
 {
@@ -24,6 +25,7 @@ public static class TagNameManager
     {TagName.MainCamera,"MainCamera"},
     {TagName.Player,"Player"},
     {TagName.GameController,"GameController"},
+    {TagName.Enemy,"Enemy"},
 };
     public static bool Equals(TagName tagname, string name)
     {
