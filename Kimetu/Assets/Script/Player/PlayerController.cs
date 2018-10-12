@@ -12,9 +12,13 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Move();
-		Attack();
-	}
+        if (!action.IsAvoid())
+        {
+            Move();
+            Attack();
+        }
+        Avoid();
+    }
 
 	private void Move() {
 		var dir = new Vector3(
@@ -30,4 +34,18 @@ public class PlayerController : MonoBehaviour {
 			action.Attack();
 		}
 	}
+
+    private void Avoid()
+    {
+        var dir = new Vector3(
+            Input.GetAxis("Horizontal"),
+            0,
+            Input.GetAxis("Vertical")
+        );
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            action.Avoid(dir);
+        }
+    }
 }

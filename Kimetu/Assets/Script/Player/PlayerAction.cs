@@ -8,6 +8,10 @@ public class PlayerAction : MonoBehaviour {
 	private bool isGuard;
 	private float counterTime;
 	private float counterOccuredTime;
+    //回避中か
+    private bool isAvoid;
+    //回避秒数(回避アニメーション移動部分の時間)
+    private float avoidMoveTime;
 
 	void Start() {
 		this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
@@ -15,7 +19,9 @@ public class PlayerAction : MonoBehaviour {
 		this.counterTime = -1;
 		this.counterOccuredTime = -1;
 		this.state = PlayerState.Idle;
-	}
+        this.isAvoid = false;
+        this.avoidMoveTime = 0.5f;
+    }
 
 
 	public void Move(Vector3 dir) {
@@ -60,13 +66,82 @@ public class PlayerAction : MonoBehaviour {
 	/// 回避行動を実行します。
 	/// 数秒後に自動で回避状態は解除されます。
 	/// </summary>
-	public void Avoid() {
+	public void Avoid(Vector3 dir)
+    {
 		this.state = PlayerState.Avoid;
-		//TODO:コルーチンなどを開始する
-		//TODO:回避行動中は他のアクションを実行できないように
-	}
 
-	public void OnHit(Weapon weapon) {
+        //回避コルーチンを開始する
+        StartCoroutine(AvoidCoroutine(dir));
+
+        //回避行動中は他のアクションを実行できないように
+        //PlayerControllerでisAvoidがtrueの時他のメソッドのUPDATEを停止
+    }
+
+    private IEnumerator AvoidCoroutine(Vector3 dir)
+    {
+        if (isAvoid) yield break;
+
+        //何の方向もない時
+        if (dir == Vector3.zero)
+        {
+            //後ろ回避アニメーション
+            playerAnimation.StartBackAvoidAnimation();
+            //後ろに移動
+            for(float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
+            {
+                transform.position -= -transform.forward * 30 * Time.deltaTime;
+                yield return null;
+            }
+
+            //TODO:ここに体制立ち直る隙間時間？
+
+            isAvoid = false;
+            yield break;
+        }
+
+        //方向入力がある時(四方向個別にアニメーションあり)、rotation維持
+        //Dot()->同じ方向1、垂直0、正反対-1
+        //前
+        if(Vector3.Dot(transform.forward, dir) >= 0.3f)
+        {
+            //前進回避アニメーション
+            playerAnimation.StartForwardAvoidAnimation();
+        }
+        //横
+        else if(Vector3.Dot(transform.forward, dir) < 0.3f &&
+                Vector3.Dot(transform.forward, dir) > -0.3f)
+        {
+            //右回避アニメーション
+            if (dir.x > 0) playerAnimation.StartRightAvoidAnimation();
+            //左回避アニメーション
+            if (dir.x < 0) playerAnimation.StartLeftAvoidAnimation();
+        }
+        //後ろ
+        else//Vector3.Dot(transform.forward, dir) <= -0.3f
+        {
+            //後ろ回避アニメーション
+            playerAnimation.StartBackAvoidAnimation();
+        }
+
+        //向いている方向(正規化)に移動
+        for (float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
+        {
+            transform.position += dir.normalized * 30 * Time.deltaTime;
+            yield return null;
+        }
+
+        //TODO:ここに体制立ち直る隙間時間？
+
+        isAvoid = false;
+        yield break;
+    }
+
+    public bool IsAvoid()
+    {
+        return isAvoid;
+    }
+
+    public void OnHit(Weapon weapon) {
 		//TODO:ここでダメージアニメーションを開始する
 		//TODO:HPを減らす
 	}
