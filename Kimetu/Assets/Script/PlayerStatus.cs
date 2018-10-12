@@ -17,4 +17,12 @@ public class PlayerStatus : Status {
     {
 
     }
+
+    /// <summary>
+    /// 現在のスタミナを返します。
+    /// </summary>
+    /// <returns></returns>
+    public int GetStamina() {
+        return stamina;
+    }
 }
