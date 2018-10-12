@@ -35,6 +35,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4307571255746292}
   - component: {fileID: 95040525216363858}
+  - component: {fileID: 114058937166458592}
   m_Layer: 0
   m_Name: ZombieEnemy
   m_TagString: Untagged
@@ -1227,7 +1228,7 @@ Animator:
   m_GameObject: {fileID: 1120730837844534}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: fe2eb0b4e90413643a3ddc78c368140f, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e10558744504b244599302a4ca2e3be3, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1236,6 +1237,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114058937166458592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1120730837844534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1622bc930d5134b77a1909f95b3db150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!137 &137000826121225270
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
