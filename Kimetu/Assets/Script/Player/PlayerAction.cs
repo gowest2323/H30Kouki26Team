@@ -66,4 +66,8 @@ public class PlayerAction : MonoBehaviour {
 		//TODO:回避行動中は他のアクションを実行できないように
 	}
 
+	public void OnHit(Weapon weapon) {
+		//TODO:ここでダメージアニメーションを開始する
+		//TODO:HPを減らす
+	}
 }

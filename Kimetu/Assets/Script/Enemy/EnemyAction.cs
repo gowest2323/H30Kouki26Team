@@ -14,6 +14,8 @@ public class EnemyAction : MonoBehaviour {
 		
 	}
 
-	public void OnHit() {
+	public void OnHit(Weapon weapon) {
+		//TODO:ここでダメージアニメーションを開始する
+		//TODO:HPを減らす
 	}
 }
