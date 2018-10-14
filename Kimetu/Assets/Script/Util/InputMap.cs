@@ -37,13 +37,6 @@ public static class InputMap {
 	private static readonly Dictionary<Type, string> macBinding;
 	private static readonly Dictionary<Type, string> winBinding;
 	static InputMap() {
-		macBinding = new Dictionary<Type, string>();
-		winBinding = new Dictionary<Type, string>();
-		foreach(var e in System.Enum.GetValues(typeof(Type))) {
-			Type type = (Type)e;
-			macBinding[type] = "NULL";
-			winBinding[type] = "NULL";
-		}
 		macBinding = new Dictionary<Type, string>() {
 			{Type.LStick_Horizontal, "MAC_Horizontal_L"},
 			{Type.LStick_Vertical, "MAC_Vertical_L"},
@@ -76,6 +69,11 @@ public static class InputMap {
 			{Type.LStickClick, "WIN_LStickClick"},
 			{Type.RStickClick, "WIN_RStickClick"},
 		};
+		foreach(var e in System.Enum.GetValues(typeof(Type))) {
+			Type type = (Type)e;
+			if(!macBinding.ContainsKey(type)) macBinding[type] = "NULL";
+			if(!winBinding.ContainsKey(type)) winBinding[type] = "NULL";
+		}
 	}
 
 	/// <summary>
