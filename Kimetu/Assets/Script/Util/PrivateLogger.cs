@@ -50,7 +50,9 @@ public class PrivateLogger {
 	/// <param name="format"></param>
 	/// <param name="args"></param>
 	public void LogFormat(string format, params object[] args) {
-		Debug.LogFormat(format, args);
+		if(accessible) {
+			Debug.LogFormat(format, args);
+		}
 	}
 
 	/// <summary>
