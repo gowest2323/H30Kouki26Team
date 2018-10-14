@@ -47,6 +47,8 @@ public static class InputMap {
 			{Type.BButton, "MAC_BButton"},
 			{Type.XButton, "MAC_XButton"},
 			{Type.YButton, "MAC_YButton"},
+			{Type.LButton, "MAC_LButton"},
+			{Type.RButton, "MAC_RButton"},
 		};
 		winBinding = new Dictionary<Type, string>() {
 			{Type.LStick_Horizontal, "WIN_Horizontal_L"},
@@ -57,6 +59,8 @@ public static class InputMap {
 			{Type.BButton, "WIN_BButton"},
 			{Type.XButton, "WIN_XButton"},
 			{Type.YButton, "WIN_YButton"},
+			{Type.LButton, "WIN_LButton"},
+			{Type.RButton, "WIN_RButton"},
 		};
 	}
 

@@ -23,5 +23,11 @@ public class InputDemo : MonoBehaviour {
 		if(Input.GetButton(InputMap.Type.YButton.GetInputName())) {
 			Debug.Log("y button");
 		}
+		if(Input.GetButton(InputMap.Type.LButton.GetInputName())) {
+			Debug.Log("L button");
+		}
+		if(Input.GetButton(InputMap.Type.RButton.GetInputName())) {
+			Debug.Log("R button");
+		}
 	}
 }
