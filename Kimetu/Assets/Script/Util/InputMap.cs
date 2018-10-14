@@ -21,6 +21,12 @@ public static class InputMap {
 		LStick_Vertical,
 		RStick_Horizontal,
 		RStick_Vertical,
+		//LRボタン
+		LButton,
+		RButton,
+		//LRTrigger
+		LTrigger,
+		RTrigger
 	}
 	private static readonly Dictionary<Type, string> macBinding;
 	private static readonly Dictionary<Type, string> winBinding;
@@ -37,12 +43,20 @@ public static class InputMap {
 			{Type.LStick_Vertical, "MAC_Vertical_L"},
 			{Type.RStick_Horizontal, "MAC_Horizontal_R"},
 			{Type.RStick_Vertical, "MAC_Vertical_R"},
+			{Type.AButton, "MAC_AButton"},
+			{Type.BButton, "MAC_BButton"},
+			{Type.XButton, "MAC_XButton"},
+			{Type.YButton, "MAC_YButton"},
 		};
 		winBinding = new Dictionary<Type, string>() {
 			{Type.LStick_Horizontal, "WIN_Horizontal_L"},
 			{Type.LStick_Vertical, "WIN_Vertical_L"},
 			{Type.RStick_Horizontal, "WIN_Horizontal_R"},
 			{Type.RStick_Vertical, "WIN_Vertical_R"},
+			{Type.AButton, "WIN_AButton"},
+			{Type.BButton, "WIN_BButton"},
+			{Type.XButton, "WIN_XButton"},
+			{Type.YButton, "WIN_YButton"},
 		};
 	}
 
