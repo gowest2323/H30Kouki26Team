@@ -30,6 +30,9 @@ public static class InputMap {
 		//Start Back
 		StartButton,
 		BackButton,
+		//スティックの垂直押し込み
+		LStickClick,
+		RStickClick
 	}
 	private static readonly Dictionary<Type, string> macBinding;
 	private static readonly Dictionary<Type, string> winBinding;
@@ -54,6 +57,8 @@ public static class InputMap {
 			{Type.RButton, "MAC_RButton"},
 			{Type.StartButton, "MAC_StartButton"},
 			{Type.BackButton, "MAC_BackButton"},
+			{Type.LStickClick, "MAC_LStickClick"},
+			{Type.RStickClick, "MAC_RStickClick"},
 		};
 		winBinding = new Dictionary<Type, string>() {
 			{Type.LStick_Horizontal, "WIN_Horizontal_L"},
@@ -68,6 +73,8 @@ public static class InputMap {
 			{Type.RButton, "WIN_RButton"},
 			{Type.StartButton, "WIN_StartButton"},
 			{Type.BackButton, "WIN_BackButton"},
+			{Type.LStickClick, "WIN_LStickClick"},
+			{Type.RStickClick, "WIN_RStickClick"},
 		};
 	}
 

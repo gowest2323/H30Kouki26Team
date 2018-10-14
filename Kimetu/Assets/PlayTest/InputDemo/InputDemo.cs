@@ -35,5 +35,11 @@ public class InputDemo : MonoBehaviour {
 		if(Input.GetButton(InputMap.Type.StartButton.GetInputName())) {
 			Debug.Log("start button");
 		}
+		if(Input.GetButton(InputMap.Type.LStickClick.GetInputName())) {
+			Debug.Log("lstick click");
+		}
+		if(Input.GetButton(InputMap.Type.RStickClick.GetInputName())) {
+			Debug.Log("rstick click");
+		}
 	}
 }
