@@ -22,9 +22,9 @@ public class PlayerController : MonoBehaviour {
 
 	private void Move() {
 		var dir = new Vector3(
-			Input.GetAxis("Horizontal_L"),
+			Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()),
 			0,
-			Input.GetAxis("Vertical_L")
+			Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
 		);
 		action.Move(dir);
 	}

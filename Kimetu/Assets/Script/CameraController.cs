@@ -22,25 +22,25 @@ public class CameraController : MonoBehaviour {
         float angle_y = cameraAngle.y;
         float angle_z = cameraAngle.z;
         //*
-        float hor = Input.GetAxis("Horizontal_R");
-        float ver = Input.GetAxis("Vertical_R");
+        float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
+        float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
       //  Debug.Log(hor);
         Debug.Log(ver);
         //*/
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (ver > 0)
         {
             cameraAngle.x += 5f;
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (ver < 0)
         {
             cameraAngle.x -= 5f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))//右
+        if (hor > 0)//右
         {
             cameraAngle.y += 5f;
         }
-        if (Input.GetKey(KeyCode.LeftArrow))//左
+        if (hor < 0)//左
         {
             cameraAngle.y -= 5f;
         }
