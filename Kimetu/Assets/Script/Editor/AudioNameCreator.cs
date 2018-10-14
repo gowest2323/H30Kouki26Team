@@ -4,6 +4,8 @@ using System.Text;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 //http://kan-kikuchi.hatenablog.com/entry/AudioNameCreator
 //AudioManagerと合わせて使用します。
@@ -14,7 +16,7 @@ using UnityEngine;
 /// </summary>
 public static class AudioNameCreator{
 
-	private const string COMMAND_NAME  = "Editor/Audio Name";        // コマンド名
+	private const string COMMAND_NAME  = "Editor/Audio";        // コマンド名
 	private const string EXPORT_PATH   = "Assets/Script/Define/AudioName.cs"; //作成したスクリプトを保存するパス
 
 	// ファイル名(拡張子あり、なし)
@@ -42,29 +44,18 @@ public static class AudioNameCreator{
 	/// </summary>
 	public static void CreateScript()
 	{
-		StringBuilder builder = new StringBuilder();
-
-		builder.AppendLine("/// <summary>");
-		builder.AppendLine("/// オーディオ名を定数で管理するクラス");
-		builder.AppendLine("/// </summary>");
-		builder.AppendFormat("public static class {0}", FILENAME_WITHOUT_EXTENSION).AppendLine();
-		builder.AppendLine("{");
-
+		var nameList = new List<string>();
 		//指定したパスのリソースを全て取得
-		object[] bgmList = Resources.LoadAll("Audio/BGM");
-		object[] seList  = Resources.LoadAll("Audio/SE");
-
-		foreach(AudioClip bgm in bgmList){
-			builder.Append("\t").AppendFormat(@"  public const string BGM_{0} = ""{1}"";", bgm.name.ToUpper(), bgm.name).AppendLine();
-		}
-
-		builder.AppendLine("\t");
-
-		foreach(AudioClip se in seList){
-			builder.Append("\t").AppendFormat(@"  public const string SE_{0} = ""{1}"";", se.name.ToUpper(), se.name).AppendLine();
-		}
-
-		builder.AppendLine("}");
+		nameList.AddRange(Resources.LoadAll("Audio/BGM").ToList().Select((e) => {
+			AudioClip clip = e as AudioClip;
+			return string.Format("BGM_{0}", clip.name.ToUpper());
+		}));
+		nameList.AddRange(Resources.LoadAll("Audio/SE").ToList().Select((e) => {
+			AudioClip clip = e as AudioClip;
+			return string.Format("SE_{0}", clip.name.ToUpper());
+		}));
+		//文字列化
+		var builder = EnumCreaterSupporter.CreateSctipt("AudioName", nameList.ToArray());
 
 		string directoryName = Path.GetDirectoryName(EXPORT_PATH);
 		if (!Directory.Exists(directoryName))

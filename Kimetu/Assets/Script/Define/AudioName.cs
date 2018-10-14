@@ -1,18 +1,60 @@
-﻿/// <summary>
-/// オーディオ名を定数で管理するクラス
+﻿using System.Collections.Generic;
+using System.Linq;
+/// <summary>
+/// タグのenum
 /// </summary>
-public static class AudioName
+public enum AudioName
 {
-	
-	  public const string SE_CLUB = "Club";
-	  public const string SE_CUT = "Cut";
-	  public const string SE_DASH = "Dash";
-	  public const string SE_DODGE = "Dodge";
-	  public const string SE_DRAWING = "Drawing";
-	  public const string SE_HIPDROP = "Hipdrop";
-	  public const string SE_LANCE = "Lance";
-	  public const string SE_LANCE2 = "Lance2";
-	  public const string SE_REPEL = "Repel";
-	  public const string SE_TACKLE = "Tackle";
-	  public const string SE_WALK = "Walk";
+SE_CLUB,
+SE_CUT,
+SE_DASH,
+SE_DODGE,
+SE_DRAWING,
+SE_HIPDROP,
+SE_LANCE,
+SE_LANCE2,
+SE_REPEL,
+SE_TACKLE,
+SE_WALK,
+}
+public static class AudioNameManager
+{
+    public static Dictionary<AudioName, string> audionames = new Dictionary<AudioName, string> 
+{
+    {AudioName.SE_CLUB,"SE_CLUB"},
+    {AudioName.SE_CUT,"SE_CUT"},
+    {AudioName.SE_DASH,"SE_DASH"},
+    {AudioName.SE_DODGE,"SE_DODGE"},
+    {AudioName.SE_DRAWING,"SE_DRAWING"},
+    {AudioName.SE_HIPDROP,"SE_HIPDROP"},
+    {AudioName.SE_LANCE,"SE_LANCE"},
+    {AudioName.SE_LANCE2,"SE_LANCE2"},
+    {AudioName.SE_REPEL,"SE_REPEL"},
+    {AudioName.SE_TACKLE,"SE_TACKLE"},
+    {AudioName.SE_WALK,"SE_WALK"},
+};
+    public static bool Equals(AudioName audioname, string name)
+    {
+        return audionames[audioname] == name;
+    }
+    public static bool Equals(string name, AudioName audioname)
+    {
+        return name == audionames[audioname];
+    }
+    public static bool Equals(string name1, string name2)
+    {
+        return name1 == name2;
+    }
+    public static bool Equals(AudioName audioname1, AudioName audioname2)
+    {
+        return audioname1 == audioname2;
+    }
+    public static string String(this AudioName audioname)
+    {
+        return audionames[audioname];
+    }
+    public static AudioName GetKeyByValue(string name)
+    {
+        return audionames.FirstOrDefault(pair => pair.Value == name).Key;
+    }
 }
