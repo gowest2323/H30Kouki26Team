@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 	private PlayerAction action;
+	private bool guardTriggered;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour {
         {
             Move();
             Attack();
+			Guard();
         }
         Avoid();
     }
@@ -30,7 +32,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Attack() {
-		if(Input.GetKey(KeyCode.Z)) {
+		if(Input.GetButton(InputMap.Type.XButton.GetInputName())) {
 			action.Attack();
 		}
 	}
@@ -43,9 +45,21 @@ public class PlayerController : MonoBehaviour {
             Input.GetAxis("Vertical")
         );
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetButton(InputMap.Type.AButton.GetInputName()))
         {
             action.Avoid(dir);
         }
     }
+
+	private void Guard() {
+		if(Input.GetButton(InputMap.Type.LButton.GetInputName()) && !guardTriggered) {
+			action.GuardStart();
+			PrivateLogger.KOYA.Log("guard start");
+			this.guardTriggered = true;
+		} else if (!Input.GetButton(InputMap.Type.LButton.GetInputName()) && guardTriggered) {
+			action.GuardEnd();
+			PrivateLogger.KOYA.Log("guard end");
+			this.guardTriggered = false;
+		}
+	}
 }
