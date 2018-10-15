@@ -12,12 +12,17 @@ public class EnemyAction : MonoBehaviour, IDamageable
     private Status status; //ステータス管理
     [SerializeField]
     private Weapon weapon;
+    /// <summary>
+    /// 回生に使われられるか
+    /// </summary>
+    public bool CanUseHeal { private set; get; }
 
     // Use this for initialization
     void Start()
     {
         this.enemyAnimation = new EnemyAnimation(GetComponent<Animator>());
         status = GetComponent<Status>();
+        CanUseHeal = false;
     }
 
     // Update is called once per frame
@@ -31,7 +36,7 @@ public class EnemyAction : MonoBehaviour, IDamageable
     }
 
     /// <summary>
-    /// 攻撃されたときに呼ばれる
+    /// 攻撃された
     /// </summary>
     /// <param name="damageSource">ダメージ情報</param>
     public void OnHit(DamageSource damageSource)
@@ -41,8 +46,7 @@ public class EnemyAction : MonoBehaviour, IDamageable
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
-            Destroy(this.gameObject);
-            //enemyAnimation.Start...();
+            StartCoroutine(PassOut());
         }
         //まだ生きていたらダメージモーション
         else
@@ -58,8 +62,33 @@ public class EnemyAction : MonoBehaviour, IDamageable
         weapon.AttackEnd();
     }
 
+    /// <summary>
+    /// カウンターされる
+    /// </summary>
     public void Countered()
     {
         Destroy(this.gameObject);
+    }
+
+    /// <summary>
+    /// 倒れる
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PassOut()
+    {
+        //倒れるアニメーションが終了するまで待機
+        this.transform.Rotate(new Vector3(0, 0, 90));
+        yield return new WaitForSeconds(3.0f);
+        CanUseHeal = true;
+    }
+
+    /// <summary>
+    /// 回生に使われた
+    /// </summary>
+    public void UsedHeal()
+    {
+        if (!CanUseHeal) Debug.LogError("2回以上UsedHealが使われました。");
+        CanUseHeal = false;
+        Destroy(this.gameObject, 0.5f);
     }
 }
