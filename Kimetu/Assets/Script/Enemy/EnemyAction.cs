@@ -8,7 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(EnemyStatus))]
 
-public class EnemyAction : MonoBehaviour, IDamageable
+public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider
 {
     private EnemyAnimation enemyAnimation; //アニメーション管理
     private Status status; //ステータス管理
@@ -16,6 +16,7 @@ public class EnemyAction : MonoBehaviour, IDamageable
 
     [SerializeField]
     private Weapon weapon;
+	public CharacterAnimation characterAnimation { get { return enemyAnimation; }}
 
     // Use this for initialization
     void Start()

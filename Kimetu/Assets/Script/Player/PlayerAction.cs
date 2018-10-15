@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerStatus))]
-public class PlayerAction : MonoBehaviour, IDamageable
+public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider
 {
     //回避中か
     private bool isAvoid;
@@ -20,6 +20,8 @@ public class PlayerAction : MonoBehaviour, IDamageable
     private bool isGuard; //guardしているか
     private float counterOccuredTime; //カウンターが発生した時間保存用
     private Coroutine counterCoroutine; //カウンター用コルーチン
+
+	public CharacterAnimation characterAnimation { get { return playerAnimation; }}
 
 	void Start() {
         this.status = GetComponent<PlayerStatus>();
@@ -151,6 +153,17 @@ public class PlayerAction : MonoBehaviour, IDamageable
             Damage(damageSource);
         }
     }
+
+	private List<CharacterAnimation> CollectAllCharacterAnimation() {
+		var ret = new List<CharacterAnimation>();
+		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))) {
+			if(!obj.activeInHierarchy) continue;
+			var provider = obj.GetComponent<ICharacterAnimationProvider>();
+			if(provider == null) continue;
+			ret.Add(provider.characterAnimation);
+		}
+		return ret;
+	}
 
     private void Damage(DamageSource damage)
     {
