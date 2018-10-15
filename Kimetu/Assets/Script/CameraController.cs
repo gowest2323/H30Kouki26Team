@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour {
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
       //  Debug.Log(hor);
-        Debug.Log(ver);
+        //Debug.Log(ver);
         //*/
 
         if (ver > 0)
