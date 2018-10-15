@@ -10,10 +10,13 @@ using System.Linq;
 public class Slow : SingletonMonoBehaviour<Slow>
 {
     //再生速度
+    [SerializeField]
     private float speed = 0.5f;
     //プレイヤーの再生速度
+    [SerializeField]
     private float playerSpeed = 0.7f;
     //スロー秒数
+    [SerializeField]
     private float slowTime = 2f;
     //スローリスト
     private List<CharacterAnimation> slowAnimationList = new List<CharacterAnimation>();
