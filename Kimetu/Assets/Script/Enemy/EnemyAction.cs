@@ -2,24 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//NOTE:Enemyの種類ごとに XXXAction を用意する必要があるかもしれません
+//     例えば AlphaBossAIに対応する AlphaBossActionなど
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(EnemyStatus))]
 
-public class EnemyAction : MonoBehaviour, IDamageable
+public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider
 {
     private EnemyAnimation enemyAnimation; //アニメーション管理
     private Status status; //ステータス管理
+    private EnemyState state;
+
     [SerializeField]
     private Weapon weapon;
     /// <summary>
     /// 回生に使われられるか
     /// </summary>
     public bool canUseHeal { private set; get; }
+	public CharacterAnimation characterAnimation { get { return enemyAnimation; }}
 
     // Use this for initialization
     void Start()
     {
+        this.state = EnemyState.Idle;
         this.enemyAnimation = new EnemyAnimation(GetComponent<Animator>());
         status = GetComponent<Status>();
         canUseHeal = false;
@@ -30,11 +36,21 @@ public class EnemyAction : MonoBehaviour, IDamageable
     {
     }
 
+    public void Run() {
+        this.state = EnemyState.Move;
+        enemyAnimation.StartRunAnimation();
+    }
+
     /// <summary>
     /// 攻撃する
     /// </summary>
     public void Attack()
     {
+        if(this.state == EnemyState.Attack) {
+            return;
+        }
+        StopRunAnimation();
+        enemyAnimation.StartAttackAnimation();
         StartCoroutine(AttackStart());
     }
 
@@ -60,10 +76,12 @@ public class EnemyAction : MonoBehaviour, IDamageable
 
     private IEnumerator AttackStart()
     {
+        this.state = EnemyState.Attack;
         weapon.AttackStart();
         //攻撃時間分待機する
         yield return new WaitForSeconds(1.0f);
         weapon.AttackEnd();
+        this.state = EnemyState.Idle;
     }
 
     /// <summary>
@@ -94,5 +112,10 @@ public class EnemyAction : MonoBehaviour, IDamageable
         if (!canUseHeal) Debug.LogError("2回以上UsedHealが使われました。");
         canUseHeal = false;
         Destroy(this.gameObject, 0.5f);
+    }
+    private void StopRunAnimation() {
+        if(this.state == EnemyState.Move) {
+            enemyAnimation.StopRunAnimation();
+        }
     }
 }

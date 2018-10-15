@@ -7,12 +7,12 @@ public class PlayerController : MonoBehaviour
     private PlayerAction action;
     [SerializeField, Header("回生コマンドを実行するのにボタンを長押しする時間")]
     private float pierceButtonPushTime;
+	private bool guardTriggered;
     // Use this for initialization
     void Start()
     {
         this.action = GetComponent<PlayerAction>();
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
             Move();
             Attack();
             PierceAndHeal();
+			Guard();
         }
         Avoid();
     }
@@ -63,9 +64,21 @@ public class PlayerController : MonoBehaviour
             Input.GetAxis("Vertical")
         );
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetButton(InputMap.Type.AButton.GetInputName()))
         {
             action.Avoid(dir);
         }
     }
+
+	private void Guard() {
+		if(Input.GetButton(InputMap.Type.LButton.GetInputName()) && !guardTriggered) {
+			action.GuardStart();
+			PrivateLogger.KOYA.Log("guard start");
+			this.guardTriggered = true;
+		} else if (!Input.GetButton(InputMap.Type.LButton.GetInputName()) && guardTriggered) {
+			action.GuardEnd();
+			PrivateLogger.KOYA.Log("guard end");
+			this.guardTriggered = false;
+		}
+	}
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerStatus))]
-public class PlayerAction : MonoBehaviour, IDamageable
+public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider
 {
     //回避中か
     private bool isAvoid;
@@ -30,13 +30,14 @@ public class PlayerAction : MonoBehaviour, IDamageable
     [SerializeField]
     private StageManager stageManager;//ステージマネージャー
 
-    void Start()
-    {
-        this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
-        this.isGuard = false;
-        this.counterTime = -1;
-        this.counterOccuredTime = -1;
-        this.state = PlayerState.Idle;
+	public CharacterAnimation characterAnimation { get { return playerAnimation; }}
+
+	void Start() {
+        this.status = GetComponent<PlayerStatus>();
+		this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
+		this.isGuard = false;
+		this.counterOccuredTime = -1;
+		this.state = PlayerState.Idle;
         this.isAvoid = false;
         this.avoidMoveTime = 0.5f;
         status = GetComponent<PlayerStatus>();
@@ -57,8 +58,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
         }
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
-        //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
-        transform.position += dir * 10 * Time.deltaTime;
+        transform.position += dir * 10 * Slow.Instance.PlayerDeltaTime();
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 
@@ -223,6 +223,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
             {
                 Debug.Log("counter succeed");
                 damageSource.attackCharacter.Countered();
+				Slow.Instance.SlowStart(CollectAllCharacterAnimation());
             }
             //失敗したら自分にダメージ
             else
@@ -237,6 +238,16 @@ public class PlayerAction : MonoBehaviour, IDamageable
             Damage(damageSource);
         }
     }
+	private List<CharacterAnimation> CollectAllCharacterAnimation() {
+		var ret = new List<CharacterAnimation>();
+		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))) {
+			if(!obj.activeInHierarchy) continue;
+			var provider = obj.GetComponent<ICharacterAnimationProvider>();
+			if(provider == null) continue;
+			ret.Add(provider.characterAnimation);
+		}
+		return ret;
+	}
 
     /// <summary>
     /// ダメージを受ける

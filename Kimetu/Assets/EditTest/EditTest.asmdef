@@ -1,7 +1,8 @@
 {
     "name": "EditTest",
     "references": [
-        "Kimetu"
+        "Kimetu",
+        "NavMeshComponents"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
