@@ -18,7 +18,7 @@ public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvid
     [SerializeField]
     private Weapon weapon;
     /// <summary>
-    /// 回生に使われられるか
+    /// 吸生に使われられるか
     /// </summary>
     public bool canUseHeal { private set; get; }
 	public CharacterAnimation characterAnimation { get { return enemyAnimation; }}
@@ -114,7 +114,7 @@ public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvid
     }
 
     /// <summary>
-    /// 回生に使われた
+    /// 吸生に使われた
     /// </summary>
     public void UsedHeal()
     {

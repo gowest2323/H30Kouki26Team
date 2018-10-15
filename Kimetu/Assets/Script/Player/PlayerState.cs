@@ -13,5 +13,5 @@ public enum PlayerState {
 	Defence, //防御時
 	Dash, //ダッシュ時
     Counter, //カウンター攻撃時
-    Pierce, //回生中
+    Pierce, //吸生中
 }

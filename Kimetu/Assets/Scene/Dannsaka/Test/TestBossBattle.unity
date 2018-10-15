@@ -593,6 +593,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1288175681}
+  lockRange: 10
+  distance: 3
+  vRotation: {x: 0, y: 0, z: 0, w: 0}
+  hRotation: {x: 0, y: 0, z: 0, w: 0}
+  turnSpeed: 10
 --- !u!1 &1839720722
 GameObject:
   m_ObjectHideFlags: 0
