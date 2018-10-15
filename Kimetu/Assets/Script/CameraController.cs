@@ -74,7 +74,7 @@ public class CameraController : MonoBehaviour {
     {
         if(isLockOn == true)
         {
-            nearObj = serchTag(gameObject, "Enemy");
+            nearObj = SearchTag(gameObject, "Enemy");
             if(nearObj == null)
             {
                 isLockOn = false;
@@ -95,7 +95,7 @@ public class CameraController : MonoBehaviour {
     /// <param name="nowObj"></param>
     /// <param name="tagName"></param>
     /// <returns></returns>
-    GameObject serchTag(GameObject nowObj, string tagName)
+    GameObject SearchTag(GameObject nowObj, string tagName)
     {
         float tmpDis = 0;  
 
