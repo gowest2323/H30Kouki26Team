@@ -1,3 +1,10 @@
-﻿{
-	"name": "Kimetu"
+{
+    "name": "Kimetu",
+    "references": [
+        "NavMeshComponents"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
 }
