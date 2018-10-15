@@ -49,11 +49,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void PierceAndHeal()
     {
+        /*
         //攻撃ボタン長押しで発動
         if (InputExtend.GetButtonState(InputExtend.Command.Attack, pierceButtonPushTime))
         {
             action.PierceAndHeal();
         }
+        */
     }
 
     private void Avoid()
