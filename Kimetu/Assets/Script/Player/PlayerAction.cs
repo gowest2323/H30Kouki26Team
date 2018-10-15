@@ -27,6 +27,8 @@ public class PlayerAction : MonoBehaviour, IDamageable
     private Text pierceText; //回生テキスト
     [SerializeField, Header("回生での回復量")]
     private int pierceHealHP;
+    [SerializeField]
+    private StageManager stageManager;//ステージマネージャー
 
     void Start()
     {
@@ -245,8 +247,9 @@ public class PlayerAction : MonoBehaviour, IDamageable
         status.Damage(damage.damage);
         //死亡したら倒れるモーション
         if (status.IsDead())
-        {
-            Destroy(this.gameObject);
+        {            
+            //Destroy(this.gameObject);
+            this.gameObject.transform.position = stageManager.RestartPosition();
             //playerAnimation.Start...();
         }
         //まだ生きていたらダメージモーション
