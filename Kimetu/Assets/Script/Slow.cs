@@ -7,7 +7,7 @@ using System.Linq;
 /// 181012 何
 /// スロークラス
 /// </summary>
-public class Slow : MonoBehaviour
+public class Slow : SingletonMonoBehaviour<Slow>
 {
     //再生速度
     private float speed = 0.5f;
@@ -21,16 +21,6 @@ public class Slow : MonoBehaviour
     private bool isSlow = false;
 
 
-    //インスタンス
-    private static Slow instance;
-    public static Slow Instance
-    {
-        get
-        {
-            if (instance == null) instance = new Slow();
-            return instance;
-        }
-    }
 
     public float DeltaTime()
     {
