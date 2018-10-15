@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 114876809318028814}
   - component: {fileID: 195619728860536038}
   - component: {fileID: 114975418964108624}
+  - component: {fileID: 114294555048417684}
   m_Layer: 0
   m_Name: AlphaBoss
   m_TagString: Enemy
@@ -1257,6 +1258,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114294555048417684
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1363235873307344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5694c56e8c1abc4f981ab86cd1e900c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holderObject: {fileID: 1363235873307344}
+  power: 0
 --- !u!114 &114876809318028814
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1280,7 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1622bc930d5134b77a1909f95b3db150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
+  weapon: {fileID: 114294555048417684}
 --- !u!114 &114975418964108624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1292,6 +1306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb9b799d91864e2e9f7e60a74e723d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  action: {fileID: 0}
 --- !u!136 &136046464360396254
 CapsuleCollider:
   m_ObjectHideFlags: 1

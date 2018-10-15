@@ -11,6 +11,13 @@ public class AlphaBossAI : AI {
 	[SerializeField]
 	private NavMeshAgent agent;
 
+	[SerializeField]
+	private EnemyAction action;
+	[SerializeField]
+	private float attackRange = 1.5f;
+	[SerializeField]
+	private float routeCalculateInterval = 1.0f;
+
 	private GameObject playerObj;
 
 	private void Awake() {
@@ -23,8 +30,12 @@ public class AlphaBossAI : AI {
 			this.agent = GetComponent<NavMeshAgent>();
 		}
 		this.playerObj = GameObject.FindWithTag(TagName.Player.String());
+		if(action == null) {
+			this.action = GetComponent<EnemyAction>();
+		}
 		Assert.IsTrue(agent != null);
 		Assert.IsTrue(playerObj != null);
+		Assert.IsTrue(action != null);
 		StartCoroutine(Research());
 	}
 	
@@ -36,12 +47,15 @@ public class AlphaBossAI : AI {
 	private IEnumerator Research() {
 		//1秒ごとに自分と敵の間の距離をみて、
 		//ある程度離れていたなら追跡する
-		var wait = new WaitForSeconds(1f);
+		var wait = new WaitForSeconds(routeCalculateInterval);
 		while(true) {
 			yield return wait;
 			var distance = Vector3.Distance(playerObj.transform.position, transform.position);
-			if(distance > 3) {
+			if(distance > attackRange) {
 				agent.SetDestination(playerObj.transform.position);
+			} else {
+				//ある程度距離が近くなったので攻撃を実行する
+				action.Attack();
 			}
 		}
 	}
