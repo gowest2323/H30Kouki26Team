@@ -108,6 +108,9 @@ public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvid
         this.transform.Rotate(new Vector3(0, 0, 90));
         yield return new WaitForSeconds(3.0f);
         canUseHeal = true;
+        //死体が勝手に滑るので物理演算を停止します。
+        var rb = GetComponent<Rigidbody>();
+        GameObject.Destroy(rb);
     }
 
     /// <summary>
