@@ -113,27 +113,37 @@ public class PlayerAction : MonoBehaviour, IDamageable
         StartCoroutine(PierceAndHeakCoroutine());
     }
 
+    /// <summary>
+    /// 回生
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator PierceAndHeakCoroutine()
     {
         state = PlayerState.Pierce;
         EnemyAction nearEnemy = MostNearEnemy();
+        //敵のほうを向くまで待機
         yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
         status.Heal(pierceHealHP);
+        //回生終了まで待機
         yield return new WaitForSeconds(2.0f);
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;
     }
 
+    /// <summary>
+    /// 回生できるか
+    /// </summary>
+    /// <returns></returns>
     private bool CanPierce()
-    {
+    {        
         if (!canPierceAndHeal) return false;
         if (state == PlayerState.Avoid) return false;
         if (state == PlayerState.Counter) return false;
         if (state == PlayerState.Defence) return false;
         if (state == PlayerState.Pierce) return false;
         if (state == PlayerState.Attack) return false;
-        //回生可能な敵がいなければ終了
+        //回生可能な敵がいなければできない
         if (nearCanPierceEnemyList.Count <= 0) return false;
         return true;
     }
@@ -151,7 +161,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
         float distance = Vector3.Distance(enemy.transform.position, transform.position);
         for (int i = 1; i < nearCanPierceEnemyList.Count; i++)
         {
-            if (nearCanPierceEnemyList[i].CanUseHeal) continue;
+            if (nearCanPierceEnemyList[i].canUseHeal) continue;
             float distance2 = Vector3.Distance(nearCanPierceEnemyList[i].transform.position, transform.position);
             if (distance2 < distance)
             {
@@ -176,6 +186,10 @@ public class PlayerAction : MonoBehaviour, IDamageable
         state = PlayerState.Idle;
     }
 
+    /// <summary>
+    /// 攻撃開始
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator StartAttack()
     {
         weapon.AttackStart();
@@ -222,6 +236,10 @@ public class PlayerAction : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>
+    /// ダメージを受ける
+    /// </summary>
+    /// <param name="damage"></param>
     private void Damage(DamageSource damage)
     {
         status.Damage(damage.damage);
@@ -238,6 +256,9 @@ public class PlayerAction : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>
+    /// カウンターされる
+    /// </summary>
     public void Countered()
     {
         Debug.LogError("PlayerActionのCounteredが呼ばれました。");
@@ -330,7 +351,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
     public void NearEnemy(EnemyAction enemy)
     {
         //敵が死亡していたらリストに追加し、回生テキスト表示
-        if (enemy.CanUseHeal)
+        if (enemy.canUseHeal)
         {
             if (nearCanPierceEnemyList.Contains(enemy)) return;
             nearCanPierceEnemyList.Add(enemy);
@@ -345,7 +366,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
     public void FarEnemy(EnemyAction enemy)
     {
         //死亡していたらリストから削除する
-        if (enemy.CanUseHeal)
+        if (enemy.canUseHeal)
         {
             nearCanPierceEnemyList.Remove(enemy);
             //もう回生可能な敵が近くにいなければテキストを非表示に

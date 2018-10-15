@@ -43,11 +43,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 回生
+    /// </summary>
     private void PierceAndHeal()
     {
+        //攻撃ボタン長押しで発動
         if (InputExtend.GetButtonState(InputExtend.Command.Attack, pierceButtonPushTime))
         {
-            Debug.Log("回生start");
             action.PierceAndHeal();
         }
     }

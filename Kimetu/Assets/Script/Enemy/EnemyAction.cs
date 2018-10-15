@@ -15,14 +15,14 @@ public class EnemyAction : MonoBehaviour, IDamageable
     /// <summary>
     /// 回生に使われられるか
     /// </summary>
-    public bool CanUseHeal { private set; get; }
+    public bool canUseHeal { private set; get; }
 
     // Use this for initialization
     void Start()
     {
         this.enemyAnimation = new EnemyAnimation(GetComponent<Animator>());
         status = GetComponent<Status>();
-        CanUseHeal = false;
+        canUseHeal = false;
     }
 
     // Update is called once per frame
@@ -30,6 +30,9 @@ public class EnemyAction : MonoBehaviour, IDamageable
     {
     }
 
+    /// <summary>
+    /// 攻撃する
+    /// </summary>
     public void Attack()
     {
         StartCoroutine(AttackStart());
@@ -58,6 +61,7 @@ public class EnemyAction : MonoBehaviour, IDamageable
     private IEnumerator AttackStart()
     {
         weapon.AttackStart();
+        //攻撃時間分待機する
         yield return new WaitForSeconds(1.0f);
         weapon.AttackEnd();
     }
@@ -79,7 +83,7 @@ public class EnemyAction : MonoBehaviour, IDamageable
         //倒れるアニメーションが終了するまで待機
         this.transform.Rotate(new Vector3(0, 0, 90));
         yield return new WaitForSeconds(3.0f);
-        CanUseHeal = true;
+        canUseHeal = true;
     }
 
     /// <summary>
@@ -87,8 +91,8 @@ public class EnemyAction : MonoBehaviour, IDamageable
     /// </summary>
     public void UsedHeal()
     {
-        if (!CanUseHeal) Debug.LogError("2回以上UsedHealが使われました。");
-        CanUseHeal = false;
+        if (!canUseHeal) Debug.LogError("2回以上UsedHealが使われました。");
+        canUseHeal = false;
         Destroy(this.gameObject, 0.5f);
     }
 }
