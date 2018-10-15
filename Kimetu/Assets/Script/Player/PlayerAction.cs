@@ -160,7 +160,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
         //死亡したら倒れるモーション
         if (status.IsDead())
         {            
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
             this.gameObject.transform.position = stageManager.RestartPosition();
             //playerAnimation.Start...();
         }
