@@ -18,6 +18,8 @@ public class SlowDisableOnDestroy : MonoBehaviour {
 	}
 
 	private void OnDestroy() {
-		Slow.Instance.Remove(GetComponent<ICharacterAnimationProvider>().characterAnimation);
+		if(Slow.Instance != null) {
+			Slow.Instance.Remove(GetComponent<ICharacterAnimationProvider>().characterAnimation);
+		}
 	}
 }
