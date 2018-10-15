@@ -256,11 +256,4 @@ public class PlayerAction : MonoBehaviour, IDamageable
     {
         return isAvoid;
     }
-
-    public void PlayerDeath()
-    {
-        //Destroy(this.gameObject);
-        this.gameObject.transform.position = stageManager.RestartPosition();
-        //playerAnimation.Start...();
-    }
 }
