@@ -30,11 +30,17 @@ public class EnemyAction : MonoBehaviour, IDamageable
     {
     }
 
+    public void Run() {
+        this.state = EnemyState.Move;
+        enemyAnimation.StartRunAnimation();
+    }
+
     public void Attack()
     {
         if(this.state == EnemyState.Attack) {
             return;
         }
+        StopRunAnimation();
         enemyAnimation.StartAttackAnimation();
         StartCoroutine(AttackStart());
     }
@@ -72,5 +78,11 @@ public class EnemyAction : MonoBehaviour, IDamageable
     public void Countered()
     {
         Destroy(this.gameObject);
+    }
+
+    private void StopRunAnimation() {
+        if(this.state == EnemyState.Move) {
+            enemyAnimation.StopRunAnimation();
+        }
     }
 }

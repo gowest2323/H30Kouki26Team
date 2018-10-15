@@ -14,6 +14,8 @@ public class AlphaBossAI : AI {
 	[SerializeField]
 	private EnemyAction action;
 	[SerializeField]
+	private EnemyAnimation animation;
+	[SerializeField]
 	private float attackRange = 1.5f;
 	[SerializeField]
 	private float routeCalculateInterval = 1.0f;
@@ -33,9 +35,13 @@ public class AlphaBossAI : AI {
 		if(action == null) {
 			this.action = GetComponent<EnemyAction>();
 		}
+		if(animation == null) {
+			this.animation = new EnemyAnimation(GetComponent<Animator>());
+		}
 		Assert.IsTrue(agent != null);
 		Assert.IsTrue(playerObj != null);
 		Assert.IsTrue(action != null);
+		Assert.IsTrue(animation != null);
 		StartCoroutine(Research());
 	}
 	
@@ -56,6 +62,7 @@ public class AlphaBossAI : AI {
 			var distance = Vector3.Distance(playerObj.transform.position, transform.position);
 			if(distance > attackRange) {
 				agent.SetDestination(playerObj.transform.position);
+				action.Run();
 			} else {
 				//ある程度距離が近くなったので攻撃を実行する
 				action.Attack();
