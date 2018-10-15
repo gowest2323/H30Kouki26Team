@@ -5,11 +5,20 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
     public GameObject player;
     private Vector3 offset;
+    public List<GameObject> targetObjects;
+    private GameObject nearObj;
+    [SerializeField]
+    private float lockRange;
+    bool isLockOn;
 
-	// Use this for initialization
-	private void Start ()
+
+
+
+    // Use this for initialization
+    private void Start ()
     {
         offset = transform.position - player.transform.position;
+        isLockOn = false;
 	}
 	
 	// Update is called once per frame
@@ -25,7 +34,7 @@ public class CameraController : MonoBehaviour {
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
       //  Debug.Log(hor);
-        Debug.Log(ver);
+       // Debug.Log(ver);
         //*/
 
         if (ver > 0)
@@ -46,6 +55,64 @@ public class CameraController : MonoBehaviour {
         }
 
         cameraTransform.eulerAngles = cameraAngle;
+        IsLockOnChange();
+        LockOn();
+        
+    }
+
+    private void LockOn()
+    {     
+        if (isLockOn==true && nearObj != null)
+        {
+            transform.LookAt(nearObj.transform);
+            player.transform.LookAt(nearObj.transform);
+        }
+    }
+
+
+    private void IsLockOnChange()
+    {
+        if(isLockOn == true)
+        {
+            nearObj = serchTag(gameObject, "Enemy");
+            if(nearObj == null)
+            {
+                isLockOn = false;
+            }
+        }
+        if (Input.GetButton(InputMap.Type.RStickClick.GetInputName()))
+        {
+            isLockOn = true;
+        }
+
+    }
+
+  
+
+    /// <summary>
+    /// 近くにあるtagnameのオブジェクト取得
+    /// </summary>
+    /// <param name="nowObj"></param>
+    /// <param name="tagName"></param>
+    /// <returns></returns>
+    GameObject serchTag(GameObject nowObj, string tagName)
+    {
+        float tmpDis = 0;  
+
+        GameObject targetObj = null;
+
+        foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
+        {
+            tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
+
+            if(lockRange > tmpDis)
+            {
+                targetObj = obs;
+            }
+  
+        }
+       
+        return targetObj;
     }
 
     //private void CameraRotate()
