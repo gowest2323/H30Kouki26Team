@@ -18,6 +18,10 @@ public class PlayerController : MonoBehaviour {
             Attack();
         }
         Avoid();
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            action.PlayerDeath();
+        }
     }
 
 	private void Move() {

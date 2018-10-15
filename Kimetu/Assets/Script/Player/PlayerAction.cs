@@ -20,6 +20,8 @@ public class PlayerAction : MonoBehaviour, IDamageable
     private bool isGuard; //guardしているか
     private float counterOccuredTime; //カウンターが発生した時間保存用
     private Coroutine counterCoroutine; //カウンター用コルーチン
+    [SerializeField]
+    private StageManager stageManager;//ステージマネージャー
 
 	void Start() {
 		this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
@@ -157,8 +159,9 @@ public class PlayerAction : MonoBehaviour, IDamageable
         status.Damage(damage.damage);
         //死亡したら倒れるモーション
         if (status.IsDead())
-        {
+        {            
             Destroy(this.gameObject);
+            this.gameObject.transform.position = stageManager.RestartPosition();
             //playerAnimation.Start...();
         }
         //まだ生きていたらダメージモーション
@@ -252,5 +255,12 @@ public class PlayerAction : MonoBehaviour, IDamageable
     public bool IsAvoid()
     {
         return isAvoid;
+    }
+
+    public void PlayerDeath()
+    {
+        //Destroy(this.gameObject);
+        this.gameObject.transform.position = stageManager.RestartPosition();
+        //playerAnimation.Start...();
     }
 }
