@@ -1,7 +1,8 @@
 {
     "name": "PlayTest",
     "references": [
-        "Kimetu"
+        "Kimetu",
+        "NavMeshComponents"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
