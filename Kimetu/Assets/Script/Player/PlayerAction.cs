@@ -25,7 +25,6 @@ public class PlayerAction : MonoBehaviour, IDamageable
         this.status = GetComponent<PlayerStatus>();
 		this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
 		this.isGuard = false;
-		this.counterTime = -1;
 		this.counterOccuredTime = -1;
 		this.state = PlayerState.Idle;
         this.isAvoid = false;
