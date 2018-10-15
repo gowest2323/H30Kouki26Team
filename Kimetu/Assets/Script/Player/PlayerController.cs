@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private PlayerAction action;
-    [SerializeField, Header("回生コマンドを実行するのにボタンを長押しする時間")]
+    [SerializeField, Header("吸生コマンドを実行するのにボタンを長押しする時間")]
     private float pierceButtonPushTime;
     // Use this for initialization
     void Start()
@@ -32,7 +32,15 @@ public class PlayerController : MonoBehaviour
             0,
             Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
         );
+        //ダッシュボタンを長押しでダッシュ
+        //if (InputExtend.GetButtonState(InputExtend.Command.Avoid, 0.5f))
+        //{
+        //action.Dash(dir);
+        //}
+        //else
+        //{
         action.Move(dir);
+        //}
     }
 
     private void Attack()
@@ -44,7 +52,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 回生
+    /// 吸生
     /// </summary>
     private void PierceAndHeal()
     {
@@ -67,5 +75,9 @@ public class PlayerController : MonoBehaviour
         {
             action.Avoid(dir);
         }
+    }
+
+    private void Dash()
+    {
     }
 }

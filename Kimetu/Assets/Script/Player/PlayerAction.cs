@@ -21,12 +21,17 @@ public class PlayerAction : MonoBehaviour, IDamageable
     private bool isGuard; //guardしているか
     private float counterOccuredTime; //カウンターが発生した時間保存用
     private Coroutine counterCoroutine; //カウンター用コルーチン
-    private bool canPierceAndHeal; //回生できるか
-    private List<EnemyAction> nearCanPierceEnemyList; //十分近づいている回生可能な敵リスト
-    [SerializeField]
-    private Text pierceText; //回生テキスト
-    [SerializeField, Header("回生での回復量")]
+    private bool canPierceAndHeal; //吸生できるか
+    private List<EnemyAction> nearCanPierceEnemyList; //十分近づいている吸生可能な敵リスト
+    [SerializeField, Header("吸生テキスト")]
+    private Text pierceText;
+    [SerializeField, Header("吸生での回復量")]
     private int pierceHealHP;
+    [SerializeField, Header("1スタミナが減少する時間（秒）")]
+    private float decreaseStaminaPerSecond;
+    private Dash dash; //ダッシュ管理
+    [SerializeField, Header("攻撃時に減るスタミナ量")]
+    private int decreaseAttackStamina;
 
     void Start()
     {
@@ -40,23 +45,68 @@ public class PlayerAction : MonoBehaviour, IDamageable
         status = GetComponent<PlayerStatus>();
         canPierceAndHeal = false;
         nearCanPierceEnemyList = new List<EnemyAction>();
+        dash = new Dash(decreaseStaminaPerSecond, DecreaseDashStamina);
     }
 
+    /// <summary>
+    /// ダッシュ時のスタミナ減少
+    /// </summary>
+    public void DecreaseDashStamina()
+    {
+        status.DecreaseStamina(1);
+    }
+
+    private void MoveStop()
+    {
+        dash.Reset();
+        playerAnimation.StopRunAnimation();
+    }
+
+    /// <summary>
+    /// 移動
+    /// </summary>
+    /// <param name="dir"></param>
     public void Move(Vector3 dir)
     {
-        //カウンター中は移動できない。
-        if (state == PlayerState.Counter) return;
+        //移動できない状態なら移動しない
+        if (!CanMove()) return;
         //こうしないとコントローラのスティックがニュートラルに戻った時、
         //勝手に前を向いてしまう
         if (dir == Vector3.zero)
         {
-            playerAnimation.StopRunAnimation();
+            MoveStop();
             return;
         }
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
         //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
         transform.position += dir * 10 * Time.deltaTime;
+        transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+    }
+
+    /// <summary>
+    /// ダッシュ
+    /// </summary>
+    /// <param name="dir">方向</param>
+    /// <param name="dashTime">ダッシュしている時間</param>
+    public void Dash(Vector3 dir)
+    {
+        //移動できない状態なら移動しない
+        if (!CanMove()) return;
+        //こうしないとコントローラのスティックがニュートラルに戻った時、
+        //勝手に前を向いてしまう
+        if (dir == Vector3.zero)
+        {
+            MoveStop();
+            return;
+        }
+
+        playerAnimation.StartRunAnimation();
+        var pos = transform.position;
+        dash.Update(Time.deltaTime);
+        float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
+        //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
+        transform.position += dir * 10 * t * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 
@@ -105,7 +155,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
     }
 
     /// <summary>
-    /// 回生
+    /// 吸生
     /// </summary>
     public void PierceAndHeal()
     {
@@ -114,7 +164,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
     }
 
     /// <summary>
-    /// 回生
+    /// 吸生
     /// </summary>
     /// <returns></returns>
     private IEnumerator PierceAndHeakCoroutine()
@@ -124,7 +174,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
         //敵のほうを向くまで待機
         yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
         status.Heal(pierceHealHP);
-        //回生終了まで待機
+        //吸生終了まで待機
         yield return new WaitForSeconds(2.0f);
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
@@ -132,24 +182,36 @@ public class PlayerAction : MonoBehaviour, IDamageable
     }
 
     /// <summary>
-    /// 回生できるか
+    /// 移動できるか
+    /// </summary>
+    /// <returns></returns>
+    private bool CanMove()
+    {
+        if (state == PlayerState.Avoid) return false;
+        if (state == PlayerState.Counter) return false;
+        if (state == PlayerState.Pierce) return false;
+        return true;
+    }
+
+    /// <summary>
+    /// 吸生できるか
     /// </summary>
     /// <returns></returns>
     private bool CanPierce()
-    {        
+    {
         if (!canPierceAndHeal) return false;
         if (state == PlayerState.Avoid) return false;
         if (state == PlayerState.Counter) return false;
         if (state == PlayerState.Defence) return false;
         if (state == PlayerState.Pierce) return false;
         if (state == PlayerState.Attack) return false;
-        //回生可能な敵がいなければできない
+        //吸生可能な敵がいなければできない
         if (nearCanPierceEnemyList.Count <= 0) return false;
         return true;
     }
 
     /// <summary>
-    /// 最も近い回生できる敵を取得
+    /// 最も近い吸生できる敵を取得
     /// </summary>
     /// <returns></returns>
     private EnemyAction MostNearEnemy()
@@ -193,9 +255,10 @@ public class PlayerAction : MonoBehaviour, IDamageable
     private IEnumerator StartAttack()
     {
         weapon.AttackStart();
+        status.DecreaseStamina(decreaseAttackStamina);
         yield return new WaitForSeconds(1);
         weapon.AttackEnd();
-        state = PlayerState.Idle;
+        state = PlayerState.Attack;
     }
 
     /// <summary>
@@ -206,7 +269,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
     {
         if (state == PlayerState.Defence)
         {
-
+            status.DecreaseStamina(damageSource.damage);
         }
         else if (state == PlayerState.Avoid)
         {
@@ -350,7 +413,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
     /// </summary>
     public void NearEnemy(EnemyAction enemy)
     {
-        //敵が死亡していたらリストに追加し、回生テキスト表示
+        //敵が死亡していたらリストに追加し、吸生テキスト表示
         if (enemy.canUseHeal)
         {
             if (nearCanPierceEnemyList.Contains(enemy)) return;
@@ -369,7 +432,7 @@ public class PlayerAction : MonoBehaviour, IDamageable
         if (enemy.canUseHeal)
         {
             nearCanPierceEnemyList.Remove(enemy);
-            //もう回生可能な敵が近くにいなければテキストを非表示に
+            //もう吸生可能な敵が近くにいなければテキストを非表示に
             if (nearCanPierceEnemyList.Count <= 0)
             {
                 canPierceAndHeal = false;
