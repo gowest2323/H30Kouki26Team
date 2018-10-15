@@ -49,6 +49,9 @@ public class AlphaBossAI : AI {
 		//ある程度離れていたなら追跡する
 		var wait = new WaitForSeconds(routeCalculateInterval);
 		while(true) {
+			if(playerObj == null) {
+				break;
+			}
 			yield return wait;
 			var distance = Vector3.Distance(playerObj.transform.position, transform.position);
 			if(distance > attackRange) {
