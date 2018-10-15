@@ -46,8 +46,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
-        //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
-        transform.position += dir * 10 * Time.deltaTime;
+        transform.position += dir * 10 * Slow.Instance.PlayerDeltaTime();
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 
@@ -139,6 +138,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             {
                 Debug.Log("counter succeed");
                 damageSource.attackCharacter.Countered();
+				Slow.Instance.SlowStart(CollectAllCharacterAnimation());
             }
             //失敗したら自分にダメージ
             else

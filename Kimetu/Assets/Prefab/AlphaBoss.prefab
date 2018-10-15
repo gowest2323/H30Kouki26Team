@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 114876809318028814}
   - component: {fileID: 195619728860536038}
   - component: {fileID: 114975418964108624}
+  - component: {fileID: 114930037210457144}
   m_Layer: 0
   m_Name: AlphaBoss
   m_TagString: Enemy
@@ -1381,6 +1382,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 114487428531154698}
+--- !u!114 &114930037210457144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1363235873307344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483618ae2ab314898a1aae709b817678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114975418964108624
 MonoBehaviour:
   m_ObjectHideFlags: 1
