@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 //NOTE:Enemyの種類ごとに XXXAction を用意する必要があるかもしれません
 //     例えば AlphaBossAIに対応する AlphaBossActionなど
 
@@ -98,6 +99,11 @@ public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvid
     /// <returns></returns>
     private IEnumerator PassOut()
     {
+        //AlphaBossAIはNavMeshAgentで敵を追いかけますが、
+        //NavMeshAgentが有効だと通常の transform 変更は効かないようです。
+        //その対策として暫定的に下記のコードを書きました。
+        var navmesh = GetComponent<NavMeshAgent>();
+        if(navmesh != null) Destroy(navmesh);
         //倒れるアニメーションが終了するまで待機
         this.transform.Rotate(new Vector3(0, 0, 90));
         yield return new WaitForSeconds(3.0f);

@@ -16,6 +16,8 @@ public class AlphaBossAI : AI {
 	[SerializeField]
 	private EnemyAnimation animation;
 	[SerializeField]
+	private EnemyStatus status;
+	[SerializeField]
 	private float attackRange = 1.5f;
 	[SerializeField]
 	private float routeCalculateInterval = 1.0f;
@@ -38,10 +40,14 @@ public class AlphaBossAI : AI {
 		if(animation == null) {
 			this.animation = new EnemyAnimation(GetComponent<Animator>());
 		}
+		if(status == null) {
+			this.status = GetComponent<EnemyStatus>();
+		}
 		Assert.IsTrue(agent != null);
 		Assert.IsTrue(playerObj != null);
 		Assert.IsTrue(action != null);
 		Assert.IsTrue(animation != null);
+		Assert.IsTrue(status != null);
 		StartCoroutine(Research());
 	}
 	
@@ -55,18 +61,26 @@ public class AlphaBossAI : AI {
 		//ある程度離れていたなら追跡する
 		var wait = new WaitForSeconds(routeCalculateInterval);
 		while(true) {
+			yield return wait;
 			if(playerObj == null) {
 				break;
 			}
-			yield return wait;
-			var distance = Vector3.Distance(playerObj.transform.position, transform.position);
-			if(distance > attackRange) {
-				agent.SetDestination(playerObj.transform.position);
-				action.Run();
-			} else {
-				//ある程度距離が近くなったので攻撃を実行する
-				action.Attack();
+			if(status.GetHP() <= 0) {
+				//TODO:すべてのアニメーションを終了する
+				break;
 			}
+			Behaivour();
+		}
+	}
+
+	private void Behaivour() {
+		var distance = Vector3.Distance(playerObj.transform.position, transform.position);
+		if(distance > attackRange) {
+			agent.SetDestination(playerObj.transform.position);
+			action.Run();
+		} else {
+			//ある程度距離が近くなったので攻撃を実行する
+			action.Attack();
 		}
 	}
 }
