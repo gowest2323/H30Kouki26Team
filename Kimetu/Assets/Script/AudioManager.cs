@@ -47,8 +47,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>{
         object[] seList = Resources.LoadAll("Audio/SE");
 
         
-        Debug.Log(bgmList.Length);
-        Debug.Log(seList.Length);
         foreach (AudioClip bgm in bgmList)
         {
             _bgmDic[bgm.name] = bgm;
@@ -56,11 +54,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>{
         foreach (AudioClip se in seList)
         {
             _seDic[se.name] = se;
-        }
-
-        foreach(KeyValuePair<string,AudioClip>a in _seDic)
-        {
-            Debug.Log(a.Key);
         }
     }
 
