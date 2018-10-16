@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class DebugUI : MonoBehaviour {
+public class DebugPlayerUI : MonoBehaviour {
 	[SerializeField]
 	private Text hpText;
 
