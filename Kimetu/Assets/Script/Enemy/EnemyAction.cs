@@ -61,6 +61,10 @@ public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvid
     /// <param name="damageSource">ダメージ情報</param>
     public void OnHit(DamageSource damageSource)
     {
+        //すでに死亡しているなら何もしない
+        //これがないと、死亡したエネミーに攻撃が当たったとき、
+        //エネミーのローテーションがおかしくなる(PassOutが実行されるため??)
+        if(status.IsDead()) { return; }
         status.Damage(damageSource.damage);
 
         //死亡したら倒れるモーション

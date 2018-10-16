@@ -1406,6 +1406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
   action: {fileID: 0}
+  status: {fileID: 0}
   attackRange: 2
   routeCalculateInterval: 1
 --- !u!136 &136046464360396254
