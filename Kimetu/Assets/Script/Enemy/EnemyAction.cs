@@ -103,14 +103,16 @@ public class EnemyAction : MonoBehaviour, IDamageable, ICharacterAnimationProvid
         //NavMeshAgentが有効だと通常の transform 変更は効かないようです。
         //その対策として暫定的に下記のコードを書きました。
         var navmesh = GetComponent<NavMeshAgent>();
-        if(navmesh != null) Destroy(navmesh);
+        if(navmesh != null) {
+            GameObject.Destroy(navmesh);
+        }
+        //これも実行しないと止まりませんでした。
+        var rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezePosition;
         //倒れるアニメーションが終了するまで待機
         this.transform.Rotate(new Vector3(0, 0, 90));
         yield return new WaitForSeconds(3.0f);
         canUseHeal = true;
-        //死体が勝手に滑るので物理演算を停止します。
-        var rb = GetComponent<Rigidbody>();
-        GameObject.Destroy(rb);
     }
 
     /// <summary>
