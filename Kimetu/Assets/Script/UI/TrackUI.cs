@@ -36,6 +36,7 @@ public class TrackUI : MonoBehaviour {
 		if(!track) { return; }
 		if(target == null) {
 			this.track = false;
+			return;
 		}
 		Vector2 ViewportPosition=Camera.main.WorldToViewportPoint(target.transform.position);
 		Vector2 WorldObject_ScreenPosition=new Vector2(
