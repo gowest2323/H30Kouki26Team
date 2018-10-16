@@ -22,11 +22,14 @@ public class TrackUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Assert.IsTrue(uiRect != null);
 		Assert.IsTrue(target != null);
 		if(this.canvasRect == null) {
 			this.canvasRect = GetComponent<RectTransform>();
 		}
+		if(this.uiRect == null) {
+			this.uiRect = GetComponent<RectTransform>();
+		}
+		Assert.IsTrue(uiRect != null);
 		Assert.IsTrue(canvasRect != null);
 		this.track = true;
 	}
@@ -45,5 +48,21 @@ public class TrackUI : MonoBehaviour {
 
 		//now you can set the position of the ui element
 		uiRect.anchoredPosition=WorldObject_ScreenPosition;
+	}
+
+	/// <summary>
+	/// 追跡対象を設定します。
+	/// </summary>
+	/// <param name="target"></param>
+	public void SetTarget(GameObject target) {
+		this.target = target;
+	}
+
+	/// <summary>
+	/// 基準となるキャンバスを変更します。
+	/// </summary>
+	/// <param name="canvasRect"></param>
+	public void SetCanvasRect(RectTransform canvasRect) {
+		this.canvasRect = canvasRect;
 	}
 }
