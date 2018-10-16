@@ -34,6 +34,9 @@ public class TrackUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!track) { return; }
+		if(target == null) {
+			this.track = false;
+		}
 		Vector2 ViewportPosition=Camera.main.WorldToViewportPoint(target.transform.position);
 		Vector2 WorldObject_ScreenPosition=new Vector2(
 		((ViewportPosition.x*canvasRect.sizeDelta.x)-(canvasRect.sizeDelta.x*0.5f)),
