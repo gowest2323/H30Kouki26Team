@@ -326,6 +326,16 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6635ab14642a34d4fb158a73a265c8a1, type: 2}
   m_IsPrefabAsset: 0
+--- !u!82 &488053632 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 82838229609626556, guid: 11a2a75a6be0a4b35b3a562a64056018,
+    type: 2}
+  m_PrefabInternal: {fileID: 904444569}
+--- !u!82 &488053633 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 82492268110260088, guid: 11a2a75a6be0a4b35b3a562a64056018,
+    type: 2}
+  m_PrefabInternal: {fileID: 904444569}
 --- !u!1 &557130733
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,6 +404,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114767394224330504, guid: 11a2a75a6be0a4b35b3a562a64056018,
+        type: 2}
+      propertyPath: AttachPlayerSESource
+      value: 
+      objectReference: {fileID: 488053633}
+    - target: {fileID: 114767394224330504, guid: 11a2a75a6be0a4b35b3a562a64056018,
+        type: 2}
+      propertyPath: AttachEnemySESource
+      value: 
+      objectReference: {fileID: 488053632}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11a2a75a6be0a4b35b3a562a64056018, type: 2}
   m_IsPrefabAsset: 0
@@ -467,6 +487,11 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
+        type: 2}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1669517514}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
   m_IsPrefabAsset: 0
