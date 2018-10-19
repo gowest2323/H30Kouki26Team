@@ -133,6 +133,6 @@ public class InputExtend : MonoBehaviour
     private void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log(scene.name + " Loaded");
-        ResetAllButtonState();
+        if (dict != null) ResetAllButtonState();
     }
 }
