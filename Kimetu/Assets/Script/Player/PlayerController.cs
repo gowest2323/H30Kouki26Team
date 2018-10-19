@@ -8,7 +8,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Header("吸生コマンドを実行するのにボタンを長押しする時間")]
     private float pierceButtonPushTime;
 	private bool guardTriggered;
-    int pressButton = 0, holdShort = 5, holdLong = 15;
+
+    [SerializeField, Header("回避コマンドを実行するのにボタンを長押しする時間")]
+    private int holdShort = 5;
+    [SerializeField, Header("ダッシュ状態になるのにボタンを長押しする時間")]
+    private int holdLong = 15;
+    private int pressButton;
     // Use this for initialization
     void Start()
     {
