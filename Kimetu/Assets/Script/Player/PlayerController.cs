@@ -55,20 +55,16 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
+        if(holdLong <= pressButton) {
+            //ダッシュ中
+            return;
+        }
         var dir = new Vector3(
             Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()),
             0,
             Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
         );
-        //ダッシュボタンを長押しでダッシュ
-        //if (InputExtend.GetButtonState(InputExtend.Command.Avoid, 0.5f))
-        //{
-        //action.Dash(dir);
-        //}
-        //else
-        //{
         action.Move(dir);
-        //}
     }
 
     private void Attack()
@@ -99,7 +95,7 @@ public class PlayerController : MonoBehaviour
             0,
             Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
         );
-        action.Move(dir * 1.05f);
+        action.Dash(dir * 1.05f);
     }
 
     private void Avoid()

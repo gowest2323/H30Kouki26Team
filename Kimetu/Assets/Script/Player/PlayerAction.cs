@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 
 [RequireComponent(typeof(PlayerStatus))]
 public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider
@@ -56,6 +57,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         canPierceAndHeal = false;
         nearCanPierceEnemyList = new List<EnemyAction>();
         dash = new Dash(decreaseStaminaPerSecond, DecreaseDashStamina);
+        Assert.IsTrue(decreaseAttackStamina > 0);
+        Assert.IsTrue(decreaseStaminaPerSecond > 0);
     }
 
     /// <summary>
