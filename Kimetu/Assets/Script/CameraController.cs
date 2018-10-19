@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour {
     [SerializeField]
     private Quaternion vRotation;      // カメラの垂直回転(見下ろし回転)
     [SerializeField]
-    private Quaternion hRotation;      // カメラの水平回転
+    public Quaternion hRotation;      // カメラの水平回転
     [SerializeField]
     private float turnSpeed = 10.0f;   // 回転速度
     //[SerializeField]

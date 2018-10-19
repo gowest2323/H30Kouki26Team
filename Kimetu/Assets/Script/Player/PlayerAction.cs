@@ -34,6 +34,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private Dash dash; //ダッシュ管理
     [SerializeField, Header("攻撃時に減るスタミナ量")]
     private int decreaseAttackStamina;
+    [SerializeField, Header("プレイヤーカメラ")]
+    private CameraController playerCamera; 
+ 
+
 
 	public CharacterAnimation characterAnimation { get { return playerAnimation; }}
 
@@ -82,8 +86,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
-        transform.position += dir * 10 * Slow.Instance.PlayerDeltaTime();
-        transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        transform.position += playerCamera.hRotation * dir * 10 * Slow.Instance.PlayerDeltaTime();
+        transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
     }
 
     /// <summary>
@@ -108,8 +112,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         dash.Update(Time.deltaTime);
         float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
         //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
-        transform.position += dir * 10 * t * Time.deltaTime;
-        transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        transform.position +=playerCamera.hRotation * dir * 10 * t * Time.deltaTime;
+        transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
     }
 
     /// <summary>
