@@ -22,8 +22,21 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        pressButton += (Input.GetButton(InputMap.Type.AButton.GetInputName())) ? 1 : 0;
+        DashOrAvoid();
+        //if (pressButton > 20) pressButton = 0;
+        Debug.Log(pressButton);
+        if (!action.IsAvoid())
+        {
+            Move();
+            Attack();
+            PierceAndHeal();
+			Guard();
+        }
+        //Avoid();
+    }
 
+    private void DashOrAvoid() {
+        pressButton += (Input.GetButton(InputMap.Type.AButton.GetInputName())) ? 1 : 0;
         if (Input.GetButton(InputMap.Type.AButton.GetInputName()))
         {
             if (holdLong <= pressButton)
@@ -37,18 +50,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("押し");
             }
         }
-
         if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) pressButton = 0;
-        //if (pressButton > 20) pressButton = 0;
-        Debug.Log(pressButton);
-        if (!action.IsAvoid())
-        {
-            Move();
-            Attack();
-            PierceAndHeal();
-			Guard();
-        }
-        //Avoid();
     }
 
     private void Move()
