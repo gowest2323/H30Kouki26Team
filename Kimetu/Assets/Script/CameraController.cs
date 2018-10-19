@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour {
     private Vector3 offset;
     private GameObject nearObj;
     [SerializeField]
-    private float lockRange;
+    private float lockRange = 10.0f;
     bool isLockOn;
     bool interval;
     float intervalTime;
@@ -67,6 +67,11 @@ public class CameraController : MonoBehaviour {
         IsLockOnChange();
         LockOn();
        Interval();
+    }
+
+    public bool IsLockOn()
+    {
+        return isLockOn;
     }
 
     private void LockOn()
