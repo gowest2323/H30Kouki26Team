@@ -369,6 +369,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void Avoid(Vector3 dir)
     {
+        if(this.state == PlayerState.Avoid) {
+            return;
+        }
         state = PlayerState.Avoid;
 
         //回避コルーチンを開始する
