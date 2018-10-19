@@ -21,17 +21,17 @@ public static class AudioNameManager
 {
     public static Dictionary<AudioName, string> audionames = new Dictionary<AudioName, string> 
 {
-    {AudioName.SE_CLUB,"SE_CLUB"},
-    {AudioName.SE_CUT,"SE_CUT"},
-    {AudioName.SE_DASH,"SE_DASH"},
-    {AudioName.SE_DODGE,"SE_DODGE"},
+    {AudioName.SE_CLUB,"Club_Short"},
+    {AudioName.SE_CUT,"Cut"},
+    {AudioName.SE_DASH,"Dash_Short"},
+    {AudioName.SE_DODGE,"Dodge_Short"},
     {AudioName.SE_DRAWING,"SE_DRAWING"},
     {AudioName.SE_HIPDROP,"SE_HIPDROP"},
     {AudioName.SE_LANCE,"SE_LANCE"},
     {AudioName.SE_LANCE2,"SE_LANCE2"},
     {AudioName.SE_REPEL,"SE_REPEL"},
     {AudioName.SE_TACKLE,"SE_TACKLE"},
-    {AudioName.SE_WALK,"SE_WALK"},
+    {AudioName.SE_WALK,"Walk_Short"},
 };
     public static bool Equals(AudioName audioname, string name)
     {

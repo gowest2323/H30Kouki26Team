@@ -15,6 +15,10 @@ public class Club : Weapon
     public override void AttackStart()
     {
         weaponCollider.enabled = true;
+        if (!AudioManager.Instance.IsPlayingEnemySE())
+        {
+            AudioManager.Instance.PlayEnemySE(AudioName.SE_CLUB.String());
+        }
     }
 
     /// <summary>

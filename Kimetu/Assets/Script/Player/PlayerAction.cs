@@ -10,6 +10,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private bool isAvoid;
     //回避秒数(回避アニメーション移動部分の時間)
     private float avoidMoveTime;
+    //攻撃中か
+    private bool isAttack;
 
     [SerializeField, Header("持っている武器")]
     private Weapon weapon;
@@ -48,6 +50,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		this.counterOccuredTime = -1;
 		this.state = PlayerState.Idle;
         this.isAvoid = false;
+        this.isAttack = false;
         this.avoidMoveTime = 0.5f;
         status = GetComponent<PlayerStatus>();
         canPierceAndHeal = false;
@@ -88,6 +91,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         var pos = transform.position;
         transform.position += playerCamera.hRotation * dir * 10 * Slow.Instance.PlayerDeltaTime();
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
+
+        if (!AudioManager.Instance.IsPlayingPlayerSE())
+        {
+            AudioManager.Instance.PlayPlayerSE(AudioName.SE_WALK.String());
+        }
     }
 
     /// <summary>
@@ -114,6 +122,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
         transform.position +=playerCamera.hRotation * dir * 10 * t * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
+        if (!AudioManager.Instance.IsPlayingPlayerSE())
+        {
+            AudioManager.Instance.PlayPlayerSE(AudioName.SE_DASH.String());
+        }
     }
 
     /// <summary>
@@ -126,7 +138,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             state = PlayerState.Attack;
             StartCoroutine(StartAttack());
-            playerAnimation.StartAttackAnimation();
         }
         else
         {
@@ -260,10 +271,17 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <returns></returns>
     private IEnumerator StartAttack()
     {
+        if (isAttack) yield break;
+
+        isAttack = true;
+
         weapon.AttackStart();
+        playerAnimation.StartAttackAnimation();
         status.DecreaseStamina(decreaseAttackStamina);
+        AudioManager.Instance.PlayPlayerSE(AudioName.SE_CUT.String());
         yield return new WaitForSeconds(1);
         weapon.AttackEnd();
+        isAttack = false;
         state = PlayerState.Attack;
     }
 
@@ -351,7 +369,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void Avoid(Vector3 dir)
     {
-        this.state = PlayerState.Avoid;
+        state = PlayerState.Avoid;
 
         //回避コルーチンを開始する
         StartCoroutine(AvoidCoroutine(dir));
@@ -371,6 +389,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
+            //SE
+            AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
             //後ろに移動
             for (float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
             {
@@ -381,6 +401,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             //TODO:ここに体制立ち直る隙間時間？
 
             isAvoid = false;
+            state = PlayerState.Idle;
             yield break;
         }
 
@@ -408,6 +429,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             playerAnimation.StartBackAvoidAnimation();
         }
 
+        //SE
+        AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
         //向いている方向(正規化)に移動
         for (float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
         {
@@ -418,6 +441,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //TODO:ここに体制立ち直る隙間時間？
 
         isAvoid = false;
+        state = PlayerState.Idle;
         yield break;
     }
 
