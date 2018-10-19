@@ -37,7 +37,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private Dash dash; //ダッシュ管理
     [SerializeField, Header("攻撃時に減るスタミナ量")]
     private int decreaseAttackStamina;
-    [SerializeField, Header("プレイヤーカメラ")]
+    [SerializeField]
     private CameraController playerCamera; 
  
 
