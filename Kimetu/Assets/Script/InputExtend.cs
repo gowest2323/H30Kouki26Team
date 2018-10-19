@@ -20,6 +20,7 @@ public class InputExtend : MonoBehaviour
     }
 
     private static Dictionary<Command, float> dict;
+    private static Dictionary<Command, InputMap.Type> typeDict;
 
     public static bool isCreated = false;//生成されたか？
 
@@ -43,11 +44,15 @@ public class InputExtend : MonoBehaviour
     private void Start()
     {
         dict = new Dictionary<Command, float>();
+        typeDict = new Dictionary<Command, InputMap.Type>();
 
         for(int i = 0; i < System.Enum.GetNames(typeof(Command)).Length; i++)
         {
             dict.Add(((Command)i), 0);
         }
+        typeDict[Command.Attack] = InputMap.Type.XButton;
+        typeDict[Command.Avoid] = InputMap.Type.AButton;
+        typeDict[Command.Guard] = InputMap.Type.LButton;
     }
 
     private void Update()
@@ -72,7 +77,7 @@ public class InputExtend : MonoBehaviour
 
     public static bool GetButtonDown(Command command)
     {
-        if (Input.GetButtonDown(command.ToString()))
+        if (Input.GetButtonDown(typeDict[command].GetInputName()))
             return true;
         else
             return false;
@@ -80,7 +85,7 @@ public class InputExtend : MonoBehaviour
 
     public static bool GetButton(Command command)
     {
-        if (Input.GetButton(command.ToString()))
+        if (Input.GetButton(typeDict[command].GetInputName()))
             return true;
         else
             return false;
@@ -88,7 +93,7 @@ public class InputExtend : MonoBehaviour
 
     public static bool GetButtonUp(Command command)
     {
-        if (Input.GetButtonUp(command.ToString()))
+        if (Input.GetButtonUp(typeDict[command].GetInputName()))
             return true;
         else
             return false;
