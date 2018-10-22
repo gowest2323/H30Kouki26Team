@@ -25,7 +25,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float counterOccuredTime; //カウンターが発生した時間保存用
     private Coroutine counterCoroutine; //カウンター用コルーチン
     private bool canPierceAndHeal; //吸生できるか
-    private List<EnemyAction> nearCanPierceEnemyList; //十分近づいている吸生可能な敵リスト
+    private List<EnemyAI> nearCanPierceEnemyList; //十分近づいている吸生可能な敵リスト
     [SerializeField, Header("吸生テキスト")]
     private Text pierceText;
     [SerializeField, Header("吸生での回復量")]
@@ -55,7 +55,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         this.avoidMoveTime = 0.5f;
         status = GetComponent<PlayerStatus>();
         canPierceAndHeal = false;
-        nearCanPierceEnemyList = new List<EnemyAction>();
+        nearCanPierceEnemyList = new List<EnemyAI>();
         dash = new Dash(decreaseStaminaPerSecond, DecreaseDashStamina);
         Assert.IsTrue(decreaseAttackStamina > 0);
         Assert.IsTrue(decreaseStaminaPerSecond > 0);
@@ -190,7 +190,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private IEnumerator PierceAndHeakCoroutine()
     {
         state = PlayerState.Pierce;
-        EnemyAction nearEnemy = MostNearEnemy();
+        EnemyAI nearEnemy = MostNearEnemy();
         //敵のほうを向くまで待機
         yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
         status.Heal(pierceHealHP);
@@ -234,9 +234,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// 最も近い吸生できる敵を取得
     /// </summary>
     /// <returns></returns>
-    private EnemyAction MostNearEnemy()
+    private EnemyAI MostNearEnemy()
     {
-        EnemyAction enemy = nearCanPierceEnemyList[0];
+        EnemyAI enemy = nearCanPierceEnemyList[0];
         //一つしかないことがほとんどだと思うのでチェック
         if (nearCanPierceEnemyList.Count == 1) return enemy;
         //現在の最近敵の距離を持っておく
@@ -459,7 +459,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <summary>
     /// 敵に近づいた
     /// </summary>
-    public void NearEnemy(EnemyAction enemy)
+    public void NearEnemy(EnemyAI enemy)
     {
         //敵が死亡していたらリストに追加し、吸生テキスト表示
         if (enemy.canUseHeal)
@@ -474,7 +474,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <summary>
     /// 敵から離れた
     /// </summary>
-    public void FarEnemy(EnemyAction enemy)
+    public void FarEnemy(EnemyAI enemy)
     {
         //死亡していたらリストから削除する
         if (enemy.canUseHeal)

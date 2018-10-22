@@ -16,7 +16,7 @@ public class PlayerSearchArea : MonoBehaviour
         TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
         if (otherTag == TagName.Enemy)
         {
-            EnemyAction enemy = other.GetComponent<EnemyAction>();
+            EnemyAI enemy = other.GetComponent<EnemyAI>();
             player.NearEnemy(enemy);
         }
     }
@@ -26,7 +26,7 @@ public class PlayerSearchArea : MonoBehaviour
         TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
         if (otherTag == TagName.Enemy)
         {
-            EnemyAction enemy = other.GetComponent<EnemyAction>();
+            EnemyAI enemy = other.GetComponent<EnemyAI>();
             player.FarEnemy(enemy);
         }
     }
