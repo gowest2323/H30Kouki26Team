@@ -30,6 +30,9 @@ public class CameraController : MonoBehaviour {
     [SerializeField]
     private float angleY = 1.0f;
 
+    [SerializeField]
+    private float rotationY = 0.5f;
+
     // Use this for initialization
     private void Start ()
     {
@@ -60,6 +63,7 @@ public class CameraController : MonoBehaviour {
         if(coroutineCount > 0 || finished) {
             return;
         }
+        /*
         Debug.Log("DefaultControl");
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
@@ -71,6 +75,7 @@ public class CameraController : MonoBehaviour {
         // カメラの位置(transform.position)の更新
         // player位置から距離distanceだけ手前に引いた位置を設定します
         transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+        //*/
     }
 
     public bool IsLockOn()
@@ -107,12 +112,21 @@ public class CameraController : MonoBehaviour {
         var waitOne = new WaitForEndOfFrame();
         var selfPos = transform.position;
         var playerPos = player.transform.position;
-        nearPos.y = selfPos.y;
+        var cnearPos = nearPos;
+        cnearPos.y = selfPos.y;
+        nearPos.y = selfPos.y - rotationY;
         playerPos.y = selfPos.y;
         var selfStartRotation = transform.rotation;
         var selfEndRotation = Quaternion.LookRotation(nearPos - selfPos, Vector3.up);
         var playerStartRotation = player.transform.rotation;
-        var playerEndRotation = Quaternion.LookRotation(nearPos - playerPos, Vector3.up);
+        var playerEndRotation = Quaternion.LookRotation(cnearPos - playerPos, Vector3.up);
+        if(Quaternion.Angle(selfStartRotation, selfEndRotation) < 0.1f &&
+           Quaternion.Angle(playerStartRotation, playerEndRotation) < 0.1f) {
+            this.coroutineCount--;
+            this.finished = true;
+            Debug.Log("BREAK");
+            yield break;
+        }
         var offset = 0f;
         var seconds = 0.25f;
         while(offset < seconds) {
