@@ -23,6 +23,10 @@ public class AlphaEnemyAI : AI
     private GameObject playerObj;
 
     private EnemyAttackableArea attackableArea;
+    [SerializeField]
+    private float searchRange = 5f;
+
+    private bool isFindPlayer = false;
 
     private void Awake()
     {
@@ -61,6 +65,9 @@ public class AlphaEnemyAI : AI
     public override void Update()
     {
         base.Update();
+        //EnemyAttackableAreaスクリプトで変更したらそっち優先(視覚情報あるので)
+        attackRange = attackableArea.AttackRange;
+        searchRange = attackableArea.SearchRange;
     }
 
     private IEnumerator Research()
@@ -80,7 +87,12 @@ public class AlphaEnemyAI : AI
                 //TODO:すべてのアニメーションを終了する
                 break;
             }
-            Behaivour();
+
+            Search();
+            if (isFindPlayer)
+            {
+                Behaivour();
+            }
         }
     }
 
@@ -94,7 +106,7 @@ public class AlphaEnemyAI : AI
         }
         else
         {
-            if (attackableArea.IsPlayerInAttackableArea(playerObj))
+            if (attackableArea.IsPlayerInArea(playerObj, EnemyAttackableArea.Area.Attackable))
             {
                 //ある程度距離が近くなったので攻撃を実行する
                 //且つ範囲内
@@ -105,6 +117,29 @@ public class AlphaEnemyAI : AI
             //ある程度距離が近くなったので攻撃を実行する
             //action.Attack();
 
+        }
+    }
+
+    private void Search()
+    {
+        var distance = Vector3.Distance(playerObj.transform.position, transform.position);
+        //視野距離内に
+        if (distance < searchRange)
+        {
+            Debug.Log("isNotFind_INRange");
+
+            //視野角度だったら
+            if (attackableArea.IsPlayerInArea(playerObj, EnemyAttackableArea.Area.Searchable))
+            {
+                isFindPlayer = true;
+                Debug.Log("isFind");
+            }
+            //ゲームルール的に一回見つかれたら戦闘しないといけないので
+            //isFindPlayerをfalseにする処理は現在なし
+        }
+        else
+        {
+            Debug.Log("isNotFind_OUTRange");
         }
     }
 }
