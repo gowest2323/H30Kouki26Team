@@ -1,0 +1,156 @@
+fileFormatVersion: 2
+guid: 2df65a8e6b3e24f2990ac48ad1f72296
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: hasira
+    100002: hasira2
+    100004: kabe
+    100006: kaidan_2_1
+    100008: kaidan_L_m
+    100010: kaidan_m_L
+    100012: mado
+    100014: //RootNode
+    100016: tobira
+    100018: yane
+    100020: yanekabe
+    100022: yuka2
+    100024: yuka_L
+    100026: yuka_m
+    400000: hasira
+    400002: hasira2
+    400004: kabe
+    400006: kaidan_2_1
+    400008: kaidan_L_m
+    400010: kaidan_m_L
+    400012: mado
+    400014: //RootNode
+    400016: tobira
+    400018: yane
+    400020: yanekabe
+    400022: yuka2
+    400024: yuka_L
+    400026: yuka_m
+    2100000: lambert1
+    2300000: hasira
+    2300002: hasira2
+    2300004: kabe
+    2300006: kaidan_2_1
+    2300008: kaidan_L_m
+    2300010: kaidan_m_L
+    2300012: mado
+    2300014: tobira
+    2300016: yane
+    2300018: yanekabe
+    2300020: yuka2
+    2300022: yuka_L
+    2300024: yuka_m
+    3300000: hasira
+    3300002: hasira2
+    3300004: kabe
+    3300006: kaidan_2_1
+    3300008: kaidan_L_m
+    3300010: kaidan_m_L
+    3300012: mado
+    3300014: tobira
+    3300016: yane
+    3300018: yanekabe
+    3300020: yuka2
+    3300022: yuka_L
+    3300024: yuka_m
+    4300000: yuka_L
+    4300002: tobira
+    4300004: yuka2
+    4300006: hasira
+    4300008: yuka_m
+    4300010: kaidan_2_1
+    4300012: kaidan_L_m
+    4300014: kaidan_m_L
+    4300016: kabe
+    4300018: mado
+    4300020: yane
+    4300022: yanekabe
+    4300024: hasira2
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
