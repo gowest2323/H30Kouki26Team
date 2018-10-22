@@ -482,6 +482,11 @@ Prefab:
       propertyPath: decreaseAttackStamina
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114970385773310294, guid: 6fce2862b0f7041c6af957383b8930ae,
+        type: 2}
+      propertyPath: cameraController
+      value: 
+      objectReference: {fileID: 1669517514}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
   m_IsPrefabAsset: 0
@@ -650,6 +655,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 114975418964108624, guid: f7b365a14650648dfbebb07170b61057,
+        type: 2}
+      propertyPath: routeCalculateInterval
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7b365a14650648dfbebb07170b61057, type: 2}
   m_IsPrefabAsset: 0
@@ -756,6 +766,8 @@ MonoBehaviour:
   vRotation: {x: 0, y: 0, z: 0, w: 0}
   hRotation: {x: 0, y: 0, z: 0, w: 0}
   turnSpeed: 10
+  angleY: 1
+  angleY2: 3
 --- !u!1 &1839720722
 GameObject:
   m_ObjectHideFlags: 0

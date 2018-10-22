@@ -22,7 +22,13 @@ public class CameraController : MonoBehaviour {
     public Quaternion hRotation;      // カメラの水平回転
     [SerializeField]
     private float turnSpeed = 10.0f;   // 回転速度
-  
+
+    private Coroutine rotateCoroutine;
+    private bool finished;
+    private int coroutineCount;
+
+    [SerializeField]
+    private float angleY = 1.0f;
 
     // Use this for initialization
     private void Start ()
@@ -44,29 +50,27 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     private void Update()
     {
-        transform.position = player.transform.position - transform.rotation * Vector3.forward * distance;
-        transform.position = player.transform.position + offset;
+        DefaultControl();
+        IsLockOnChange();
+        LockOn();
+        Interval();
+    }
 
+    private void DefaultControl() {
+        if(coroutineCount > 0 || finished) {
+            return;
+        }
+        Debug.Log("DefaultControl");
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
-
         hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
-
         vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
-
-
-
         // カメラの回転(transform.rotation)の更新
         // 垂直回転してから水平回転する合成回転とします
         transform.rotation = hRotation * vRotation;
-
         // カメラの位置(transform.position)の更新
         // player位置から距離distanceだけ手前に引いた位置を設定します
         transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
-
-        IsLockOnChange();
-        LockOn();
-       Interval();
     }
 
     public bool IsLockOn()
@@ -75,13 +79,63 @@ public class CameraController : MonoBehaviour {
     }
 
     private void LockOn()
-    {     
-        if (isLockOn==true && nearObj != null)
-        {
-            transform.LookAt(nearObj.transform,Vector3.up);
-            transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
-            player.transform.LookAt(nearObj.transform,Vector3.up);           
+    {
+        if(!isLockOn || nearObj == null) {
+            StopLockOnStart();
+            this.finished = false;
+            return;
         }
+        if(this.rotateCoroutine != null) {
+            if(!finished) { return; }
+            StopLockOnStart();
+        }
+        this.finished = false;
+        this.rotateCoroutine = StartCoroutine(LockOnStart(nearObj.transform.position));
+    }
+
+    private void StopLockOnStart() {
+        if(rotateCoroutine != null) {
+            StopCoroutine(rotateCoroutine);
+            this.rotateCoroutine = null;
+            this.coroutineCount = 0;
+        }
+    }
+
+    private IEnumerator LockOnStart(Vector3 nearPos) {
+        this.finished = false;
+        this.coroutineCount++;
+        var waitOne = new WaitForEndOfFrame();
+        var selfPos = transform.position;
+        var playerPos = player.transform.position;
+        nearPos.y = selfPos.y;
+        playerPos.y = selfPos.y;
+        var selfStartRotation = transform.rotation;
+        var selfEndRotation = Quaternion.LookRotation(nearPos - selfPos, Vector3.up);
+        var playerStartRotation = player.transform.rotation;
+        var playerEndRotation = Quaternion.LookRotation(nearPos - playerPos, Vector3.up);
+        var offset = 0f;
+        var seconds = 0.25f;
+        while(offset < seconds) {
+            var t = Time.time;
+            yield return waitOne;
+            var diff = (Time.time - t);
+            offset += diff;
+            offset = Mathf.Clamp(offset, 0, seconds);
+            var selfProgRot = Quaternion.Slerp(selfStartRotation, selfEndRotation, offset / seconds);
+            var playerProgRot = Quaternion.Slerp(playerStartRotation, playerEndRotation, offset / seconds);
+            transform.rotation = selfProgRot;
+            player.transform.rotation = playerProgRot;
+            transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+            //微妙に見下ろすように
+            transform.position += (Vector3.up * angleY);
+            //回転をプレイヤーへ適用
+            var euler = transform.rotation.eulerAngles;
+            hRotation = Quaternion.Euler(0, euler.y, 0);
+            vRotation = Quaternion.Euler(euler.x, 0, 0);
+        }
+        yield return waitOne;
+        this.coroutineCount--;
+        this.finished = true;
     }
 
     private void IsLockOnChange()
