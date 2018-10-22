@@ -14,4 +14,5 @@ public enum PlayerState {
 	Dash, //ダッシュ時
     Counter, //カウンター攻撃時
     Pierce, //吸生中
+    KnockBack, //ノックバック中
 }
