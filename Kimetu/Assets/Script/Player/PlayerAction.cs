@@ -532,7 +532,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         playerAnimation.StartKnockBackAnimation();
 
         //敵が攻撃した方向取得
-        EnemyAction enemy = (EnemyAction)damageSource.attackCharacter;
+        //NOTE:EnemyActionクラスは削除されました
+        EnemyAI enemy = (EnemyAI)damageSource.attackCharacter;
         Vector3 enemyPosXZ = Vector3.Scale(enemy.transform.position, new Vector3(1, 0, 1));
         Vector3 myPosXZ = Vector3.Scale(transform.position, new Vector3(1, 0, 1));
         Vector3 enemyAttackDir = (myPosXZ - enemyPosXZ).normalized;
