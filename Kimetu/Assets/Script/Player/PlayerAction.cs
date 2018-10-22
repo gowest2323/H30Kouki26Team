@@ -9,10 +9,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 {
     //回避中か
     private bool isAvoid;
-    //回避秒数(回避アニメーション移動部分の時間)
-    private float avoidMoveTime;
     //攻撃中か
     private bool isAttack;
+    [SerializeField, Header("アニメーション時間")]
+    private float avoidMoveTime;//回避秒数(回避アニメーション移動部分の時間)
+    [SerializeField]
+    private float knockbackMoveTime;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
 
     [SerializeField, Header("持っている武器")]
     private Weapon weapon;
@@ -38,8 +40,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     [SerializeField, Header("攻撃時に減るスタミナ量")]
     private int decreaseAttackStamina;
     [SerializeField]
-    private CameraController playerCamera; 
- 
+    private CameraController playerCamera;
 
 
 	public CharacterAnimation characterAnimation { get { return playerAnimation; }}
@@ -52,7 +53,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		this.state = PlayerState.Idle;
         this.isAvoid = false;
         this.isAttack = false;
-        this.avoidMoveTime = 0.5f;
         status = GetComponent<PlayerStatus>();
         canPierceAndHeal = false;
         nearCanPierceEnemyList = new List<EnemyAction>();
@@ -83,6 +83,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         //移動できない状態なら移動しない
         if (!CanMove()) return;
+
+        //簡易的にガード中の移動量を半減
+        float speed = 0;
+        if (isGuard) speed = 5;
+        else speed = 10;
+
         //こうしないとコントローラのスティックがニュートラルに戻った時、
         //勝手に前を向いてしまう
         if (dir == Vector3.zero)
@@ -92,7 +98,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
-        transform.position += playerCamera.hRotation * dir * 10 * Slow.Instance.PlayerDeltaTime();
+        transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
 
         if (!AudioManager.Instance.IsPlayingPlayerSE())
@@ -168,8 +174,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void GuardEnd()
     {
-        //ガード中でなければガード終了処理をしない
-        if (state != PlayerState.Defence) return;
+        //ガード中やノックバック中でなければガード終了処理をしない
+        if (state != PlayerState.Defence &&
+            state != PlayerState.KnockBack) return;
         this.isGuard = false;
         this.state = PlayerState.Idle;
     }
@@ -210,6 +217,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state == PlayerState.Avoid) return false;
         if (state == PlayerState.Counter) return false;
         if (state == PlayerState.Pierce) return false;
+        if (state == PlayerState.KnockBack) return false;
         return true;
     }
 
@@ -294,9 +302,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <param name="damageSource"></param>
     public void OnHit(DamageSource damageSource)
     {
-        if (state == PlayerState.Defence)
+        if (state == PlayerState.Defence)//防御中
         {
             status.DecreaseStamina(damageSource.damage);
+            //ノックバックされる
+            BeKnockedBack(damageSource);
         }
         else if (state == PlayerState.Avoid)
         {
@@ -502,5 +512,50 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         Quaternion toTarget = Quaternion.LookRotation(targetPositionIgnoreY - myPositionIgnoreY);
         this.transform.rotation = toTarget;
         yield return null;
+    }
+
+    /// <summary>
+    /// ノックバックされる
+    /// </summary>
+    public void BeKnockedBack(DamageSource damageSource)
+    {
+        if (state == PlayerState.KnockBack) return;
+
+        state = PlayerState.KnockBack;
+
+        StartCoroutine(PlayerKockBack(damageSource));
+    }
+
+    private IEnumerator PlayerKockBack(DamageSource damageSource)
+    {
+        //ノックバックアニメーション
+        playerAnimation.StartKnockBackAnimation();
+
+        //敵が攻撃した方向取得
+        EnemyAction enemy = (EnemyAction)damageSource.attackCharacter;
+        Vector3 enemyPosXZ = Vector3.Scale(enemy.transform.position, new Vector3(1, 0, 1));
+        Vector3 myPosXZ = Vector3.Scale(transform.position, new Vector3(1, 0, 1));
+        Vector3 enemyAttackDir = (myPosXZ - enemyPosXZ).normalized;
+        //敵に向いて
+        transform.LookAt(enemyPosXZ + new Vector3(0, transform.position.y, 0));
+        //後ろにノックバックされる
+        for (float i = 0; i <= knockbackMoveTime; i += Time.deltaTime)
+        {
+            transform.position += -transform.forward * 5 * Time.deltaTime;
+            yield return null;
+        }
+
+        //ガードボタンまだ押しているなら
+        if (isGuard)
+        {
+            //防御中に切り替える
+            state = PlayerState.Defence;
+        }
+        else//押してなかったら
+        {
+            //防御解除->通常状態
+            GuardEnd();
+        }
+        yield break;
     }
 }
