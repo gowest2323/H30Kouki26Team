@@ -9,10 +9,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 {
     //回避中か
     private bool isAvoid;
-    //回避秒数(回避アニメーション移動部分の時間)
-    private float avoidMoveTime;
     //攻撃中か
     private bool isAttack;
+    [SerializeField, Header("アニメーション時間")]
+    private float avoidMoveTime;//回避秒数(回避アニメーション移動部分の時間)
+    [SerializeField]
+    private float knockbackMoveTime;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
 
     [SerializeField, Header("持っている武器")]
     private Weapon weapon;
@@ -25,7 +27,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float counterOccuredTime; //カウンターが発生した時間保存用
     private Coroutine counterCoroutine; //カウンター用コルーチン
     private bool canPierceAndHeal; //吸生できるか
-    private List<EnemyAction> nearCanPierceEnemyList; //十分近づいている吸生可能な敵リスト
+    private List<EnemyAI> nearCanPierceEnemyList; //十分近づいている吸生可能な敵リスト
     [SerializeField, Header("吸生テキスト")]
     private Text pierceText;
     [SerializeField, Header("吸生での回復量")]
@@ -38,8 +40,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     [SerializeField, Header("攻撃時に減るスタミナ量")]
     private int decreaseAttackStamina;
     [SerializeField]
-    private CameraController playerCamera; 
- 
+    private CameraController playerCamera;
 
 
 	public CharacterAnimation characterAnimation { get { return playerAnimation; }}
@@ -52,10 +53,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		this.state = PlayerState.Idle;
         this.isAvoid = false;
         this.isAttack = false;
-        this.avoidMoveTime = 0.5f;
         status = GetComponent<PlayerStatus>();
         canPierceAndHeal = false;
-        nearCanPierceEnemyList = new List<EnemyAction>();
+        nearCanPierceEnemyList = new List<EnemyAI>();
         dash = new Dash(decreaseStaminaPerSecond, DecreaseDashStamina);
         Assert.IsTrue(decreaseAttackStamina > 0);
         Assert.IsTrue(decreaseStaminaPerSecond > 0);
@@ -84,6 +84,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         //移動できない状態なら移動しない
         if (!CanMove()) return;
+
+        //簡易的にガード中の移動量を半減
+        float speed = 0;
+        if (isGuard) speed = 5;
+        else speed = 10;
+
         //こうしないとコントローラのスティックがニュートラルに戻った時、
         //勝手に前を向いてしまう
         if (dir == Vector3.zero)
@@ -169,8 +175,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void GuardEnd()
     {
-        //ガード中でなければガード終了処理をしない
-        if (state != PlayerState.Defence) return;
+        //ガード中やノックバック中でなければガード終了処理をしない
+        if (state != PlayerState.Defence &&
+            state != PlayerState.KnockBack) return;
         this.isGuard = false;
         this.state = PlayerState.Idle;
     }
@@ -191,7 +198,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private IEnumerator PierceAndHeakCoroutine()
     {
         state = PlayerState.Pierce;
-        EnemyAction nearEnemy = MostNearEnemy();
+        EnemyAI nearEnemy = MostNearEnemy();
         //敵のほうを向くまで待機
         yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
         status.Heal(pierceHealHP);
@@ -211,6 +218,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state == PlayerState.Avoid) return false;
         if (state == PlayerState.Counter) return false;
         if (state == PlayerState.Pierce) return false;
+        if (state == PlayerState.KnockBack) return false;
         return true;
     }
 
@@ -235,9 +243,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// 最も近い吸生できる敵を取得
     /// </summary>
     /// <returns></returns>
-    private EnemyAction MostNearEnemy()
+    private EnemyAI MostNearEnemy()
     {
-        EnemyAction enemy = nearCanPierceEnemyList[0];
+        EnemyAI enemy = nearCanPierceEnemyList[0];
         //一つしかないことがほとんどだと思うのでチェック
         if (nearCanPierceEnemyList.Count == 1) return enemy;
         //現在の最近敵の距離を持っておく
@@ -295,9 +303,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <param name="damageSource"></param>
     public void OnHit(DamageSource damageSource)
     {
-        if (state == PlayerState.Defence)
+        if (state == PlayerState.Defence)//防御中
         {
             status.DecreaseStamina(damageSource.damage);
+            //ノックバックされる
+            BeKnockedBack(damageSource);
         }
         else if (state == PlayerState.Avoid)
         {
@@ -460,7 +470,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <summary>
     /// 敵に近づいた
     /// </summary>
-    public void NearEnemy(EnemyAction enemy)
+    public void NearEnemy(EnemyAI enemy)
     {
         //敵が死亡していたらリストに追加し、吸生テキスト表示
         if (enemy.canUseHeal)
@@ -475,7 +485,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <summary>
     /// 敵から離れた
     /// </summary>
-    public void FarEnemy(EnemyAction enemy)
+    public void FarEnemy(EnemyAI enemy)
     {
         //死亡していたらリストから削除する
         if (enemy.canUseHeal)
@@ -503,5 +513,51 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         Quaternion toTarget = Quaternion.LookRotation(targetPositionIgnoreY - myPositionIgnoreY);
         this.transform.rotation = toTarget;
         yield return null;
+    }
+
+    /// <summary>
+    /// ノックバックされる
+    /// </summary>
+    public void BeKnockedBack(DamageSource damageSource)
+    {
+        if (state == PlayerState.KnockBack) return;
+
+        state = PlayerState.KnockBack;
+
+        StartCoroutine(PlayerKockBack(damageSource));
+    }
+
+    private IEnumerator PlayerKockBack(DamageSource damageSource)
+    {
+        //ノックバックアニメーション
+        playerAnimation.StartKnockBackAnimation();
+
+        //敵が攻撃した方向取得
+        //NOTE:EnemyActionクラスは削除されました
+        EnemyAI enemy = (EnemyAI)damageSource.attackCharacter;
+        Vector3 enemyPosXZ = Vector3.Scale(enemy.transform.position, new Vector3(1, 0, 1));
+        Vector3 myPosXZ = Vector3.Scale(transform.position, new Vector3(1, 0, 1));
+        Vector3 enemyAttackDir = (myPosXZ - enemyPosXZ).normalized;
+        //敵に向いて
+        transform.LookAt(enemyPosXZ + new Vector3(0, transform.position.y, 0));
+        //後ろにノックバックされる
+        for (float i = 0; i <= knockbackMoveTime; i += Time.deltaTime)
+        {
+            transform.position += -transform.forward * 5 * Time.deltaTime;
+            yield return null;
+        }
+
+        //ガードボタンまだ押しているなら
+        if (isGuard)
+        {
+            //防御中に切り替える
+            state = PlayerState.Defence;
+        }
+        else//押してなかったら
+        {
+            //防御解除->通常状態
+            GuardEnd();
+        }
+        yield break;
     }
 }

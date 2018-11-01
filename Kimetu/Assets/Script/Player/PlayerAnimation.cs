@@ -75,7 +75,10 @@ public class PlayerAnimation :CharacterAnimation {
         anim.SetTrigger("BackAvoid");
     }
 
-
+    public void StartKnockBackAnimation()
+    {
+        anim.SetTrigger("KnockBack");
+    }
 
 
 }
