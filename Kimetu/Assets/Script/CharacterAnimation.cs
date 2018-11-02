@@ -23,7 +23,11 @@ public abstract class CharacterAnimation : MonoBehaviour
         }
     }
 
-    protected virtual void Start()
+    private void Awake() {
+        animator = GetComponent<Animator>();
+    }
+
+    protected virtual void Awa()
     {
         animator = GetComponent<Animator>();
         speed = 1.0f;

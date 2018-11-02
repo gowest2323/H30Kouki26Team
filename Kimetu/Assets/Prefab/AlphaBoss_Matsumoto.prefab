@@ -94,7 +94,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4022926109225686}
-  - component: {fileID: 114948432403335276}
+  - component: {fileID: 114828890332882422}
   m_Layer: 0
   m_Name: HorizontalAttackArea
   m_TagString: Untagged
@@ -188,7 +188,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4011994221083250}
-  - component: {fileID: 114467184997274180}
+  - component: {fileID: 65182453578844754}
+  - component: {fileID: 114507469968514788}
   m_Layer: 0
   m_Name: SwingDownAttackableArea
   m_TagString: Untagged
@@ -457,12 +458,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4722196649537812}
   - component: {fileID: 114339093560922202}
-  - component: {fileID: 114933613568869034}
   - component: {fileID: 114265044436874828}
   - component: {fileID: 114910851600882504}
   - component: {fileID: 114923811842289710}
   - component: {fileID: 114358146823699892}
-  - component: {fileID: 114343128575388930}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -671,6 +670,7 @@ GameObject:
   - component: {fileID: 114592814502516374}
   - component: {fileID: 114284337508411874}
   - component: {fileID: 114274501422858632}
+  - component: {fileID: 114045297469640172}
   m_Layer: 0
   m_Name: AlphaBoss_Matsumoto
   m_TagString: Enemy
@@ -744,7 +744,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1063744857181560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.394}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4832485780179456}
@@ -1294,8 +1294,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1380731573850470}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.085, z: 0.469}
-  m_LocalScale: {x: 0.25, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: 1.085, z: 1.115}
+  m_LocalScale: {x: 0.25, y: 0.5, z: 2.3016}
   m_Children:
   - {fileID: 4011994221083250}
   - {fileID: 4022926109225686}
@@ -1411,6 +1411,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65182453578844754
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1240413446362530}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65235070317728866
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1441,6 +1453,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114045297469640172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1876760913223938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4a6cfbf0dd8e1d439a47f857e952790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114265044436874828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1467,7 +1490,6 @@ MonoBehaviour:
   idle: {fileID: 114339093560922202}
   swingAttack: {fileID: 114910851600882504}
   horizontalAttack: {fileID: 114265044436874828}
-  search: {fileID: 114933613568869034}
   nearPlayer: {fileID: 114923811842289710}
   damage: {fileID: 114358146823699892}
   player: {fileID: 0}
@@ -1483,7 +1505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 10
-  attackableArea: {fileID: 114948432403335276}
+  attackableArea: {fileID: 114828890332882422}
   holderEnemy: {fileID: 114274501422858632}
   attackTime: 1
 --- !u!114 &114284337508411874
@@ -1510,21 +1532,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 1
---- !u!114 &114343128575388930
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1606885340260994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743ef324be5c3a8438d7a73139061b7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackbleAngle: 180
-  attackRange: 2
-  searchableAngle: 120
-  searchRange: 7.5
 --- !u!114 &114357646083718236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1537,7 +1544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 15
-  attackableArea: {fileID: 114467184997274180}
+  attackableArea: {fileID: 114507469968514788}
   holderEnemy: {fileID: 114274501422858632}
   attackTime: 1
 --- !u!114 &114358146823699892
@@ -1551,7 +1558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82eeaa9a9529f9468127003323e851a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114467184997274180
+--- !u!114 &114507469968514788
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1559,13 +1566,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1240413446362530}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743ef324be5c3a8438d7a73139061b7b, type: 3}
+  m_Script: {fileID: 11500000, guid: e3d3b91a2439fb44390a38348888ef68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackbleAngle: 20
-  attackRange: 2
-  searchableAngle: 0
-  searchRange: 0
+  eyeTransform: {fileID: 4692980191728636}
 --- !u!114 &114592814502516374
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1577,6 +1581,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 483618ae2ab314898a1aae709b817678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114828890332882422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1063744857181560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743ef324be5c3a8438d7a73139061b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchableAngle: 278
+  searchRange: 1.47
+  gizmosColor: {r: 0.09710693, g: 1, b: 0, a: 0.57254905}
 --- !u!114 &114910851600882504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1600,36 +1618,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd34ea6734fb489408c40fe9b82e5268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackableArea: {fileID: 114343128575388930}
+  attackableArea: {fileID: 114828890332882422}
   agent: {fileID: 195582291694572942}
   playerObj: {fileID: 0}
---- !u!114 &114933613568869034
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1606885340260994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29bc412f556780d48bd613f6c54d7ce1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackableArea: {fileID: 114343128575388930}
---- !u!114 &114948432403335276
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1063744857181560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743ef324be5c3a8438d7a73139061b7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackbleAngle: 180
-  attackRange: 2
-  searchableAngle: 0
-  searchRange: 0
 --- !u!136 &136648693877882056
 CapsuleCollider:
   m_ObjectHideFlags: 1

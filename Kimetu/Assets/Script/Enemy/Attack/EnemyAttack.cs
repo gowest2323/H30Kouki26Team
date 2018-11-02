@@ -7,7 +7,7 @@ public abstract class EnemyAttack : MonoBehaviour
     [SerializeField, Header("攻撃力")]
     protected int power;
     [SerializeField]
-    protected EnemyAttackableArea attackableArea;
+    protected EnemySearchableAreaBase attackableArea;
     [SerializeField]
     protected EnemyAI holderEnemy;
     protected Collider attackCollider;
