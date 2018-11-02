@@ -11,8 +11,10 @@ public class SwingDown : EnemyAttack
     public override IEnumerator Attack()
     {
         Debug.Log("振り下ろし攻撃開始");
+        enemyAnimation.StartAttackAnimation(EnemyAttackType.SwingDown);
         attackCollider.enabled = true;
-        yield return new WaitForSeconds(attackTime);
+        //アニメーション終了まで待機
+        yield return new WaitWhile(() => enemyAnimation.IsEndAnimation(0.02f));
         attackCollider.enabled = false;
         Debug.Log("振り下ろし攻撃終了");
     }

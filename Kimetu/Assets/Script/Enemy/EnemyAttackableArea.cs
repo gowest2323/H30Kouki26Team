@@ -2,17 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttackableArea : MonoBehaviour
+public class EnemyAttackableArea : EnemySearchableAreaBase
 {
-    [SerializeField, Range(0.0f, 360.0f)]
-    private float attackbleAngle = 0.0f; //攻撃可能角度(60°->左右30°)
-    [SerializeField]
-    private float attackRange = 0.0f;
-    public float AttackRange
-    {
-        get { return attackRange; }
-    }
-
     [SerializeField, Range(0.0f, 360.0f)]
     private float searchableAngle = 0.0f; //視野角度(60°->左右30°)
     [SerializeField]
@@ -22,39 +13,25 @@ public class EnemyAttackableArea : MonoBehaviour
         get { return searchRange; }
     }
 
-    private float attackableAreaCosTheta = 0.0f;
     private float searchableAreaCosTheta = 0.0f;
-
-    public enum Area
-    {
-        Attackable,
-        Searchable
-    }
-
+    [SerializeField]
+    private Color gizmosColor;
 
     // Use this for initialization
-    void Awake ()
+    void Awake()
     {
-        ApplyAttackableAngle();
         ApplySearchableAngle();
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-	}
+    }
 
     // シリアライズされた値がインスペクター上で変更されたら呼ばれます。
     private void OnValidate()
     {
-        ApplyAttackableAngle();
         ApplySearchableAngle();
-    }
-
-    private void ApplyAttackableAngle()
-    {
-        float attackableRad = attackbleAngle * 0.5f * Mathf.Deg2Rad;
-        attackableAreaCosTheta = Mathf.Cos(attackableRad);
     }
 
     private void ApplySearchableAngle()
@@ -69,7 +46,7 @@ public class EnemyAttackableArea : MonoBehaviour
     /// <param name="player"></param>
     /// <param name="area">チェックする範囲</param>
     /// <returns></returns>
-    public virtual bool IsPlayerInArea(GameObject player, Area area)
+    public override bool IsPlayerInArea(GameObject player, bool toRayCast)
     {
         Vector3 targetPos = player.transform.position;
         Vector3 myPos = transform.position;
@@ -79,38 +56,24 @@ public class EnemyAttackableArea : MonoBehaviour
 
         Vector3 toTargetFlatDir = (targetPosXZ - myPosXZ).normalized;
 
-        switch (area)
+        if (!IsWithinRangeAngle(transform.forward, toTargetFlatDir, searchableAreaCosTheta))
         {
-            //攻撃範囲
-            case Area.Attackable:
-                if (!IsWithinRangeAngle(transform.forward, toTargetFlatDir, attackableAreaCosTheta))
-                {
-                    return false;
-                }
-                return true;
-
-            //視野範囲
-            case Area.Searchable:
-                if (!IsWithinRangeAngle(transform.forward, toTargetFlatDir, searchableAreaCosTheta))
-                {
-                    return false;
-                }
-
-                Vector3 targetCheckPos = targetPos + Vector3.up * 1f;//腰あたりの高さ
-                Vector3 myCheckPos = myPos + Vector3.up * 1;//腰あたりの高さ
-                Vector3 toTargetDir = (targetCheckPos - myCheckPos).normalized;
-
-                if (!IsHitRay(myCheckPos, toTargetDir, player))
-                {
-                    return false;
-                }
-                return true;
-
-            default:
-                return false;
-
+            return false;
         }
+        if (!toRayCast) return true;
+
+        Vector3 targetCheckPos = targetPos + Vector3.up * 1f;//腰あたりの高さ
+        Vector3 myCheckPos = myPos + Vector3.up * 1;//腰あたりの高さ
+        Vector3 toTargetDir = (targetCheckPos - myCheckPos).normalized;
+
+        if (!IsHitRayToPlayer(myCheckPos, toTargetDir, player, searchRange))
+        {
+            return false;
+        }
+        return true;
+
     }
+
 
     private bool IsWithinRangeAngle(Vector3 forwardDir, Vector3 toTargetDir, float cosTheta)
     {
@@ -124,8 +87,7 @@ public class EnemyAttackableArea : MonoBehaviour
         return dot >= cosTheta;
     }
 
-
-    private bool IsHitRay(Vector3 fromPosition, Vector3 toTargetDir, GameObject target)
+    protected override bool IsHitRayToPlayer(Vector3 fromPosition, Vector3 toTargetDir, GameObject target, float distance)
     {
         // 方向ベクトルが無い場合は、同位置にあるものだと判断する。
         if (toTargetDir.sqrMagnitude <= Mathf.Epsilon)
@@ -134,7 +96,7 @@ public class EnemyAttackableArea : MonoBehaviour
         }
 
         RaycastHit onHitRay;
-        if (!Physics.Raycast(fromPosition, toTargetDir, out onHitRay, searchRange))
+        if (!Physics.Raycast(fromPosition, toTargetDir, out onHitRay, distance))
         {
             return false;
         }
@@ -150,12 +112,8 @@ public class EnemyAttackableArea : MonoBehaviour
     private void OnDrawGizmos()
     {
         //視野範囲ギズモ
-        Gizmos.color = Color.yellow;
+        Gizmos.color = gizmosColor;
         Gizmos.DrawWireSphere(transform.position, searchRange);
-        FanTypeGizmos.DrawFanGizmos(gameObject, searchableAngle, searchRange, Color.yellow);
-        //攻撃範囲ギズモ
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-        FanTypeGizmos.DrawFanGizmos(gameObject, attackbleAngle, attackRange, Color.red);
+        FanTypeGizmos.DrawFanGizmos(gameObject, searchableAngle, searchRange, gizmosColor);
     }
 }

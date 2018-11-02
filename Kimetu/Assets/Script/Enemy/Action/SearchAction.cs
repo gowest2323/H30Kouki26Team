@@ -11,10 +11,12 @@ public class SearchAction : MonoBehaviour, IEnemyActionable
     private EnemyAttackableArea attackableArea;
     private GameObject player;
     public bool canSearched { private set; get; }
+    private EnemyAnimation enemyAnimation;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+        enemyAnimation = GetComponentInParent<EnemyAnimation>();
     }
 
     /// <summary>
@@ -25,7 +27,7 @@ public class SearchAction : MonoBehaviour, IEnemyActionable
     {
         Debug.Log("索敵");
         yield return null;
-        canSearched = attackableArea.IsPlayerInArea(player, EnemyAttackableArea.Area.Searchable);
+        canSearched = attackableArea.IsPlayerInArea(player, true);
         callBack.Invoke();
     }
 }

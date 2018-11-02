@@ -9,6 +9,12 @@ public class IdleAction : MonoBehaviour, IEnemyActionable
 {
     [SerializeField]
     private float waitTime;
+    private EnemyAnimation enemyAnimation;
+
+    private void Start()
+    {
+        enemyAnimation = GetComponentInParent<EnemyAnimation>();
+    }
 
     /// <summary>
     /// 待機行動
