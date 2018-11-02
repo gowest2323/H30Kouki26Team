@@ -17,6 +17,8 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
 
     public IEnumerator Action(UnityAction callBack)
     {
+        isNearPlayer = false;
+        agent.isStopped = false;
         Debug.Log("接近開始");
 
         while (!attackableArea.IsPlayerInArea(playerObj, EnemyAttackableArea.Area.Attackable))
@@ -27,6 +29,7 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
         }
         Debug.Log("接近成功");
         isNearPlayer = true;
+        agent.isStopped = true;
         callBack.Invoke();
     }
 }
