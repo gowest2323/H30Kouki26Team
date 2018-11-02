@@ -6,6 +6,7 @@ using UnityEngine;
 public class SceneChanger : MonoBehaviour
 {
     private static SceneChanger instance;
+    public bool isChanging { private set; get; }
 
     [RuntimeInitializeOnLoadMethod()]
     public static SceneChanger Instance()
@@ -66,12 +67,14 @@ public class SceneChanger : MonoBehaviour
     /// <returns></returns>
     private IEnumerator ChangeCoroutine(SceneName scene, FadeData fade)
     {
+        isChanging = true;
         //フェードアウトし終わるまで待機
-        yield return Fade.Instance().FadeOutCoroutine(fade.fadeOutTime, fade.fadeColor);
+        yield return StartCoroutine(Fade.Instance().FadeOutCoroutine(fade.fadeOutTime, fade.fadeColor));
         //シーンを変更する
         UnityEngine.SceneManagement.SceneManager.LoadScene(scene.String());
         //フェードイン処理
-        Fade.Instance().FadeIn(fade.fadeInTime, fade.fadeColor);
+        yield return StartCoroutine(Fade.Instance().FadeInCoroutine(fade.fadeInTime, fade.fadeColor));
+        isChanging = false;
     }
 
     /// <summary>

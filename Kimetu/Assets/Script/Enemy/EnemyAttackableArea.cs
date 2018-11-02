@@ -69,7 +69,7 @@ public class EnemyAttackableArea : MonoBehaviour
     /// <param name="player"></param>
     /// <param name="area">チェックする範囲</param>
     /// <returns></returns>
-    public bool IsPlayerInArea(GameObject player, Area area)
+    public virtual bool IsPlayerInArea(GameObject player, Area area)
     {
         Vector3 targetPos = player.transform.position;
         Vector3 myPos = transform.position;
