@@ -6,6 +6,9 @@ public class CameraArea : MonoBehaviour {
 	[SerializeField]
 	private Camera target;
 
+	[SerializeField]
+	private bool debugMode = false;
+
 	public bool isVisible { private set; get; }
 
 	// Use this for initialization
@@ -17,6 +20,13 @@ public class CameraArea : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		CheckVisible();
+		if(debugMode) {
+			Debug.Log("isVisible: " + isVisible);
+		}
+	}
+
+	private void CheckVisible() {
 		//https://qiita.com/edo_m18/items/8a354d3099fc799c97ff
 		Matrix4x4 V = target.worldToCameraMatrix;
 		Matrix4x4 P = target.projectionMatrix;
