@@ -3,81 +3,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimation :CharacterAnimation {   
-     private Animator anim;
-   
+public class PlayerAnimation :CharacterAnimation {      
 
-    public float speed
-    {
-        get
-        {
-           return anim.speed;
-        }
-
-        set
-        {
-            anim.speed = value;
-        }
-    }
-
-    public PlayerAnimation(Animator anim)
-    {
-        this.anim = anim;
-        this.speed = 1.0f;
-    }
 	// Use this for initialization
 
    public void StartRunAnimation()
     {
         //anim.SetFloat("Speed", speed);
-        anim.SetBool("Run",true);
+        animator.SetBool("Run",true);
     }
 
     public void StopRunAnimation()
     {
-        anim.SetFloat("Speed", speed);
-        anim.SetBool("Run", false);
+        animator.SetFloat("Speed", speed);
+        animator.SetBool("Run", false);
     }
 
     public void StartAttackAnimation()
     {
 
-        anim.SetTrigger("Attack");
+        animator.SetTrigger("Attack");
     }
 
     public void StartGuardAnimation()
     {
-        anim.SetBool("Guard", true);
+        animator.SetBool("Guard", true);
     }
 
     public void StopGuardAnimation()
     {
-        anim.SetBool("Guard", false);
+        animator.SetBool("Guard", false);
     }
 
     public void StartForwardAvoidAnimation()
     {
-        anim.SetTrigger("ForwardAvoid");
+        animator.SetTrigger("ForwardAvoid");
     }
 
     public void StartRightAvoidAnimation()
     {
-        anim.SetTrigger("RightAvoid");
+        animator.SetTrigger("RightAvoid");
     }
 
     public void StartLeftAvoidAnimation()
     {
-        anim.SetTrigger("LeftAvoid");
+        animator.SetTrigger("LeftAvoid");
     }
 
     public void StartBackAvoidAnimation()
     {
-        anim.SetTrigger("BackAvoid");
+        animator.SetTrigger("BackAvoid");
     }
 
     public void StartKnockBackAnimation()
     {
-        anim.SetTrigger("KnockBack");
+        animator.SetTrigger("KnockBack");
     }
 
 

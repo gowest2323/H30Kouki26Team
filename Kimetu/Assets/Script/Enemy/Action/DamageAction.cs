@@ -5,6 +5,13 @@ using UnityEngine.Events;
 
 public class DamageAction : MonoBehaviour, IEnemyActionable
 {
+    private EnemyAnimation enemyAnimation;
+
+    private void Start()
+    {
+        enemyAnimation = GetComponentInParent<EnemyAnimation>();
+    }
+
     public IEnumerator Action(UnityAction callBack)
     {
         Debug.Log("ダメージを受けた");

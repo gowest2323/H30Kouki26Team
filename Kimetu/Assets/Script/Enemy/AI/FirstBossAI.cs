@@ -13,8 +13,6 @@ public class FirstBossAI : EnemyAI, IDamageable
     [SerializeField]
     private AttackAction horizontalAttack;
     [SerializeField]
-    private SearchAction search;
-    [SerializeField]
     private NearPlayerAction nearPlayer;
     [SerializeField]
     private DamageAction damage;

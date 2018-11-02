@@ -47,7 +47,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 	void Start() {
         this.status = GetComponent<PlayerStatus>();
-		this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
+        //this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
+        this.playerAnimation = GetComponent<PlayerAnimation>();
 		this.isGuard = false;
 		this.counterOccuredTime = -1;
 		this.state = PlayerState.Idle;

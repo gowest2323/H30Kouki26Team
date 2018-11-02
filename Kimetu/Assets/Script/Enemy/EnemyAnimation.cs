@@ -1,47 +1,39 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
-public class EnemyAnimation :CharacterAnimation {
+public class EnemyAnimation : CharacterAnimation
+{
 
-    private Animator enemyAnim;
-    public float speed
-    {
-        get
-        {
-            return enemyAnim.speed;
-        }
-
-        set
-        {
-            enemyAnim.speed = value;
-        }
-    }
-
-    public EnemyAnimation(Animator enemyAnim)
-    {
-        this.enemyAnim = enemyAnim;
-        this.speed = 1.0f;
-    }
     public void StartRunAnimation()
     {
-        enemyAnim.SetBool("Run", true);
+        animator.SetBool("Run", true);
     }
 
     public void StopRunAnimation()
     {
-        enemyAnim.SetBool("Run", false);
+        animator.SetBool("Run", false);
     }
 
-    public void StartAttackAnimation()
-    {
-        enemyAnim.SetTrigger("Attack");
+    /// <summary>
+    /// 攻撃アニメーションの開始
+    /// </summary>
+    /// <param name="attackType">攻撃の種類</param>
+    public void StartAttackAnimation(EnemyAttackType attackType)
+    {        
+        Assert.IsTrue(EnemyAttackTypeDictionary.dictionary.ContainsKey(attackType), attackType + "が定義されていません");
+        //パラメータ名を取得
+        string parameterName = EnemyAttackTypeDictionary.dictionary[attackType];
+        Assert.IsTrue(Array.Exists(animator.parameters, param => param.name == parameterName),parameterName+"が存在しません");
+        animator.SetTrigger(parameterName);
     }
 
     public void StratDamageAnimation()
     {
-        enemyAnim.SetTrigger("Damage");
+        animator.SetTrigger("Damage");
     }
-    
+
 }
