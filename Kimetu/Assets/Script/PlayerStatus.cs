@@ -48,4 +48,9 @@ public class PlayerStatus : Status
         this.stamina -= num;
         this.stamina = Mathf.Clamp(this.stamina, 0, maxStamina);
     }
+
+    public override void Reset() {
+        base.Reset();
+        this.stamina = maxStamina;
+    }
 }

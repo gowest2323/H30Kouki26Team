@@ -39,4 +39,12 @@ public class Status : MonoBehaviour
     {
         return hp <= 0;
     }
+
+    /// <summary>
+    /// ステータスをリセットします。
+    /// プレイヤーが死亡した時に呼ばれます。
+    /// </summary>
+    public virtual void Reset() {
+        this.hp = maxHP;
+    }
 }

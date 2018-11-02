@@ -359,6 +359,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {            
             //Destroy(this.gameObject);
             this.gameObject.transform.position = stageManager.RestartPosition();
+            status.Reset();
             //playerAnimation.Start...();
         }
         //まだ生きていたらダメージモーション
