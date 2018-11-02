@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         DashOrAvoid();
         //if (pressButton > 20) pressButton = 0;
-        Debug.Log(pressButton);
+//        Debug.Log(pressButton);
         if (!action.IsAvoid())
         {
             Move();
