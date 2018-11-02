@@ -566,7 +566,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 582937931}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.4, y: 0.3, z: 3.204}
+  m_LocalPosition: {x: 8.28, y: 1.45, z: -6.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1496595463}
@@ -822,66 +822,19 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1348389955319770, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 114351484781314656, guid: 6fce2862b0f7041c6af957383b8930ae,
-        type: 2}
-      propertyPath: holderObject
-      value: 
-      objectReference: {fileID: 1288175681}
-    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
-        type: 2}
-      propertyPath: weapon
-      value: 
-      objectReference: {fileID: 1149424054}
-    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
-        type: 2}
-      propertyPath: counterTime
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4232201661819632, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4232201661819632, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4232201661819632, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
-        type: 2}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 1669517514}
-    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
-        type: 2}
-      propertyPath: decreaseStaminaPerSecond
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
-        type: 2}
-      propertyPath: decreaseAttackStamina
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
         type: 2}
       propertyPath: stageManager
       value: 
       objectReference: {fileID: 1496595464}
+    - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
+        type: 2}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1669517514}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
   m_IsPrefabAsset: 0
---- !u!114 &1149424054 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114351484781314656, guid: 6fce2862b0f7041c6af957383b8930ae,
-    type: 2}
-  m_PrefabInternal: {fileID: 973709447}
-  m_Script: {fileID: 11500000, guid: 47a7f4fb6a51929499f34f98ea74f586, type: 3}
 --- !u!1 &1157022440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,19 +990,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1348389955319770, guid: 6fce2862b0f7041c6af957383b8930ae,
     type: 2}
   m_PrefabInternal: {fileID: 973709447}
---- !u!114 &1288175682
+--- !u!114 &1288175682 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1288175681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 114830164350194748, guid: 6fce2862b0f7041c6af957383b8930ae,
+    type: 2}
+  m_PrefabInternal: {fileID: 973709447}
   m_Script: {fileID: 11500000, guid: 86fa6ad26d52cfb45b3ebe92955f3d70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHP: 100
-  maxStamina: 10
 --- !u!1 &1297614773
 GameObject:
   m_ObjectHideFlags: 0

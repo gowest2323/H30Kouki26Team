@@ -873,9 +873,10 @@ GameObject:
   - component: {fileID: 114481832675972902}
   - component: {fileID: 54988323499548366}
   - component: {fileID: 136810302155186948}
+  - component: {fileID: 114830164350194748}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3140,7 +3141,7 @@ Transform:
   m_GameObject: {fileID: 1761795217088164}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.92, z: 0.47}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalScale: {x: 0.25, y: 1.25, z: 0.5}
   m_Children: []
   m_Father: {fileID: 4257583769208652}
   m_RootOrder: 2
@@ -3219,7 +3220,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1348389955319770}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.5, y: 0.36, z: -6.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4911061932094452}
@@ -5141,10 +5142,10 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &65569034329166394
 BoxCollider:
@@ -5187,7 +5188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a7f4fb6a51929499f34f98ea74f586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holder: {fileID: 0}
+  holderObject: {fileID: 1348389955319770}
   power: 1
 --- !u!114 &114481832675972902
 MonoBehaviour:
@@ -5200,7 +5201,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52329d43218894034ac14a94577ad945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avoidMoveTime: 0.3
+  knockbackMoveTime: 0.3
   weapon: {fileID: 114351484781314656}
+  counterTime: 2
+  pierceText: {fileID: 0}
+  pierceHealHP: 0
+  stageManager: {fileID: 0}
+  decreaseStaminaPerSecond: 1
+  decreaseAttackStamina: 1
+  playerCamera: {fileID: 0}
+--- !u!114 &114830164350194748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348389955319770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86fa6ad26d52cfb45b3ebe92955f3d70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHP: 100
+  maxStamina: 10
 --- !u!114 &114970385773310294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5212,6 +5235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3efd300bbd0413a887ba9c203e4d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pierceButtonPushTime: 0
+  holdShort: 5
+  holdLong: 15
 --- !u!136 &136810302155186948
 CapsuleCollider:
   m_ObjectHideFlags: 1
