@@ -10,6 +10,7 @@ public class CameraArea : MonoBehaviour {
 	private bool debugMode = false;
 
 	public bool isVisible { private set; get; }
+	private GameObject player;
 
 	// Use this for initialization
 	void Start () {
@@ -23,6 +24,31 @@ public class CameraArea : MonoBehaviour {
 		CheckVisible();
 		if(debugMode) {
 			Debug.Log("isVisible: " + isVisible);
+		}
+	}
+
+	/// <summary>
+	/// カメラからこのオブジェクトへレイを打って当たるなら true.
+	/// </summary>
+	/// <returns></returns>
+	public bool IsHitRay() {
+		if(player == null) {
+			this.player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+		}
+		//ちょっとだけプレイヤーのコライダーを無効にする
+		var collider = player.GetComponent<Collider>();
+		collider.enabled = false;
+		try {
+			var cameraPos = target.transform.position;
+			var lookPos = transform.position;
+			var dir = (lookPos - cameraPos).normalized;
+			RaycastHit hit;
+			if(Physics.Raycast(new Ray(cameraPos, dir), out hit)) {
+				return hit.collider.gameObject == gameObject;
+			}
+			return false;
+		} finally {
+			collider.enabled = true;
 		}
 	}
 
