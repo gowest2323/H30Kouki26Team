@@ -15,5 +15,6 @@ public class EnemyUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		slider.value = status.GetHPRatio();
+		slider.transform.LookAt(Camera.main.transform.transform, Vector3.up);
 	}
 }
