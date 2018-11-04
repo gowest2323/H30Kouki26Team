@@ -101,9 +101,9 @@ public class PlayerController : MonoBehaviour
     private void Avoid()
     {
         var dir = new Vector3(
-            Input.GetAxis("Horizontal"),
+            Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()),
             0,
-            Input.GetAxis("Vertical")
+            Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
         );
         if (Input.GetButton(InputMap.Type.AButton.GetInputName()))
         {
