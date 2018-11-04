@@ -16,6 +16,10 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     public bool isNearPlayer { private set; get; }
     private EnemyAnimation enemyAnimation;
 
+    private void Awake() {
+        enemyAnimation = GetComponentInParent<EnemyAnimation>();
+    }
+
     private void Start()
     {
         enemyAnimation = GetComponentInParent<EnemyAnimation>();
