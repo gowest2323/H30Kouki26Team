@@ -53,7 +53,6 @@ public class DebugEnemyUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		uiList.ForEach((e) => e.Synchro());
-        gameObject.transform.rotation = Camera.main.transform.rotation;
     }
 
 	private IEnumerator UIUpdate() {
