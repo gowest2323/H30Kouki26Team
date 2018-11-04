@@ -16,5 +16,6 @@ public class EnemyUI : MonoBehaviour {
 	void Update () {
 		slider.value = status.GetHPRatio();
 		slider.transform.LookAt(Camera.main.transform.transform, Vector3.up);
+		slider.transform.Rotate(new Vector3(0, 180, 0));
 	}
 }
