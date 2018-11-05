@@ -11,10 +11,10 @@ public class Slow : SingletonMonoBehaviour<Slow>
 {
     //再生速度
     [SerializeField]
-    private float speed = 0.5f;
+    private float slowSpeed = 0.3f;
     //プレイヤーの再生速度
     [SerializeField]
-    private float playerSpeed = 0.7f;
+    private float highSpeed = 1.2f;
     //スロー秒数
     [SerializeField]
     private float slowTime = 2f;
@@ -24,28 +24,20 @@ public class Slow : SingletonMonoBehaviour<Slow>
     private bool isSlow = false;
     [SerializeField]
     private SlowColorChanger colorChanger;
+    private float currentPlayerSpeed = 1;
+    private float currentOtherSpeed = 1;
     public bool isSlowNow { get { return isSlow; }}
 
 
 
     public float DeltaTime()
     {
-        return Time.deltaTime * speed;
+        return Time.deltaTime * currentOtherSpeed;
     }
 
     public float PlayerDeltaTime()
     {
-        return Time.deltaTime * playerSpeed;
-    }
-
-    public float AnimationSpeed()
-    {
-        return speed;
-    }
-
-    public float PlayerAnimationSpeed()
-    {
-        return playerSpeed;
+        return Time.deltaTime * currentPlayerSpeed;
     }
 
     /// <summary>
@@ -62,12 +54,15 @@ public class Slow : SingletonMonoBehaviour<Slow>
 
     private IEnumerator SlowCoroutine(float waitSeconds, List<CharacterAnimation> slowAnimList)
     {
+        currentPlayerSpeed = slowSpeed;
+        currentOtherSpeed = slowSpeed;
         colorChanger.SlowStart();
         isSlow = true;
         //アニメーションリストの再生速度をスローに
         foreach (var anim in slowAnimList)
         {
-            anim.speed = speed;
+            Debug.Log("slow " + anim.gameObject.name);
+            anim.speed = slowSpeed;
         }
 
         yield return new WaitForSeconds(waitSeconds);
@@ -81,6 +76,8 @@ public class Slow : SingletonMonoBehaviour<Slow>
         slowAnimList.Clear();
         isSlow = false;
         colorChanger.SlowEnd();
+        currentOtherSpeed = 1;
+        currentPlayerSpeed = 1;
     }
 
 
@@ -89,7 +86,8 @@ public class Slow : SingletonMonoBehaviour<Slow>
         //スロー中
         if (isSlow)
         {
-            playerAnimation.speed = playerSpeed;
+            currentPlayerSpeed = highSpeed;
+            playerAnimation.speed = highSpeed;
         }
     }
 

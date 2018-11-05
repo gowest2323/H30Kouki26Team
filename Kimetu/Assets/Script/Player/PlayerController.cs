@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         //スタミナ回復(ガード中は回復しない)
         if (!Input.GetButton(InputMap.Type.LButton.GetInputName()))
         {
-            staminaTimeElapsed += Time.deltaTime;
+            staminaTimeElapsed += Slow.Instance.PlayerDeltaTime();
             if (staminaTimeElapsed >= staminaHealTime)
             {
                 status.RecoveryStamina();

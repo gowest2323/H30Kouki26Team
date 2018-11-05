@@ -142,10 +142,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
-        dash.Update(Time.deltaTime);
+        dash.Update(Slow.Instance.PlayerDeltaTime());
         float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
         //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
-        transform.position += playerCamera.hRotation * dir * 10 * t * Time.deltaTime;
+        transform.position += playerCamera.hRotation * dir * 10 * t * Slow.Instance.PlayerDeltaTime();
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
