@@ -144,6 +144,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void Attack()
     {
+        //吸生中なら攻撃しない
+        if (state == PlayerState.Pierce) return;
         //防御していなければ通常の攻撃
         if (!isGuard)
         {
@@ -188,7 +190,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void PierceAndHeal()
     {
-        Debug.Log("吸生可能か判定");
         if (!CanPierce()) return;
         StartCoroutine(PierceAndHeakCoroutine());
     }
@@ -199,7 +200,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <returns></returns>
     private IEnumerator PierceAndHeakCoroutine()
     {
-        Debug.Log("吸生開始");
         state = PlayerState.Pierce;
         EnemyAI nearEnemy = MostNearEnemy();
         //敵のほうを向くまで待機
@@ -210,7 +210,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;
-        Debug.Log("吸生終了");
     }
 
     /// <summary>

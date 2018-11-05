@@ -7,35 +7,55 @@ public class PlayerController : MonoBehaviour
     private PlayerAction action;
     [SerializeField, Header("吸生コマンドを実行するのにボタンを長押しする時間")]
     private float pierceButtonPushTime;
-	private bool guardTriggered;
+    private bool guardTriggered;
 
     [SerializeField, Header("回避コマンドを実行するのにボタンを長押しする時間")]
     private int holdShort = 5;
     [SerializeField, Header("ダッシュ状態になるのにボタンを長押しする時間")]
     private int holdLong = 15;
     private int pressButton;
+    [SerializeField]
+    private LongPressDetector longPressDetector;
+    private bool isKyuusei;
+
     // Use this for initialization
     void Start()
     {
         this.action = GetComponent<PlayerAction>();
+        longPressDetector.OnLongPressingOverTime += OnKyuuseiButtonPushStart;
+        longPressDetector.OnLongPressEnd += OnKyuuseiButtonPushEnd;
+        isKyuusei = false;
     }
+
+    private void OnKyuuseiButtonPushStart(float elapsed)
+    {
+        if (isKyuusei) return;
+        action.PierceAndHeal();
+        isKyuusei = true;
+    }
+    private void OnKyuuseiButtonPushEnd()
+    {
+        isKyuusei = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
         DashOrAvoid();
         //if (pressButton > 20) pressButton = 0;
-//        Debug.Log(pressButton);
+        //        Debug.Log(pressButton);
         if (!action.IsAvoid())
         {
             Move();
             Attack();
             PierceAndHeal();
-			Guard();
+            Guard();
         }
         //Avoid();
     }
 
-    private void DashOrAvoid() {
+    private void DashOrAvoid()
+    {
         pressButton += (Input.GetButton(InputMap.Type.AButton.GetInputName())) ? 1 : 0;
         if (Input.GetButton(InputMap.Type.AButton.GetInputName()))
         {
@@ -55,7 +75,8 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if(holdLong <= pressButton) {
+        if (holdLong <= pressButton)
+        {
             //ダッシュ中
             return;
         }
@@ -69,7 +90,8 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetButton(InputMap.Type.XButton.GetInputName()))
+        if (isKyuusei) return;
+        if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName()))
         {
             action.Attack();
         }
@@ -80,11 +102,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void PierceAndHeal()
     {
-        //攻撃ボタン長押しで発動
-        if (InputExtend.GetButtonState(InputExtend.Command.Attack, pierceButtonPushTime))
-        {
-            action.PierceAndHeal();
-        }
+        ////攻撃ボタン長押しで発動
+        //if (InputExtend.GetButtonState(InputExtend.Command.Attack, pierceButtonPushTime))
+        //{
+        //    action.PierceAndHeal();
+        //}
     }
     private void Dash()
     {
@@ -109,15 +131,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-	private void Guard() {
-		if(Input.GetButton(InputMap.Type.LButton.GetInputName()) && !guardTriggered) {
-			action.GuardStart();
-			PrivateLogger.KOYA.Log("guard start");
-			this.guardTriggered = true;
-		} else if (!Input.GetButton(InputMap.Type.LButton.GetInputName()) && guardTriggered) {
-			action.GuardEnd();
-			PrivateLogger.KOYA.Log("guard end");
-			this.guardTriggered = false;
-		}
-	}
+    private void Guard()
+    {
+        if (Input.GetButton(InputMap.Type.LButton.GetInputName()) && !guardTriggered)
+        {
+            action.GuardStart();
+            PrivateLogger.KOYA.Log("guard start");
+            this.guardTriggered = true;
+        }
+        else if (!Input.GetButton(InputMap.Type.LButton.GetInputName()) && guardTriggered)
+        {
+            action.GuardEnd();
+            PrivateLogger.KOYA.Log("guard end");
+            this.guardTriggered = false;
+        }
+    }
 }
