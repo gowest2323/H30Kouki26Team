@@ -12,7 +12,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     //攻撃中か
     private bool isAttack;
     [SerializeField, Header("アニメーション時間")]
-    private float avoidMoveTime;//回避秒数(回避アニメーション移動部分の時間)
+    private float avoidMoveTime = 0.2f;//回避秒数(回避アニメーション移動部分の時間)
+    [SerializeField]
+    private float avoidMoveDistance = 2.0f;//回避距離
     [SerializeField]
     private float knockbackMoveTime;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
 
@@ -407,7 +409,17 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (isAvoid) yield break;
 
         isAvoid = true;
-
+        var offset = 0f;
+        //開始位置
+        var startPos = transform.position;
+        //後ろ回避後の位置
+        var endBackPos = startPos + (-transform.forward * avoidMoveDistance);
+        //左回避後の位置
+        var endLeftPos = startPos + (-transform.right * avoidMoveDistance);
+        //右回避後の位置
+        var endRightPos = startPos + (transform.right * avoidMoveDistance);
+        //前回避後の位置
+        var endForwardPos = startPos + (transform.forward * avoidMoveDistance);
         //何の方向もない時
         if (dir == Vector3.zero)
         {
@@ -415,12 +427,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             playerAnimation.StartBackAvoidAnimation();
             //SE
             AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
-            //後ろに移動
-            for (float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
-            {
-                transform.position += -transform.forward * 5 * Time.deltaTime;
-                yield return null;
-            }
+
+            yield return DirectionAvoid(startPos, endBackPos);
+
+            yield return new WaitForEndOfFrame();
 
             //TODO:ここに体制立ち直る隙間時間？
 
@@ -436,38 +446,62 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             //前進回避アニメーション
             playerAnimation.StartForwardAvoidAnimation();
+            yield return DirectionAvoid(startPos, endForwardPos);
         }
         //横
         else if (Vector3.Dot(transform.forward, dir) < 0.3f &&
                 Vector3.Dot(transform.forward, dir) > -0.3f)
         {
             //右回避アニメーション
-            if (dir.x > 0) playerAnimation.StartRightAvoidAnimation();
+            if (dir.x > 0)
+            {
+                playerAnimation.StartRightAvoidAnimation();
+                yield return DirectionAvoid(startPos, endRightPos);
+            }
             //左回避アニメーション
-            if (dir.x < 0) playerAnimation.StartLeftAvoidAnimation();
+            if (dir.x < 0)
+            {
+                playerAnimation.StartLeftAvoidAnimation();
+                yield return DirectionAvoid(startPos, endLeftPos);
+            }
         }
         //後ろ
         else//Vector3.Dot(transform.forward, dir) <= -0.3f
         {
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
+            yield return DirectionAvoid(startPos, endBackPos);
         }
 
         //SE
         AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
-        //向いている方向(正規化)に移動
-        for (float i = 0; i <= avoidMoveTime; i += Time.deltaTime)
-        {
-            transform.position += dir.normalized * 5 * Time.deltaTime;
-            yield return null;
-        }
-
+      
+        yield return new WaitForEndOfFrame();
         //TODO:ここに体制立ち直る隙間時間？
 
         isAvoid = false;
         state = PlayerState.Idle;
         yield break;
     }
+
+    private IEnumerator DirectionAvoid(Vector3 startPos,Vector3 endPos)
+    {
+        var offset = 0f;
+      
+        while (offset < avoidMoveTime)
+        {
+            var t = Time.time;
+            yield return new WaitForEndOfFrame();
+            var diff = (Time.time - t);
+            offset += diff;
+            var percent = offset / avoidMoveTime;
+            transform.position = Vector3.Lerp(startPos, endPos, percent);
+        }
+    }
+
+   
+
+
 
     public bool IsAvoid()
     {
