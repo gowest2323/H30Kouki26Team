@@ -421,16 +421,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             playerAnimation.StartBackAvoidAnimation();
             //SE
             AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
-            //後ろに移動
-            while (offset < avoidMoveTime)
-            {
-                var t = Time.time;
-                yield return new WaitForEndOfFrame();
-                var diff = (Time.time - t);
-                offset += diff;
-                var percent = offset / avoidMoveTime;
-                transform.position = Vector3.Lerp(startPos, endBackPos, percent);
-            }
+
+            yield return DirectionAvoid(startPos, endBackPos);
+
             yield return new WaitForEndOfFrame();
 
             //TODO:ここに体制立ち直る隙間時間？
@@ -447,15 +440,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             //前進回避アニメーション
             playerAnimation.StartForwardAvoidAnimation();
-            while (offset < avoidMoveTime)
-            {
-                var t = Time.time;
-                yield return new WaitForEndOfFrame();
-                var diff = (Time.time - t);
-                offset += diff;
-                var percent = offset / avoidMoveTime;
-                transform.position = Vector3.Lerp(startPos, endForwardPos, percent);
-            }
+            yield return DirectionAvoid(startPos, endForwardPos);
         }
         //横
         else if (Vector3.Dot(transform.forward, dir) < 0.3f &&
@@ -465,29 +450,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             if (dir.x > 0)
             {
                 playerAnimation.StartRightAvoidAnimation();
-                while (offset < avoidMoveTime)
-                {
-                    var t = Time.time;
-                    yield return new WaitForEndOfFrame();
-                    var diff = (Time.time - t);
-                    offset += diff;
-                    var percent = offset / avoidMoveTime;
-                    transform.position = Vector3.Lerp(startPos, endRightPos, percent);
-                }
+                yield return DirectionAvoid(startPos, endRightPos);
             }
             //左回避アニメーション
             if (dir.x < 0)
             {
                 playerAnimation.StartLeftAvoidAnimation();
-                while (offset < avoidMoveTime)
-                {
-                    var t = Time.time;
-                    yield return new WaitForEndOfFrame();
-                    var diff = (Time.time - t);
-                    offset += diff;                
-                    var percent = offset / avoidMoveTime;
-                    transform.position = Vector3.Lerp(startPos, endLeftPos, percent);
-                }
+                yield return DirectionAvoid(startPos, endLeftPos);
             }
         }
         //後ろ
@@ -495,15 +464,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
-            while (offset < avoidMoveTime)
-            {
-                var t = Time.time;
-                yield return new WaitForEndOfFrame();
-                var diff = (Time.time - t);
-                offset += diff;
-                var percent = offset / avoidMoveTime;
-                transform.position = Vector3.Lerp(startPos, endBackPos, percent);
-            }
+            yield return DirectionAvoid(startPos, endBackPos);
         }
 
         //SE
@@ -517,8 +478,24 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         yield break;
     }
 
+    private IEnumerator DirectionAvoid(Vector3 startPos,Vector3 endPos)
+    {
+        var offset = 0f;
+      
+        while (offset < avoidMoveTime)
+        {
+            var t = Time.time;
+            yield return new WaitForEndOfFrame();
+            var diff = (Time.time - t);
+            offset += diff;
+            var percent = offset / avoidMoveTime;
+            transform.position = Vector3.Lerp(startPos, endPos, percent);
+        }
+    }
 
-    
+   
+
+
 
     public bool IsAvoid()
     {
