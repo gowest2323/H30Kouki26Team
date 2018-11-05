@@ -29,6 +29,14 @@ public class PlayerStatus : Status
         return stamina;
     }
 
+    public int RecoveryStamina()
+    {
+        if (stamina < maxStamina)
+            return stamina += 1;
+        else
+            return stamina;
+    }
+
     /// <summary>
     /// 回復する
     /// </summary>

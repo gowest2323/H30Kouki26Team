@@ -14,14 +14,29 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Header("ダッシュ状態になるのにボタンを長押しする時間")]
     private int holdLong = 15;
     private int pressButton;
+
+    private float outTime = 0.2f, timeElapsed;
+    private PlayerStatus status;
     // Use this for initialization
     void Start()
     {
         this.action = GetComponent<PlayerAction>();
+        status = GetComponent<PlayerStatus>();
     }
     // Update is called once per frame
     void Update()
     {
+        //スタミナ回復(ガード中は回復しない)
+        if (!guardTriggered == true)
+        {
+            timeElapsed += Time.deltaTime;
+            if (timeElapsed >= outTime)
+            {
+                status.RecoveryStamina();
+                timeElapsed = 0;
+            }
+        }
+        Debug.Log(status.GetStamina());
         DashOrAvoid();
         //if (pressButton > 20) pressButton = 0;
 //        Debug.Log(pressButton);
@@ -42,12 +57,12 @@ public class PlayerController : MonoBehaviour
             if (holdLong <= pressButton)
             {
                 Dash();
-                Debug.Log("長押し");
+                //Debug.Log("長押し");
             }
             else if (holdShort <= pressButton)
             {
                 Avoid();
-                Debug.Log("押し");
+                //Debug.Log("押し");
             }
         }
         if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) pressButton = 0;

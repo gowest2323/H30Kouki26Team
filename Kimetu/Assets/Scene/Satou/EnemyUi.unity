@@ -152,7 +152,6 @@ MonoBehaviour:
   idle: {fileID: 0}
   swingAttack: {fileID: 0}
   horizontalAttack: {fileID: 0}
-  search: {fileID: 0}
   nearPlayer: {fileID: 0}
   damage: {fileID: 0}
   player: {fileID: 0}
@@ -346,7 +345,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4720099756956820, guid: 6635ab14642a34d4fb158a73a265c8a1, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114827395477155838, guid: 6635ab14642a34d4fb158a73a265c8a1,
         type: 2}
@@ -889,12 +888,17 @@ Prefab:
     - target: {fileID: 114481832675972902, guid: 6fce2862b0f7041c6af957383b8930ae,
         type: 2}
       propertyPath: decreaseAttackStamina
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 54988323499548366, guid: 6fce2862b0f7041c6af957383b8930ae,
         type: 2}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114830164350194748, guid: 6fce2862b0f7041c6af957383b8930ae,
+        type: 2}
+      propertyPath: maxStamina
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fce2862b0f7041c6af957383b8930ae, type: 2}
@@ -1003,7 +1007,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 555303291}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbdcc8140b8b0c2408bbcc3e63f6a7de, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bab4b01c1cdf0e4aa61bb75543de0bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 555303293}
@@ -1482,11 +1486,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 784458587}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86fa6ad26d52cfb45b3ebe92955f3d70, type: 3}
+  m_Script: {fileID: 11500000, guid: 67bc53d2b139c2740b3e9cd8a7585822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 100
-  maxStamina: 10
 --- !u!1001 &795708203
 Prefab:
   m_ObjectHideFlags: 0
@@ -2254,7 +2256,7 @@ Transform:
   m_Children:
   - {fileID: 1813263689}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1349319550
 GameObject:
@@ -2718,7 +2720,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1605198315
 GameObject:
@@ -2853,7 +2855,7 @@ Prefab:
     - target: {fileID: 224395721456604620, guid: 00ff67abe06844339abcfe64dcbc1b13,
         type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 224395721456604620, guid: 00ff67abe06844339abcfe64dcbc1b13,
         type: 2}
@@ -2909,7 +2911,8 @@ Prefab:
         type: 2}
       propertyPath: status
       value: 
-      objectReference: {fileID: 784458588}
+      objectReference: {fileID: 114830164350194748, guid: 6fce2862b0f7041c6af957383b8930ae,
+        type: 2}
     - target: {fileID: 224511697248457880, guid: 00ff67abe06844339abcfe64dcbc1b13,
         type: 2}
       propertyPath: m_AnchoredPosition.x
