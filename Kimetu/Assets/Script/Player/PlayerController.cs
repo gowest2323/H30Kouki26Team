@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour
     private LongPressDetector longPressDetector;
     private bool isKyuusei;
 
-
-    private float outTime = 0.2f, timeElapsed;
+    [SerializeField]
+    private float staminaHealTime = 0.2f;
+    private float staminaTimeElapsed;
     private PlayerStatus status;
     // Use this for initialization
     void Start()
@@ -48,11 +49,11 @@ public class PlayerController : MonoBehaviour
         //スタミナ回復(ガード中は回復しない)
         if (!guardTriggered == true)
         {
-            timeElapsed += Time.deltaTime;
-            if (timeElapsed >= outTime)
+            staminaTimeElapsed += Time.deltaTime;
+            if (staminaTimeElapsed >= staminaHealTime)
             {
                 status.RecoveryStamina();
-                timeElapsed = 0;
+                staminaTimeElapsed = 0;
             }
         }
         Debug.Log(status.GetStamina());
