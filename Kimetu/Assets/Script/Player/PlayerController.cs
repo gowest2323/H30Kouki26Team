@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     private PlayerAction action;
     [SerializeField, Header("吸生コマンドを実行するのにボタンを長押しする時間")]
     private float pierceButtonPushTime;
-    private bool guardTriggered;
 
     [SerializeField, Header("回避コマンドを実行するのにボタンを長押しする時間")]
     private int holdShort = 5;
@@ -47,7 +46,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //スタミナ回復(ガード中は回復しない)
-        if (!guardTriggered == true)
+        if (!Input.GetButton(InputMap.Type.LButton.GetInputName()))
         {
             staminaTimeElapsed += Time.deltaTime;
             if (staminaTimeElapsed >= staminaHealTime)
@@ -149,17 +148,13 @@ public class PlayerController : MonoBehaviour
 
     private void Guard()
     {
-        if (Input.GetButton(InputMap.Type.LButton.GetInputName()) && !guardTriggered)
+        if (Input.GetButtonDown(InputMap.Type.LButton.GetInputName()))
         {
             action.GuardStart();
-            PrivateLogger.KOYA.Log("guard start");
-            this.guardTriggered = true;
         }
-        else if (!Input.GetButton(InputMap.Type.LButton.GetInputName()) && guardTriggered)
+        else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName()))
         {
             action.GuardEnd();
-            PrivateLogger.KOYA.Log("guard end");
-            this.guardTriggered = false;
         }
     }
 }

@@ -297,6 +297,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (isAttack) yield break;
 
         isAttack = true;
+        Slow.Instance.PlayerAttacked(characterAnimation);
 
         weapon.AttackStart();
         playerAnimation.StartAttackAnimation();
@@ -343,6 +344,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             Debug.Log("counter succeed");
             damageSource.attackCharacter.Countered();
+            GuardEnd();
             //スロー中でない時のみ
             if(!Slow.Instance.isSlowNow)
                 Slow.Instance.SlowStart(CollectAllCharacterAnimation());
