@@ -875,6 +875,7 @@ GameObject:
   - component: {fileID: 136810302155186948}
   - component: {fileID: 114830164350194748}
   - component: {fileID: 114607254080019128}
+  - component: {fileID: 114014923776460162}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5209,6 +5210,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114014923776460162
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348389955319770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b8df1d40f9ad5447b5c2e5dacc4523c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  seconds: 1
 --- !u!114 &114351484781314656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5293,6 +5307,7 @@ MonoBehaviour:
   pierceButtonPushTime: 1
   holdShort: 5
   holdLong: 15
+  longPressDetector: {fileID: 114014923776460162}
 --- !u!135 &135607519195826342
 SphereCollider:
   m_ObjectHideFlags: 1
