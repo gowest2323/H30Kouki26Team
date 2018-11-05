@@ -17,8 +17,11 @@ public class FirstBossAI : EnemyAI, IDamageable
     [SerializeField]
     private DamageAction damage;
     [SerializeField]
+    private DeathAction death;
+    [SerializeField]
     private GameObject player;
     private EnemyStatus status;
+    private EnemyAnimation enemyAnimation;
 
     private void Start()
     {
@@ -45,7 +48,7 @@ public class FirstBossAI : EnemyAI, IDamageable
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
-            Debug.Log("死亡");
+            Death();
         }
         //まだ生きていたらダメージモーション
         else
@@ -65,6 +68,10 @@ public class FirstBossAI : EnemyAI, IDamageable
     {
         Debug.Log("前の状態:" + currentState);
         isAction = true;
+        if (status.IsDead())
+        {
+            return StartCoroutine(death.Action(DeadEnd));
+        }
         switch (currentState)
         {
             //待機の次はプレイヤーに接近
@@ -126,5 +133,28 @@ public class FirstBossAI : EnemyAI, IDamageable
     public void ActionCallBack()
     {
         isAction = false;
+    }
+
+    /// <summary>
+    /// 死亡処理
+    /// </summary>
+    private void Death()
+    {
+        StopCoroutine(currentActionCoroutine);
+        currentActionCoroutine = Think();
+    }
+
+    /// <summary>
+    /// 死亡後に呼ばれる
+    /// </summary>
+    public void DeadEnd()
+    {
+        canUseHeal = true;
+    }
+
+    public override void UsedHeal()
+    {
+        base.UsedHeal();
+        Destroy(this.gameObject);
     }
 }
