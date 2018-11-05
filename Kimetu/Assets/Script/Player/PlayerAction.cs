@@ -25,7 +25,17 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     [SerializeField, Header("カウンター判定の存在する時間(秒)")]
     private float counterTime;
     private PlayerAnimation playerAnimation; //アニメーション管理
-    private PlayerState state; //プレイヤーの状態
+    private PlayerState mState; //プレイヤーの状態
+    public PlayerState state {
+        private set {
+            mState = value;
+            //ディフェンス以外になったらフラグ変更
+            if(value != PlayerState.Defence) {
+                this.isGuard = false;
+            }
+        }
+        get { return mState; }
+    }
     private PlayerStatus status; //プレイヤーのステータス
     private bool isGuard; //guardしているか
     private float counterOccuredTime; //カウンターが発生した時間保存用
@@ -354,6 +364,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //失敗したら自分にダメージ
         else
         {
+            GuardEnd();
             Debug.Log("counter failed");
             Damage(damageSource);
         }
