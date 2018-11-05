@@ -43,15 +43,16 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private CameraController playerCamera;
 
 
-	public CharacterAnimation characterAnimation { get { return playerAnimation; }}
+    public CharacterAnimation characterAnimation { get { return playerAnimation; } }
 
-	void Start() {
+    void Start()
+    {
         this.status = GetComponent<PlayerStatus>();
         //this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
         this.playerAnimation = GetComponent<PlayerAnimation>();
-		this.isGuard = false;
-		this.counterOccuredTime = -1;
-		this.state = PlayerState.Idle;
+        this.isGuard = false;
+        this.counterOccuredTime = -1;
+        this.state = PlayerState.Idle;
         this.isAvoid = false;
         this.isAttack = false;
         status = GetComponent<PlayerStatus>();
@@ -130,7 +131,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         dash.Update(Time.deltaTime);
         float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
         //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
-        transform.position +=playerCamera.hRotation * dir * 10 * t * Time.deltaTime;
+        transform.position += playerCamera.hRotation * dir * 10 * t * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
@@ -187,6 +188,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void PierceAndHeal()
     {
+        Debug.Log("吸生可能か判定");
         if (!CanPierce()) return;
         StartCoroutine(PierceAndHeakCoroutine());
     }
@@ -197,6 +199,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <returns></returns>
     private IEnumerator PierceAndHeakCoroutine()
     {
+        Debug.Log("吸生開始");
         state = PlayerState.Pierce;
         EnemyAI nearEnemy = MostNearEnemy();
         //敵のほうを向くまで待機
@@ -207,6 +210,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;
+        Debug.Log("吸生終了");
     }
 
     /// <summary>
@@ -294,7 +298,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         yield return new WaitForSeconds(1);
         weapon.AttackEnd();
         isAttack = false;
-        state = PlayerState.Attack;
+        state = PlayerState.Idle;
     }
 
     /// <summary>
@@ -322,7 +326,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             {
                 Debug.Log("counter succeed");
                 damageSource.attackCharacter.Countered();
-				Slow.Instance.SlowStart(CollectAllCharacterAnimation());
+                Slow.Instance.SlowStart(CollectAllCharacterAnimation());
             }
             //失敗したら自分にダメージ
             else
@@ -337,16 +341,18 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             Damage(damageSource);
         }
     }
-	private List<CharacterAnimation> CollectAllCharacterAnimation() {
-		var ret = new List<CharacterAnimation>();
-		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))) {
-			if(!obj.activeInHierarchy) continue;
-			var provider = obj.GetComponent<ICharacterAnimationProvider>();
-			if(provider == null) continue;
-			ret.Add(provider.characterAnimation);
-		}
-		return ret;
-	}
+    private List<CharacterAnimation> CollectAllCharacterAnimation()
+    {
+        var ret = new List<CharacterAnimation>();
+        foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject)))
+        {
+            if (!obj.activeInHierarchy) continue;
+            var provider = obj.GetComponent<ICharacterAnimationProvider>();
+            if (provider == null) continue;
+            ret.Add(provider.characterAnimation);
+        }
+        return ret;
+    }
 
     /// <summary>
     /// ダメージを受ける
@@ -357,7 +363,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         status.Damage(damage.damage);
         //死亡したら倒れるモーション
         if (status.IsDead())
-        {            
+        {
             //Destroy(this.gameObject);
             this.gameObject.transform.position = stageManager.RestartPosition();
             status.Reset();
@@ -384,7 +390,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void Avoid(Vector3 dir)
     {
-        if(this.state == PlayerState.Avoid) {
+        if (this.state == PlayerState.Avoid)
+        {
             return;
         }
         state = PlayerState.Avoid;
