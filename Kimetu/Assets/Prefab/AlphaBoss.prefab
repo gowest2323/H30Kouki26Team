@@ -523,6 +523,7 @@ GameObject:
   - component: {fileID: 114409714610874688}
   - component: {fileID: 114705784824211854}
   - component: {fileID: 114062889554465266}
+  - component: {fileID: 114862924952805878}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -912,7 +913,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1363235873307344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.040023506, z: 1.723774}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4800814588510422}
@@ -1492,7 +1493,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -1519,8 +1520,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.83, z: 1}
-  m_Center: {x: 0, y: 0.91, z: 0}
+  m_Size: {x: 1, y: 1.83, z: 0.65894604}
+  m_Center: {x: 0, y: 0.91, z: 0.17052698}
 --- !u!65 &65952921141276244
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1735,6 +1736,7 @@ MonoBehaviour:
   horizontalAttack: {fileID: 114297925401488916}
   nearPlayer: {fileID: 114705784824211854}
   damage: {fileID: 114062889554465266}
+  death: {fileID: 114862924952805878}
   player: {fileID: 0}
 --- !u!114 &114610648879713494
 MonoBehaviour:
@@ -1835,6 +1837,20 @@ MonoBehaviour:
   searchableAngle: 278
   searchRange: 1.47
   gizmosColor: {r: 0.09710693, g: 1, b: 0, a: 0.57254905}
+--- !u!114 &114862924952805878
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1565957966972384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffceff22ca3cd5745b9b71e5b8de4461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layTime: 1
+  enemyTransform: {fileID: 4195925939884992}
+  enemyNavMesh: {fileID: 195619728860536038}
 --- !u!114 &114876809318028814
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1846,7 +1862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb468fd546cd88f4ab6ec4ef565c0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 150
+  maxHP: 1
 --- !u!114 &114893421021919866
 MonoBehaviour:
   m_ObjectHideFlags: 1

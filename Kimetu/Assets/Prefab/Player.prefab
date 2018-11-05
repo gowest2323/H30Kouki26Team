@@ -874,6 +874,7 @@ GameObject:
   - component: {fileID: 54988323499548366}
   - component: {fileID: 136810302155186948}
   - component: {fileID: 114830164350194748}
+  - component: {fileID: 114607254080019128}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1892,6 +1893,23 @@ GameObject:
   - component: {fileID: 4372281696916580}
   m_Layer: 0
   m_Name: Character1_RightHandThumb4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1730481295955300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4976934240796708}
+  - component: {fileID: 135607519195826342}
+  - component: {fileID: 114645635844370502}
+  m_Layer: 0
+  m_Name: PlayerSearchArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3226,6 +3244,7 @@ Transform:
   - {fileID: 4911061932094452}
   - {fileID: 4399044046760546}
   - {fileID: 4232201661819632}
+  - {fileID: 4976934240796708}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4836,6 +4855,19 @@ Transform:
   m_Father: {fileID: 4357109620140114}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4976934240796708
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1730481295955300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4257583769208652}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4977885655269724
 Transform:
   m_ObjectHideFlags: 1
@@ -5201,16 +5233,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52329d43218894034ac14a94577ad945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidMoveTime: 0.3
+  avoidMoveTime: 1
   knockbackMoveTime: 0.3
   weapon: {fileID: 114351484781314656}
   counterTime: 2
   pierceText: {fileID: 0}
-  pierceHealHP: 0
+  pierceHealHP: 10
   stageManager: {fileID: 0}
   decreaseStaminaPerSecond: 1
   decreaseAttackStamina: 1
   playerCamera: {fileID: 0}
+--- !u!114 &114607254080019128
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1348389955319770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67bc53d2b139c2740b3e9cd8a7585822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114645635844370502
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1730481295955300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1b9ff5eed65e584bae3d22302bf6a23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 114481832675972902}
 --- !u!114 &114830164350194748
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5235,9 +5290,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3efd300bbd0413a887ba9c203e4d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pierceButtonPushTime: 0
+  pierceButtonPushTime: 1
   holdShort: 5
   holdLong: 15
+--- !u!135 &135607519195826342
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1730481295955300}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!136 &136810302155186948
 CapsuleCollider:
   m_ObjectHideFlags: 1
