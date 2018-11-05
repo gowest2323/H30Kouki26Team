@@ -148,6 +148,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         //吸生中なら攻撃しない
         if (state == PlayerState.Pierce) return;
+        //スタミナが０なら攻撃できない
+        if (status.GetStamina() == 0　|| status.GetStamina() < 5) return;
+
         //防御していなければ通常の攻撃
         if (!isGuard)
         {
@@ -170,6 +173,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void GuardStart()
     {
+        //スタミナが０ならガードできない
+        if (status.GetStamina() == 0) return;
+
         this.isGuard = true;
         this.state = PlayerState.Defence;
         //TODO:ここでガードモーションに入る
@@ -399,6 +405,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         //回避コルーチンを開始する
         StartCoroutine(AvoidCoroutine(dir));
+
+        status.DecreaseStamina(10);
 
         //回避行動中は他のアクションを実行できないように
         //PlayerControllerでisAvoidがtrueの時他のメソッドのUPDATEを停止

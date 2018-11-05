@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     private LongPressDetector longPressDetector;
     private bool isKyuusei;
 
+
+    private float outTime = 0.2f, timeElapsed;
+    private PlayerStatus status;
     // Use this for initialization
     void Start()
     {
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
         longPressDetector.OnLongPressingOverTime += OnKyuuseiButtonPushStart;
         longPressDetector.OnLongPressEnd += OnKyuuseiButtonPushEnd;
         isKyuusei = false;
+        status = GetComponent<PlayerStatus>();
     }
 
     private void OnKyuuseiButtonPushStart(float elapsed)
@@ -41,6 +45,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //スタミナ回復(ガード中は回復しない)
+        if (!guardTriggered == true)
+        {
+            timeElapsed += Time.deltaTime;
+            if (timeElapsed >= outTime)
+            {
+                status.RecoveryStamina();
+                timeElapsed = 0;
+            }
+        }
+        Debug.Log(status.GetStamina());
         DashOrAvoid();
         //if (pressButton > 20) pressButton = 0;
         //        Debug.Log(pressButton);
@@ -62,12 +77,12 @@ public class PlayerController : MonoBehaviour
             if (holdLong <= pressButton)
             {
                 Dash();
-                Debug.Log("長押し");
+                //Debug.Log("長押し");
             }
             else if (holdShort <= pressButton)
             {
                 Avoid();
-                Debug.Log("押し");
+                //Debug.Log("押し");
             }
         }
         if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) pressButton = 0;
