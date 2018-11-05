@@ -376,9 +376,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject)))
         {
             if (!obj.activeInHierarchy) continue;
-            var provider = obj.GetComponent<ICharacterAnimationProvider>();
-            if (provider == null) continue;
-            ret.Add(provider.characterAnimation);
+            var animation = obj.GetComponent<CharacterAnimation>();
+            if (animation == null) continue;
+            ret.Add(animation);
         }
         return ret;
     }
