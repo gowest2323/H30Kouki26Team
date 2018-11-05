@@ -22,6 +22,8 @@ public class Slow : SingletonMonoBehaviour<Slow>
     private List<CharacterAnimation> slowAnimationList = new List<CharacterAnimation>();
     //スロー中か？
     private bool isSlow = false;
+    [SerializeField]
+    private SlowColorChanger colorChanger;
 
 
 
@@ -59,6 +61,7 @@ public class Slow : SingletonMonoBehaviour<Slow>
 
     private IEnumerator SlowCoroutine(float waitSeconds, List<CharacterAnimation> slowAnimList)
     {
+        colorChanger.SlowStart();
         isSlow = true;
         //アニメーションリストの再生速度をスローに
         foreach (var anim in slowAnimList)
@@ -76,6 +79,7 @@ public class Slow : SingletonMonoBehaviour<Slow>
         //スローリストをクリア
         slowAnimList.Clear();
         isSlow = false;
+        colorChanger.SlowEnd();
     }
 
 
