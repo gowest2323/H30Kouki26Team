@@ -326,21 +326,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
         else if (state == PlayerState.Counter)
         {
-            //カウンター発生から経過した時間
-            float counterDeltaTime = Time.time - counterOccuredTime;
-            //カウンター発生時間内ならカウンター発生
-            if (counterDeltaTime < counterTime)
-            {
-                Debug.Log("counter succeed");
-                damageSource.attackCharacter.Countered();
-                Slow.Instance.SlowStart(CollectAllCharacterAnimation());
-            }
-            //失敗したら自分にダメージ
-            else
-            {
-                Debug.Log("counter failed");
-                Damage(damageSource);
-            }
+            DoCounter(damageSource);
         }
         else
         {
@@ -348,6 +334,27 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             Damage(damageSource);
         }
     }
+
+    private void DoCounter(DamageSource damageSource) {
+        //カウンター発生から経過した時間
+        float counterDeltaTime = Time.time - counterOccuredTime;
+        //カウンター発生時間内ならカウンター発生
+        if (counterDeltaTime < counterTime)
+        {
+            Debug.Log("counter succeed");
+            damageSource.attackCharacter.Countered();
+            //スロー中でない時のみ
+            if(!Slow.Instance.isSlowNow)
+                Slow.Instance.SlowStart(CollectAllCharacterAnimation());
+        }
+        //失敗したら自分にダメージ
+        else
+        {
+            Debug.Log("counter failed");
+            Damage(damageSource);
+        }
+    }
+
     private List<CharacterAnimation> CollectAllCharacterAnimation()
     {
         var ret = new List<CharacterAnimation>();

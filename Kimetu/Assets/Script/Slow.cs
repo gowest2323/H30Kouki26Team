@@ -24,6 +24,7 @@ public class Slow : SingletonMonoBehaviour<Slow>
     private bool isSlow = false;
     [SerializeField]
     private SlowColorChanger colorChanger;
+    public bool isSlowNow { get { return isSlow; }}
 
 
 
