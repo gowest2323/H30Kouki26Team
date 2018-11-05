@@ -17,6 +17,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float avoidMoveDistance = 2.0f;//回避距離
     [SerializeField]
     private float knockbackMoveTime;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
+    [SerializeField]
+    private float knockbackMoveDistance = 2.0f;
 
     [SerializeField, Header("持っている武器")]
     private Weapon weapon;
@@ -581,12 +583,22 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         Vector3 enemyAttackDir = (myPosXZ - enemyPosXZ).normalized;
         //敵に向いて
         transform.LookAt(enemyPosXZ + new Vector3(0, transform.position.y, 0));
-        //後ろにノックバックされる
-        for (float i = 0; i <= knockbackMoveTime; i += Time.deltaTime)
+
+        var offset = 0f;
+        //開始位置
+        var startPos = transform.position;
+        //ノックバック後の位置
+        var endPos = startPos + (-transform.forward * knockbackMoveDistance);
+        while (offset < knockbackMoveTime)
         {
-            transform.position += -transform.forward * 5 * Time.deltaTime;
-            yield return null;
+            var t = Time.time;
+            yield return new WaitForEndOfFrame();
+            var diff = (Time.time - t);
+            offset += diff;
+            var percent = offset / knockbackMoveTime;
+            transform.position = Vector3.Lerp(startPos, endPos, percent);
         }
+        yield return new WaitForEndOfFrame();
 
         //ガードボタンまだ押しているなら
         if (isGuard)
