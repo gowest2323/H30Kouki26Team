@@ -442,14 +442,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         var offset = 0f;
         //開始位置
         var startPos = transform.position;
-        //後ろ回避後の位置
-        var endBackPos = startPos + (-transform.forward * avoidMoveDistance);
-        //左回避後の位置
-        var endLeftPos = startPos + (-transform.right * avoidMoveDistance);
-        //右回避後の位置
-        var endRightPos = startPos + (transform.right * avoidMoveDistance);
-        //前回避後の位置
-        var endForwardPos = startPos + (transform.forward * avoidMoveDistance);
         //何の方向もない時
         if (dir == Vector3.zero)
         {
@@ -458,7 +450,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             //SE
             AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
 
-            yield return DirectionAvoid(startPos, endBackPos);
+            yield return DirectionAvoid(-transform.forward);
 
             yield return new WaitForEndOfFrame();
 
@@ -476,7 +468,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             //前進回避アニメーション
             playerAnimation.StartForwardAvoidAnimation();
-            yield return DirectionAvoid(startPos, endForwardPos);
+            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
         }
         //横
         else if (Vector3.Dot(transform.forward, dir) < 0.3f &&
@@ -486,13 +478,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             if (dir.x > 0)
             {
                 playerAnimation.StartRightAvoidAnimation();
-                yield return DirectionAvoid(startPos, endRightPos);
+                yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
             }
             //左回避アニメーション
             if (dir.x < 0)
             {
                 playerAnimation.StartLeftAvoidAnimation();
-                yield return DirectionAvoid(startPos, endLeftPos);
+                yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
             }
         }
         //後ろ
@@ -500,7 +492,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
-            yield return DirectionAvoid(startPos, endBackPos);
+            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
         }
 
         //SE
@@ -514,10 +506,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         yield break;
     }
 
-    private IEnumerator DirectionAvoid(Vector3 startPos,Vector3 endPos)
+    private IEnumerator DirectionAvoid(Vector3 dir)
     {
         var offset = 0f;
-      
+        var start = transform.position;
         while (offset < avoidMoveTime)
         {
             var t = Time.time;
@@ -525,7 +517,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / avoidMoveTime;
-            transform.position = Vector3.Lerp(startPos, endPos, percent);
+            transform.position = start + (dir * (avoidMoveDistance * percent));
         }
     }
 
