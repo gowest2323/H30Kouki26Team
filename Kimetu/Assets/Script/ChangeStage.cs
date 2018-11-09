@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class ChangeStage : MonoBehaviour {
     private bool playerStay;
     public GameObject canvas;
+    [SerializeField, Header("再生するタイムライン")]
+    private PlayableDirector playableDirector;
+    [SerializeField]
+    private SceneName name;
 
 	// Use this for initialization
 	void Start () {
@@ -12,8 +18,11 @@ public class ChangeStage : MonoBehaviour {
         canvas.gameObject.SetActive(false);
         GetComponent<LongPressDetector>();
         GetComponent<LongPressDetector>().OnLongPressEnd += () => {
+            Debug.Log("stay " + playerStay);
             if (playerStay == true)
             {
+                //playableDirector.Play();
+                SceneManager.LoadScene(name.String());
                 Debug.Log("ステージ移行できます");
             }
         };
