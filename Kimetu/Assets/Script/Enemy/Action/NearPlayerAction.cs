@@ -11,13 +11,14 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     private EnemySearchableAreaBase attackableArea;
     [SerializeField]
     private NavMeshAgent agent;
-    [SerializeField]
     private GameObject playerObj;
     public bool isNearPlayer { private set; get; }
     private EnemyAnimation enemyAnimation;
 
-    private void Awake() {
+    private void Awake()
+    {
         enemyAnimation = GetComponentInParent<EnemyAnimation>();
+        playerObj = GameObject.FindGameObjectWithTag(TagName.Player.String());
     }
 
     private void Start()
