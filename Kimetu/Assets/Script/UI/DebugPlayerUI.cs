@@ -13,6 +13,8 @@ public class DebugPlayerUI : MonoBehaviour {
 
 	[SerializeField]
 	private PlayerStatus status;
+    [SerializeField]
+    private Slider slider1, slider2;
 
 	// Use this for initialization
 	void Start () {
@@ -25,5 +27,7 @@ public class DebugPlayerUI : MonoBehaviour {
 	void Update () {
 		hpText.text = "HP: " + status.GetHP();
 		spText.text = "SP: " + status.GetStamina();
+        slider1.value = status.GetHP();
+        slider2.value = status.GetStamina();
 	}
 }
