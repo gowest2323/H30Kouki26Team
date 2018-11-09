@@ -515,7 +515,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         var col = GetComponent<CapsuleCollider>();
       
         LayerMask mask = LayerMask.GetMask("Stage");
-        Ray ray = new Ray(transform.position+new Vector3(0,3,0),transform.forward);
+        Ray ray = new Ray(transform.position,dir.normalized);
         RaycastHit hit;    
         var offset = 0f;
         var start = transform.position;
