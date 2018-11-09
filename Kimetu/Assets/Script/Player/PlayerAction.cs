@@ -19,6 +19,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float knockbackMoveTime;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
     [SerializeField]
     private float knockbackMoveDistance = 2.0f;
+    [SerializeField]
+    private float rayDistance = 10.0f;
+    [SerializeField]
+    private float limitRayDistance = 2.0f;
 
     [SerializeField, Header("持っている武器")]
     private Weapon weapon;
@@ -512,7 +516,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
       
         LayerMask mask = LayerMask.GetMask("Stage");
         Ray ray = new Ray(transform.position+new Vector3(0,3,0),transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * 3.0f, Color.red);
         RaycastHit hit;    
         var offset = 0f;
         var start = transform.position;
@@ -525,13 +528,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / avoidMoveTime;
-            if (Physics.Raycast(ray, out hit, 10.0f, mask))
+            if (Physics.Raycast(ray, out hit, rayDistance, mask))
             {
                 Debug.Log("stageに当たった");
                 dis = hit.distance;
                 Debug.Log(dis);
 
-                if (dis <= 2)
+                if (dis <= limitRayDistance)
                 {
                     col.enabled = true;
                     yield break;
