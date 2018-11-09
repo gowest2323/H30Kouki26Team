@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
                 staminaTimeElapsed = 0;
             }
         }
-        Debug.Log(status.GetStamina());
+        //Debug.Log(status.GetStamina());
         DashOrAvoid();
         //if (pressButton > 20) pressButton = 0;
         //        Debug.Log(pressButton);

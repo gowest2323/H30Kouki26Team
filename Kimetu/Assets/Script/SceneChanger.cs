@@ -67,6 +67,7 @@ public class SceneChanger : MonoBehaviour
     /// <returns></returns>
     private IEnumerator ChangeCoroutine(SceneName scene, FadeData fade)
     {
+        if (isChanging) yield break;
         isChanging = true;
         //フェードアウトし終わるまで待機
         yield return StartCoroutine(Fade.Instance().FadeOutCoroutine(fade.fadeOutTime, fade.fadeColor));

@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.6994037, g: 0.8096358, b: 0.8773585, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -163,8 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d9cf10fd2b9183428b230ca4ca7ff14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  playerSpeed: 0.7
+  slowSpeed: 0.3
+  highSpeed: 1.2
   slowTime: 10
   colorChanger: {fileID: 114342283565978210}
 --- !u!222 &222776247932868008
