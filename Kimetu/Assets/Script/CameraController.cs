@@ -31,9 +31,9 @@ public class CameraController : MonoBehaviour
     private float angleY = 1.0f;
 
     [SerializeField]
-    private float cameraHighAngle = 60.0f;
+    private float cameraHighestAngle = 60.0f;
     [SerializeField]
-    private float cameraLowAngle = 0.0f;
+    private float cameraLowestAngle =-10.0f;
 
 
     // Use this for initialization
@@ -73,6 +73,7 @@ public class CameraController : MonoBehaviour
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
 
+        //プレイヤーの向きの計算もあるのでここ保留
         hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
         vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
 
@@ -81,19 +82,21 @@ public class CameraController : MonoBehaviour
         //transform.rotation = hRotation * vRotation;
 
         //別の回転計算方法
-        transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
-        transform.Rotate(new Vector3(ver * turnSpeed, 0, 0));
+        if (Mathf.Abs(hor) >= 0.1f)
+            transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
+        if (Mathf.Abs(ver) >= 0.05f)
+            transform.Rotate(new Vector3(ver * turnSpeed, 0, 0));
 
         //角度制限
         float rotationX = transform.eulerAngles.x;
         rotationX = (rotationX > 180) ? rotationX -= 360 : rotationX;
-        if (rotationX > cameraHighAngle)
+        if (rotationX > cameraHighestAngle)
         {
-            rotationX = cameraHighAngle;
+            rotationX = cameraHighestAngle;
         }
-        else if (rotationX < cameraLowAngle)
+        else if (rotationX < cameraLowestAngle)
         {
-            rotationX = cameraLowAngle;
+            rotationX = cameraLowestAngle;
 
         }
         transform.eulerAngles = new Vector3(rotationX, transform.eulerAngles.y, 0);
@@ -174,8 +177,15 @@ public class CameraController : MonoBehaviour
             var playerProgRot = Quaternion.Slerp(playerStartRotation, playerEndRotation, offset / seconds);
             transform.rotation = selfProgRot;
             player.transform.rotation = playerProgRot;
-            //CheckBackObject(playerPos);
-            transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+            //カメラの後ろに壁がある
+            if (IsWallOnBack(playerPos))
+            {
+                transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+            }
+            else
+            {
+                transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+            }
             //微妙に見下ろすように
             transform.position += (Vector3.up * angleY);
             //回転をプレイヤーへ適用
@@ -286,5 +296,52 @@ public class CameraController : MonoBehaviour
             transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
         }
 
+    }
+    private bool IsWallOnBack(Vector3 playerPos)
+    {
+        //後ろにレイ飛ばす
+        Ray ray = new Ray(transform.position, -transform.forward);
+
+        RaycastHit hit;
+
+        //if (Physics.Raycast(ray, out hit, 10.0f, wallLayerMask))
+
+        if (Physics.Linecast(playerPos, transform.position, out hit, LayerMask.GetMask("Wall")))
+        {
+            transform.position = Vector3.Lerp(transform.position, hit.point, 1f);
+
+            return true;
+            Debug.Log(hit.collider.name);
+            Debug.Log(hit.distance);
+            ////Rayの原点から衝突地点までの距離を得る
+            //var hitDistance = hit.distance;
+            //if (hitDistance <= 1.0f && hitDistance >= 0)
+            //{
+            //    var hitPoint = hit.point;
+            //    var hitDirection = (transform.position - hitPoint).normalized;
+
+
+            //    transform.position = Vector3.Lerp(transform.position, hit.point, 1f);
+            //    //player.transform.position + hitDirection*(1-hitDistance)
+            //    //- transform.rotation * Vector3.forward * distance;
+            //}
+
+
+        }
+        else
+        {
+            //transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+            return false;
+        }
+
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        Vector3 backPos = new Vector3(transform.forward.x*3, 0, transform.forward.z*3);
+
+        Gizmos.DrawLine(transform.position, transform.position - (backPos));
     }
 }
