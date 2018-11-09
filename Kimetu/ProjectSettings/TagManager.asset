@@ -15,10 +15,10 @@ TagManager:
   - 
   - 
   - Stage
-  - Weapon
-  - Damageable
-  - 
-  - 
+  - EnemyWeapon
+  - "\x01EnemyDamageable"
+  - PlayerWeapon
+  - PlayerDamageable
   - 
   - 
   - 
