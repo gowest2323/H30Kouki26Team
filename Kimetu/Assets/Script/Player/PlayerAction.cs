@@ -513,7 +513,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
     private IEnumerator DirectionAvoid(Vector3 dir)
     {
-        var col = GetComponent<CapsuleCollider>();
+        var col = GetComponent<Collider>();
       
         LayerMask mask = LayerMask.GetMask("Stage");
         Ray ray = new Ray(transform.position,dir.normalized);
@@ -633,7 +633,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         Ray ray = new Ray(transform.position, -transform.forward);
         RaycastHit hit;
         float dis;
-        var col = GetComponent<CapsuleCollider>();
+        var col = GetComponent<Collider>();
         //ノックバック後の位置
         var endPos = startPos + (-transform.forward * knockbackMoveDistance);
         while (offset < knockbackMoveTime)
