@@ -439,7 +439,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (isAvoid) yield break;
 
         isAvoid = true;
-        var offset = 0f;
+
+       
         //開始位置
         var startPos = transform.position;
         //何の方向もない時
@@ -456,7 +457,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
             //TODO:ここに体制立ち直る隙間時間？
 
-            isAvoid = false;
+            isAvoid = false;         
             state = PlayerState.Idle;
             yield break;
         }
@@ -500,7 +501,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
       
         yield return new WaitForEndOfFrame();
         //TODO:ここに体制立ち直る隙間時間？
-
         isAvoid = false;
         state = PlayerState.Idle;
         yield break;
@@ -508,22 +508,41 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
     private IEnumerator DirectionAvoid(Vector3 dir)
     {
+        var col = GetComponent<CapsuleCollider>();
+      
+        LayerMask mask = LayerMask.GetMask("Stage");
+        Ray ray = new Ray(transform.position+new Vector3(0,3,0),transform.forward);
+        Debug.DrawRay(ray.origin, ray.direction * 3.0f, Color.red);
+        RaycastHit hit;    
         var offset = 0f;
         var start = transform.position;
-        while (offset < avoidMoveTime)
+        while (offset < avoidMoveTime )
         {
+            col.enabled = false;
+            float dis;
             var t = Time.time;
             yield return new WaitForEndOfFrame();
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / avoidMoveTime;
+            if (Physics.Raycast(ray, out hit, 10.0f, mask))
+            {
+                Debug.Log("stageに当たった");
+                dis = hit.distance;
+                Debug.Log(dis);
+
+                if (dis <= 2)
+                {
+                    col.enabled = true;
+                    yield break;
+                }
+            }
+            col.enabled = true;
+
             transform.position = start + (dir * (avoidMoveDistance * percent));
+           
         }
     }
-
-   
-
-
 
     public bool IsAvoid()
     {
