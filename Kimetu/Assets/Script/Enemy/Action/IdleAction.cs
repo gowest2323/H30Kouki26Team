@@ -22,9 +22,7 @@ public class IdleAction : MonoBehaviour, IEnemyActionable
     /// <returns></returns>
     public IEnumerator Action(UnityAction callBack)
     {
-        Debug.Log("待機開始");
         yield return new WaitForSeconds(waitTime);
         callBack.Invoke();
-        Debug.Log("待機終了");
     }
 }

@@ -14,6 +14,7 @@ public enum EnemyAttackType
     Tackle, //突進
     Thunder, //雷撃
     ZigzagSlash, //ジグザグ斬撃
+    AirSlash, //空中斬撃
 }
 
 /// <summary>
@@ -29,6 +30,11 @@ public class EnemyAttackTypeDictionary
         {
             {EnemyAttackType.SwingDown,"Attack" },
             {EnemyAttackType.HorizontalAttack,"Attack" },
+            {EnemyAttackType.Beveled,"Attack" },
+            {EnemyAttackType.Strike,"Attack" },
+            {EnemyAttackType.Tackle,"Attack" },
+            {EnemyAttackType.ZigzagSlash,"Attack" },
+            {EnemyAttackType.AirSlash,"Attack" },
 
         };
 }
