@@ -19,22 +19,6 @@ MonoBehaviour:
     m_Framerate: 60
   m_DurationMode: 0
   m_Version: 0
---- !u!114 &114625923712449876
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: SceneChangePlayableAsset
-  m_EditorClassIdentifier: Kimetu::SceneChangePlayableAsset
-  nextScene: 6
-  sceneFade:
-    fadeInTime: 2
-    fadeOutTime: 2
-    fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &114628395258011344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,7 +39,7 @@ MonoBehaviour:
   m_Clips:
   - m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 114625923712449876}
+    m_Asset: {fileID: 114862563080315898}
     m_Duration: 5
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114628395258011344}
@@ -123,3 +107,19 @@ MonoBehaviour:
     m_DisplayName: SceneChangePlayableAsset
     m_Version: 1
   m_Version: 1
+--- !u!114 &114862563080315898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: SceneChangePlayableAsset
+  m_EditorClassIdentifier: Kimetu::SceneChangePlayableAsset
+  nextScene: 0
+  sceneFade:
+    fadeInTime: 0
+    fadeOutTime: 0
+    fadeColor: {r: 0, g: 0, b: 0, a: 0}
