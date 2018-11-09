@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OneAttackPatternAI : EnemyAI
+public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
 {
     private bool isAction; //行動中か？
     [SerializeField]
@@ -18,6 +18,8 @@ public class OneAttackPatternAI : EnemyAI
     [SerializeField]
     private DeathAction death;
     private EnemyStatus status;
+
+    public string informationText { get { return currentState.ToString(); }}
 
     private void Start()
     {
