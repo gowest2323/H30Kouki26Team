@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 114718156301037940}
   - component: {fileID: 65178767827378396}
   - component: {fileID: 114340366861905178}
+  - component: {fileID: 114765487198074332}
   m_Layer: 10
   m_Name: oni_1f_boss
   m_TagString: Enemy
@@ -2594,6 +2595,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114765487198074332
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1240021590107878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba33bbad2204404fb15d6323563d7ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114812407875807986
 MonoBehaviour:
   m_ObjectHideFlags: 1
