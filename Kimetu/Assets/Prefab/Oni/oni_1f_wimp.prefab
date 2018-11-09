@@ -969,7 +969,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4788020716342986}
-  - component: {fileID: 95617512134642778}
+  - component: {fileID: 95425091925551056}
   - component: {fileID: 54372609490223276}
   - component: {fileID: 195521335224061128}
   - component: {fileID: 114506980246727746}
@@ -2314,7 +2314,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1.1859654}
   m_Center: {x: 0, y: 0, z: 0.09298273}
---- !u!95 &95617512134642778
+--- !u!95 &95425091925551056
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -2326,7 +2326,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: dd236acb811fc4a7eabeb3a73569cada, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2483,7 +2483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73dc5b72904e0da4980ada6157e67e39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  power: 1
   attackableArea: {fileID: 114402931764593906}
   holderEnemy: {fileID: 114696172197081054}
   attackType: 0
