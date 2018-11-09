@@ -302,15 +302,19 @@ public class CameraController : MonoBehaviour
         return distanceW;
     }
 
-    //自動カメラ照準
-    private void AutoCameraAngle()
+    //カメラがプレイヤーの背後に戻す
+    public void CameraToPlayerBack()
     {
-        if (Mathf.Abs(playerDir.x) >= 0.1f)
-            transform.RotateAround(player.transform.position, Vector3.up, playerDir.x * turnSpeed);
+        vRotation = Quaternion.Euler(20, 0, 0);
+        hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);//プレイヤーの向きに合わせ
+
+        //回転
+        transform.rotation = hRotation * vRotation;
+
+        // 位置
+        nowDistance = distance;
+        transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
     }
-
-
-
 
     private void OnDrawGizmos()
     {

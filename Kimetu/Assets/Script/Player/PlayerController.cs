@@ -153,6 +153,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown(InputMap.Type.LButton.GetInputName()))
         {
+            cameraController.CameraToPlayerBack();
             action.GuardStart();
         }
         else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName()))
