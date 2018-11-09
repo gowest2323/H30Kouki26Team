@@ -99,7 +99,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// 移動
     /// </summary>
     /// <param name="dir"></param>
-    public void Move(Vector3 dir)
+    /// <param name="changeRotation"></param>
+    public void Move(Vector3 dir, bool changeRotation)
     {
         //移動できない状態なら移動しない
         if (!CanMove()) return;
@@ -118,8 +119,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
-        transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
-        transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
+        transform.position += playerCamera.hRotation * dir * 10 * Slow.Instance.PlayerDeltaTime();
+        if(changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
 
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {

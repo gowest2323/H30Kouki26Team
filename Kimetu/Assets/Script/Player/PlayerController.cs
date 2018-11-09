@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private int holdShort = 5;
     [SerializeField, Header("ダッシュ状態になるのにボタンを長押しする時間")]
     private int holdLong = 15;
+    [SerializeField]
+    private CameraController cameraController;
     private int pressButton;
     [SerializeField]
     private LongPressDetector longPressDetector;
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour
             0,
             Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
         );
-        action.Move(dir);
+        action.Move(dir, !cameraController.IsLockOn());
     }
 
     private void Attack()
