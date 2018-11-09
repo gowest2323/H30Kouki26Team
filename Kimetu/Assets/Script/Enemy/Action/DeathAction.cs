@@ -14,6 +14,7 @@ public class DeathAction : MonoBehaviour, IEnemyActionable
     private Transform enemyTransform;
     [SerializeField]
     private NavMeshAgent enemyNavMesh;
+
     private void Start()
     {
         enemyAnimation = GetComponentInParent<EnemyAnimation>();

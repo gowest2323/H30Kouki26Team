@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class SearchAction : MonoBehaviour, IEnemyActionable
 {
     [SerializeField]
-    private EnemyAttackableArea attackableArea;
+    private EnemySearchableAreaBase searchArea;
     private GameObject player;
     public bool canSearched { private set; get; }
     private EnemyAnimation enemyAnimation;
@@ -25,9 +25,8 @@ public class SearchAction : MonoBehaviour, IEnemyActionable
     /// <returns>索敵範囲内にプレイヤーがいたらtrue</returns>
     public IEnumerator Action(UnityAction callBack)
     {
-        Debug.Log("索敵");
         yield return null;
-        canSearched = attackableArea.IsPlayerInArea(player, true);
+        canSearched = searchArea.IsPlayerInArea(player, true);
         callBack.Invoke();
     }
 }

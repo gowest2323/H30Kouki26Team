@@ -14,6 +14,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     public virtual void UsedHeal()
     {
         canUseHeal = false;
+        Destroy(this.gameObject);
     }
 
     /// <summary>
