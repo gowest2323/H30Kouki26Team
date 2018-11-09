@@ -2602,12 +2602,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1908878796493439371514b079216a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idle: {fileID: 0}
-  attack: {fileID: 0}
-  search: {fileID: 0}
-  nearPlayer: {fileID: 0}
-  damage: {fileID: 0}
-  death: {fileID: 0}
+  idle: {fileID: 114596707765325568}
+  attack: {fileID: 114833311285637518}
+  search: {fileID: 114000452703489516}
+  nearPlayer: {fileID: 114269861106063020}
+  damage: {fileID: 114508426203476012}
+  death: {fileID: 114856599124189036}
 --- !u!114 &114755372529514114
 MonoBehaviour:
   m_ObjectHideFlags: 1
