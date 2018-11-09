@@ -271,7 +271,7 @@ public class CameraController : MonoBehaviour
 
         RaycastHit hit;
         float distanceW = 0;
-        if(Physics.Raycast(ray,out hit, 4.0f, LayerMask.GetMask("Wall")))
+        if(Physics.Raycast(ray,out hit, 4.0f, LayerMask.GetMask("Stage")))
         {
             distanceW = Vector3.Distance(new Vector3(player.transform.position.x, transform.position.y,player.transform.position.z),
                                         new Vector3(hit.point.x, transform.position.y, hit.point.z));
@@ -293,7 +293,7 @@ public class CameraController : MonoBehaviour
         Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
 
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 4.0f, LayerMask.GetMask("Wall")))
+        if (Physics.Raycast(ray, out hit, 4.0f, LayerMask.GetMask("Stage")))
         {
 
             Gizmos.DrawLine(transform.position, hit.point);
