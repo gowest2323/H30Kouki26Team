@@ -10,7 +10,7 @@ public class ChangeStage : MonoBehaviour {
     [SerializeField, Header("再生するタイムライン")]
     private PlayableDirector playableDirector;
     [SerializeField]
-    private SceneName name;
+    private SceneName nextSceneName;
 
 	// Use this for initialization
 	void Start () {
@@ -21,9 +21,7 @@ public class ChangeStage : MonoBehaviour {
             Debug.Log("stay " + playerStay);
             if (playerStay == true)
             {
-                //playableDirector.Play();
-                SceneManager.LoadScene(name.String());
-                Debug.Log("ステージ移行できます");
+                SceneChanger.Instance().Change(nextSceneName, new FadeData(1, 1, Color.black));
             }
         };
     }

@@ -63,6 +63,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     [SerializeField]
     private PlayableDirector movie;
 
+    [SerializeField]
+    private SceneName nextSceneName;
 
     public CharacterAnimation characterAnimation { get { return playerAnimation; } }
 
@@ -240,7 +242,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;
         if(isBoss) {
-            movie.Play();
+            SceneChanger.Instance().Change(nextSceneName, new FadeData(1, 1, Color.black));
         }
     }
 
