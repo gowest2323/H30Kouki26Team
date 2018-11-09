@@ -521,10 +521,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         var start = transform.position;
         while (offset < avoidMoveTime )
         {
-            col.enabled = false;
             float dis;
             var t = Time.time;
             yield return new WaitForEndOfFrame();
+            col.enabled = false;
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / avoidMoveTime;
@@ -636,10 +636,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //ノックバック後の位置
         var endPos = startPos + (-transform.forward * knockbackMoveDistance);
         while (offset < knockbackMoveTime)
-        {
-            col.enabled = false;
+        {   
             var t = Time.time;
             yield return new WaitForEndOfFrame();
+            col.enabled = false;
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / knockbackMoveTime;
