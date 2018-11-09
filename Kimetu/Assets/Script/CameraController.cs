@@ -35,6 +35,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float cameraLowestAngle =-10.0f;
 
+    private float nowDistance = 0;
 
     // Use this for initialization
     private void Start()
@@ -48,9 +49,12 @@ public class CameraController : MonoBehaviour
         hRotation = Quaternion.identity;                // 水平回転(Y軸を軸とする回転)は、無回転
         transform.rotation = hRotation * vRotation;     // 最終的なカメラの回転は、垂直回転してから水平回転する合成回転
 
+        nowDistance = distance;
+
         // 位置の初期化
         // player位置から距離distanceだけ手前に引いた位置を設定します
-        transform.position = player.transform.position - transform.rotation * Vector3.forward * distance;
+        transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
+
     }
 
     // Update is called once per frame
@@ -104,8 +108,11 @@ public class CameraController : MonoBehaviour
 
         // カメラの位置(transform.position)の更新
         // player位置から距離distanceだけ手前に引いた位置を設定します
-        //CheckBackObject(player.transform.position + new Vector3(0, 1, 0));
-        transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+
+        // 位置を壁の内側に
+        nowDistance = Distance_PlayertoWall() > 0f ? Distance_PlayertoWall() : distance;
+        if (nowDistance <= 0f) nowDistance = 0f;
+        transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * nowDistance;
         //*/
     }
 
@@ -177,17 +184,18 @@ public class CameraController : MonoBehaviour
             var playerProgRot = Quaternion.Slerp(playerStartRotation, playerEndRotation, offset / seconds);
             transform.rotation = selfProgRot;
             player.transform.rotation = playerProgRot;
-            //カメラの後ろに壁がある
-            if (IsWallOnBack(playerPos))
-            {
-                transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
-            }
-            else
-            {
-                transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
-            }
+
+            // 位置を壁の内側に
+            nowDistance = Distance_PlayertoWall() > 0f ? Distance_PlayertoWall() : distance;
+            if (nowDistance <= 0f) nowDistance = 0f;
+            transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * nowDistance;
+
             //微妙に見下ろすように
-            transform.position += (Vector3.up * angleY);
+            if (nowDistance < distance)
+                transform.position += (Vector3.up * angleY*2);
+            else
+                transform.position += (Vector3.up * angleY);
+
             //回転をプレイヤーへ適用
             var euler = transform.rotation.eulerAngles;
             hRotation = Quaternion.Euler(0, euler.y, 0);
@@ -231,10 +239,6 @@ public class CameraController : MonoBehaviour
         }
     }
 
-
-
-
-
     /// <summary>
     /// 近くにあるtagnameのオブジェクト取得
     /// </summary>
@@ -261,87 +265,39 @@ public class CameraController : MonoBehaviour
         return targetObj;
     }
 
-    private void CheckBackObject(Vector3 playerPos)
+    private float Distance_PlayertoWall()
     {
-        //後ろにレイ飛ばす
-        Ray ray = new Ray(transform.position, -transform.forward);
+        Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
 
         RaycastHit hit;
-
-        //if (Physics.Raycast(ray, out hit, 10.0f, wallLayerMask))
-
-        if (Physics.Linecast(playerPos, transform.position, out hit, LayerMask.GetMask("Wall")))
+        float distanceW = 0;
+        if(Physics.Raycast(ray,out hit, 4.0f, LayerMask.GetMask("Wall")))
         {
-            transform.position = Vector3.Lerp(transform.position, hit.point, 1f);
-
-            Debug.Log(hit.collider.name);
-            Debug.Log(hit.distance);
-            ////Rayの原点から衝突地点までの距離を得る
-            //var hitDistance = hit.distance;
-            //if (hitDistance <= 1.0f && hitDistance >= 0)
-            //{
-            //    var hitPoint = hit.point;
-            //    var hitDirection = (transform.position - hitPoint).normalized;
-
-
-            //    transform.position = Vector3.Lerp(transform.position, hit.point, 1f);
-            //    //player.transform.position + hitDirection*(1-hitDistance)
-            //    //- transform.rotation * Vector3.forward * distance;
-            //}
-
-
+            distanceW = Vector3.Distance(new Vector3(player.transform.position.x, transform.position.y,player.transform.position.z),
+                                        new Vector3(hit.point.x, transform.position.y, hit.point.z));
         }
         else
         {
-            transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
+            distanceW = 0;
         }
 
-    }
-    private bool IsWallOnBack(Vector3 playerPos)
-    {
-        //後ろにレイ飛ばす
-        Ray ray = new Ray(transform.position, -transform.forward);
+        Debug.Log("distanceFromWall >> " + distanceW);
 
-        RaycastHit hit;
-
-        //if (Physics.Raycast(ray, out hit, 10.0f, wallLayerMask))
-
-        if (Physics.Linecast(playerPos, transform.position, out hit, LayerMask.GetMask("Wall")))
-        {
-            transform.position = Vector3.Lerp(transform.position, hit.point, 1f);
-
-            return true;
-            Debug.Log(hit.collider.name);
-            Debug.Log(hit.distance);
-            ////Rayの原点から衝突地点までの距離を得る
-            //var hitDistance = hit.distance;
-            //if (hitDistance <= 1.0f && hitDistance >= 0)
-            //{
-            //    var hitPoint = hit.point;
-            //    var hitDirection = (transform.position - hitPoint).normalized;
-
-
-            //    transform.position = Vector3.Lerp(transform.position, hit.point, 1f);
-            //    //player.transform.position + hitDirection*(1-hitDistance)
-            //    //- transform.rotation * Vector3.forward * distance;
-            //}
-
-
-        }
-        else
-        {
-            //transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * distance;
-            return false;
-        }
-
+        return distanceW;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
 
-        Vector3 backPos = new Vector3(transform.forward.x*3, 0, transform.forward.z*3);
+        Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
 
-        Gizmos.DrawLine(transform.position, transform.position - (backPos));
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 4.0f, LayerMask.GetMask("Wall")))
+        {
+
+            Gizmos.DrawLine(transform.position, hit.point);
+
+        }
     }
 }
