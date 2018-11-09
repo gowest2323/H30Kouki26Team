@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
 
 
     [SerializeField]
-    private float distance = 3.0f;    // 注視対象プレイヤーからカメラを離す距離
+    private float distance = 4.0f;    // 注視対象プレイヤーからカメラを離す距離
     [SerializeField]
     private Quaternion vRotation;      // カメラの垂直回転(見下ろし回転)
     [SerializeField]
@@ -28,10 +28,10 @@ public class CameraController : MonoBehaviour
     private int coroutineCount;
 
     [SerializeField]
-    private float angleY = 1.0f;
+    private float angleY = 0.2f;
 
     [SerializeField]
-    private float cameraHighestAngle = 60.0f;
+    private float cameraHighestAngle = 45.0f;
     [SerializeField]
     private float cameraLowestAngle =-10.0f;
 
