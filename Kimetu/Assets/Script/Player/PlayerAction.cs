@@ -629,15 +629,42 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         var offset = 0f;
         //開始位置
         var startPos = transform.position;
+        Ray ray = new Ray(transform.position, -transform.forward);
+        RaycastHit hit;
+        float dis;
+        var col = GetComponent<CapsuleCollider>();
         //ノックバック後の位置
         var endPos = startPos + (-transform.forward * knockbackMoveDistance);
         while (offset < knockbackMoveTime)
         {
+            col.enabled = false;
             var t = Time.time;
             yield return new WaitForEndOfFrame();
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / knockbackMoveTime;
+            if (Physics.Raycast(ray.origin,ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage")))
+            {
+                dis = hit.distance;
+                Debug.Log("ノックバック");
+                if (dis < limitRayDistance)
+                {
+                    col.enabled = true;
+                    //ガードボタンまだ押しているなら
+                    if (isGuard)
+                    {
+                        //防御中に切り替える
+                        state = PlayerState.Defence;
+                    }
+                    else//押してなかったら
+                    {
+                        //防御解除->通常状態
+                        GuardEnd();
+                    }
+                    yield break;
+                }
+            }
+            col.enabled = true;
             transform.position = Vector3.Lerp(startPos, endPos, percent);
         }
         yield return new WaitForEndOfFrame();
