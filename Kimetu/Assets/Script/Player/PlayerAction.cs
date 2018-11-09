@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
+using UnityEngine.Playables;
 
 [RequireComponent(typeof(PlayerStatus))]
 public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider
@@ -59,6 +60,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private int decreaseAttackStamina;
     [SerializeField]
     private CameraController playerCamera;
+    [SerializeField]
+    private PlayableDirector movie;
 
 
     public CharacterAnimation characterAnimation { get { return playerAnimation; } }
@@ -227,6 +230,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         state = PlayerState.Pierce;
         EnemyAI nearEnemy = MostNearEnemy();
+        var isBoss = nearEnemy.GetComponent<BossMarker>() != null;
         //敵のほうを向くまで待機
         yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
         status.Heal(pierceHealHP);
@@ -235,6 +239,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;
+        if(isBoss) {
+            movie.Play();
+        }
     }
 
     /// <summary>
