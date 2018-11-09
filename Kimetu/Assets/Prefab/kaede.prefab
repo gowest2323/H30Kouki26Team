@@ -1950,7 +1950,7 @@ Transform:
   m_GameObject: {fileID: 1605809767795630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.96, y: 0, z: -6.92}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4670702012720468}
   - {fileID: 4310908366059136}
@@ -1967,7 +1967,7 @@ Transform:
   m_GameObject: {fileID: 1127106046545914}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.01, y: 0.75, z: 0.37}
-  m_LocalScale: {x: 0.25, y: 1.25, z: 0.5}
+  m_LocalScale: {x: 0.25, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 4551935980381678}
   m_RootOrder: 2
@@ -3095,6 +3095,7 @@ MonoBehaviour:
   pierceButtonPushTime: 1
   holdShort: 5
   holdLong: 15
+  cameraController: {fileID: 0}
   longPressDetector: {fileID: 114059307054834580}
   staminaHealTime: 0.2
 --- !u!114 &114059307054834580
@@ -3135,6 +3136,7 @@ MonoBehaviour:
   decreaseStaminaPerSecond: 1
   decreaseAttackStamina: 1
   playerCamera: {fileID: 0}
+  movie: {fileID: 0}
 --- !u!114 &114242767150101514
 MonoBehaviour:
   m_ObjectHideFlags: 1
