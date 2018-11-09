@@ -994,7 +994,7 @@ GameObject:
   - component: {fileID: 114978406757283416}
   m_Layer: 10
   m_Name: oni_1f_wimp
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2595,7 +2595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchableAngle: 160
-  searchRange: 4
+  searchRange: 8
   gizmosColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &114833311285637518
 MonoBehaviour:
@@ -2691,7 +2691,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: b5bd05ba7404c4cb689af3e35396640d, type: 3}
+  - {fileID: 2100000, guid: 7929b92e35df88a42a1e7f1d980365e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

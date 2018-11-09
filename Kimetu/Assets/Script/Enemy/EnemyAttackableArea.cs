@@ -96,7 +96,9 @@ public class EnemyAttackableArea : EnemySearchableAreaBase
         }
 
         RaycastHit onHitRay;
-        if (!Physics.Raycast(fromPosition, toTargetDir, out onHitRay, distance))
+        Debug.DrawRay(fromPosition, toTargetDir, Color.yellow);
+        int layerMask = LayerMask.GetMask(new string[] {LayerName.Stage.String(), LayerName.PlayerDamageable.String()});
+        if (!Physics.Raycast(fromPosition, toTargetDir, out onHitRay, distance, layerMask))
         {
             return false;
         }

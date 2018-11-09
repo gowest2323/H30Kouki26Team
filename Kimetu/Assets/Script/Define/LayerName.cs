@@ -10,6 +10,11 @@ TransparentFX,
 IgnoreRaycast,
 Water,
 UI,
+Stage,
+EnemyWeapon,
+EnemyDamageable,
+PlayerWeapon,
+PlayerDamageable,
 }
 public static class LayerNameManager
 {
@@ -20,6 +25,11 @@ public static class LayerNameManager
     {LayerName.IgnoreRaycast,"IgnoreRaycast"},
     {LayerName.Water,"Water"},
     {LayerName.UI,"UI"},
+    {LayerName.Stage,"Stage"},
+    {LayerName.EnemyWeapon,"EnemyWeapon"},
+    {LayerName.EnemyDamageable,"EnemyDamageable"},
+    {LayerName.PlayerWeapon,"PlayerWeapon"},
+    {LayerName.PlayerDamageable,"PlayerDamageable"},
 };
     public static bool Equals(LayerName layername, string name)
     {
