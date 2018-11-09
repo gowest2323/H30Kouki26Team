@@ -31,11 +31,14 @@ public class CameraController : MonoBehaviour
     private float angleY = 1.0f;
 
     [SerializeField]
-    private float cameraHighestAngle = 60.0f;
+    private float cameraHighestAngle = 60.0f;   // カメラ垂直最高角度
     [SerializeField]
-    private float cameraLowestAngle =-10.0f;
+    private float cameraLowestAngle =-10.0f;    // カメラ垂直最低角度
 
-    private float nowDistance = 0;
+    private float nowDistance = 0;  //今カメラとプレイヤーの距離
+
+    [HideInInspector]
+    public Vector3 playerDir;   //プレイヤーの向き
 
     // Use this for initialization
     private void Start()
@@ -45,7 +48,7 @@ public class CameraController : MonoBehaviour
         interval = false;
         intervalTime = 0;
         // 回転の初期化
-        vRotation = Quaternion.Euler(45, 0, 0);         // 垂直回転(X軸を軸とする回転)は、30度見下ろす回転
+        vRotation = Quaternion.Euler(20, 0, 0);         // 垂直回転(X軸を軸とする回転)は、30度見下ろす回転
         hRotation = Quaternion.identity;                // 水平回転(Y軸を軸とする回転)は、無回転
         transform.rotation = hRotation * vRotation;     // 最終的なカメラの回転は、垂直回転してから水平回転する合成回転
 
@@ -77,19 +80,33 @@ public class CameraController : MonoBehaviour
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
 
-        //プレイヤーの向きの計算もあるのでここ保留
-        hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
-        vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
-
         // カメラの回転(transform.rotation)の更新
         // 垂直回転してから水平回転する合成回転とします
-        //transform.rotation = hRotation * vRotation;
 
-        //別の回転計算方法
-        if (Mathf.Abs(hor) >= 0.1f)
+        //回転計算
+        if (Mathf.Abs(hor) >= 0.1f)//カメラの水平操作がある時
+        {
             transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
-        if (Mathf.Abs(ver) >= 0.05f)
+
+            //プレイヤーの向きの計算（水平）
+            hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
+        }
+        else//カメラの水平操作がない時
+        {
+            //プレイヤーの向きに沿って自動水平回転（速度半分）
+            if (Mathf.Abs(playerDir.x) >= 0.1f)
+                transform.RotateAround(player.transform.position, Vector3.up, playerDir.x * (turnSpeed/2));
+
+            //プレイヤーの向きの計算（水平）
+            hRotation *= Quaternion.Euler(0, playerDir.x * (turnSpeed/2), 0);
+        }
+
+        if (Mathf.Abs(ver) >= 0.05f)//カメラの垂直操作がある時
             transform.Rotate(new Vector3(ver * turnSpeed, 0, 0));
+
+        //プレイヤーの向きの計算（垂直）
+        vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
+
 
         //角度制限
         float rotationX = transform.eulerAngles.x;
@@ -101,7 +118,6 @@ public class CameraController : MonoBehaviour
         else if (rotationX < cameraLowestAngle)
         {
             rotationX = cameraLowestAngle;
-
         }
         transform.eulerAngles = new Vector3(rotationX, transform.eulerAngles.y, 0);
 
@@ -192,7 +208,7 @@ public class CameraController : MonoBehaviour
 
             //微妙に見下ろすように
             if (nowDistance < distance)
-                transform.position += (Vector3.up * angleY*2);
+                transform.position += (Vector3.up * angleY * 1.5f);
             else
                 transform.position += (Vector3.up * angleY);
 
@@ -281,9 +297,23 @@ public class CameraController : MonoBehaviour
             distanceW = 0;
         }
 
-        Debug.Log("distanceFromWall >> " + distanceW);
+        //Debug.Log("distanceFromWall >> " + distanceW);
 
         return distanceW;
+    }
+
+    //カメラがプレイヤーの背後に戻す
+    public void CameraToPlayerBack()
+    {
+        vRotation = Quaternion.Euler(20, 0, 0);
+        hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);//プレイヤーの向きに合わせ
+
+        //回転
+        transform.rotation = hRotation * vRotation;
+
+        // 位置
+        nowDistance = distance;
+        transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
     }
 
     private void OnDrawGizmos()

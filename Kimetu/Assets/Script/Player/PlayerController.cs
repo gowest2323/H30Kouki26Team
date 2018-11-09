@@ -103,6 +103,7 @@ public class PlayerController : MonoBehaviour
             Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
         );
         action.Move(dir, !cameraController.IsLockOn());
+        cameraController.playerDir = dir;
     }
 
     private void Attack()
@@ -152,6 +153,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown(InputMap.Type.LButton.GetInputName()))
         {
+            cameraController.CameraToPlayerBack();
             action.GuardStart();
         }
         else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName()))
