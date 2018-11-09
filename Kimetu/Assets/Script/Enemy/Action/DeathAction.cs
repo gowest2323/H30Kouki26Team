@@ -15,7 +15,7 @@ public class DeathAction : MonoBehaviour, IEnemyActionable
     [SerializeField]
     private NavMeshAgent enemyNavMesh;
 
-    private void Start()
+    private void Awake()
     {
         enemyAnimation = GetComponentInParent<EnemyAnimation>();
     }
