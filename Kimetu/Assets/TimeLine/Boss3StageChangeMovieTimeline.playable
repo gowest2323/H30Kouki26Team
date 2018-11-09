@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Clips:
   - m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 114912377237110068}
+    m_Asset: {fileID: 114331980995883112}
     m_Duration: 5
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114256047423850066}
@@ -107,7 +107,7 @@ MonoBehaviour:
     m_DisplayName: SceneChangePlayableAsset
     m_Version: 1
   m_Version: 1
---- !u!114 &114912377237110068
+--- !u!114 &114331980995883112
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,6 +120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Kimetu::SceneChangePlayableAsset
   nextScene: 1
   sceneFade:
-    fadeInTime: 1
-    fadeOutTime: 6
+    fadeInTime: 2
+    fadeOutTime: 2
     fadeColor: {r: 0, g: 0, b: 0, a: 1}
