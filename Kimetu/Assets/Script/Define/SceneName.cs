@@ -7,6 +7,12 @@ public enum SceneName
 {
 GamePlay,
 Title,
+Stage01,
+Stage01_Boss,
+Stage02,
+Stage02_Boss,
+Stage03,
+Stage03_Boss,
 }
 public static class SceneNameManager
 {
@@ -14,6 +20,12 @@ public static class SceneNameManager
 {
     {SceneName.GamePlay,"GamePlay"},
     {SceneName.Title,"Title"},
+    {SceneName.Stage01,"Stage01"},
+    {SceneName.Stage01_Boss,"Stage01_Boss"},
+    {SceneName.Stage02,"Stage02"},
+    {SceneName.Stage02_Boss,"Stage02_Boss"},
+    {SceneName.Stage03,"Stage03"},
+    {SceneName.Stage03_Boss,"Stage03_Boss"},
 };
     public static bool Equals(SceneName scenename, string name)
     {

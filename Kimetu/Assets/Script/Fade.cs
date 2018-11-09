@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
 public struct FadeData
 {
     public float fadeInTime; //フェードアウト時間
@@ -79,9 +80,6 @@ public class Fade : MonoBehaviour
     /// <param name="arg1"></param>
     private void OnSceneChanged(UnityEngine.SceneManagement.Scene arg0, UnityEngine.SceneManagement.Scene arg1)
     {
-        //キャンバスのターゲットカメラを各シーンのメインカメラに
-        Canvas canvas = GetComponent<Canvas>();
-        canvas.worldCamera = Camera.main;
     }
 
     /// <summary>

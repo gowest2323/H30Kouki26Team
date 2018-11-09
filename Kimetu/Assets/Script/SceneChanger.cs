@@ -7,6 +7,7 @@ public class SceneChanger : MonoBehaviour
 {
     private static SceneChanger instance;
     public bool isChanging { private set; get; }
+    private Coroutine currentCoroutine;
 
     [RuntimeInitializeOnLoadMethod()]
     public static SceneChanger Instance()
@@ -56,7 +57,7 @@ public class SceneChanger : MonoBehaviour
     /// <param name="fade">フェードの情報</param>
     public void Change(SceneName scene, FadeData fade)
     {
-        StartCoroutine(ChangeCoroutine(scene, fade));
+        currentCoroutine = StartCoroutine(ChangeCoroutine(scene, fade));
     }
 
     /// <summary>
@@ -67,6 +68,10 @@ public class SceneChanger : MonoBehaviour
     /// <returns></returns>
     private IEnumerator ChangeCoroutine(SceneName scene, FadeData fade)
     {
+        if (isChanging && currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
         isChanging = true;
         //フェードアウトし終わるまで待機
         yield return StartCoroutine(Fade.Instance().FadeOutCoroutine(fade.fadeOutTime, fade.fadeColor));
