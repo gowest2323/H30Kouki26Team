@@ -6,24 +6,24 @@ using UnityEngine.UI;
 
 public class DebugPlayerUI : MonoBehaviour {
 	[SerializeField]
-	private Text hpText;
+	private Slider hpSlider;
 
 	[SerializeField]
-	private Text spText;
+	private Slider spSlider;
 
 	[SerializeField]
 	private PlayerStatus status;
 
 	// Use this for initialization
 	void Start () {
-		Assert.IsTrue(hpText != null);
-		Assert.IsTrue(spText != null);
+		Assert.IsTrue(hpSlider != null);
+		Assert.IsTrue(spSlider != null);
 		Assert.IsTrue(status != null);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		hpText.text = "HP: " + status.GetHP();
-		spText.text = "SP: " + status.GetStamina();
+		hpSlider.value = status.GetHPRatio();
+		spSlider.value = status.GetStaminaRatio();
 	}
 }

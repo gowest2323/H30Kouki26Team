@@ -29,6 +29,22 @@ public class PlayerStatus : Status
         return stamina;
     }
 
+    /// <summary>
+    /// スタミナの最大値を返します。
+    /// </summary>
+    /// <returns></returns>
+    public int GetMaxStamina() {
+        return maxStamina;
+    }
+
+    /// <summary>
+    /// スタミナの割合を返します。
+    /// </summary>
+    /// <returns></returns>
+    public float GetStaminaRatio() {
+        return (float)GetStamina() / (float)GetMaxStamina();
+    }
+
     public int RecoveryStamina()
     {
         if (stamina < maxStamina)
