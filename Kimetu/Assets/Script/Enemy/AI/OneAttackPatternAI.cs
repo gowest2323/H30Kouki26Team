@@ -19,7 +19,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
     private DeathAction death;
     private EnemyStatus status;
 
-    public string informationText { get { return currentState.ToString(); }}
+    public string informationText { get { return currentState.ToString(); } }
 
     private void Start()
     {
@@ -59,16 +59,25 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
     protected override Coroutine Think()
     {
         isAction = true;
+        if (reserveState != EnemyState.None)
+        {
+            EnemyState next = reserveState;
+            reserveState = EnemyState.None;
+
+            if (next == EnemyState.MoveNear)
+            {
+                currentState = EnemyState.MoveNear;
+                return StartCoroutine(nearPlayer.Action(ActionCallBack));
+            }
+        }
         switch (currentState)
         {
             case EnemyState.Idle:
                 currentState = EnemyState.Search;
                 return StartCoroutine(search.Action(ActionCallBack));
-            //case EnemyState.Move:
-            //    break;
             case EnemyState.Attack:
                 currentState = EnemyState.Idle;
-                return StartCoroutine(idle.Action(ActionCallBack));
+                return StartCoroutine(idle.Action(ActionCallBack, 0.25f));
             case EnemyState.Search:
                 if (search.canSearched)
                 {
@@ -81,8 +90,9 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
                     return StartCoroutine(idle.Action(ActionCallBack));
                 }
             case EnemyState.Damage:
+                reserveState = EnemyState.MoveNear;
                 currentState = EnemyState.Idle;
-                return StartCoroutine(idle.Action(ActionCallBack));
+                return StartCoroutine(idle.Action(ActionCallBack, 0.5f));
             case EnemyState.MoveNear:
                 if (nearPlayer.isNearPlayer)
                 {

@@ -13,7 +13,12 @@ public class SimpleAttack : EnemyAttack
     public override IEnumerator Attack()
     {
         enemyAnimation.StartAttackAnimation(attackType);
-        yield return null;
+        yield return new WaitWhile(() =>
+        {
+            AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
+            return info.fullPathHash != Animator.StringToHash("Base Layer.oni@attack");
+        });
+        yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
     }
 
     protected override void OnTriggerEnter(Collider collider)

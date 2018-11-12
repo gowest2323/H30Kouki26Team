@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class EnemyAI : MonoBehaviour, IDamageable
 {
     protected EnemyState currentState; //現在の状態
+    protected EnemyState reserveState; //次の状態の予約
     protected Coroutine currentActionCoroutine; //現在の行動コルーチン
     /// <summary>
     /// 吸生に使われられるか？

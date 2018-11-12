@@ -76,7 +76,7 @@ public class CameraController : MonoBehaviour
             return;
         }
         //*
-        Debug.Log("DefaultControl");
+        //Debug.Log("DefaultControl");
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
 
