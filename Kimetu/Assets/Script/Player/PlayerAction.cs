@@ -124,8 +124,15 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
-        transform.position += playerCamera.hRotation * dir * 10 * Slow.Instance.PlayerDeltaTime();
-        if(changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+        transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
+        if (!isGuard)
+        {
+            if(changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+        }
+        else
+        {
+            SetGuardMoveDirection(dir);
+        }
 
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
@@ -150,7 +157,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             return;
         }
 
-        playerAnimation.StartRunAnimation();
+        if (!isGuard) playerAnimation.StartRunAnimation();
         var pos = transform.position;
         dash.Update(Slow.Instance.PlayerDeltaTime());
         float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
@@ -193,7 +200,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <summary>
     /// ガードを開始します。
     /// </summary>
-    public void GuardStart()
+    public void GuardStart(Vector3 dir)
     {
         //スタミナが０ならガードできない
         if (status.GetStamina() == 0) return;
@@ -201,6 +208,24 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         this.isGuard = true;
         this.state = PlayerState.Defence;
         //TODO:ここでガードモーションに入る
+
+        SetGuardMoveDirection(dir);
+        playerAnimation.StartGuardAnimation();
+    }
+
+    /// <summary>
+    /// ガード移動方向
+    /// </summary>
+    public void SetGuardMoveDirection(Vector3 dir)
+    {
+        if (dir.x < 0)
+        {
+            playerAnimation.SetGuardSpeed(1);   //左歩き
+        }
+        if (dir.x > 0)
+        {
+            playerAnimation.SetGuardSpeed(-1);  //右歩き
+        }
     }
 
     /// <summary>
@@ -212,6 +237,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state != PlayerState.Defence &&
             state != PlayerState.KnockBack) return;
         this.isGuard = false;
+        playerAnimation.StopGuardAnimation();
         this.state = PlayerState.Idle;
     }
 

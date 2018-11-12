@@ -70,10 +70,10 @@ public class PlayerController : MonoBehaviour
         //        Debug.Log(pressButton);
         if (!action.IsAvoid())
         {
+            Guard();
             Move();
             Attack();
             PierceAndHeal();
-            Guard();
         }
         //Avoid();
     }
@@ -158,10 +158,18 @@ public class PlayerController : MonoBehaviour
 
     private void Guard()
     {
+        var dir = new Vector3(
+            Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()),
+            0,
+            Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
+        );
+
         if (Input.GetButtonDown(InputMap.Type.LButton.GetInputName()))
         {
-            cameraController.CameraToPlayerBack();
-            action.GuardStart();
+            if (!cameraController.IsLockOn())
+                cameraController.CameraToPlayerBack();
+
+            action.GuardStart(dir);
         }
         else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName()))
         {
