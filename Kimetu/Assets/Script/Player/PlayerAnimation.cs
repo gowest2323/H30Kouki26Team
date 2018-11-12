@@ -25,6 +25,11 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetTrigger("Attack");
     }
 
+    public void StartGuardWalkAnimation()
+    {
+        animator.SetTrigger("GuardWalk");
+    }
+
     public void StartGuardAnimation()
     {
         animator.SetBool("Guard", true);
@@ -33,6 +38,11 @@ public class PlayerAnimation :CharacterAnimation {
     public void StopGuardAnimation()
     {
         animator.SetBool("Guard", false);
+    }
+
+    public void SetGuardSpeed(int speed)
+    {
+        animator.SetFloat("GuardSpeed", speed);
     }
 
     public void StartForwardAvoidAnimation()
@@ -59,6 +69,5 @@ public class PlayerAnimation :CharacterAnimation {
     {
         animator.SetTrigger("KnockBack");
     }
-
 
 }

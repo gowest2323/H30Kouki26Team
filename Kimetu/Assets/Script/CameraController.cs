@@ -84,8 +84,10 @@ public class CameraController : MonoBehaviour
         // 垂直回転してから水平回転する合成回転とします
 
         //回転計算
-        if (Mathf.Abs(hor) >= 0.1f)//カメラの水平操作がある時
+        if (Mathf.Abs(hor) >= 0.1f ||                                           //カメラの水平操作がある時
+            player.GetComponent<PlayerAction>().state == PlayerState.Defence)   //防御中
         {
+            //カメラの操作に任せる
             transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
 
             //プレイヤーの向きの計算（水平）
