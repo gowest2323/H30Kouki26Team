@@ -38,6 +38,9 @@ public class Status : MonoBehaviour
     public void Damage(int power)
     {
         hp = hp - power;
+        if(this.hp <= 0) {
+            this.hp = 0;
+        }
     }
     public bool IsDead()
     {
