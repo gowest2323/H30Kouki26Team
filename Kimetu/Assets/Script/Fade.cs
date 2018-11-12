@@ -67,6 +67,7 @@ public class Fade : MonoBehaviour
         DontDestroyOnLoad(go);
         //キャンバスの追加
         Canvas canvas = go.AddComponent<Canvas>();
+        canvas.sortingOrder = 100;
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         //フェードの初期設定
         Image image = go.AddComponent<Image>();
