@@ -437,6 +437,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             return;
         }
+        //スタミナ
+        if(status.GetStamina() < 10) {
+            return;
+        }
         state = PlayerState.Avoid;
 
         //回避コルーチンを開始する
