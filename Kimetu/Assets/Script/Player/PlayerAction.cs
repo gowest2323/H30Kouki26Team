@@ -124,7 +124,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (dir == Vector3.zero)
         {
             MoveStop();
-            //SetGuardMoveDirection(dir);
+            if (isGuard) SetGuardMoveDirection(dir);
             return;
         }
         playerAnimation.StartRunAnimation();
@@ -215,7 +215,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //TODO:ここでガードモーションに入る
 
         SetGuardMoveDirection(dir);
-        playerAnimation.StartGuardAnimation();
     }
 
     /// <summary>
@@ -223,27 +222,32 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void SetGuardMoveDirection(Vector3 dir)
     {
-        if (dir.x < -0.05f)
+        if (dir.x < -0.1f)
         {
+            playerAnimation.StartGuardWalkAnimation();
             playerAnimation.SetGuardSpeed(1);   //左歩き
             return;
         }
-        if (dir.x > 0.05f)
+        if (dir.x > 0.1f)
         {
+            playerAnimation.StartGuardWalkAnimation();
             playerAnimation.SetGuardSpeed(-1);  //右歩き
             return;
         }
-
-        if (Mathf.Abs(dir.x) <= 0.05f)
+        
+        if (Mathf.Abs(dir.z) > 0)//前後移動
         {
-            playerAnimation.SetGuardSpeed(0);
+            playerAnimation.StartGuardWalkAnimation();
+            playerAnimation.SetGuardSpeed(1);   //左歩き
             return;
         }
 
-        if (Mathf.Abs(dir.z) > 0)
+        if (Mathf.Abs(dir.x) <= 0.1f)
         {
-            playerAnimation.SetGuardSpeed(1);   //左歩き
+            playerAnimation.StopGuardWalkAnimation();
+            playerAnimation.StartGuardAnimation();
         }
+
     }
 
     /// <summary>
