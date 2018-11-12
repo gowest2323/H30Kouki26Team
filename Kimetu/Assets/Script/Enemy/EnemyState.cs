@@ -11,5 +11,6 @@ public enum EnemyState {
     Damage, //被弾時
     MoveNear, //接近中
     Death, //倒れている
+    None,
 }
 

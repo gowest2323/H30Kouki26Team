@@ -7,10 +7,14 @@ using UnityEngine.Events;
 
 public class NearPlayerAction : MonoBehaviour, IEnemyActionable
 {
-    [SerializeField]
-    private EnemySearchableAreaBase attackableArea;
+    [SerializeField, Tooltip("十分接近したと判断する範囲")]
+    private EnemySearchableAreaBase nearJudgeArea;
+    [SerializeField, Tooltip("目の場所")]
+    private Transform eyeTransform;
     [SerializeField]
     private NavMeshAgent agent;
+    [SerializeField, Tooltip("この時間経過したら視界外の場合追跡を終了する")]
+    private float limitNearTime;
     private GameObject playerObj;
     public bool isNearPlayer { private set; get; }
     private EnemyAnimation enemyAnimation;
@@ -18,6 +22,7 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     private void Awake()
     {
         enemyAnimation = GetComponentInParent<EnemyAnimation>();
+        //プレイヤーを検索する
         playerObj = GameObject.FindGameObjectWithTag(TagName.Player.String());
     }
 
@@ -26,20 +31,102 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
         enemyAnimation = GetComponentInParent<EnemyAnimation>();
     }
 
+    /// <summary>
+    /// 接近行動
+    /// </summary>
+    /// <param name="callBack"></param>
+    /// <returns></returns>
     public IEnumerator Action(UnityAction callBack)
     {
+        //初期化処理
         isNearPlayer = false;
         agent.isStopped = false;
         enemyAnimation.StartRunAnimation();
 
-        while (!attackableArea.IsPlayerInArea(playerObj, true))
+        float time = 0.0f;
+        //範囲内にいてプレイヤーの方向を向いていたら近づいたと判断
+        while (true)
         {
-            agent.SetDestination(playerObj.transform.position);
-            yield return null;
+            bool isPlayerInArea = nearJudgeArea.IsPlayerInArea(playerObj, true);
+            bool isLookAtPlayer = IsLookAtPlayer(playerObj);
+            //範囲外かつ視界外で一定時間経過後に追跡終了
+            if (!isPlayerInArea && !isLookAtPlayer)
+            {
+                time += Slow.Instance.DeltaTime();
+                if (time > limitNearTime)
+                {
+                    isNearPlayer = false;
+                    agent.isStopped = true;
+                    enemyAnimation.StopRunAnimation();
+                    callBack.Invoke();
+                    yield break;
+                }
+            }
+            //視界内ならタイマーをカウントしない
+            else
+            {
+                time = 0.0f;
+            }
+            //範囲外なら追尾
+            if (!isPlayerInArea)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(playerObj.transform.position);
+                yield return null;
+            }
+            //範囲内で視界外の場合プレイヤーの方向を向く
+            else if (!isLookAtPlayer)
+            {
+                //NavMeshが動いているとプレイヤーに接近しすぎるので停止
+                agent.isStopped = true;
+                LookPlayer(playerObj, Slow.Instance.DeltaTime() * 10.0f);
+                yield return null;
+            }
+            //範囲内かつ視界内なら終了
+            else
+            {
+                break;
+            }
         }
+        //終了処理
         isNearPlayer = true;
         agent.isStopped = true;
         enemyAnimation.StopRunAnimation();
         callBack.Invoke();
     }
+
+    /// <summary>
+    /// プレイヤーを見ているか
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    private bool IsLookAtPlayer(GameObject player)
+    {
+        Ray ray = new Ray(eyeTransform.position, (player.transform.position - eyeTransform.position).normalized);
+        //前方にレイを飛ばして最初に当たったのがプレイヤーならプレイヤーを見ているとする
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.tag == player.tag)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// プレイヤーの方向を向く
+    /// </summary>
+    /// <param name="playerObj"></param>
+    /// <param name="t"></param>
+    private void LookPlayer(GameObject playerObj, float t)
+    {
+        Vector3 targetPosition = playerObj.transform.position;
+        targetPosition.y = transform.position.y;
+        Quaternion.Slerp(transform.rotation,
+            Quaternion.LookRotation(targetPosition - transform.position),
+            t);
+    }
+
 }

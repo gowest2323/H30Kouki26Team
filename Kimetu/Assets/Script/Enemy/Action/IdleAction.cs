@@ -25,4 +25,10 @@ public class IdleAction : MonoBehaviour, IEnemyActionable
         yield return new WaitForSeconds(waitTime);
         callBack.Invoke();
     }
+
+    public IEnumerator Action(UnityAction callBack, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        callBack.Invoke();
+    }
 }
