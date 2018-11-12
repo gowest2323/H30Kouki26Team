@@ -61,7 +61,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1674227629044068
 GameObject:
   m_ObjectHideFlags: 1
@@ -264,9 +264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6995d93e608e7437b972d7aabd2ec91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panel: {fileID: 1628618483029002}
   text: {fileID: 114141814173659196}
   slider: {fileID: 114576820883119410}
-  detectors:
+  targets:
   - {fileID: 0}
   - {fileID: 0}
 --- !u!114 &114576820883119410
@@ -464,7 +465,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -4,13 +4,17 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-public class ChangeStage : MonoBehaviour {
+public class ChangeStage : MonoBehaviour, ILongPressInformation {
     private bool playerStay;
     public GameObject canvas;
     [SerializeField, Header("再生するタイムライン")]
     private PlayableDirector playableDirector;
     [SerializeField]
     private SceneName nextSceneName;
+
+    //ILongPressInformation
+    public string longPressMessage { get { return "次のステージへ";}}
+    public bool canLongPress { get { return playerStay; }}
 
 	// Use this for initialization
 	void Start () {
