@@ -410,6 +410,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             //Destroy(this.gameObject);
             this.gameObject.transform.position = stageManager.RestartPosition();
             status.Reset();
+
+            //プレイヤーが戦闘不能になった時メニューを出す
+            var fadeData = new FadeData(1f, 1f, Color.black);
+            SceneChanger.Instance().Change(SceneName.PlayerDead, fadeData);
             //playerAnimation.Start...();
         }
         //まだ生きていたらダメージモーション
