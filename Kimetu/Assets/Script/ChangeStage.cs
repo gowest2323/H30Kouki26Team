@@ -21,7 +21,7 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
         playerStay = false;
         canvas.gameObject.SetActive(false);
         GetComponent<LongPressDetector>();
-        GetComponent<LongPressDetector>().OnLongPressEnd += () => {
+        GetComponent<LongPressDetector>().OnLongPressComplete += () => {
             Debug.Log("stay " + playerStay);
             if (playerStay == true)
             {
