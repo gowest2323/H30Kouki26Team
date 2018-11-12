@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 114508426203476012}
   - component: {fileID: 114000452703489516}
   - component: {fileID: 114856599124189036}
-  - component: {fileID: 114755372529514114}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -759,6 +758,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1583692906779710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4411578723472720}
+  - component: {fileID: 114800431753153840}
+  - component: {fileID: 114554999713854714}
+  - component: {fileID: 114836712426916860}
+  - component: {fileID: 136865067115312106}
+  m_Layer: 0
+  m_Name: SearchArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1584144046824156
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4290892368974912}
   - component: {fileID: 65989849755674250}
-  - component: {fileID: 114402931764593906}
+  - component: {fileID: 114973494240471172}
   m_Layer: 0
   m_Name: SwingDownAttackableArea
   m_TagString: Untagged
@@ -1489,7 +1507,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4365164779401034
 Transform:
@@ -1561,6 +1579,19 @@ Transform:
   m_Father: {fileID: 4754544248927260}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -54.584713, y: -10.523704, z: 17.017569}
+--- !u!4 &4411578723472720
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1583692906779710}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4788020716342986}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4432212273729670
 Transform:
   m_ObjectHideFlags: 1
@@ -1970,14 +2001,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1700421138863714}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 224287679650323622}
   - {fileID: 4718677256844746}
-  - {fileID: 4290892368974912}
+  - {fileID: 4411578723472720}
   - {fileID: 4451241506593214}
+  - {fileID: 4290892368974912}
   - {fileID: 4916138392587764}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -2136,7 +2168,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4923381286535568
 Transform:
@@ -2316,7 +2348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bc412f556780d48bd613f6c54d7ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchArea: {fileID: 114755372529514114}
+  searchArea: {fileID: 114836712426916860}
 --- !u!114 &114015039735962718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2329,7 +2361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  attackableArea: {fileID: 114402931764593906}
+  attackableArea: {fileID: 0}
   holderEnemy: {fileID: 114696172197081054}
   attackType: 0
 --- !u!114 &114236489258629522
@@ -2391,8 +2423,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd34ea6734fb489408c40fe9b82e5268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackableArea: {fileID: 114755372529514114}
+  nearJudgeArea: {fileID: 114973494240471172}
+  eyeTransform: {fileID: 4683930439328432}
   agent: {fileID: 195521335224061128}
+  limitNearTime: 5
 --- !u!114 &114318638817935754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2449,18 +2483,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114402931764593906
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1584144046824156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d3b91a2439fb44390a38348888ef68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eyeTransform: {fileID: 0}
 --- !u!114 &114461636285472228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2542,6 +2564,20 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114554999713854714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1583692906779710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743ef324be5c3a8438d7a73139061b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchableAngle: 160
+  searchRange: 20
+  gizmosColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &114596707765325568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2583,20 +2619,19 @@ MonoBehaviour:
   nearPlayer: {fileID: 114269861106063020}
   damage: {fileID: 114508426203476012}
   death: {fileID: 114856599124189036}
---- !u!114 &114755372529514114
+--- !u!114 &114800431753153840
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1009843223762776}
+  m_GameObject: {fileID: 1583692906779710}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743ef324be5c3a8438d7a73139061b7b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2a467ac740040e41b6b67d200301e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchableAngle: 160
-  searchRange: 8
-  gizmosColor: {r: 1, g: 0, b: 0, a: 1}
+  eyeTransform: {fileID: 4683930439328432}
+  searchCollider: {fileID: 136865067115312106}
 --- !u!114 &114833311285637518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2609,6 +2644,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attack: {fileID: 114015039735962718}
+--- !u!114 &114836712426916860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1583692906779710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a081b12a413f2844ea1a934e61e417b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchAreas:
+  - {fileID: 114554999713854714}
+  - {fileID: 114800431753153840}
 --- !u!114 &114856599124189036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2658,6 +2707,19 @@ MonoBehaviour:
   m_Text: 'SampleText
 
 '
+--- !u!114 &114973494240471172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1584144046824156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a467ac740040e41b6b67d200301e25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeTransform: {fileID: 4683930439328432}
+  searchCollider: {fileID: 65989849755674250}
 --- !u!114 &114978406757283416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2676,6 +2738,19 @@ MonoBehaviour:
   damage: {fileID: 114508426203476012}
   death: {fileID: 114856599124189036}
   player: {fileID: 0}
+--- !u!136 &136865067115312106
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1583692906779710}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.8
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.7052039, z: -0}
 --- !u!137 &137146268251825992
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
