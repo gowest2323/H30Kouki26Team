@@ -14,6 +14,9 @@ Stage02_Boss,
 Stage03,
 Stage03_Boss,
 Pause,
+Control,
+Credit,
+Option,
 }
 public static class SceneNameManager
 {
@@ -28,6 +31,9 @@ public static class SceneNameManager
     {SceneName.Stage03,"Stage03"},
     {SceneName.Stage03_Boss,"Stage03_Boss"},
     {SceneName.Pause,"Pause"},
+    {SceneName.Control,"Control"},
+    {SceneName.Credit,"Credit"},
+    {SceneName.Option,"Option"},
 };
     public static bool Equals(SceneName scenename, string name)
     {

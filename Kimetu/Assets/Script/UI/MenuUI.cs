@@ -7,7 +7,7 @@ public class MenuUI : MonoBehaviour {
 	[SerializeField]
 	private Text[] menuItems;
 
-	private int selected;
+	public int selected { private set; get; }
 	private float time;
 
 	// Use this for initialization
