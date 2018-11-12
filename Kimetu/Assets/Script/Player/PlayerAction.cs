@@ -133,10 +133,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
         transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
-        if (changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
         if (!isGuard)
         {
-            if(changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+            if(changeRotation || isAvoid) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
         }
         else
         {
