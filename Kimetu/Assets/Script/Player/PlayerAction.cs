@@ -120,6 +120,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (dir == Vector3.zero)
         {
             MoveStop();
+            //SetGuardMoveDirection(dir);
             return;
         }
         playerAnimation.StartRunAnimation();
@@ -218,13 +219,26 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void SetGuardMoveDirection(Vector3 dir)
     {
-        if (dir.x < 0)
+        if (dir.x < -0.05f)
         {
             playerAnimation.SetGuardSpeed(1);   //左歩き
+            return;
         }
-        if (dir.x > 0)
+        if (dir.x > 0.05f)
         {
             playerAnimation.SetGuardSpeed(-1);  //右歩き
+            return;
+        }
+
+        if (Mathf.Abs(dir.x) <= 0.05f)
+        {
+            playerAnimation.SetGuardSpeed(0);
+            return;
+        }
+
+        if (Mathf.Abs(dir.z) > 0)
+        {
+            playerAnimation.SetGuardSpeed(1);   //左歩き
         }
     }
 
@@ -463,6 +477,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             return;
         }
+
+        //ガード中回避したらガード解除
+        if (isGuard) GuardEnd();
         state = PlayerState.Avoid;
 
         //回避コルーチンを開始する
@@ -480,9 +497,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         isAvoid = true;
 
-       
-        //開始位置
-        var startPos = transform.position;
+        float timeForChangeState = 0.2f;
+
         //何の方向もない時
         if (dir == Vector3.zero)
         {
@@ -495,14 +511,32 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
             yield return new WaitForEndOfFrame();
 
-            //TODO:ここに体制立ち直る隙間時間？
+            //TODO:ここに体制立ち直る隙間時間
+            yield return new WaitForSeconds(timeForChangeState);
 
             isAvoid = false;         
             state = PlayerState.Idle;
             yield break;
         }
 
-        //方向入力がある時(四方向個別にアニメーションあり)、rotation維持
+
+        //ガード以外方向入力がある時、四方向に前進回避アニメーション
+        if (!isGuard)
+        {
+            //前進回避アニメーション
+            playerAnimation.StartForwardAvoidAnimation();
+            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
+
+            //TODO:ここに体制立ち直る隙間時間
+            yield return new WaitForSeconds(timeForChangeState);
+
+            isAvoid = false;
+            state = PlayerState.Idle;
+            yield break;
+        }
+
+
+        //ガード中方向入力がある時(四方向個別にアニメーションあり)、rotation維持
         //Dot()->同じ方向1、垂直0、正反対-1
         //前
         if (Vector3.Dot(transform.forward, dir) >= 0.3f)
@@ -540,7 +574,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
       
         yield return new WaitForEndOfFrame();
-        //TODO:ここに体制立ち直る隙間時間？
+        //TODO:ここに体制立ち直る隙間時間
+        yield return new WaitForSeconds(timeForChangeState);
+
         isAvoid = false;
         state = PlayerState.Idle;
         yield break;

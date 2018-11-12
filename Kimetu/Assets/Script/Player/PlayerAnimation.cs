@@ -25,6 +25,11 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetTrigger("Attack");
     }
 
+    public void StartGuardWalkAnimation()
+    {
+        animator.SetTrigger("GuardWalk");
+    }
+
     public void StartGuardAnimation()
     {
         animator.SetBool("Guard", true);
