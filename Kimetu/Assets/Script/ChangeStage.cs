@@ -25,15 +25,22 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
             Debug.Log("stay " + playerStay);
             if (playerStay == true)
             {
+                //現在のステージ番号を保存
+                string currentScene = SceneManager.GetActiveScene().name;
+                int currentStageNumber = StageNumber.GetStageNumber(currentScene);
+                StageDataPrefs.SaveStageNumber(++currentStageNumber);
+                //チェックポイントのデータの削除
+                StageDataPrefs.DeleteCheckPoint();
                 SceneChanger.Instance().Change(nextSceneName, new FadeData(1, 1, Color.black));
             }
         };
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     public void OnTriggerEnter(Collider other)
     {
