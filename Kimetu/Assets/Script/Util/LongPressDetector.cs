@@ -41,6 +41,7 @@ public class LongPressDetector : MonoBehaviour
     private float seconds;
     public float pushSeconds { private set { seconds = value; } get { return seconds; } }
     private float elapsed;
+    public float progress { get { return Mathf.Clamp01(elapsed / pushSeconds); }}
 
     private void Start()
     {
