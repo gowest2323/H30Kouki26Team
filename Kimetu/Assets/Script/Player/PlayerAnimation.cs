@@ -25,11 +25,6 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetTrigger("Attack");
     }
 
-    public void StartGuardWalkAnimation()
-    {
-        animator.SetTrigger("GuardWalk");
-    }
-
     public void StartGuardAnimation()
     {
         animator.SetBool("Guard", true);
@@ -38,6 +33,14 @@ public class PlayerAnimation :CharacterAnimation {
     public void StopGuardAnimation()
     {
         animator.SetBool("Guard", false);
+    }
+    public void StartGuardWalkAnimation()
+    {
+        animator.SetBool("GuardWalk", true);
+    }
+    public void StopGuardWalkAnimation()
+    {
+        animator.SetBool("GuardWalk", false);
     }
 
     public void SetGuardSpeed(int speed)
