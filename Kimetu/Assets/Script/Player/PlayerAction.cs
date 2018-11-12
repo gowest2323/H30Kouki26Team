@@ -31,11 +31,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float counterTime;
     private PlayerAnimation playerAnimation; //アニメーション管理
     private PlayerState mState; //プレイヤーの状態
-    public PlayerState state {
-        private set {
+    public PlayerState state
+    {
+        private set
+        {
             mState = value;
             //ディフェンス以外になったらフラグ変更
-            if(value != PlayerState.Defence) {
+            if (value != PlayerState.Defence)
+            {
                 this.isGuard = false;
             }
         }
@@ -125,7 +128,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         playerAnimation.StartRunAnimation();
         var pos = transform.position;
         transform.position += playerCamera.hRotation * dir * 10 * Slow.Instance.PlayerDeltaTime();
-        if(changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+        if (changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
 
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
@@ -171,7 +174,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //吸生中なら攻撃しない
         if (state == PlayerState.Pierce) return;
         //スタミナが０なら攻撃できない
-        if (status.GetStamina() == 0　|| status.GetStamina() < 5) return;
+        if (status.GetStamina() == 0 || status.GetStamina() < 5) return;
 
         //防御していなければ通常の攻撃
         if (!isGuard)
@@ -241,7 +244,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;
-        if(isBoss) {
+        if (isBoss)
+        {
             SceneChanger.Instance().Change(nextSceneName, new FadeData(1, 1, Color.black));
         }
     }
@@ -362,7 +366,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
     }
 
-    private void DoCounter(DamageSource damageSource) {
+    private void DoCounter(DamageSource damageSource)
+    {
         //カウンター発生から経過した時間
         float counterDeltaTime = Time.time - counterOccuredTime;
         //カウンター発生時間内ならカウンター発生
@@ -372,7 +377,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             damageSource.attackCharacter.Countered();
             GuardEnd();
             //スロー中でない時のみ
-            if(!Slow.Instance.isSlowNow)
+            if (!Slow.Instance.isSlowNow)
                 Slow.Instance.SlowStart(CollectAllCharacterAnimation());
         }
         //失敗したら自分にダメージ
@@ -408,7 +413,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (status.IsDead())
         {
             //Destroy(this.gameObject);
-            this.gameObject.transform.position = stageManager.RestartPosition();
+            StartPosition(stageManager.RestartPosition());
             status.Reset();
             //playerAnimation.Start...();
         }
@@ -438,7 +443,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             return;
         }
         //スタミナ
-        if(status.GetStamina() < 10) {
+        if (status.GetStamina() < 10)
+        {
             return;
         }
         state = PlayerState.Avoid;
@@ -458,7 +464,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         isAvoid = true;
 
-       
+
         //開始位置
         var startPos = transform.position;
         //何の方向もない時
@@ -475,7 +481,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
             //TODO:ここに体制立ち直る隙間時間？
 
-            isAvoid = false;         
+            isAvoid = false;
             state = PlayerState.Idle;
             yield break;
         }
@@ -516,7 +522,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         //SE
         AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
-      
+
         yield return new WaitForEndOfFrame();
         //TODO:ここに体制立ち直る隙間時間？
         isAvoid = false;
@@ -527,13 +533,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private IEnumerator DirectionAvoid(Vector3 dir)
     {
         var col = GetComponent<Collider>();
-      
+
         LayerMask mask = LayerMask.GetMask("Stage");
-        Ray ray = new Ray(transform.position,dir.normalized);
-        RaycastHit hit;    
+        Ray ray = new Ray(transform.position, dir.normalized);
+        RaycastHit hit;
         var offset = 0f;
         var start = transform.position;
-        while (offset < avoidMoveTime )
+        while (offset < avoidMoveTime)
         {
             float dis;
             var t = Time.time;
@@ -557,7 +563,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             col.enabled = true;
 
             transform.position = start + (dir * (avoidMoveDistance * percent));
-           
+
         }
     }
 
@@ -650,14 +656,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //ノックバック後の位置
         var endPos = startPos + (-transform.forward * knockbackMoveDistance);
         while (offset < knockbackMoveTime)
-        {   
+        {
             var t = Time.time;
             yield return new WaitForEndOfFrame();
             col.enabled = false;
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / knockbackMoveTime;
-            if (Physics.Raycast(ray.origin,ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage")))
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage")))
             {
                 dis = hit.distance;
                 Debug.Log("ノックバック");
@@ -695,5 +701,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             GuardEnd();
         }
         yield break;
+    }
+
+    public void StartPosition(Vector3 position)
+    {
+        this.gameObject.transform.position = position;
     }
 }

@@ -20,12 +20,17 @@ public class TitleController : MonoBehaviour {
 		var fadeData = new FadeData(1f, 1f, Color.black);
 		//始める
 		if(selected == 0) {
+            //データの削除
+            StageDataPrefs.DeleteAll();
 			SceneChanger.Instance().Change(SceneName.Stage01, fadeData);
 		//途中から
 		} else if(selected == 1) {
-			//GameRegistry.instance.Load();
-		//操作説明
-		} else if(selected == 2) {
+            Resume(fadeData);
+            //SceneChanger.Instance().Change(SceneName.Stage01, fadeData);
+            //GameRegistry.instance.Load();
+            //操作説明
+        }
+        else if(selected == 2) {
 			SceneChanger.Instance().Change(SceneName.Control, fadeData);
 		//オプション
 		} else if(selected == 3) {
@@ -38,4 +43,11 @@ public class TitleController : MonoBehaviour {
 			Application.Quit();
 		}
 	}
+
+    private void Resume(FadeData fadeData)
+    {
+        int currentStageNumber = StageDataPrefs.GetStageNumber();
+        string stage = StageNumber.GetStageName(currentStageNumber);
+        SceneChanger.Instance().Change(SceneNameManager.GetKeyByValue(stage), fadeData);
+    }
 }
