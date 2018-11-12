@@ -262,6 +262,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state != PlayerState.Defence &&
             state != PlayerState.KnockBack) return;
         this.isGuard = false;
+        playerAnimation.StopGuardWalkAnimation();
         playerAnimation.StopGuardAnimation();
         this.state = PlayerState.Idle;
     }
@@ -519,7 +520,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         isAvoid = true;
 
-        float timeForChangeState = 0.2f;
+        float timeForChangeState = 0.3f;
 
 
         //開始位置
@@ -552,6 +553,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             playerAnimation.StartForwardAvoidAnimation();
             yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
 
+            yield return new WaitForEndOfFrame();
             //TODO:ここに体制立ち直る隙間時間
             yield return new WaitForSeconds(timeForChangeState);
 
@@ -564,31 +566,31 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //ガード中方向入力がある時(四方向個別にアニメーションあり)、rotation維持
         //Dot()->同じ方向1、垂直0、正反対-1
         //前
-        if (Vector3.Dot(transform.forward, dir) >= 0.3f)
+        if (Vector3.Dot(transform.forward, dir) >= 0.4f)
         {
             //前進回避アニメーション
             playerAnimation.StartForwardAvoidAnimation();
             yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
         }
         //横
-        else if (Vector3.Dot(transform.forward, dir) < 0.3f &&
-                Vector3.Dot(transform.forward, dir) > -0.3f)
+        else if (Vector3.Dot(transform.forward, dir) < 0.4f &&
+                Vector3.Dot(transform.forward, dir) > -0.4f)
         {
             //右回避アニメーション
-            if (dir.x > 0)
+            if (dir.x > 0f)
             {
                 playerAnimation.StartRightAvoidAnimation();
                 yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
             }
             //左回避アニメーション
-            if (dir.x < 0)
+            if (dir.x < 0f)
             {
                 playerAnimation.StartLeftAvoidAnimation();
                 yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
             }
         }
         //後ろ
-        else//Vector3.Dot(transform.forward, dir) <= -0.3f
+        else//Vector3.Dot(transform.forward, dir) <= -0.4f
         {
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
