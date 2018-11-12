@@ -27,13 +27,13 @@ public class StageManager : MonoBehaviour
             StageDataPrefs.DeleteCheckPoint();
             return;
         }
+        #endif
         //データが存在するならその場所から開始
         restartPosition = StageDataPrefs.GetCheckPosition();
         //プレイヤーの座標を書き換える
         GameObject player = GameObject.FindGameObjectWithTag(TagName.Player.String());
         PlayerAction playerAction = player.GetComponent<PlayerAction>();
         playerAction.StartPosition(restartPosition);
-        #endif
 
     }
 
