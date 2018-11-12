@@ -2916,7 +2916,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1124991589293610}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0.36, z: -6.61}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4065580613615104}
@@ -5224,7 +5224,10 @@ MonoBehaviour:
   pierceButtonPushTime: 1
   holdShort: 5
   holdLong: 15
+  cameraController: {fileID: 0}
   longPressDetector: {fileID: 114341244592631014}
+  staminaHealTime: 0.2
+  pauseManager: {fileID: 0}
 --- !u!114 &114137348384933656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5250,7 +5253,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avoidMoveTime: 1
+  avoidMoveDistance: 2
   knockbackMoveTime: 0.3
+  knockbackMoveDistance: 2
+  rayDistance: 10
+  limitRayDistance: 2
   weapon: {fileID: 114137348384933656}
   counterTime: 2
   pierceText: {fileID: 0}
@@ -5259,6 +5266,8 @@ MonoBehaviour:
   decreaseStaminaPerSecond: 1
   decreaseAttackStamina: 1
   playerCamera: {fileID: 0}
+  movie: {fileID: 0}
+  nextSceneName: 0
 --- !u!114 &114324526698854622
 MonoBehaviour:
   m_ObjectHideFlags: 1
