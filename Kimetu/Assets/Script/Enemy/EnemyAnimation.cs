@@ -13,6 +13,10 @@ public class EnemyAnimation : CharacterAnimation
         animator.SetBool("Run", true);
     }
 
+    public void StartDeathAnimation() {
+        animator.SetBool("Dead", true);
+    }
+
     public void StopRunAnimation()
     {
         animator.SetBool("Run", false);
