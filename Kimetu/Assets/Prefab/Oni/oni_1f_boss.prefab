@@ -2425,7 +2425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   power: 1
   attackableArea: {fileID: 114812407875807986}
-  holderEnemy: {fileID: 0}
+  holderEnemy: {fileID: 114340366861905178}
   attackType: 0
 --- !u!114 &114302066151659236
 MonoBehaviour:
@@ -2504,8 +2504,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd34ea6734fb489408c40fe9b82e5268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackableArea: {fileID: 114409388293839298}
+  nearJudgeArea: {fileID: 114812407875807986}
+  eyeTransform: {fileID: 4988422212956260}
   agent: {fileID: 195567509885065854}
+  limitNearTime: 5
 --- !u!114 &114406337856610632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2617,7 +2619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d3b91a2439fb44390a38348888ef68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eyeTransform: {fileID: 0}
+  eyeTransform: {fileID: 4988422212956260}
 --- !u!114 &114972244671112738
 MonoBehaviour:
   m_ObjectHideFlags: 1
