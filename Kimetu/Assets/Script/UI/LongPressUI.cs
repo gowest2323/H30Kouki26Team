@@ -93,5 +93,9 @@ public class LongPressUI : MonoBehaviour {
 				break;
 			}
 		}
+		if(this.current == -1) {
+			slider.value = 0;
+			text.text = defaultText;
+		}
 	}
 }
