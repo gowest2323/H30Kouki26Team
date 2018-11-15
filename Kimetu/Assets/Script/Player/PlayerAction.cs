@@ -293,7 +293,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
         status.Heal(pierceHealHP);
         //吸生終了まで待機
+        playerAnimation.StartKyuuseiAnimation();
         yield return new WaitForSeconds(2.0f);
+        playerAnimation.StopKyuuseiAnimation();
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;

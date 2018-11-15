@@ -73,4 +73,11 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetTrigger("KnockBack");
     }
 
+    public void StartKyuuseiAnimation() {
+        animator.SetBool("Kyuusei", true);
+    }
+
+    public void StopKyuuseiAnimation() {
+        animator.SetBool("Kyuusei", false);
+    }
 }
