@@ -2360,7 +2360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73dc5b72904e0da4980ada6157e67e39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 1
+  power: 9
   attackableArea: {fileID: 0}
   holderEnemy: {fileID: 114696172197081054}
   attackType: 0
@@ -2601,7 +2601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb468fd546cd88f4ab6ec4ef565c0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 10
+  maxHP: 80
 --- !u!114 &114696172197081054
 MonoBehaviour:
   m_ObjectHideFlags: 1
