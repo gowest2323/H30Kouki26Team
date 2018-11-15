@@ -58,6 +58,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private StageManager stageManager;//ステージマネージャー
     [SerializeField, Header("1スタミナが減少する時間（秒）")]
     private float decreaseStaminaPerSecond;
+    [SerializeField, Header("ダッシュによって減るスタミナの量")]
+    private float decreaseDashStamina = 1;
     private Dash dash; //ダッシュ管理
     [SerializeField, Header("攻撃時に減るスタミナ量")]
     private int decreaseAttackStamina;
@@ -100,7 +102,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void DecreaseDashStamina()
     {
-        status.DecreaseStamina(1);
+        status.DecreaseStamina(decreaseDashStamina);
     }
 
     private void MoveStop()

@@ -3098,6 +3098,7 @@ MonoBehaviour:
   cameraController: {fileID: 0}
   longPressDetector: {fileID: 114059307054834580}
   staminaHealTime: 0.2
+  pauseManager: {fileID: 0}
 --- !u!114 &114059307054834580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3133,10 +3134,13 @@ MonoBehaviour:
   pierceText: {fileID: 0}
   pierceHealHP: 10
   stageManager: {fileID: 0}
-  decreaseStaminaPerSecond: 1
-  decreaseAttackStamina: 1
+  decreaseStaminaPerSecond: 0.3
+  decreaseDashStamina: 1
+  decreaseAttackStamina: 5
+  decreaseAvoidStamina: 10
   playerCamera: {fileID: 0}
   movie: {fileID: 0}
+  nextSceneName: 0
 --- !u!114 &114242767150101514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3172,8 +3176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86fa6ad26d52cfb45b3ebe92955f3d70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 10
-  maxStamina: 10
+  maxHP: 100
+  maxStamina: 100
 --- !u!114 &114731963327466154
 MonoBehaviour:
   m_ObjectHideFlags: 1
