@@ -19,6 +19,14 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetBool("Run", false);
     }
 
+    public void StartWalkAnimation() {
+        animator.SetBool("Walk", true);
+    }
+
+    public void StopWalkAnimation() {
+        animator.SetBool("Walk", false);
+    }
+
     public void StartAttackAnimation()
     {
 
