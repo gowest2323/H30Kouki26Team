@@ -61,6 +61,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private Dash dash; //ダッシュ管理
     [SerializeField, Header("攻撃時に減るスタミナ量")]
     private int decreaseAttackStamina;
+    [SerializeField, Header("回避時に減るスタミナ量")]
+    private int decreaseAvoidStamina = 10;
     [SerializeField]
     private CameraController playerCamera;
     [SerializeField]
@@ -496,7 +498,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             return;
         }
         //スタミナ
-        if (status.GetStamina() < 10)
+        if (status.GetStamina() < decreaseAvoidStamina)
         {
             return;
         }
@@ -508,7 +510,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //回避コルーチンを開始する
         StartCoroutine(AvoidCoroutine(dir));
 
-        status.DecreaseStamina(10);
+        status.DecreaseStamina(decreaseAvoidStamina);
 
         //回避行動中は他のアクションを実行できないように
         //PlayerControllerでisAvoidがtrueの時他のメソッドのUPDATEを停止
