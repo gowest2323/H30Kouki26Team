@@ -466,8 +466,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (status.IsDead())
         {
             //Destroy(this.gameObject);
-            StartPosition(stageManager.RestartPosition());
-            status.Reset();
+            //StartPosition(stageManager.RestartPosition());
+            //status.Reset();
 
             //プレイヤーが戦闘不能になった時メニューを出す
             var fadeData = new FadeData(1f, 1f, Color.black);
