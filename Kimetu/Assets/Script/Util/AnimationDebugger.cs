@@ -54,9 +54,11 @@ public struct AnimationArgument {
 public class AnimationDebugger : MonoBehaviour {
 	[SerializeField]
 	private Animator animator;
+	#if UNITY_EDITOR
 
 	[SerializeField]
 	private AnimatorController controller;
+	#endif
 	[SerializeField]
 	private AnimationArgument argument;
 	[SerializeField]
