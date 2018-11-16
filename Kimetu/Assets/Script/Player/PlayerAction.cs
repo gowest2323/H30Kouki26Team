@@ -385,7 +385,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         state = PlayerState.Counter;
         counterOccuredTime = Time.time;
         playerAnimation.StartCounterAnimation();
-        yield return new WaitForSeconds(counterTime);
+        yield return new WaitWhile(() => !playerAnimation.IsEndAnimation(Mathf.Epsilon));
+//        yield return new WaitForSeconds(counterTime);
         playerAnimation.StopGuardAnimation();
         Debug.Log("counter end");
         state = PlayerState.Idle;
