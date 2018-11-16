@@ -1933,7 +1933,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605809767795630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.931, y: 0, z: 2.75}
+  m_LocalPosition: {x: -232, y: 0, z: 10.9}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4670702012720468}
@@ -3080,10 +3080,10 @@ MonoBehaviour:
   decreaseAttackStamina: 5
   decreaseAvoidStamina: 10
   playerCamera: {fileID: 0}
-  movie: {fileID: 320911784395188686, guid: cc309db538f4c214db8d37dc03da96a2, type: 2}
-  nextSceneName: 4
-  walkSpeed: 10
-  dashSpeed: 15
+  movie: {fileID: 320608072144413650, guid: bda39496a5dccb84fb6f333c0db5e442, type: 2}
+  nextSceneName: 2
+  walkSpeed: 5
+  dashSpeed: 8
   attackSequence: {fileID: 0}
 --- !u!114 &114311990288785806
 MonoBehaviour:
