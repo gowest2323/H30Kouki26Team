@@ -238,11 +238,13 @@ public class CameraController : MonoBehaviour
             // 位置を壁の内側に
             nowDistance = Distance_PlayertoWall() > 0f ? Distance_PlayertoWall() : distance;
             if (nowDistance <= 0f) nowDistance = 0f;
-            transform.position = player.transform.position + new Vector3(0, 0.5f, 0) - transform.rotation * Vector3.forward * nowDistance;
+            transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * nowDistance;
+            //transform.position = player.transform.position + new Vector3(0, 0.5f, 0) - transform.rotation * Vector3.forward * nowDistance;
 
             //微妙に見下ろすように
             if (nowDistance < distance)
-                transform.position += (Vector3.up * angleY * 0.2f);
+                transform.position += (Vector3.up * angleY * 1.5f);
+                //transform.position += (Vector3.up * angleY * 0.2f);
             else
                 transform.position += (Vector3.up * angleY);
 
