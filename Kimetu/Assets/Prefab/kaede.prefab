@@ -1933,7 +1933,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605809767795630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.96, y: 0, z: -6.92}
+  m_LocalPosition: {x: 3.931, y: 0, z: 2.75}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4670702012720468}
@@ -3038,7 +3038,7 @@ MonoBehaviour:
   holdLong: 15
   cameraController: {fileID: 0}
   longPressDetector: {fileID: 114059307054834580}
-  staminaHealTime: 0.2
+  staminaHealTime: 0.05
   pauseManager: {fileID: 0}
 --- !u!114 &114059307054834580
 MonoBehaviour:
