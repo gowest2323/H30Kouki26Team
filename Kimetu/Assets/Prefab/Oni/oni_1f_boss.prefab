@@ -934,6 +934,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1776113984976812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4053579203713264}
+  - component: {fileID: 114528470849857692}
+  m_Layer: 0
+  m_Name: PointerTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1789374036343876
 GameObject:
   m_ObjectHideFlags: 1
@@ -1245,6 +1261,19 @@ Transform:
   m_Father: {fileID: 4950845725762038}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 31.00168, y: -0.9123081, z: -3.2806232}
+--- !u!4 &4053579203713264
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1776113984976812}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4171342475116802}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4081048286014552
 Transform:
   m_ObjectHideFlags: 1
@@ -1397,6 +1426,7 @@ Transform:
   - {fileID: 4923674831716548}
   - {fileID: 4919420068955848}
   - {fileID: 4889239005579422}
+  - {fileID: 4053579203713264}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2548,6 +2578,17 @@ MonoBehaviour:
   searchableAngle: 50
   searchRange: 8
   gizmosColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &114528470849857692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1776113984976812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d836a549317854a78a9a1a76d8857680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114612396779038078
 MonoBehaviour:
   m_ObjectHideFlags: 1
