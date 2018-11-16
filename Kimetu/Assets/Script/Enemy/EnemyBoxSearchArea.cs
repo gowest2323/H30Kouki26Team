@@ -32,7 +32,7 @@ public class EnemyBoxSearchArea : EnemySearchableAreaBase
         if (!toRayCast) return true;
         //自分からプレイヤーに向かってレイを飛ばす
         Vector3 targetPosition = player.transform.position;
-        targetPosition.y = eyeTransform.position.y;
+        //targetPosition.y = eyeTransform.position.y;
         Vector3 toTargetDir = (targetPosition - eyeTransform.position).normalized;
         //間に障害物がなければ範囲内にいる
         if (IsHitRayToPlayer(eyeTransform.position, toTargetDir, player, searchableRange))
