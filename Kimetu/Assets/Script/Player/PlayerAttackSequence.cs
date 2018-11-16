@@ -25,8 +25,11 @@ public class PlayerAttackSequence : MonoBehaviour {
 	private PlayerAnimation playerAnimation;
 	[SerializeField]
 	private Weapon weapon;
+	[SerializeField]
+	private int phaseMax = 4;
 	private Coroutine coroutine;
 	private int attackStack;
+	public int phase { get { return attackStack - 1; }}
 	public bool isAttack { get { return attackStack > 0; }}
 
 	// Use this for initialization
@@ -51,7 +54,7 @@ public class PlayerAttackSequence : MonoBehaviour {
 	public AttackResult Attack() {
 		if(attackStack == 0) {
 			this.coroutine = StartCoroutine(StartAttack());
-		} else if (attackStack == 4) {
+		} else if (attackStack == phaseMax) {
 			//最後まで攻撃が入力されているなら無視
 			return AttackResult.Err;
 		} else {
@@ -89,6 +92,10 @@ public class PlayerAttackSequence : MonoBehaviour {
     }
 
 	private void StartAnimation() {
-		playerAnimation.StartAttackAnimation(attackStack - 1);
+		playerAnimation.StartAttackAnimation(phase);
+	}
+
+	public int GetPhaseMax() {
+		return phaseMax;
 	}
 }
