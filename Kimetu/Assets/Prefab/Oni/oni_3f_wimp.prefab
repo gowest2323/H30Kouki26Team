@@ -1010,6 +1010,7 @@ GameObject:
   - component: {fileID: 114461636285472228}
   - component: {fileID: 65364922492477348}
   - component: {fileID: 114978406757283416}
+  - component: {fileID: 114928900136678074}
   m_Layer: 10
   m_Name: oni_3f_wimp
   m_TagString: Enemy
@@ -2293,7 +2294,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.34, y: 0.32, z: 0.64}
+  m_Size: {x: 0.5, y: 0.5, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0.18}
 --- !u!65 &65364922492477348
 BoxCollider:
@@ -2707,6 +2708,17 @@ MonoBehaviour:
   m_Text: 'SampleText
 
 '
+--- !u!114 &114928900136678074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d797136b62b114c66b457d9dadbeedcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114973494240471172
 MonoBehaviour:
   m_ObjectHideFlags: 1
