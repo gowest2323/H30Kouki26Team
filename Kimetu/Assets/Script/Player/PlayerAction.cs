@@ -276,6 +276,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void GuardEnd()
     {
+        playerAnimation.StopGuardAnimation();
         //ガード中やノックバック中でなければガード終了処理をしない
         if (state != PlayerState.Defence &&
             state != PlayerState.KnockBack) return;
