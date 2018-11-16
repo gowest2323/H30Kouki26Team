@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class StageManager : MonoBehaviour
 {
@@ -58,3 +61,26 @@ public class StageManager : MonoBehaviour
         SceneChanger.Instance().Change(SceneNameManager.GetKeyByValue(stage), fadeData);
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor (typeof(StageManager))]
+public class StageManagerEditor : Editor　{
+	private StageManager self = null;
+
+    void OnEnable () {
+        this.self = (StageManager) target;
+    }
+
+    public override void OnInspectorGUI () {
+		base.OnInspectorGUI ();
+        EditorGUILayout.Separator();
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.IntField("ステージ番号", StageDataPrefs.GetStageNumber());
+        EditorGUILayout.Vector3Field("座標", StageDataPrefs.GetCheckPosition());
+        if(GUILayout.Button("消去")) {
+            StageDataPrefs.DeleteAll();
+        }
+        EditorGUILayout.EndVertical();
+    }
+}
+#endif
