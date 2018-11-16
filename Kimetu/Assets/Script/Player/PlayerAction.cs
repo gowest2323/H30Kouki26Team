@@ -76,6 +76,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float walkSpeed = 10f;
     [SerializeField]
     private float dashSpeed = 15f;
+    [SerializeField]
+    private PlayerAttackSequence attackSequence;
 
     public CharacterAnimation characterAnimation { get { return playerAnimation; } }
 
@@ -99,6 +101,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         dash = new Dash(decreaseStaminaPerSecond, DecreaseDashStamina);
         Assert.IsTrue(decreaseAttackStamina > 0);
         Assert.IsTrue(decreaseStaminaPerSecond > 0);
+        //攻撃が終わるたびにステートを戻す
+        if(this.attackSequence == null) {
+            this.attackSequence = GetComponent<PlayerAttackSequence>();
+        }
+        attackSequence.OnAttackPhaseFinished += () => state = PlayerState.Idle;
     }
 
     /// <summary>
@@ -199,8 +206,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //防御していなければ通常の攻撃
         if (!isGuard)
         {
-            state = PlayerState.Attack;
-            StartCoroutine(StartAttack());
+            if(attackSequence.Attack() == AttackResult.OK) {
+                state = PlayerState.Attack;
+                status.DecreaseStamina(decreaseAttackStamina);
+            }
+            //StartCoroutine(StartAttack());
         }
         else
         {
@@ -374,27 +384,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         counterOccuredTime = Time.time;
         yield return new WaitForSeconds(counterTime);
         Debug.Log("counter end");
-        state = PlayerState.Idle;
-    }
-
-    /// <summary>
-    /// 攻撃開始
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator StartAttack()
-    {
-        if (isAttack) yield break;
-
-        isAttack = true;
-        Slow.Instance.PlayerAttacked(characterAnimation);
-
-        weapon.AttackStart();
-        playerAnimation.StartAttackAnimation();
-        status.DecreaseStamina(decreaseAttackStamina);
-        AudioManager.Instance.PlayPlayerSE(AudioName.SE_CUT.String());
-        yield return new WaitForSeconds(1);
-        weapon.AttackEnd();
-        isAttack = false;
         state = PlayerState.Idle;
     }
 

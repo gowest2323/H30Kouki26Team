@@ -27,12 +27,25 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetBool("Walk", false);
     }
 
-    public void StartAttackAnimation()
+    public void StartAttackAnimation(int phase)
     {
-
-        animator.SetTrigger("Attack");
+        switch(phase) {
+            case 0:
+                animator.SetTrigger("Attack");
+                break;
+            case 1:
+                animator.SetTrigger("Attack2");
+                break;
+            case 2:
+                animator.SetTrigger("Attack3");
+                break;
+            case 3:
+                animator.SetTrigger("Attack4");
+                break;
+            default:
+                throw new System.ArgumentException();
+        }
     }
-
     public void StartGuardAnimation()
     {
         animator.SetBool("Guard", true);
