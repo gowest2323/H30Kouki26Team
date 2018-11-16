@@ -72,6 +72,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
     [SerializeField]
     private SceneName nextSceneName;
+    [SerializeField]
+    private float walkSpeed = 10f;
+    [SerializeField]
+    private float dashSpeed = 15f;
 
     public CharacterAnimation characterAnimation { get { return playerAnimation; } }
 
@@ -109,6 +113,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         dash.Reset();
         playerAnimation.StopRunAnimation();
+        playerAnimation.StopWalkAnimation();
     }
 
     /// <summary>
@@ -122,9 +127,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (!CanMove()) return;
 
         //簡易的にガード中の移動量を半減
-        float speed = 0;
-        if (isGuard) speed = 5;
-        else speed = 10;
+        float speed = walkSpeed;
+        if (isGuard) speed /= 5;
 
         //こうしないとコントローラのスティックがニュートラルに戻った時、
         //勝手に前を向いてしまう
@@ -134,7 +138,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             if (isGuard) SetGuardMoveDirection(dir);
             return;
         }
-        playerAnimation.StartRunAnimation();
+        playerAnimation.StartWalkAnimation();
         var pos = transform.position;
         transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
         if (!isGuard)
