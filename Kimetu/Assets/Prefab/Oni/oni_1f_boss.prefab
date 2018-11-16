@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 65178767827378396}
   - component: {fileID: 114340366861905178}
   - component: {fileID: 114765487198074332}
+  - component: {fileID: 114407743363307538}
   m_Layer: 10
   m_Name: oni_1f_boss
   m_TagString: Enemy
@@ -2522,6 +2523,17 @@ MonoBehaviour:
   layTime: 1
   enemyTransform: {fileID: 4171342475116802}
   enemyNavMesh: {fileID: 195567509885065854}
+--- !u!114 &114407743363307538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1240021590107878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d797136b62b114c66b457d9dadbeedcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114409388293839298
 MonoBehaviour:
   m_ObjectHideFlags: 1
