@@ -31,6 +31,18 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetTrigger("Counter");
     }
 
+    public void StartDamageAnimation() {
+        animator.SetTrigger("Damage");
+    }
+
+    public void StartDeadAnimation() {
+        animator.SetBool("Dead", true);
+    }
+
+    public void StopDeadAnimation() {
+        animator.SetBool("Dead", false);
+    }
+
     public void StartAttackAnimation(int phase)
     {
         switch(phase) {

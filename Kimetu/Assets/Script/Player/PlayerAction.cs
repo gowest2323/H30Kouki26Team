@@ -465,20 +465,21 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
-            //Destroy(this.gameObject);
-            //StartPosition(stageManager.RestartPosition());
-            //status.Reset();
-
-            //プレイヤーが戦闘不能になった時メニューを出す
-            var fadeData = new FadeData(1f, 1f, Color.black);
-            SceneChanger.Instance().Change(SceneName.PlayerDead, fadeData);
-            //playerAnimation.Start...();
+            StartCoroutine(DieAnimation());
         }
         //まだ生きていたらダメージモーション
         else
         {
-            //playerAnimation.StartDamageAnimation();
+            playerAnimation.StartDamageAnimation();
         }
+    }
+
+    private IEnumerator DieAnimation() {
+        playerAnimation.StartDeadAnimation();
+        yield return new WaitForSeconds(2);
+        //プレイヤーが戦闘不能になった時メニューを出す
+        var fadeData = new FadeData(1f, 1f, Color.black);
+        SceneChanger.Instance().Change(SceneName.PlayerDead, fadeData);
     }
 
     /// <summary>
