@@ -325,7 +325,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <returns></returns>
     private bool CanMove()
     {
-        if (state == PlayerState.Avoid) return false;
+        //走りに移行する時一瞬アイドルを挟んでしまう対策
+        if (state == PlayerState.Avoid && Input.GetButtonDown(InputMap.Type.AButton.GetInputName())) return false;
         if (state == PlayerState.Counter) return false;
         if (state == PlayerState.Pierce) return false;
         if (state == PlayerState.KnockBack) return false;
