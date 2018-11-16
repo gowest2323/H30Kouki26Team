@@ -46,8 +46,6 @@ public class TitleController : MonoBehaviour {
 
     private void Resume(FadeData fadeData)
     {
-        int currentStageNumber = StageDataPrefs.GetStageNumber();
-        string stage = StageNumber.GetStageName(currentStageNumber);
-        SceneChanger.Instance().Change(SceneNameManager.GetKeyByValue(stage), fadeData);
+        StageManager.Resume(fadeData);
     }
 }

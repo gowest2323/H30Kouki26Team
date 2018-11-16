@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 65604002185961638}
   - component: {fileID: 114999542443511916}
   - component: {fileID: 114458585363894778}
+  - component: {fileID: 114392986118668856}
   m_Layer: 10
   m_Name: oni_3f_boss
   m_TagString: Enemy
@@ -2285,7 +2286,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.34, y: 0.32, z: 0.64}
+  m_Size: {x: 0.5, y: 0.5, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0.18}
 --- !u!95 &95191168621636394
 Animator:
@@ -2460,6 +2461,17 @@ MonoBehaviour:
   attackableArea: {fileID: 114739476565936272}
   holderEnemy: {fileID: 114999542443511916}
   attackType: 0
+--- !u!114 &114392986118668856
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1167424613817724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d797136b62b114c66b457d9dadbeedcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114458585363894778
 MonoBehaviour:
   m_ObjectHideFlags: 1
