@@ -13,8 +13,6 @@ public class StageManager : MonoBehaviour
     private Vector3 restartPosition;//
     [SerializeField]
     private EnemySpawnerManager manager;
-    [SerializeField]
-    private bool debugMode = false;
     private static bool resum = false;
 
     private void Start()
@@ -25,13 +23,6 @@ public class StageManager : MonoBehaviour
             restartPosition = firstPosition.position;
             return;
         }
-        #if UNITY_EDITOR
-        if(debugMode) {
-            restartPosition = firstPosition.position;
-            StageDataPrefs.DeleteCheckPoint();
-            return;
-        }
-        #endif
         //データが存在するならその場所から開始
         restartPosition = StageDataPrefs.GetCheckPosition();
         //プレイヤーの座標を書き換える
