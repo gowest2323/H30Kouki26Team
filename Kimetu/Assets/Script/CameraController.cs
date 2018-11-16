@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
     bool isLockOn;
     bool interval;
     float intervalTime;
+   public bool isInverted_UpDown;
+   public bool isInverted_LeftRight;
 
 
     [SerializeField]
@@ -46,6 +48,7 @@ public class CameraController : MonoBehaviour
         offset = transform.position - player.transform.position;
         isLockOn = false;
         interval = false;
+        GetIsInveted();
         intervalTime = 0;
         // 回転の初期化
         vRotation = Quaternion.Euler(20, 0, 0);         // 垂直回転(X軸を軸とする回転)は、30度見下ろす回転
@@ -67,6 +70,7 @@ public class CameraController : MonoBehaviour
         IsLockOnChange();
         LockOn();
         Interval();
+       
     }
 
     private void DefaultControl()
@@ -85,13 +89,24 @@ public class CameraController : MonoBehaviour
 
         //回転計算
         if (Mathf.Abs(hor) >= 0.1f ||                                           //カメラの水平操作がある時
-            player.GetComponent<PlayerAction>().state == PlayerState.Defence)   //防御中
+            player.GetComponent<PlayerAction>().state == PlayerState.Defence )   //防御中
         {
-            //カメラの操作に任せる
-            transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
+            if(!isInverted_LeftRight)
+            {
+                //カメラの操作に任せる
+                transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
+                //プレイヤーの向きの計算（水平）
+                hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
+            }
+            else
+            {
+                //カメラの操作に任せる
+                transform.RotateAround(player.transform.position, Vector3.up, -hor * turnSpeed);
+                //プレイヤーの向きの計算（水平）
+                hRotation *= Quaternion.Euler(0, -hor * turnSpeed, 0);
+            }
 
-            //プレイヤーの向きの計算（水平）
-            hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
+           
         }
         else//カメラの水平操作がない時
         {
@@ -104,12 +119,21 @@ public class CameraController : MonoBehaviour
         }
 
         if (Mathf.Abs(ver) >= 0.05f)//カメラの垂直操作がある時
-            transform.Rotate(new Vector3(ver * turnSpeed, 0, 0));
+        {
+            if (!isInverted_UpDown)
+            {
+                transform.Rotate(new Vector3(ver * turnSpeed, 0, 0));
+                //プレイヤーの向きの計算（垂直）
+                vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
+            }
+            else
+            {
+                transform.Rotate(new Vector3(-ver * turnSpeed, 0, 0));
+                //プレイヤーの向きの計算（垂直）
+                vRotation *= Quaternion.Euler(-ver * turnSpeed, 0, 0);
 
-        //プレイヤーの向きの計算（垂直）
-        vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
-
-
+            }
+        }
         //角度制限
         float rotationX = transform.eulerAngles.x;
         rotationX = (rotationX > 180) ? rotationX -= 360 : rotationX;
@@ -138,6 +162,14 @@ public class CameraController : MonoBehaviour
     {
         return isLockOn;
     }
+    
+    private void GetIsInveted()
+    {
+        isInverted_LeftRight = OptionDataPrefs.GetLeftRightBool(false);
+        isInverted_UpDown = OptionDataPrefs.GetUpDownBool(false);
+
+    }
+
 
     private void LockOn()
     {
@@ -206,11 +238,11 @@ public class CameraController : MonoBehaviour
             // 位置を壁の内側に
             nowDistance = Distance_PlayertoWall() > 0f ? Distance_PlayertoWall() : distance;
             if (nowDistance <= 0f) nowDistance = 0f;
-            transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * nowDistance;
+            transform.position = player.transform.position + new Vector3(0, 0.5f, 0) - transform.rotation * Vector3.forward * nowDistance;
 
             //微妙に見下ろすように
             if (nowDistance < distance)
-                transform.position += (Vector3.up * angleY * 1.5f);
+                transform.position += (Vector3.up * angleY * 0.2f);
             else
                 transform.position += (Vector3.up * angleY);
 
