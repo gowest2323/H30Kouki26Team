@@ -16,8 +16,8 @@ public class OptionUI : MonoBehaviour {
     
     void Start()
     {
-        cameraUpDown.interactable = OptionDataPrefs.GetUpDownBool(false);
-        cameraLeftRight.interactable = OptionDataPrefs.GetLeftRightBool(false);
+        cameraUpDown.isOn = OptionDataPrefs.GetUpDownBool(false);
+        cameraLeftRight.isOn = OptionDataPrefs.GetLeftRightBool(false);
     }
     // Update is called once per frame
     void Update()
@@ -46,8 +46,8 @@ public class OptionUI : MonoBehaviour {
 
         if (Input.GetButtonDown(InputMap.Type.BButton.GetInputName()))
         {
-            cameraUpDown.interactable = !cameraUpDown.interactable;
-            OptionDataPrefs.SetUpDownInvert(cameraUpDown.interactable);
+            cameraUpDown.isOn = !cameraUpDown.isOn;
+            OptionDataPrefs.SetUpDownInvert(cameraUpDown.isOn);
         }
 
         
@@ -58,8 +58,8 @@ public class OptionUI : MonoBehaviour {
 
         if (Input.GetButtonDown(InputMap.Type.BButton.GetInputName()))
         {
-            cameraLeftRight.interactable = !cameraLeftRight.interactable;
-            OptionDataPrefs.SetLeftRightInvert(cameraLeftRight.interactable);
+            cameraLeftRight.isOn = !cameraLeftRight.isOn;
+            OptionDataPrefs.SetLeftRightInvert(cameraLeftRight.isOn);
         }       
     }
 }
