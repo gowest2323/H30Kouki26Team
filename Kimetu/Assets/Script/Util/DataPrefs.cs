@@ -70,7 +70,9 @@ public static class StageDataPrefs
     /// </summary>
     public static void DeleteAll()
     {
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey(StageNumber);
+        DeleteCheckPoint();
+        //PlayerPrefs.DeleteAll();
     }
 
     /// <summary>
