@@ -854,6 +854,7 @@ GameObject:
   - component: {fileID: 65041190480124708}
   - component: {fileID: 114311990288785806}
   - component: {fileID: 114059307054834580}
+  - component: {fileID: 114808445058434460}
   m_Layer: 12
   m_Name: kaede
   m_TagString: Player
@@ -1055,6 +1056,7 @@ GameObject:
   - component: {fileID: 4978441310561146}
   - component: {fileID: 33603601725321410}
   - component: {fileID: 23820694682821674}
+  - component: {fileID: 65144280774179168}
   m_Layer: 0
   m_Name: katana:katana
   m_TagString: Untagged
@@ -1949,7 +1951,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605809767795630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -41, y: 0, z: -0.1}
+  m_LocalPosition: {x: 7.96, y: 0, z: -6.92}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4670702012720468}
@@ -3051,6 +3053,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.33, y: 1, z: 0.58}
   m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!65 &65144280774179168
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1719860152145838}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.05284879, y: 0.052907996, z: 0.74299526}
+  m_Center: {x: 0.00000023984964, y: -0.00782104, z: 0.0017480844}
 --- !u!65 &65172793873206128
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -3141,6 +3155,9 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   movie: {fileID: 320911784395188686, guid: cc309db538f4c214db8d37dc03da96a2, type: 2}
   nextSceneName: 4
+  walkSpeed: 10
+  dashSpeed: 15
+  attackSequence: {fileID: 0}
 --- !u!114 &114242767150101514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3190,6 +3207,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 114087020175875802}
+--- !u!114 &114808445058434460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1605809767795630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5feb6c883452c410b83eac6e43a2773f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimation: {fileID: 0}
+  weapon: {fileID: 0}
 --- !u!135 &135645012980617654
 SphereCollider:
   m_ObjectHideFlags: 1
