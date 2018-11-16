@@ -12,13 +12,15 @@ public class StageManager : MonoBehaviour
     private EnemySpawnerManager manager;
     [SerializeField]
     private bool debugMode = false;
+    private static bool resum = false;
 
     private void Start()
     {
         //データがそんざいしなければ最初の場所から開始
-        if (!StageDataPrefs.IsSavedData())
+        if (!StageDataPrefs.IsSavedData() && StageManager.resum)
         {
             restartPosition = firstPosition.position;
+            StageManager.resum = false;
             return;
         }
         #if UNITY_EDITOR
@@ -47,5 +49,12 @@ public class StageManager : MonoBehaviour
     {
         manager.Init();
         return restartPosition;
+    }
+
+    public static void Resume(FadeData fadeData) {
+        StageManager.resum = true;
+        int currentStageNumber = StageDataPrefs.GetStageNumber();
+        string stage = StageNumber.GetStageName(currentStageNumber);
+        SceneChanger.Instance().Change(SceneNameManager.GetKeyByValue(stage), fadeData);
     }
 }

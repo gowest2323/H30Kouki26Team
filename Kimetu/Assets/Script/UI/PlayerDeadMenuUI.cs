@@ -29,8 +29,7 @@ public class PlayerDeadMenuUI : MonoBehaviour
 
         if (selected == 0)
         {//最後のチェックポイントから
-            SceneChanger.Instance().Change(SceneName.Stage01, fadeData);
-            player.transform.position = manager.transform.position;
+            StageManager.Resume(fadeData);
         }
         else if (selected == 1)
         {//タイトルに戻る
