@@ -27,6 +27,10 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetBool("Walk", false);
     }
 
+    public void StartCounterAnimation() {
+        animator.SetTrigger("Counter");
+    }
+
     public void StartAttackAnimation(int phase)
     {
         switch(phase) {

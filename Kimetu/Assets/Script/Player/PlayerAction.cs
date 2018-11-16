@@ -382,7 +382,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         Debug.Log("counter start");
         state = PlayerState.Counter;
         counterOccuredTime = Time.time;
+        playerAnimation.StartCounterAnimation();
         yield return new WaitForSeconds(counterTime);
+        playerAnimation.StopGuardAnimation();
         Debug.Log("counter end");
         state = PlayerState.Idle;
     }
