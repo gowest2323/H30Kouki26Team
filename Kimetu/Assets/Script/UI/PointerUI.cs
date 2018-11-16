@@ -23,20 +23,29 @@ public class PointerUI : MonoBehaviour {
 		if(this.cameraController == null) {
 			this.cameraController = Camera.main.gameObject.GetComponentInChildren<CameraController>();
 		}
-		image.color = image.color * new Vector4(1, 1, 1, 0);
+		image.color = image.color * new Vector4(1, 1, 0.5f, 0);
 		this.nearEnemyInfo = typeof(CameraController).GetField("nearObj", BindingFlags.NonPublic | BindingFlags.Instance);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		var obj = nearEnemyInfo.GetValue(cameraController);
 		var color = image.color;
-		color.a = (cameraController.IsLockOn() ? 1 : 0);
+		color.a = (cameraController.IsLockOn() ? 0.5f : 0);
 		image.color = color;
+		FixImagePosition();
+	}
 
-		if(obj != null) {
-			var pos = Camera.main.WorldToScreenPoint(((GameObject)obj).transform.position + Vector3.up);
-			image.transform.position = pos;
+	private void FixImagePosition() {
+		var obj = nearEnemyInfo.GetValue(cameraController);
+		if(obj == null) { return; }
+		var gobj = ((GameObject)obj);
+		var ptarget = gobj.GetComponentInChildren<PointerTarget>();
+		var pos = gobj.transform.position + Vector3.up;
+		if(ptarget != null) {
+			pos = ptarget.pointerPosition.position;
 		}
+		//image.transform.position = Camera.main.WorldToScreenPoint(pos);
+		image.transform.position = pos;
+		image.transform.LookAt(Camera.main.transform);
 	}
 }
