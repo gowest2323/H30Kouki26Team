@@ -20,10 +20,9 @@ public class StageManager : MonoBehaviour
     private void Start()
     {
         //データがそんざいしなければ最初の場所から開始
-        if (!StageDataPrefs.IsSavedData() && StageManager.resum)
+        if (!StageDataPrefs.IsSavedData() || !StageManager.resum)
         {
             restartPosition = firstPosition.position;
-            StageManager.resum = false;
             return;
         }
         #if UNITY_EDITOR
@@ -39,6 +38,7 @@ public class StageManager : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag(TagName.Player.String());
         PlayerAction playerAction = player.GetComponent<PlayerAction>();
         playerAction.StartPosition(restartPosition);
+        StageManager.resum = false;
 
     }
 
