@@ -109,11 +109,19 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     /// <returns></returns>
     private bool IsLookAtPlayer(GameObject player)
     {
+        //攻撃手段が複数あるエネミーでは、useRayをfalseにしておく
+        //このアクションで毎回プレイヤーの方を向いてしまうと、
+        //振り下ろしのような前方に長い当たり判定を持つ攻撃ばかり使われてしまいます。
+        //(FirstBossAI参照)
         if(!useRay) { return true; }
-        Ray ray = new Ray(eyeTransform.position, (player.transform.position - eyeTransform.position).normalized);
+        int layerMask = LayerMask.GetMask(new string[] {LayerName.Stage.String(), LayerName.PlayerDamageable.String()});
+        //プレイヤーのピボットが変な場所にあるので少し上げる
+        var eyePos = eyeTransform.position;
+        eyePos.y = playerObj.transform.position.y + 1;
+        Ray ray = new Ray(eyePos, transform.forward);
         //前方にレイを飛ばして最初に当たったのがプレイヤーならプレイヤーを見ているとする
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
             if (hit.collider.tag == player.tag)
             {
