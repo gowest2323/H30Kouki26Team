@@ -3132,7 +3132,7 @@ MonoBehaviour:
   weapon: {fileID: 0}
   counterTime: 2
   pierceText: {fileID: 0}
-  pierceHealHP: 10
+  pierceHealHP: 100
   stageManager: {fileID: 0}
   decreaseStaminaPerSecond: 0.3
   decreaseDashStamina: 1
