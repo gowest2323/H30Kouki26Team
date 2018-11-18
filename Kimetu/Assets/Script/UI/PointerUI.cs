@@ -44,8 +44,8 @@ public class PointerUI : MonoBehaviour {
 		if(ptarget != null) {
 			pos = ptarget.pointerPosition.position;
 		}
-		//image.transform.position = Camera.main.WorldToScreenPoint(pos);
-		image.transform.position = pos;
-		image.transform.LookAt(Camera.main.transform);
+		image.transform.position = Camera.main.WorldToScreenPoint(pos);
+		//image.transform.position = pos;
+		//image.transform.LookAt(Camera.main.transform);
 	}
 }
