@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class HorizontalAttack : EnemyAttack
 {
-    [SerializeField]
-    private float attackTime;
-
     public override IEnumerator Attack()
     {
         Debug.Log("薙ぎ払い攻撃開始");
