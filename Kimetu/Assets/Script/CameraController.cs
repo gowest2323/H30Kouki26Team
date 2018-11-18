@@ -306,7 +306,11 @@ public class CameraController : MonoBehaviour
         foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
         {
             tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
-
+            var enemyStatus = obs.GetComponent<EnemyStatus>();
+            //死亡しているエネミーにはロックオンしない
+            if(enemyStatus.IsDead()) {
+                continue;
+            }
             if (lockRange > tmpDis)
             {
                 targetObj = obs;
