@@ -29,7 +29,7 @@ public class EnemyAttackTypeDictionary
         new Dictionary<EnemyAttackType, string>()
         {
             {EnemyAttackType.SwingDown,"Attack" },
-            {EnemyAttackType.HorizontalAttack,"Attack" },
+            {EnemyAttackType.HorizontalAttack,"HorizontalAttack" },
             {EnemyAttackType.Beveled,"Attack" },
             {EnemyAttackType.Strike,"Attack" },
             {EnemyAttackType.Tackle,"Attack" },

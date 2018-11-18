@@ -15,7 +15,7 @@ public class HorizontalAttack : EnemyAttack
         Debug.Log("薙ぎ払い攻撃終了");
     }
 
-    protected override void OnTriggerEnter(Collider collider)
+    protected override void OnHit(Collider collider)
     {
         if (TagNameManager.Equals(collider.tag, TagName.Player))
         {

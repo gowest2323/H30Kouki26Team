@@ -9,7 +9,6 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler
 {
     [SerializeField, Header("攻撃の種類")]
     private EnemyAttackType attackType;
-    private int hitCount;
 
     public override IEnumerator Attack()
     {
@@ -22,7 +21,7 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler
         yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
     }
 
-    protected override void OnTriggerEnter(Collider collider)
+    protected override void OnHit(Collider collider)
     {
         if(hitCount > 0) {
             return;
@@ -34,15 +33,5 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler
                 power, holderEnemy);
             collider.GetComponent<PlayerAction>().OnHit(damage);
         }
-    }
-
-    public void AttackStart() {
-        Debug.Log("ST");
-        this.hitCount = 0;
-        GetComponent<Collider>().enabled = true;
-    }
-	public void AttackEnd() {
-        Debug.Log("ED");
-        GetComponent<Collider>().enabled = false;
     }
 }
