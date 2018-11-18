@@ -179,9 +179,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             MoveStop();
             return;
         }
-
-        if (!isGuard) playerAnimation.StartRunAnimation();
+        //壁に当たるなら進まない
         var pos = transform.position;
+        RaycastHit hit;
+        if(Physics.Raycast(pos + Vector3.up, transform.forward,out hit, 1, LayerMask.GetMask(LayerName.Stage.String()))) {
+            return;
+        }
+        if (!isGuard) playerAnimation.StartRunAnimation();
         dash.Update(Slow.Instance.PlayerDeltaTime());
         float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
         //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
