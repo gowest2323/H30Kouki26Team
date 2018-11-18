@@ -19,7 +19,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
     private DeathAction death;
     private EnemyStatus status;
 
-    public string informationText { get { return currentState.ToString(); } }
+    public string informationText { private set; get; }
 
     private void Start()
     {
@@ -70,6 +70,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
                 return StartCoroutine(nearPlayer.Action(ActionCallBack));
             }
         }
+       
         switch (currentState)
         {
             case EnemyState.Idle:
@@ -105,6 +106,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
                     return StartCoroutine(idle.Action(ActionCallBack));
                 }
             default:
+            Debug.Log("default " + currentState);
                 return StartCoroutine(idle.Action(ActionCallBack));
         }
     }
@@ -112,6 +114,10 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
     private void Update()
     {
         Action();
+        this.informationText = currentState.ToString();
+        if(currentState == EnemyState.MoveNear) {
+            informationText = nearPlayer.informationText;
+        }
     }
 
     private void Action()

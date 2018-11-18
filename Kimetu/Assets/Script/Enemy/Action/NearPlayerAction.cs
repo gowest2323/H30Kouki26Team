@@ -17,9 +17,12 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     private float limitNearTime;
     [SerializeField, Header("すでに近づいているかを判定するためにレイを使用するなら true")]
     private bool useRay = false;
+    [SerializeField]
+    private float lookRotationSpeed = 6f;
     private GameObject playerObj;
     public bool isNearPlayer { private set; get; }
     private EnemyAnimation enemyAnimation;
+    public string informationText { private set; get; }
 
     private void Awake()
     {
@@ -49,6 +52,7 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
         //範囲内にいてプレイヤーの方向を向いていたら近づいたと判断
         while (true)
         {
+            informationText = "MoveNear";
             bool isPlayerInArea = nearJudgeArea.IsPlayerInArea(playerObj, true);
             bool isLookAtPlayer = IsLookAtPlayer(playerObj);
             //範囲外かつ視界外で一定時間経過後に追跡終了
@@ -79,9 +83,10 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
             //範囲内で視界外の場合プレイヤーの方向を向く
             else if (!isLookAtPlayer)
             {
+                informationText = "Look";
                 //NavMeshが動いているとプレイヤーに接近しすぎるので停止
                 agent.isStopped = true;
-                LookPlayer(playerObj, Slow.Instance.DeltaTime() * 10.0f);
+                LookPlayer(playerObj, Slow.Instance.DeltaTime() * lookRotationSpeed);
                 yield return null;
             }
             //範囲内かつ視界内なら終了
@@ -125,10 +130,12 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     /// <param name="t"></param>
     private void LookPlayer(GameObject playerObj, float t)
     {
+        //Enemyの一番上の要素を取得
+        var topTransform = GetComponentInParent<Rigidbody>().transform;
         Vector3 targetPosition = playerObj.transform.position;
-        targetPosition.y = transform.position.y;
-        Quaternion.Slerp(transform.rotation,
-            Quaternion.LookRotation(targetPosition - transform.position),
+        targetPosition.y = topTransform.position.y;
+        topTransform.rotation = Quaternion.Lerp(topTransform.rotation,
+            Quaternion.LookRotation(targetPosition - topTransform.position),
             t);
     }
 
