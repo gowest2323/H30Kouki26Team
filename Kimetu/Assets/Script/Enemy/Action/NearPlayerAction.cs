@@ -15,6 +15,8 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     private NavMeshAgent agent;
     [SerializeField, Tooltip("この時間経過したら視界外の場合追跡を終了する")]
     private float limitNearTime;
+    [SerializeField, Header("すでに近づいているかを判定するためにレイを使用するなら true")]
+    private bool useRay = false;
     private GameObject playerObj;
     public bool isNearPlayer { private set; get; }
     private EnemyAnimation enemyAnimation;
@@ -102,7 +104,7 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     /// <returns></returns>
     private bool IsLookAtPlayer(GameObject player)
     {
-        /*
+        if(!useRay) { return true; }
         Ray ray = new Ray(eyeTransform.position, (player.transform.position - eyeTransform.position).normalized);
         //前方にレイを飛ばして最初に当たったのがプレイヤーならプレイヤーを見ているとする
         RaycastHit hit;
@@ -114,8 +116,6 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
             }
         }
         return false;
-        //*/
-        return true;
     }
 
     /// <summary>
