@@ -102,6 +102,7 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
     /// <returns></returns>
     private bool IsLookAtPlayer(GameObject player)
     {
+        /*
         Ray ray = new Ray(eyeTransform.position, (player.transform.position - eyeTransform.position).normalized);
         //前方にレイを飛ばして最初に当たったのがプレイヤーならプレイヤーを見ているとする
         RaycastHit hit;
@@ -113,6 +114,8 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable
             }
         }
         return false;
+        //*/
+        return true;
     }
 
     /// <summary>
