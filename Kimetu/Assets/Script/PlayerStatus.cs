@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerStatus : Status
 {
-    private int stamina;
+    private float stamina;
 
     [SerializeField]
-    private int maxStamina;
+    private float maxStamina = 100f;
 
     public override void Start()
     {
@@ -24,12 +24,28 @@ public class PlayerStatus : Status
     /// 現在のスタミナを返します。
     /// </summary>
     /// <returns></returns>
-    public int GetStamina()
+    public float GetStamina()
     {
         return stamina;
     }
 
-    public int RecoveryStamina()
+    /// <summary>
+    /// スタミナの最大値を返します。
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxStamina() {
+        return maxStamina;
+    }
+
+    /// <summary>
+    /// スタミナの割合を返します。
+    /// </summary>
+    /// <returns></returns>
+    public float GetStaminaRatio() {
+        return (float)GetStamina() / (float)GetMaxStamina();
+    }
+
+    public float RecoveryStamina()
     {
         if (stamina < maxStamina)
             return stamina += 1;
@@ -51,7 +67,7 @@ public class PlayerStatus : Status
     /// スタミナを減少する
     /// </summary>
     /// <param name="num">減少量</param>
-    public void DecreaseStamina(int num)
+    public void DecreaseStamina(float num)
     {
         this.stamina -= num;
         this.stamina = Mathf.Clamp(this.stamina, 0, maxStamina);

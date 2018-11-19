@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
+using UnityEngine.Playables;
 
 [RequireComponent(typeof(PlayerStatus))]
-public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider
+public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider, ILongPressInformation
 {
     //回避中か
     private bool isAvoid;
@@ -30,11 +31,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float counterTime;
     private PlayerAnimation playerAnimation; //アニメーション管理
     private PlayerState mState; //プレイヤーの状態
-    public PlayerState state {
-        private set {
+    public PlayerState state
+    {
+        private set
+        {
             mState = value;
             //ディフェンス以外になったらフラグ変更
-            if(value != PlayerState.Defence) {
+            if (value != PlayerState.Defence)
+            {
                 this.isGuard = false;
             }
         }
@@ -54,14 +58,32 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private StageManager stageManager;//ステージマネージャー
     [SerializeField, Header("1スタミナが減少する時間（秒）")]
     private float decreaseStaminaPerSecond;
+    [SerializeField, Header("ダッシュによって減るスタミナの量")]
+    private float decreaseDashStamina = 1;
     private Dash dash; //ダッシュ管理
     [SerializeField, Header("攻撃時に減るスタミナ量")]
     private int decreaseAttackStamina;
+    [SerializeField, Header("回避時に減るスタミナ量")]
+    private int decreaseAvoidStamina = 10;
     [SerializeField]
     private CameraController playerCamera;
+    [SerializeField]
+    private PlayableDirector movie;
 
+    [SerializeField]
+    private SceneName nextSceneName;
+    [SerializeField]
+    private float walkSpeed = 10f;
+    [SerializeField]
+    private float dashSpeed = 15f;
+    [SerializeField]
+    private PlayerAttackSequence attackSequence;
 
     public CharacterAnimation characterAnimation { get { return playerAnimation; } }
+
+    //ILongPressInformation
+    public string longPressMessage { get { return "吸生";}}
+    public bool canLongPress { get { return this.CanPierce(); }}
 
     void Start()
     {
@@ -79,6 +101,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         dash = new Dash(decreaseStaminaPerSecond, DecreaseDashStamina);
         Assert.IsTrue(decreaseAttackStamina > 0);
         Assert.IsTrue(decreaseStaminaPerSecond > 0);
+        //攻撃が終わるたびにステートを戻す
+        if(this.attackSequence == null) {
+            this.attackSequence = GetComponent<PlayerAttackSequence>();
+        }
+        attackSequence.OnAttackPhaseFinished += () => state = PlayerState.Idle;
     }
 
     /// <summary>
@@ -86,13 +113,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void DecreaseDashStamina()
     {
-        status.DecreaseStamina(1);
+        status.DecreaseStamina(decreaseDashStamina);
     }
 
     private void MoveStop()
     {
         dash.Reset();
         playerAnimation.StopRunAnimation();
+        playerAnimation.StopWalkAnimation();
     }
 
     /// <summary>
@@ -106,21 +134,28 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (!CanMove()) return;
 
         //簡易的にガード中の移動量を半減
-        float speed = 0;
-        if (isGuard) speed = 5;
-        else speed = 10;
+        float speed = walkSpeed;
+        if (isGuard) speed /= 5;
 
         //こうしないとコントローラのスティックがニュートラルに戻った時、
         //勝手に前を向いてしまう
         if (dir == Vector3.zero)
         {
             MoveStop();
+            if (isGuard) SetGuardMoveDirection(dir);
             return;
         }
-        playerAnimation.StartRunAnimation();
+        playerAnimation.StartWalkAnimation();
         var pos = transform.position;
-        transform.position += playerCamera.hRotation * dir * 10 * Slow.Instance.PlayerDeltaTime();
-        if(changeRotation) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+        transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
+        if (!isGuard)
+        {
+            if(changeRotation || isAvoid) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+        }
+        else
+        {
+            SetGuardMoveDirection(dir);
+        }
 
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
@@ -144,9 +179,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             MoveStop();
             return;
         }
-
-        playerAnimation.StartRunAnimation();
+        //壁に当たるなら進まない
         var pos = transform.position;
+        RaycastHit hit;
+        if(Physics.Raycast(pos + Vector3.up, transform.forward,out hit, 1, LayerMask.GetMask(LayerName.Stage.String()))) {
+            return;
+        }
+        if (!isGuard) playerAnimation.StartRunAnimation();
         dash.Update(Slow.Instance.PlayerDeltaTime());
         float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
         //transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
@@ -166,13 +205,16 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //吸生中なら攻撃しない
         if (state == PlayerState.Pierce) return;
         //スタミナが０なら攻撃できない
-        if (status.GetStamina() == 0　|| status.GetStamina() < 5) return;
+        if (status.GetStamina() == 0 || status.GetStamina() < 5) return;
 
         //防御していなければ通常の攻撃
         if (!isGuard)
         {
-            state = PlayerState.Attack;
-            StartCoroutine(StartAttack());
+            if(attackSequence.Attack() == AttackResult.OK) {
+                state = PlayerState.Attack;
+                status.DecreaseStamina(decreaseAttackStamina);
+            }
+            //StartCoroutine(StartAttack());
         }
         else
         {
@@ -188,7 +230,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <summary>
     /// ガードを開始します。
     /// </summary>
-    public void GuardStart()
+    public void GuardStart(Vector3 dir)
     {
         //スタミナが０ならガードできない
         if (status.GetStamina() == 0) return;
@@ -196,6 +238,41 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         this.isGuard = true;
         this.state = PlayerState.Defence;
         //TODO:ここでガードモーションに入る
+
+        SetGuardMoveDirection(dir);
+    }
+
+    /// <summary>
+    /// ガード移動方向
+    /// </summary>
+    public void SetGuardMoveDirection(Vector3 dir)
+    {
+        if (dir.x < -0.1f)
+        {
+            playerAnimation.StartGuardWalkAnimation();
+            playerAnimation.SetGuardSpeed(1);   //左歩き
+            return;
+        }
+        if (dir.x > 0.1f)
+        {
+            playerAnimation.StartGuardWalkAnimation();
+            playerAnimation.SetGuardSpeed(-1);  //右歩き
+            return;
+        }
+        
+        if (Mathf.Abs(dir.z) > 0)//前後移動
+        {
+            playerAnimation.StartGuardWalkAnimation();
+            playerAnimation.SetGuardSpeed(1);   //左歩き
+            return;
+        }
+
+        if (Mathf.Abs(dir.x) <= 0.1f)
+        {
+            playerAnimation.StopGuardWalkAnimation();
+            playerAnimation.StartGuardAnimation();
+        }
+
     }
 
     /// <summary>
@@ -203,10 +280,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void GuardEnd()
     {
+        playerAnimation.StopGuardAnimation();
         //ガード中やノックバック中でなければガード終了処理をしない
         if (state != PlayerState.Defence &&
             state != PlayerState.KnockBack) return;
         this.isGuard = false;
+        playerAnimation.StopGuardWalkAnimation();
+        playerAnimation.StopGuardAnimation();
         this.state = PlayerState.Idle;
     }
 
@@ -227,14 +307,21 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         state = PlayerState.Pierce;
         EnemyAI nearEnemy = MostNearEnemy();
+        var isBoss = nearEnemy.GetComponent<BossMarker>() != null;
         //敵のほうを向くまで待機
         yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
         status.Heal(pierceHealHP);
         //吸生終了まで待機
+        playerAnimation.StartKyuuseiAnimation();
         yield return new WaitForSeconds(2.0f);
+        playerAnimation.StopKyuuseiAnimation();
         FarEnemy(nearEnemy);
         nearEnemy.UsedHeal();
         state = PlayerState.Idle;
+        if (isBoss)
+        {
+            SceneChanger.Instance().Change(nextSceneName, new FadeData(1, 1, Color.black));
+        }
     }
 
     /// <summary>
@@ -243,7 +330,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <returns></returns>
     private bool CanMove()
     {
-        if (state == PlayerState.Avoid) return false;
+        //走りに移行する時一瞬アイドルを挟んでしまう対策
+        if (state == PlayerState.Avoid && Input.GetButtonDown(InputMap.Type.AButton.GetInputName())) return false;
         if (state == PlayerState.Counter) return false;
         if (state == PlayerState.Pierce) return false;
         if (state == PlayerState.KnockBack) return false;
@@ -300,29 +388,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         Debug.Log("counter start");
         state = PlayerState.Counter;
         counterOccuredTime = Time.time;
-        yield return new WaitForSeconds(counterTime);
+        playerAnimation.StartCounterAnimation();
+        yield return new WaitWhile(() => !playerAnimation.IsEndAnimation(Mathf.Epsilon));
+//        yield return new WaitForSeconds(counterTime);
+        playerAnimation.StopGuardAnimation();
         Debug.Log("counter end");
-        state = PlayerState.Idle;
-    }
-
-    /// <summary>
-    /// 攻撃開始
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator StartAttack()
-    {
-        if (isAttack) yield break;
-
-        isAttack = true;
-        Slow.Instance.PlayerAttacked(characterAnimation);
-
-        weapon.AttackStart();
-        playerAnimation.StartAttackAnimation();
-        status.DecreaseStamina(decreaseAttackStamina);
-        AudioManager.Instance.PlayPlayerSE(AudioName.SE_CUT.String());
-        yield return new WaitForSeconds(1);
-        weapon.AttackEnd();
-        isAttack = false;
         state = PlayerState.Idle;
     }
 
@@ -353,7 +423,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
     }
 
-    private void DoCounter(DamageSource damageSource) {
+    private void DoCounter(DamageSource damageSource)
+    {
         //カウンター発生から経過した時間
         float counterDeltaTime = Time.time - counterOccuredTime;
         //カウンター発生時間内ならカウンター発生
@@ -363,7 +434,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             damageSource.attackCharacter.Countered();
             GuardEnd();
             //スロー中でない時のみ
-            if(!Slow.Instance.isSlowNow)
+            if (!Slow.Instance.isSlowNow)
                 Slow.Instance.SlowStart(CollectAllCharacterAnimation());
         }
         //失敗したら自分にダメージ
@@ -398,16 +469,21 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
-            //Destroy(this.gameObject);
-            this.gameObject.transform.position = stageManager.RestartPosition();
-            status.Reset();
-            //playerAnimation.Start...();
+            StartCoroutine(DieAnimation());
         }
         //まだ生きていたらダメージモーション
         else
         {
-            //playerAnimation.StartDamageAnimation();
+            playerAnimation.StartDamageAnimation();
         }
+    }
+
+    private IEnumerator DieAnimation() {
+        playerAnimation.StartDeadAnimation();
+        yield return new WaitForSeconds(2);
+        //プレイヤーが戦闘不能になった時メニューを出す
+        var fadeData = new FadeData(1f, 1f, Color.black);
+        SceneChanger.Instance().Change(SceneName.PlayerDead, fadeData);
     }
 
     /// <summary>
@@ -428,12 +504,20 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             return;
         }
+        //スタミナ
+        if (status.GetStamina() < decreaseAvoidStamina)
+        {
+            return;
+        }
+
+        //ガード中回避したらガード解除
+        if (isGuard) GuardEnd();
         state = PlayerState.Avoid;
 
         //回避コルーチンを開始する
         StartCoroutine(AvoidCoroutine(dir));
 
-        status.DecreaseStamina(10);
+        status.DecreaseStamina(decreaseAvoidStamina);
 
         //回避行動中は他のアクションを実行できないように
         //PlayerControllerでisAvoidがtrueの時他のメソッドのUPDATEを停止
@@ -445,7 +529,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         isAvoid = true;
 
-       
+        float timeForChangeState = 0.3f;
+
+
         //開始位置
         var startPos = transform.position;
         //何の方向もない時
@@ -460,41 +546,60 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
             yield return new WaitForEndOfFrame();
 
-            //TODO:ここに体制立ち直る隙間時間？
+            //TODO:ここに体制立ち直る隙間時間
+            yield return new WaitForSeconds(timeForChangeState);
 
-            isAvoid = false;         
+            isAvoid = false;
             state = PlayerState.Idle;
             yield break;
         }
 
-        //方向入力がある時(四方向個別にアニメーションあり)、rotation維持
+
+        //ガード以外方向入力がある時、四方向に前進回避アニメーション
+        if (!isGuard)
+        {
+            //前進回避アニメーション
+            playerAnimation.StartForwardAvoidAnimation();
+            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
+
+            yield return new WaitForEndOfFrame();
+            //TODO:ここに体制立ち直る隙間時間
+            yield return new WaitForSeconds(timeForChangeState);
+
+            isAvoid = false;
+            state = PlayerState.Idle;
+            yield break;
+        }
+
+
+        //ガード中方向入力がある時(四方向個別にアニメーションあり)、rotation維持
         //Dot()->同じ方向1、垂直0、正反対-1
         //前
-        if (Vector3.Dot(transform.forward, dir) >= 0.3f)
+        if (Vector3.Dot(transform.forward, dir) >= 0.4f)
         {
             //前進回避アニメーション
             playerAnimation.StartForwardAvoidAnimation();
             yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
         }
         //横
-        else if (Vector3.Dot(transform.forward, dir) < 0.3f &&
-                Vector3.Dot(transform.forward, dir) > -0.3f)
+        else if (Vector3.Dot(transform.forward, dir) < 0.4f &&
+                Vector3.Dot(transform.forward, dir) > -0.4f)
         {
             //右回避アニメーション
-            if (dir.x > 0)
+            if (dir.x > 0f)
             {
                 playerAnimation.StartRightAvoidAnimation();
                 yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
             }
             //左回避アニメーション
-            if (dir.x < 0)
+            if (dir.x < 0f)
             {
                 playerAnimation.StartLeftAvoidAnimation();
                 yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
             }
         }
         //後ろ
-        else//Vector3.Dot(transform.forward, dir) <= -0.3f
+        else//Vector3.Dot(transform.forward, dir) <= -0.4f
         {
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
@@ -503,9 +608,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         //SE
         AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
-      
+
         yield return new WaitForEndOfFrame();
-        //TODO:ここに体制立ち直る隙間時間？
+        //TODO:ここに体制立ち直る隙間時間
+        yield return new WaitForSeconds(timeForChangeState);
+
         isAvoid = false;
         state = PlayerState.Idle;
         yield break;
@@ -513,14 +620,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
     private IEnumerator DirectionAvoid(Vector3 dir)
     {
-        var col = GetComponent<CapsuleCollider>();
-      
+        var col = GetComponent<Collider>();
+
         LayerMask mask = LayerMask.GetMask("Stage");
-        Ray ray = new Ray(transform.position,dir.normalized);
+        Ray ray = new Ray(transform.position + new Vector3(0, 1, 0), dir.normalized);
         RaycastHit hit;    
         var offset = 0f;
         var start = transform.position;
-        while (offset < avoidMoveTime )
+        while (offset < avoidMoveTime)
         {
             float dis;
             var t = Time.time;
@@ -544,7 +651,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             col.enabled = true;
 
             transform.position = start + (dir * (avoidMoveDistance * percent));
-           
+
         }
     }
 
@@ -633,18 +740,18 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         Ray ray = new Ray(transform.position, -transform.forward);
         RaycastHit hit;
         float dis;
-        var col = GetComponent<CapsuleCollider>();
+        var col = GetComponent<Collider>();
         //ノックバック後の位置
         var endPos = startPos + (-transform.forward * knockbackMoveDistance);
         while (offset < knockbackMoveTime)
-        {   
+        {
             var t = Time.time;
             yield return new WaitForEndOfFrame();
             col.enabled = false;
             var diff = (Time.time - t);
             offset += diff;
             var percent = offset / knockbackMoveTime;
-            if (Physics.Raycast(ray.origin,ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage")))
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage")))
             {
                 dis = hit.distance;
                 Debug.Log("ノックバック");
@@ -682,5 +789,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             GuardEnd();
         }
         yield break;
+    }
+
+    public void StartPosition(Vector3 position)
+    {
+        this.gameObject.transform.position = position;
     }
 }

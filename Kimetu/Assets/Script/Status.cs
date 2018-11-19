@@ -8,6 +8,10 @@ public class Status : MonoBehaviour
 
     [SerializeField]
     protected int maxHP;
+    public virtual void Awake() {
+        //ここで初期化しないと動かない場合がある
+        this.hp = maxHP;
+    }
 
     public virtual void Start() {
         this.hp = maxHP;
@@ -34,6 +38,9 @@ public class Status : MonoBehaviour
     public void Damage(int power)
     {
         hp = hp - power;
+        if(this.hp <= 0) {
+            this.hp = 0;
+        }
     }
     public bool IsDead()
     {

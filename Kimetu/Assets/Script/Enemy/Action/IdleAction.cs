@@ -22,6 +22,13 @@ public class IdleAction : MonoBehaviour, IEnemyActionable
     /// <returns></returns>
     public IEnumerator Action(UnityAction callBack)
     {
+        enemyAnimation.StopRunAnimation();
+        yield return new WaitForSeconds(waitTime);
+        callBack.Invoke();
+    }
+
+    public IEnumerator Action(UnityAction callBack, float waitTime)
+    {
         yield return new WaitForSeconds(waitTime);
         callBack.Invoke();
     }

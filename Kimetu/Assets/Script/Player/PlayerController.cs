@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class PlayerController : MonoBehaviour
 {
@@ -23,9 +24,12 @@ public class PlayerController : MonoBehaviour
     private float staminaHealTime = 0.2f;
     private float staminaTimeElapsed;
     private PlayerStatus status;
+    [SerializeField]
+    private PauseManager pauseManager;
     // Use this for initialization
     void Start()
     {
+        Assert.IsTrue(pauseManager != null);
         this.action = GetComponent<PlayerAction>();
         longPressDetector.OnLongPressingOverTime += OnKyuuseiButtonPushStart;
         longPressDetector.OnLongPressEnd += OnKyuuseiButtonPushEnd;
@@ -47,6 +51,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(pauseManager.isPause) {
+            return;
+        }
         //スタミナ回復(ガード中は回復しない)
         if (!Input.GetButton(InputMap.Type.LButton.GetInputName()))
         {
@@ -57,16 +64,16 @@ public class PlayerController : MonoBehaviour
                 staminaTimeElapsed = 0;
             }
         }
-        Debug.Log(status.GetStamina());
+        //Debug.Log(status.GetStamina());
         DashOrAvoid();
         //if (pressButton > 20) pressButton = 0;
         //        Debug.Log(pressButton);
         if (!action.IsAvoid())
         {
+            Guard();
             Move();
             Attack();
             PierceAndHeal();
-            Guard();
         }
         //Avoid();
     }
@@ -103,6 +110,7 @@ public class PlayerController : MonoBehaviour
             Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
         );
         action.Move(dir, !cameraController.IsLockOn());
+        cameraController.playerDir = dir;
     }
 
     private void Attack()
@@ -150,9 +158,18 @@ public class PlayerController : MonoBehaviour
 
     private void Guard()
     {
+        var dir = new Vector3(
+            Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()),
+            0,
+            Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
+        );
+
         if (Input.GetButtonDown(InputMap.Type.LButton.GetInputName()))
         {
-            action.GuardStart();
+            if (!cameraController.IsLockOn())
+                cameraController.CameraToPlayerBack();
+
+            action.GuardStart(dir);
         }
         else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName()))
         {

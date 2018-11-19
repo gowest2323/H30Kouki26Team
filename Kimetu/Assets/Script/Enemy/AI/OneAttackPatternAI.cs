@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OneAttackPatternAI : EnemyAI
+public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
 {
     private bool isAction; //行動中か？
     [SerializeField]
@@ -18,6 +18,8 @@ public class OneAttackPatternAI : EnemyAI
     [SerializeField]
     private DeathAction death;
     private EnemyStatus status;
+
+    public string informationText { private set; get; }
 
     private void Start()
     {
@@ -57,16 +59,26 @@ public class OneAttackPatternAI : EnemyAI
     protected override Coroutine Think()
     {
         isAction = true;
+        if (reserveState != EnemyState.None)
+        {
+            EnemyState next = reserveState;
+            reserveState = EnemyState.None;
+
+            if (next == EnemyState.MoveNear)
+            {
+                currentState = EnemyState.MoveNear;
+                return StartCoroutine(nearPlayer.Action(ActionCallBack));
+            }
+        }
+       
         switch (currentState)
         {
             case EnemyState.Idle:
                 currentState = EnemyState.Search;
                 return StartCoroutine(search.Action(ActionCallBack));
-            //case EnemyState.Move:
-            //    break;
             case EnemyState.Attack:
                 currentState = EnemyState.Idle;
-                return StartCoroutine(idle.Action(ActionCallBack));
+                return StartCoroutine(idle.Action(ActionCallBack, 0.25f));
             case EnemyState.Search:
                 if (search.canSearched)
                 {
@@ -79,8 +91,9 @@ public class OneAttackPatternAI : EnemyAI
                     return StartCoroutine(idle.Action(ActionCallBack));
                 }
             case EnemyState.Damage:
+                reserveState = EnemyState.MoveNear;
                 currentState = EnemyState.Idle;
-                return StartCoroutine(idle.Action(ActionCallBack));
+                return StartCoroutine(idle.Action(ActionCallBack, 0.5f));
             case EnemyState.MoveNear:
                 if (nearPlayer.isNearPlayer)
                 {
@@ -93,6 +106,7 @@ public class OneAttackPatternAI : EnemyAI
                     return StartCoroutine(idle.Action(ActionCallBack));
                 }
             default:
+            Debug.Log("default " + currentState);
                 return StartCoroutine(idle.Action(ActionCallBack));
         }
     }
@@ -100,6 +114,10 @@ public class OneAttackPatternAI : EnemyAI
     private void Update()
     {
         Action();
+        this.informationText = currentState.ToString();
+        if(currentState == EnemyState.MoveNear) {
+            informationText = nearPlayer.informationText;
+        }
     }
 
     private void Action()

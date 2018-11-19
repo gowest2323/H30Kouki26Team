@@ -12,7 +12,7 @@ public class BeveledSlash : EnemyAttack
         yield return new WaitWhile(() => enemyAnimation.IsEndAnimation(0.02f));
     }
 
-    protected override void OnTriggerEnter(Collider collider)
+    protected override void OnHit(Collider collider)
     {
         if (TagNameManager.Equals(collider.tag, TagName.Player))
         {

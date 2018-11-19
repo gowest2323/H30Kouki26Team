@@ -42,6 +42,6 @@ public abstract class CharacterAnimation : MonoBehaviour
     public bool IsEndAnimation(float epsilon, int layerNo = 0)
     {
         AnimatorStateInfo animatorInfo = animator.GetCurrentAnimatorStateInfo(layerNo);
-        return animatorInfo.normalizedTime < 1.0f - epsilon;
+        return animatorInfo.normalizedTime > 1.0f - epsilon;
     }
 }

@@ -12,10 +12,12 @@ public class CameraController : MonoBehaviour
     bool isLockOn;
     bool interval;
     float intervalTime;
+   public bool isInverted_UpDown;
+   public bool isInverted_LeftRight;
 
 
     [SerializeField]
-    private float distance = 3.0f;    // 注視対象プレイヤーからカメラを離す距離
+    private float distance = 4.0f;    // 注視対象プレイヤーからカメラを離す距離
     [SerializeField]
     private Quaternion vRotation;      // カメラの垂直回転(見下ろし回転)
     [SerializeField]
@@ -28,14 +30,17 @@ public class CameraController : MonoBehaviour
     private int coroutineCount;
 
     [SerializeField]
-    private float angleY = 1.0f;
+    private float angleY = 0.2f;
 
     [SerializeField]
-    private float cameraHighestAngle = 60.0f;
+    private float cameraHighestAngle = 45.0f;
     [SerializeField]
-    private float cameraLowestAngle =-10.0f;
+    private float cameraLowestAngle =-10.0f;    // カメラ垂直最低角度
 
-    private float nowDistance = 0;
+    private float nowDistance = 0;  //今カメラとプレイヤーの距離
+
+    [HideInInspector]
+    public Vector3 playerDir;   //プレイヤーの向き
 
     // Use this for initialization
     private void Start()
@@ -43,9 +48,10 @@ public class CameraController : MonoBehaviour
         offset = transform.position - player.transform.position;
         isLockOn = false;
         interval = false;
+        GetIsInveted();
         intervalTime = 0;
         // 回転の初期化
-        vRotation = Quaternion.Euler(45, 0, 0);         // 垂直回転(X軸を軸とする回転)は、30度見下ろす回転
+        vRotation = Quaternion.Euler(20, 0, 0);         // 垂直回転(X軸を軸とする回転)は、30度見下ろす回転
         hRotation = Quaternion.identity;                // 水平回転(Y軸を軸とする回転)は、無回転
         transform.rotation = hRotation * vRotation;     // 最終的なカメラの回転は、垂直回転してから水平回転する合成回転
 
@@ -64,6 +70,7 @@ public class CameraController : MonoBehaviour
         IsLockOnChange();
         LockOn();
         Interval();
+       
     }
 
     private void DefaultControl()
@@ -73,24 +80,60 @@ public class CameraController : MonoBehaviour
             return;
         }
         //*
-        Debug.Log("DefaultControl");
+        //Debug.Log("DefaultControl");
         float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
         float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
 
-        //プレイヤーの向きの計算もあるのでここ保留
-        hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
-        vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
-
         // カメラの回転(transform.rotation)の更新
         // 垂直回転してから水平回転する合成回転とします
-        //transform.rotation = hRotation * vRotation;
 
-        //別の回転計算方法
-        if (Mathf.Abs(hor) >= 0.1f)
-            transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
-        if (Mathf.Abs(ver) >= 0.05f)
-            transform.Rotate(new Vector3(ver * turnSpeed, 0, 0));
+        //回転計算
+        if (Mathf.Abs(hor) >= 0.1f ||                                           //カメラの水平操作がある時
+            player.GetComponent<PlayerAction>().state == PlayerState.Defence )   //防御中
+        {
+            if(!isInverted_LeftRight)
+            {
+                //カメラの操作に任せる
+                transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
+                //プレイヤーの向きの計算（水平）
+                hRotation *= Quaternion.Euler(0, hor * turnSpeed, 0);
+            }
+            else
+            {
+                //カメラの操作に任せる
+                transform.RotateAround(player.transform.position, Vector3.up, -hor * turnSpeed);
+                //プレイヤーの向きの計算（水平）
+                hRotation *= Quaternion.Euler(0, -hor * turnSpeed, 0);
+            }
 
+           
+        }
+        else//カメラの水平操作がない時
+        {
+            //プレイヤーの向きに沿って自動水平回転（速度半分）
+            if (Mathf.Abs(playerDir.x) >= 0.1f)
+                transform.RotateAround(player.transform.position, Vector3.up, playerDir.x * (turnSpeed/2));
+
+            //プレイヤーの向きの計算（水平）
+            hRotation *= Quaternion.Euler(0, playerDir.x * (turnSpeed/2), 0);
+        }
+
+        if (Mathf.Abs(ver) >= 0.05f)//カメラの垂直操作がある時
+        {
+            if (!isInverted_UpDown)
+            {
+                transform.Rotate(new Vector3(ver * turnSpeed, 0, 0));
+                //プレイヤーの向きの計算（垂直）
+                vRotation *= Quaternion.Euler(ver * turnSpeed, 0, 0);
+            }
+            else
+            {
+                transform.Rotate(new Vector3(-ver * turnSpeed, 0, 0));
+                //プレイヤーの向きの計算（垂直）
+                vRotation *= Quaternion.Euler(-ver * turnSpeed, 0, 0);
+
+            }
+        }
         //角度制限
         float rotationX = transform.eulerAngles.x;
         rotationX = (rotationX > 180) ? rotationX -= 360 : rotationX;
@@ -101,7 +144,6 @@ public class CameraController : MonoBehaviour
         else if (rotationX < cameraLowestAngle)
         {
             rotationX = cameraLowestAngle;
-
         }
         transform.eulerAngles = new Vector3(rotationX, transform.eulerAngles.y, 0);
 
@@ -120,6 +162,14 @@ public class CameraController : MonoBehaviour
     {
         return isLockOn;
     }
+    
+    private void GetIsInveted()
+    {
+        isInverted_LeftRight = OptionDataPrefs.GetLeftRightBool(false);
+        isInverted_UpDown = OptionDataPrefs.GetUpDownBool(false);
+
+    }
+
 
     private void LockOn()
     {
@@ -189,10 +239,12 @@ public class CameraController : MonoBehaviour
             nowDistance = Distance_PlayertoWall() > 0f ? Distance_PlayertoWall() : distance;
             if (nowDistance <= 0f) nowDistance = 0f;
             transform.position = player.transform.position + new Vector3(0, 1, 0) - transform.rotation * Vector3.forward * nowDistance;
+            //transform.position = player.transform.position + new Vector3(0, 0.5f, 0) - transform.rotation * Vector3.forward * nowDistance;
 
             //微妙に見下ろすように
             if (nowDistance < distance)
-                transform.position += (Vector3.up * angleY*2);
+                transform.position += (Vector3.up * angleY * 1.5f);
+                //transform.position += (Vector3.up * angleY * 0.2f);
             else
                 transform.position += (Vector3.up * angleY);
 
@@ -254,7 +306,11 @@ public class CameraController : MonoBehaviour
         foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
         {
             tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
-
+            var enemyStatus = obs.GetComponent<EnemyStatus>();
+            //死亡しているエネミーにはロックオンしない
+            if(enemyStatus.IsDead()) {
+                continue;
+            }
             if (lockRange > tmpDis)
             {
                 targetObj = obs;
@@ -271,7 +327,7 @@ public class CameraController : MonoBehaviour
 
         RaycastHit hit;
         float distanceW = 0;
-        if(Physics.Raycast(ray,out hit, 4.0f, LayerMask.GetMask("Stage")))
+        if (Physics.Raycast(ray, out hit, distance + 1, LayerMask.GetMask("Stage")))
         {
             distanceW = Vector3.Distance(new Vector3(player.transform.position.x, transform.position.y,player.transform.position.z),
                                         new Vector3(hit.point.x, transform.position.y, hit.point.z));
@@ -281,9 +337,23 @@ public class CameraController : MonoBehaviour
             distanceW = 0;
         }
 
-        Debug.Log("distanceFromWall >> " + distanceW);
+        //Debug.Log("distanceFromWall >> " + distanceW);
 
         return distanceW;
+    }
+
+    //カメラがプレイヤーの背後に戻す
+    public void CameraToPlayerBack()
+    {
+        vRotation = Quaternion.Euler(20, 0, 0);
+        hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);//プレイヤーの向きに合わせ
+
+        //回転
+        transform.rotation = hRotation * vRotation;
+
+        // 位置
+        nowDistance = distance;
+        transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
     }
 
     private void OnDrawGizmos()
@@ -293,7 +363,7 @@ public class CameraController : MonoBehaviour
         Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
 
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 4.0f, LayerMask.GetMask("Stage")))
+        if (Physics.Raycast(ray, out hit, distance + 1, LayerMask.GetMask("Stage")))
         {
 
             Gizmos.DrawLine(transform.position, hit.point);

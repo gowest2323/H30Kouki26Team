@@ -32,7 +32,7 @@ public class TackleAttack : EnemyAttack
         }
     }
 
-    protected override void OnTriggerEnter(Collider collider)
+    protected override void OnHit(Collider collider)
     {
         if (TagNameManager.Equals(collider.tag, TagName.Player))
         {
