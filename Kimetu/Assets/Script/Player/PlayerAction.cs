@@ -483,6 +483,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <param name="damage"></param>
     private void Damage(DamageSource damage)
     {
+        if(status.IsDead()) { return; }
         status.Damage(damage.damage);
         //死亡したら倒れるモーション
         if (status.IsDead())
