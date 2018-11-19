@@ -326,7 +326,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     public void PierceAndHeal()
     {
         if (!CanPierce()) return;
-        AudioManager.Instance.PlayPlayerSE(AudioName.kyusei.String());
         StartCoroutine(PierceAndHeakCoroutine());
     }
 
