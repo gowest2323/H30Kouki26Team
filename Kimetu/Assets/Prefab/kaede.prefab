@@ -3128,7 +3128,7 @@ MonoBehaviour:
   knockbackMoveTime: 0.3
   knockbackMoveDistance: 2
   rayDistance: 10
-  limitRayDistance: 1
+  limitRayDistance: 2
   weapon: {fileID: 0}
   counterTime: 2
   pierceText: {fileID: 0}
@@ -3144,6 +3144,8 @@ MonoBehaviour:
   walkSpeed: 5
   dashSpeed: 8
   attackSequence: {fileID: 0}
+  deadUIPrefab: {fileID: 1344505922513356, guid: bbacd9836b494ab44abcdd7be794f462,
+    type: 2}
 --- !u!114 &114311990288785806
 MonoBehaviour:
   m_ObjectHideFlags: 1
