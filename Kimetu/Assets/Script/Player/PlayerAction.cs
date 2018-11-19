@@ -130,8 +130,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <param name="changeRotation"></param>
     public void Move(Vector3 dir, bool changeRotation)
     {
+        //死んでいたら移動しない
+        if (status.IsDead()) return;
         //移動できない状態なら移動しない
         if (!CanMove()) return;
+        //ダメージ中は移動しない
+        if (state == PlayerState.Damage) return;
 
         //簡易的にガード中の移動量を半減
         float speed = walkSpeed;
@@ -170,8 +174,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <param name="dashTime">ダッシュしている時間</param>
     public void Dash(Vector3 dir)
     {
+        //死んでいたら攻撃しない
+        if (status.IsDead()) return;
         //移動できない状態なら移動しない
         if (!CanMove()) return;
+        //ダメージ中は移動しない
+        if (state == PlayerState.Damage) return;
         //こうしないとコントローラのスティックがニュートラルに戻った時、
         //勝手に前を向いてしまう
         if (dir == Vector3.zero)
@@ -202,10 +210,15 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void Attack()
     {
+        //死んでいたら攻撃しない
+        if (status.IsDead()) return;
         //吸生中なら攻撃しない
         if (state == PlayerState.Pierce) return;
+        //ダメージ中は攻撃しない
+        if (state == PlayerState.Damage) return;
         //スタミナが０なら攻撃できない
         if (status.GetStamina() == 0 || status.GetStamina() < 5) return;
+        
 
         //防御していなければ通常の攻撃
         if (!isGuard)
@@ -232,6 +245,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void GuardStart(Vector3 dir)
     {
+        //死んでいたらガードしない
+        if (status.IsDead()) return;
+        //ダメージ中はガードしない
+        if (state == PlayerState.Damage) return;
         //スタミナが０ならガードできない
         if (status.GetStamina() == 0) return;
 
@@ -468,17 +485,29 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <param name="damage"></param>
     private void Damage(DamageSource damage)
     {
+        state = PlayerState.Damage;
         status.Damage(damage.damage);
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
             StartCoroutine(DieAnimation());
+            
         }
         //まだ生きていたらダメージモーション
         else
         {
             playerAnimation.StartDamageAnimation();
+            
         }
+        
+    }
+
+    /// <summary>
+    /// プレイヤーの状態初期化
+    /// </summary>
+    private void ResetState()
+    {
+        state = PlayerState.Idle;
     }
 
     private IEnumerator DieAnimation() {
@@ -503,6 +532,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// </summary>
     public void Avoid(Vector3 dir)
     {
+        //死んでいたら攻撃しない
+        if (status.IsDead()) return;
         if (this.state == PlayerState.Avoid)
         {
             return;
