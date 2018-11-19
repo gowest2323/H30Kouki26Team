@@ -38,6 +38,10 @@ public class StageManager : MonoBehaviour
         restartPosition = position;
         //リスタート地点を保存
         StageDataPrefs.SaveCheckPoint(position);
+        //現在のシーン番号を保存
+        string currentScene = SceneManager.GetActiveScene().name;
+        int currentStageNumber = StageNumber.GetStageNumber(currentScene);
+        StageDataPrefs.SaveStageNumber(currentStageNumber);
     }
     public Vector3 RestartPosition()
     {

@@ -159,7 +159,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
-            AudioManager.Instance.PlayPlayerSE(AudioName.SE_WALK.String());
+            AudioManager.Instance.PlayPlayerSE(AudioName.Walk.String());
         }
     }
 
@@ -193,7 +193,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
-            AudioManager.Instance.PlayPlayerSE(AudioName.SE_DASH.String());
+            AudioManager.Instance.PlayPlayerSE(AudioName.Dash.String());
         }
     }
 
@@ -235,6 +235,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //スタミナが０ならガードできない
         if (status.GetStamina() == 0) return;
 
+        AudioManager.Instance.PlayPlayerSE(AudioName.bougyokamae.String());
         this.isGuard = true;
         this.state = PlayerState.Defence;
         //TODO:ここでガードモーションに入る
@@ -296,6 +297,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     public void PierceAndHeal()
     {
         if (!CanPierce()) return;
+        AudioManager.Instance.PlayPlayerSE(AudioName.kyusei.String());
         StartCoroutine(PierceAndHeakCoroutine());
     }
 
@@ -430,6 +432,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //カウンター発生時間内ならカウンター発生
         if (counterDeltaTime < counterTime)
         {
+            AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
             Debug.Log("counter succeed");
             damageSource.attackCharacter.Countered();
             GuardEnd();
@@ -513,6 +516,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //ガード中回避したらガード解除
         if (isGuard) GuardEnd();
         state = PlayerState.Avoid;
+        AudioManager.Instance.PlayPlayerSE(AudioName.kaihi.String());
 
         //回避コルーチンを開始する
         StartCoroutine(AvoidCoroutine(dir));
@@ -540,7 +544,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
             //SE
-            AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
+            AudioManager.Instance.PlayPlayerSE(AudioName.Dodge.String());
 
             yield return DirectionAvoid(-transform.forward);
 
@@ -607,7 +611,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
 
         //SE
-        AudioManager.Instance.PlayPlayerSE(AudioName.SE_DODGE.String());
+        AudioManager.Instance.PlayPlayerSE(AudioName.Dodge.String());
 
         yield return new WaitForEndOfFrame();
         //TODO:ここに体制立ち直る隙間時間
@@ -717,6 +721,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         state = PlayerState.KnockBack;
 
+        AudioManager.Instance.PlayPlayerSE(AudioName.bougyouke.String());
         StartCoroutine(PlayerKockBack(damageSource));
     }
 
