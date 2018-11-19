@@ -13,7 +13,8 @@ public class EnemyAnimation : CharacterAnimation
         animator.SetBool("Run", true);
     }
 
-    public void StartDeathAnimation() {
+    public void StartDeathAnimation()
+    {
         animator.SetBool("Dead", true);
     }
 
@@ -35,9 +36,20 @@ public class EnemyAnimation : CharacterAnimation
         animator.SetTrigger(parameterName);
     }
 
-    public void StratDamageAnimation()
+    /// <summary>
+    /// ダメージを受けた時のアニメーション再生
+    /// </summary>
+    public void StartDamageAnimation()
     {
         animator.SetTrigger("Damage");
+    }
+
+    /// <summary>
+    /// はじかれたときのアニメーション再生
+    /// </summary>
+    public void StartReplAnimation()
+    {
+        animator.SetTrigger("Repl");
     }
 
 }
