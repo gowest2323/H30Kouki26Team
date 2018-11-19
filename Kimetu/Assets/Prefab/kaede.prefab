@@ -3037,7 +3037,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.33, y: 1, z: 0.58}
-  m_Center: {x: 0, y: 0.6, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!65 &65144280774179168
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -3093,7 +3093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pierceButtonPushTime: 1
-  holdShort: 5
+  holdShort: 1
   holdLong: 15
   cameraController: {fileID: 0}
   longPressDetector: {fileID: 114059307054834580}
