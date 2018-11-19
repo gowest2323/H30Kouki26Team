@@ -77,6 +77,12 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>{
             return;
             
         }
+        //防御だけ音量小さく
+        if(seName == AudioName.bougyokamae.String()) {
+            _nextSEName = seName;
+            AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip, 0.5f);
+            return;
+        }
 
         _nextSEName = seName;
         DelayPlayerSE();
@@ -86,7 +92,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>{
     private void DelayPlayerSE()
     {
     
-        AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
+         AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
       
     }
     /// <summary>
