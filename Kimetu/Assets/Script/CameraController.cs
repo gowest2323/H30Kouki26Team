@@ -42,7 +42,8 @@ public class CameraController : MonoBehaviour
     [HideInInspector]
     public Vector3 playerDir;   //プレイヤーの向き
 
-    private GameObject lockOnTarget = null;
+    private bool chooseTargetSelf = false;//手動でロックオンターゲット選択か？
+    private bool isCheckingTargetChange = false;//ターゲット変更チェック中か？
 
     // Use this for initialization
     private void Start()
@@ -266,12 +267,25 @@ public class CameraController : MonoBehaviour
         {
             if (interval == true) return;
             isLockOn = !isLockOn;
+            if (isLockOn == false)
+            {
+                chooseTargetSelf = false;
+            }
             interval = true;
         }
 
         if (isLockOn == true)
         {
-            nearObj = SearchTag(gameObject, "Enemy");
+            //入力
+            var targetInput = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
+            if (Mathf.Abs(targetInput) > 0.3f) chooseTargetSelf = true;
+
+            //ターゲット選択モード
+            if (chooseTargetSelf)
+                nearObj = SearchTagWithInput(gameObject, "Enemy");
+            else
+                nearObj = SearchTagWithDirection(gameObject, "Enemy");
+
             if (nearObj == null)
             {
                 isLockOn = false;
@@ -294,12 +308,12 @@ public class CameraController : MonoBehaviour
     }
 
     /// <summary>
-    /// 近くにあるtagnameのオブジェクト取得
+    /// 近くにあるtagnameのオブジェクトを向きで取得
     /// </summary>
     /// <param name="nowObj"></param>
     /// <param name="tagName"></param>
     /// <returns></returns>
-    GameObject SearchTag(GameObject nowObj, string tagName)
+    GameObject SearchTagWithDirection(GameObject nowObj, string tagName)
     {
         float tmpDis = 0;
         Vector3 tmpDir = Vector3.zero;//方向
@@ -344,8 +358,94 @@ public class CameraController : MonoBehaviour
         return targetObj;
     }
 
+    /// <summary>
+    /// 近くにあるtagnameのオブジェクトを入力で取得
+    /// </summary>
+    /// <param name="nowObj"></param>
+    /// <param name="tagName"></param>
+    /// <returns></returns>
+    GameObject SearchTagWithInput(GameObject nowObj, string tagName)
+    {
+        GameObject targetObj = null;
+        float tmpDis = 0;
+        Vector3 tmpDir = Vector3.zero;//方向
 
+        //一回目
+        if (nearObj == null)
+        {
+            foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
+            {
+                tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
 
+                var enemyStatus = obs.GetComponent<EnemyStatus>();
+                //死亡しているエネミーにはロックオンしない
+                if (enemyStatus.IsDead())
+                {
+                    continue;
+                }
+
+                if (lockRange > tmpDis)
+                {
+                    targetObj = obs;
+                }
+            }
+        }
+        else//二回以降
+        {
+            //今の選択を維持
+            targetObj = nearObj;
+
+            //入力
+            var targetInput = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
+            if (Mathf.Abs(targetInput) > 0.3f) isCheckingTargetChange = true;
+
+            if (isCheckingTargetChange)
+            {
+                foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
+                {
+                    tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
+                    // 距離外の敵取っちゃったらチェックしない
+                    if (lockRange < tmpDis) continue;
+
+                    tmpDir = (obs.transform.position - nowObj.transform.position).normalized;
+
+                    var targetDir = (targetObj.transform.position - nowObj.transform.position).normalized;
+
+                    var enemyStatus = obs.GetComponent<EnemyStatus>();
+                    //死亡しているエネミーにはロックオンしない
+                    if (enemyStatus.IsDead())
+                    {
+                        continue;
+                    }
+
+                    //今のターゲットと同じならチェックしない
+                    if (obs == targetObj) continue;
+                    //左右判定
+                    var nextDir = Vector3.Cross(targetDir,tmpDir).y > 0 ? 1 : -1;
+                    //右
+                    if (targetInput > 0.3f && nextDir > 0)
+                    {
+                        targetObj = obs;
+                        isCheckingTargetChange = false;
+                    }
+                    //左
+                    if (targetInput < -0.3f && nextDir < 0)
+                    {
+                        targetObj = obs;
+                        isCheckingTargetChange = false;
+                    }
+                }
+            }
+
+            //距離チェック
+            tmpDis = Vector3.Distance(targetObj.transform.position, nowObj.transform.position);
+            if (lockRange < tmpDis)
+            {
+                targetObj = null;
+            }
+        }
+        return targetObj;
+    }
 
     private float Distance_PlayertoWall()
     {
