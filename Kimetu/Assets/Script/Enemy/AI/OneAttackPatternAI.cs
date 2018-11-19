@@ -5,19 +5,19 @@ using UnityEngine;
 public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
 {
     private bool isAction; //行動中か？
-    [SerializeField]
+    [SerializeField, Tooltip("待機アクション")]
     private IdleAction idle;
-    [SerializeField]
+    [SerializeField, Tooltip("攻撃アクション")]
     private AttackAction attack;
-    [SerializeField]
+    [SerializeField, Tooltip("サーチアクション")]
     private SearchAction search;
-    [SerializeField]
+    [SerializeField, Tooltip("プレイヤー接近アクション")]
     private NearPlayerAction nearPlayer;
-    [SerializeField]
+    [SerializeField, Tooltip("ダメージアクション")]
     private DamageAction damage;
-    [SerializeField]
+    [SerializeField, Tooltip("死亡アクション")]
     private DeathAction death;
-    private EnemyStatus status;
+    private EnemyStatus status; //敵のステータス
 
     public string informationText { private set; get; }
 
@@ -30,10 +30,17 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
 
     public override void Countered()
     {
-        Debug.Log("カウンター未実装");
+        //行動を停止し、ダメージアクションに移行
+        StopCoroutine(currentActionCoroutine);
+        currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack, DamagePattern.Countered));
+        currentState = EnemyState.Damage;
         return;
     }
 
+    /// <summary>
+    /// ダメージを受ける
+    /// </summary>
+    /// <param name="damageSource">ダメージ情報</param>
     public override void OnHit(DamageSource damageSource)
     {
         //すでに死亡しているなら何もしない
@@ -41,18 +48,17 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
         //エネミーのローテーションがおかしくなる(PassOutが実行されるため??)
         if (status.IsDead()) { return; }
         status.Damage(damageSource.damage);
-        StopCoroutine(currentActionCoroutine);
-        currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack));
-        //死亡したら倒れるモーション
+        //死亡したとき
         if (status.IsDead())
         {
             Death();
         }
-        //まだ生きていたらダメージモーション
         else
         {
+            //行動を停止し、ダメージアクションに移行
+            StopCoroutine(currentActionCoroutine);
+            currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack));
             currentState = EnemyState.Damage;
-            //enemyAnimation.StartDamageAnimation();
         }
     }
 
@@ -70,7 +76,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
                 return StartCoroutine(nearPlayer.Action(ActionCallBack));
             }
         }
-       
+
         switch (currentState)
         {
             case EnemyState.Idle:
@@ -106,7 +112,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
                     return StartCoroutine(idle.Action(ActionCallBack));
                 }
             default:
-            Debug.Log("default " + currentState);
+                Debug.Log("default " + currentState);
                 return StartCoroutine(idle.Action(ActionCallBack));
         }
     }
@@ -115,7 +121,8 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
     {
         Action();
         this.informationText = currentState.ToString();
-        if(currentState == EnemyState.MoveNear) {
+        if (currentState == EnemyState.MoveNear)
+        {
             informationText = nearPlayer.informationText;
         }
     }
