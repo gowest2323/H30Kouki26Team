@@ -17,7 +17,7 @@ public class Club : Weapon
         weaponCollider.enabled = true;
         if (!AudioManager.Instance.IsPlayingEnemySE())
         {
-            AudioManager.Instance.PlayEnemySE(AudioName.SE_CLUB.String());
+            AudioManager.Instance.PlayEnemySE(AudioName.Club.String());
         }
     }
 

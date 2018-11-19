@@ -48,11 +48,11 @@ public static class AudioNameCreator{
 		//指定したパスのリソースを全て取得
 		nameList.AddRange(Resources.LoadAll("Audio/BGM").ToList().Select((e) => {
 			AudioClip clip = e as AudioClip;
-			return string.Format("BGM_{0}", clip.name.ToUpper());
+			return string.Format("{0}", clip.name);
 		}));
 		nameList.AddRange(Resources.LoadAll("Audio/SE").ToList().Select((e) => {
 			AudioClip clip = e as AudioClip;
-			return string.Format("SE_{0}", clip.name.ToUpper());
+			return string.Format("{0}", clip.name);
 		}));
 		//文字列化
 		var builder = EnumCreaterSupporter.CreateSctipt("AudioName", nameList.ToArray());
