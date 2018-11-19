@@ -1362,7 +1362,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1776113984976812}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.4, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4171342475116802}
@@ -2745,6 +2745,7 @@ MonoBehaviour:
   agent: {fileID: 195567509885065854}
   limitNearTime: 5
   useRay: 0
+  lookRotationSpeed: 6
 --- !u!114 &114361511653906742
 MonoBehaviour:
   m_ObjectHideFlags: 1
