@@ -160,7 +160,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         if (!AudioManager.Instance.IsPlayingPlayerSE())
         {
-            AudioManager.Instance.PlayPlayerSE(AudioName.Walk.String());
+            AudioManager.Instance.PlayPlayerSE(AudioName.Walk_Short.String());
         }
     }
 
