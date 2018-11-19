@@ -42,6 +42,8 @@ public class CameraController : MonoBehaviour
     [HideInInspector]
     public Vector3 playerDir;   //プレイヤーの向き
 
+    private GameObject lockOnTarget = null;
+
     // Use this for initialization
     private void Start()
     {
@@ -300,26 +302,50 @@ public class CameraController : MonoBehaviour
     GameObject SearchTag(GameObject nowObj, string tagName)
     {
         float tmpDis = 0;
+        Vector3 tmpDir = Vector3.zero;//方向
+
+        float currentFace = 0;
+        float lastFace = 0;
 
         GameObject targetObj = null;
 
         foreach (GameObject obs in GameObject.FindGameObjectsWithTag(tagName))
         {
             tmpDis = Vector3.Distance(obs.transform.position, nowObj.transform.position);
+            tmpDir = (obs.transform.position - nowObj.transform.position).normalized;
+
             var enemyStatus = obs.GetComponent<EnemyStatus>();
             //死亡しているエネミーにはロックオンしない
             if(enemyStatus.IsDead()) {
                 continue;
             }
-            if (lockRange > tmpDis)
+
+            currentFace = Vector3.Dot(nowObj.transform.forward, tmpDir);
+
+            //ターゲットがない時
+            if(targetObj == null)
+            {
+                //範囲内にいたらターゲットにする(nowObj向き関係ない)
+                if (lockRange > tmpDis)
+                {
+                    targetObj = obs;
+                }
+            }
+            //それ以降範囲内＋nowObj正面に一番近い敵をターゲットに
+            if (lockRange > tmpDis &&
+                currentFace > lastFace)
             {
                 targetObj = obs;
             }
 
+            lastFace = currentFace;
         }
 
         return targetObj;
     }
+
+
+
 
     private float Distance_PlayertoWall()
     {
