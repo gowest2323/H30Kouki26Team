@@ -660,7 +660,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             if (Physics.Raycast(ray, out hit, rayDistance, mask))
             {
                 Debug.Log("stageに当たった");
-                var otherPos = hit.collider.transform.position;
+                var otherPos = hit.collider.transform.position + Vector3.up;
                 var selfPos = transform.position;
                 otherPos.y = selfPos.y;
                 dis = Vector3.Distance(otherPos, selfPos);
@@ -776,7 +776,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             var percent = offset / knockbackMoveTime;
             if (Physics.Raycast(ray.origin, ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage")))
             {
-                dis = hit.distance;
+                var selfPos = transform.position + Vector3.up;
+                var otherPos = hit.collider.transform.position;
+                otherPos.y = selfPos.y;
+                dis = Vector3.Distance(selfPos, otherPos);
                 Debug.Log("ノックバック");
                 if (dis < limitRayDistance)
                 {
