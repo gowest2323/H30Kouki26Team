@@ -235,6 +235,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //スタミナが０ならガードできない
         if (status.GetStamina() == 0) return;
 
+        AudioManager.Instance.PlayPlayerSE(AudioName.SE_BOUGYOKAMAE.String());
         this.isGuard = true;
         this.state = PlayerState.Defence;
         //TODO:ここでガードモーションに入る
@@ -296,6 +297,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     public void PierceAndHeal()
     {
         if (!CanPierce()) return;
+        AudioManager.Instance.PlayPlayerSE(AudioName.SE_KYUSEI.String());
         StartCoroutine(PierceAndHeakCoroutine());
     }
 
@@ -430,6 +432,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //カウンター発生時間内ならカウンター発生
         if (counterDeltaTime < counterTime)
         {
+            AudioManager.Instance.PlayPlayerSE(AudioName.SE_HAJIKI.String());
             Debug.Log("counter succeed");
             damageSource.attackCharacter.Countered();
             GuardEnd();
@@ -513,6 +516,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //ガード中回避したらガード解除
         if (isGuard) GuardEnd();
         state = PlayerState.Avoid;
+        AudioManager.Instance.PlayPlayerSE(AudioName.SE_KAIHI.String());
 
         //回避コルーチンを開始する
         StartCoroutine(AvoidCoroutine(dir));
@@ -717,6 +721,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
         state = PlayerState.KnockBack;
 
+        AudioManager.Instance.PlayPlayerSE(AudioName.SE_BOUGYOUKE.String());
         StartCoroutine(PlayerKockBack(damageSource));
     }
 

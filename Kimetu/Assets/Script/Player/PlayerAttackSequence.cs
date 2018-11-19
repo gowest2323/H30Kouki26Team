@@ -82,7 +82,7 @@ public class PlayerAttackSequence : MonoBehaviour {
         //playerAnimation.StartAttackAnimation();
 		StartAnimation();
         //status.DecreaseStamina(decreaseAttackStamina);
-        AudioManager.Instance.PlayPlayerSE(AudioName.SE_CUT.String());
+        AudioManager.Instance.PlayPlayerSE(AudioName.SE_KOUGEKI.String());
         yield return new WaitForSeconds(1);
         weapon.AttackEnd();
         //isAttack = false;
