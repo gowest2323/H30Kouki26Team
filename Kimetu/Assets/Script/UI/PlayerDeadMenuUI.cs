@@ -26,7 +26,7 @@ public class PlayerDeadMenuUI : MonoBehaviour
         }
         var selected = menu.selected;
         var fadeData = new FadeData(1f, 1f, Color.black);
-
+        
         if (selected == 0)
         {//最後のチェックポイントから
             StageManager.Resume(fadeData);

@@ -17,7 +17,7 @@ Pause,
 Control,
 Credit,
 Option,
-PlayerDead,
+//PlayerDead,
 }
 public static class SceneNameManager
 {
@@ -35,7 +35,7 @@ public static class SceneNameManager
     {SceneName.Control,"Control"},
     {SceneName.Credit,"Credit"},
     {SceneName.Option,"Option"},
-    {SceneName.PlayerDead,"PlayerDead"},
+    //{SceneName.PlayerDead,"PlayerDead"},
 };
     public static bool Equals(SceneName scenename, string name)
     {
