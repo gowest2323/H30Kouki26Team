@@ -118,7 +118,7 @@ public class PlayerAnimation :CharacterAnimation {
         animator.SetBool("Kyuusei", false);
     }
 
-    private void PlayKyuseiSE() {
+    public void PlayKyuseiSE() {
         AudioManager.Instance.PlayPlayerSE(AudioName.kyusei.String());
     }
 }
