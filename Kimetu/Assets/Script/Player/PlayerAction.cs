@@ -86,7 +86,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     public bool canLongPress { get { return this.CanPierce(); } }
 
     [SerializeField]
-    private GameObject prefab;
+    private GameObject deadUIPrefab;
 
     void Start()
     {
@@ -488,7 +488,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (status.IsDead())
         {
             StartCoroutine(DieAnimation());
-            Instantiate(prefab);
+            Instantiate(deadUIPrefab);
             //Time.timeScale = 0.0f;
         }
         //まだ生きていたらダメージモーション

@@ -3144,6 +3144,8 @@ MonoBehaviour:
   walkSpeed: 5
   dashSpeed: 8
   attackSequence: {fileID: 0}
+  deadUIPrefab: {fileID: 1344505922513356, guid: bbacd9836b494ab44abcdd7be794f462,
+    type: 2}
 --- !u!114 &114311990288785806
 MonoBehaviour:
   m_ObjectHideFlags: 1
