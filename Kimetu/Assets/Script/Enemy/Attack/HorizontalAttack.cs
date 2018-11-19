@@ -17,8 +17,12 @@ public class HorizontalAttack : EnemyAttack
 
     protected override void OnHit(Collider collider)
     {
+        if(hitCount > 0) {
+            return;
+        }
         if (TagNameManager.Equals(collider.tag, TagName.Player))
         {
+            hitCount++;
             DamageSource damage = new DamageSource(collider.ClosestPoint(this.transform.position),
                 power, holderEnemy);
             collider.GetComponent<PlayerAction>().OnHit(damage);
