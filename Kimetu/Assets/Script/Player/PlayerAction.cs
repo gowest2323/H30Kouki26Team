@@ -737,7 +737,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         var offset = 0f;
         //開始位置
         var startPos = transform.position;
-        Ray ray = new Ray(transform.position, -transform.forward);
+        Ray ray = new Ray(transform.position + Vector3.up, -transform.forward);
         RaycastHit hit;
         float dis;
         var col = GetComponent<Collider>();
