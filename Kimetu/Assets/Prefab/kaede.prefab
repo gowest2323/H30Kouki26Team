@@ -3128,7 +3128,7 @@ MonoBehaviour:
   knockbackMoveTime: 0.3
   knockbackMoveDistance: 2
   rayDistance: 10
-  limitRayDistance: 1
+  limitRayDistance: 2
   weapon: {fileID: 0}
   counterTime: 2
   pierceText: {fileID: 0}
