@@ -85,6 +85,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     public string longPressMessage { get { return "吸生"; } }
     public bool canLongPress { get { return this.CanPierce(); } }
 
+    [SerializeField]
+    private GameObject prefab;
+
     void Start()
     {
         this.status = GetComponent<PlayerStatus>();
@@ -485,6 +488,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (status.IsDead())
         {
             StartCoroutine(DieAnimation());
+            Instantiate(prefab);
+            //Time.timeScale = 0.0f;
         }
         //まだ生きていたらダメージモーション
         else
@@ -498,8 +503,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         playerAnimation.StartDeadAnimation();
         yield return new WaitForSeconds(2);
         //プレイヤーが戦闘不能になった時メニューを出す
-        var fadeData = new FadeData(1f, 1f, Color.black);
-        SceneChanger.Instance().Change(SceneName.PlayerDead, fadeData);
+        //var fadeData = new FadeData(1f, 1f, Color.black);
+        //SceneChanger.Instance().Change(SceneName.PlayerDead, fadeData);
     }
 
     /// <summary>
