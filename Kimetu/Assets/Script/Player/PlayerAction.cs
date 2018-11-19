@@ -378,6 +378,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state == PlayerState.Avoid) return false;
         if (state == PlayerState.Counter) return false;
         if (state == PlayerState.Defence) return false;
+        if (state == PlayerState.Damage) return false;
         if (state == PlayerState.Pierce) return false;
         if (state == PlayerState.Attack) return false;
         //吸生可能な敵がいなければできない
@@ -551,6 +552,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         //死んでいたら攻撃しない
         if (status.IsDead()) return;
+        if (state == PlayerState.Damage) return;
         if (this.state == PlayerState.Avoid)
         {
             return;
