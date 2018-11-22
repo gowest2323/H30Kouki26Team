@@ -503,7 +503,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     {
         if(status.IsDead()) { return; }
         state = PlayerState.Damage;
-        status.Damage(damage.damage);
+        status.Damage(damage.damage, DamageMode.Kill);
         //死亡したら倒れるモーション
         if (status.IsDead())
         {
