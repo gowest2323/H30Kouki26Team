@@ -42,7 +42,7 @@ public class FirstBossAI : EnemyAI, IDamageable
         //これがないと、死亡したエネミーに攻撃が当たったとき、
         //エネミーのローテーションがおかしくなる(PassOutが実行されるため??)
         if (status.IsDead()) { return; }
-        status.Damage(damageSource.damage);
+        status.Damage(damageSource.damage, (Slow.Instance.isSlowNow ? DamageMode.Kill : DamageMode.NotKill));
         //現在の行動を停止
         CoroutineManager.Instance.StopCoroutine(currentActionCoroutine);
         //死亡したら倒れるモーション
