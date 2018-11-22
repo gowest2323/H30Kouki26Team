@@ -40,6 +40,10 @@ public class Slow : SingletonMonoBehaviour<Slow>
         return Time.deltaTime * currentPlayerSpeed;
     }
 
+    public float GetPlayerSpeed() {
+        return currentPlayerSpeed;
+    }
+
     /// <summary>
     /// スロー開始
     /// </summary>

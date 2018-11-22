@@ -700,7 +700,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             float dis;
             var t = Time.time;
             yield return new WaitForEndOfFrame();
-            var diff = (Time.time - t);
+            var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
             offset += diff;
             var percent = offset / avoidMoveTime;
             if (Physics.Raycast(ray, out hit, rayDistance, mask))
