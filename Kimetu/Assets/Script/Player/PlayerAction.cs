@@ -817,10 +817,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
                 {
                     col.enabled = true;
                     //ガードボタンまだ押しているなら
-                    if (isGuard)
+                    if (Input.GetButton(InputMap.Type.LButton.GetInputName()))
                     {
                         //防御中に切り替える
                         state = PlayerState.Defence;
+                        this.isGuard = true;
                     }
                     else//押してなかったら
                     {
@@ -836,10 +837,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         yield return new WaitForEndOfFrame();
 
         //ガードボタンまだ押しているなら
-        if (isGuard)
+        if (Input.GetButton(InputMap.Type.LButton.GetInputName()))
         {
             //防御中に切り替える
             state = PlayerState.Defence;
+            this.isGuard = true;
         }
         else//押してなかったら
         {
