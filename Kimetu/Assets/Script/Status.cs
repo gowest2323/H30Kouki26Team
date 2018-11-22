@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ダメージの種類。
+/// </summary>
+public enum DamageMode {
+    Kill,
+    NotKill
+}
+
 public class Status : MonoBehaviour
 {
     protected int hp;
@@ -35,11 +43,14 @@ public class Status : MonoBehaviour
         return ((float)hp / (float)maxHP);
     }
 
-    public void Damage(int power)
+    public void Damage(int power, DamageMode mode = DamageMode.NotKill)
     {
         hp = hp - power;
         if(this.hp <= 0) {
             this.hp = 0;
+        }
+        if(mode == DamageMode.NotKill && this.hp <= 0) {
+            this.hp = 1;
         }
     }
     public bool IsDead()
