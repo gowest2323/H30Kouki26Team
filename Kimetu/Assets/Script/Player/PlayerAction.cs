@@ -83,7 +83,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
     //ILongPressInformation
     public string longPressMessage { get { return "吸生"; } }
-    public bool canLongPress { get { return this.CanPierce() && GetComponent<Status>().IsAlive(); } }
+    public bool canLongPress { get { return this.CanPierce(); } }
 
     [SerializeField]
     private GameObject deadUIPrefab;
@@ -381,6 +381,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state == PlayerState.Damage) return false;
         if (state == PlayerState.Pierce) return false;
         if (state == PlayerState.Attack) return false;
+        if(GetComponent<Status>().IsDead()) return false;
         //吸生可能な敵がいなければできない
         if (nearCanPierceEnemyList.Count <= 0) return false;
         return true;
