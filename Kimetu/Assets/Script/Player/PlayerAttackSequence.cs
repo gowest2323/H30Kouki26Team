@@ -22,6 +22,8 @@ public enum AttackResult {
 public class PlayerAttackSequence : MonoBehaviour {
 	public event AttackPhaseFinished OnAttackPhaseFinished = delegate { };
 	[SerializeField]
+	private PlayerAction playerAction;
+	[SerializeField]
 	private PlayerAnimation playerAnimation;
 	[SerializeField]
 	private Weapon weapon;
@@ -29,11 +31,15 @@ public class PlayerAttackSequence : MonoBehaviour {
 	private int phaseMax = 4;
 	private Coroutine coroutine;
 	private int attackStack;
+	private int resetPhase;
 	public int phase { get { return attackStack - 1; }}
 	public bool isAttack { get { return attackStack > 0; }}
 
 	// Use this for initialization
 	void Start () {
+		if(this.playerAction == null) {
+			this.playerAction = GetComponent<PlayerAction>();
+		}
 		if(this.playerAnimation == null) {
 			this.playerAnimation = GetComponent<PlayerAnimation>();
 		}
@@ -83,16 +89,39 @@ public class PlayerAttackSequence : MonoBehaviour {
 		StartAnimation();
         //status.DecreaseStamina(decreaseAttackStamina);
         AudioManager.Instance.PlayPlayerSE(AudioName.kougeki_1.String());
-        yield return new WaitForSeconds(1);
-        weapon.AttackEnd();
-        //isAttack = false;
-		attackStack = 0;
-		OnAttackPhaseFinished();
+		yield return WaitFinish();
         //state = PlayerState.Idle;
     }
 
+	private IEnumerator WaitFinish() {
+		var offset = 0f;
+		var seconds = 1f;
+		while(offset < seconds) {
+			yield return new WaitForSeconds(seconds / 10);
+			offset += (seconds / 10);
+			//ここで逐一ステートを確認する
+			//防御中なら中断する
+			if(playerAction.state == PlayerState.Defence) {
+				Finish(false);
+				playerAnimation.CancelAttackAnimation(resetPhase);
+				yield break;
+			}
+		}
+		Finish(true);
+	}
+
+	private void Finish(bool notify) {
+        weapon.AttackEnd();
+        //isAttack = false;
+		attackStack = 0;
+		if(notify) {
+			OnAttackPhaseFinished();
+		}
+	}
+
 	private void StartAnimation() {
 		playerAnimation.StartAttackAnimation(phase);
+		this.resetPhase = phase;
 	}
 
 	public int GetPhaseMax() {
