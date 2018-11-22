@@ -16,7 +16,7 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
 
     //ILongPressInformation
     public string longPressMessage { get { return "次のステージへ";}}
-    public bool canLongPress { get { return playerStay && player.GetComponent<Status>().IsAlive(); }}
+    public bool canLongPress { get { return playerStay && IsPlayerAlive(); }}
 
 	// Use this for initialization
 	void Start () {
@@ -42,15 +42,16 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
     // Update is called once per frame
     void Update()
     {
-
+        if(playerStay && !IsPlayerAlive()) {
+            ActivateCanvas(false);
+        }
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && IsPlayerAlive())
         {
-            playerStay = true;
-            canvas.gameObject.SetActive(true);
+            ActivateCanvas(true);
         }
     }
 
@@ -58,8 +59,16 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
     {
         if (other.gameObject.tag == "Player")
         {
-            playerStay = false;
-            canvas.gameObject.SetActive(false);
+            ActivateCanvas(false);
         }
+    }
+
+    private void ActivateCanvas(bool active) {
+        playerStay = active;
+        canvas.gameObject.SetActive(active);
+    }
+
+    private bool IsPlayerAlive() {
+        return player.GetComponent<Status>().IsAlive();
     }
 }
