@@ -153,6 +153,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             if (isGuard) SetGuardMoveDirection(dir);
             return;
         }
+        //壁に当たるなら進まない
+        if (IsNearOfWall())
+        {
+            transform.position += (-transform.forward * speed * Slow.Instance.PlayerDeltaTime());
+            return;
+        }
         playerAnimation.StartWalkAnimation();
         var pos = transform.position;
         transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
@@ -192,9 +198,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             return;
         }
         //壁に当たるなら進まない
-        var pos = transform.position;
-        RaycastHit hit;
-        if (Physics.Raycast(pos + Vector3.up, transform.forward, out hit, 1, LayerMask.GetMask(LayerName.Stage.String())))
+        if (IsNearOfWall())
         {
             return;
         }
@@ -208,6 +212,16 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         {
             AudioManager.Instance.PlayPlayerSE(AudioName.Dash.String());
         }
+    }
+
+    private bool IsNearOfWall() {
+        var pos = transform.position;
+        RaycastHit hit;
+        if (Physics.Raycast(pos + Vector3.up, transform.forward, out hit, 1, LayerMask.GetMask(LayerName.Stage.String())))
+        {
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
