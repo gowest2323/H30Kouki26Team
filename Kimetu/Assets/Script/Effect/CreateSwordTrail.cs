@@ -75,7 +75,7 @@ public class CreateSwordTrail : MonoBehaviour {
 			//　表示する四角形数で1を割って割合を計算
 			addParam += 1f / saveMeshNum;
  
-			Debug.Log (addParam);
+			//Debug.Log (addParam);
 		}
  
 		//　メッシュ用の三角形を登録した頂点で設定
