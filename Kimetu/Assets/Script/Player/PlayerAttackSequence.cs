@@ -99,7 +99,8 @@ public class PlayerAttackSequence : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			//ここで逐一ステートを確認する
 			//防御中なら中断する
-			if(playerAction.state == PlayerState.Defence) {
+			if(playerAction.state == PlayerState.Defence ||
+			   playerAction.state == PlayerState.Damage) {
 				Finish(false);
 				playerAnimation.CancelAttackAnimation(resetPhase);
 				yield break;
