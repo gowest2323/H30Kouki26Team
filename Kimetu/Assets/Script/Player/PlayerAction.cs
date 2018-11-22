@@ -83,7 +83,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
     //ILongPressInformation
     public string longPressMessage { get { return "吸生"; } }
-    public bool canLongPress { get { return this.CanPierce(); } }
+    public bool canLongPress { get { return this.CanPierce() && GetComponent<Status>().IsAlive(); } }
 
     [SerializeField]
     private GameObject deadUIPrefab;

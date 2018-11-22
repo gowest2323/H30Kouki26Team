@@ -12,12 +12,15 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
     [SerializeField]
     private SceneName nextSceneName;
 
+    private GameObject player;
+
     //ILongPressInformation
     public string longPressMessage { get { return "次のステージへ";}}
-    public bool canLongPress { get { return playerStay; }}
+    public bool canLongPress { get { return playerStay && player.GetComponent<Status>().IsAlive(); }}
 
 	// Use this for initialization
 	void Start () {
+        this.player = GameObject.FindGameObjectWithTag("Player");
         playerStay = false;
         canvas.gameObject.SetActive(false);
         GetComponent<LongPressDetector>();
