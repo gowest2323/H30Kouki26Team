@@ -24,14 +24,14 @@ public class DamageAction : MonoBehaviour, IEnemyActionable
         Debug.Log("damage start");
         if (damage == DamagePattern.Normal)
         {
-            enemyAnimation.StartDamageAnimation();
+            //enemyAnimation.StartDamageAnimation();
         }
         else
         {
             enemyAnimation.StartReplAnimation();
+            yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
         }
         yield return null;
-        yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
         callBack.Invoke();
         Debug.Log("damage end");
     }
