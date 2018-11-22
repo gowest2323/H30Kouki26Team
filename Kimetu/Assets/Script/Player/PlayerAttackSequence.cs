@@ -74,6 +74,7 @@ public class PlayerAttackSequence : MonoBehaviour {
 		if(this.coroutine != null) {
 			StopCoroutine(coroutine);
 			this.coroutine = null;
+			System.GC.Collect();
 		}
 	}
 
@@ -95,7 +96,7 @@ public class PlayerAttackSequence : MonoBehaviour {
 
 	private IEnumerator WaitFinish() {
 		var start = Time.time;
-		while(!playerAnimation.IsEndAnimation(Mathf.Epsilon)) {
+		while(!playerAnimation.IsEndAnimation(0.2f)) {
 			yield return new WaitForEndOfFrame();
 			//ここで逐一ステートを確認する
 			//防御中なら中断する
