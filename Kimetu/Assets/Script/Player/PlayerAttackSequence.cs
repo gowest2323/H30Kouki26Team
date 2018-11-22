@@ -94,11 +94,9 @@ public class PlayerAttackSequence : MonoBehaviour {
     }
 
 	private IEnumerator WaitFinish() {
-		var offset = 0f;
-		var seconds = 1f;
-		while(offset < seconds) {
-			yield return new WaitForSeconds(seconds / 10);
-			offset += (seconds / 10);
+		var start = Time.time;
+		while(!playerAnimation.IsEndAnimation(Mathf.Epsilon)) {
+			yield return new WaitForEndOfFrame();
 			//ここで逐一ステートを確認する
 			//防御中なら中断する
 			if(playerAction.state == PlayerState.Defence) {
@@ -107,6 +105,7 @@ public class PlayerAttackSequence : MonoBehaviour {
 				yield break;
 			}
 		}
+		//Debug.Log("animation " + (Time.time - start));
 		Finish(true);
 	}
 
