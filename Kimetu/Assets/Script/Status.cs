@@ -47,6 +47,10 @@ public class Status : MonoBehaviour
         return hp <= 0;
     }
 
+    public bool IsAlive() {
+        return !IsDead();
+    }
+
     /// <summary>
     /// ステータスをリセットします。
     /// プレイヤーが死亡した時に呼ばれます。
