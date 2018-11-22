@@ -62,6 +62,25 @@ public class PlayerAnimation :CharacterAnimation {
                 throw new System.ArgumentException();
         }
     }
+    public void CancelAttackAnimation(int phase) {
+        //FIXME:配列か何かにいれる、or列挙をキーとしたDictionaryとかにいれる
+        switch(phase) {
+            case 0:
+                animator.ResetTrigger("Attack");
+                break;
+            case 1:
+                animator.ResetTrigger("Attack2");
+                break;
+            case 2:
+                animator.ResetTrigger("Attack3");
+                break;
+            case 3:
+                animator.ResetTrigger("Attack4");
+                break;
+            default:
+                throw new System.ArgumentException("phase " + phase);
+        }
+    }
     public void StartGuardAnimation()
     {
         animator.SetBool("Guard", true);
