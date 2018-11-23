@@ -1,9 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class HorizontalAttack : EnemyAttack
 {
+    private System.IDisposable observer;
+    protected override void Start() {
+        base.Start();
+        var attackHook = GetComponentInParent<OniNagiHook>();
+        this.observer = attackHook.trigger.Subscribe((e) => {
+            if(e) { AttackStart(); }
+            else { AttackEnd(); }
+        });
+    }
+
+    private void OnDestroy() {
+        //イベントの購読を終了
+        observer.Dispose();
+    }
+
     public override IEnumerator Attack()
     {
         Debug.Log("薙ぎ払い攻撃開始");
