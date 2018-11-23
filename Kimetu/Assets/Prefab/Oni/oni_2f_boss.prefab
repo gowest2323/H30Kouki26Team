@@ -515,7 +515,13 @@ GameObject:
   - component: {fileID: 65992145761049728}
   - component: {fileID: 114781115712572064}
   - component: {fileID: 114149057432127530}
-  - component: {fileID: 114953936989501196}
+  - component: {fileID: 114022920862369186}
+  - component: {fileID: 114261283287249466}
+  - component: {fileID: 114510710651999776}
+  - component: {fileID: 114282466006359782}
+  - component: {fileID: 114555225068795440}
+  - component: {fileID: 114371846141634194}
+  - component: {fileID: 114078722835928724}
   m_Layer: 10
   m_Name: oni_2f_boss
   m_TagString: Enemy
@@ -2559,6 +2565,17 @@ MonoBehaviour:
   searchAreas:
   - {fileID: 114630611674859808}
   - {fileID: 114013000345688484}
+--- !u!114 &114022920862369186
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4aa8f36cc565194da3867466eee42ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114031540142577978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2575,6 +2592,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114078722835928724
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e92f1f9186b60ed4fb981cc0bb5bfd3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114123949529187096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2709,6 +2737,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 114143184455758674}
   text: {fileID: 114995291412013606}
+--- !u!114 &114261283287249466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1563a672f3f52674ba3950792d34af1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114282466006359782
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fc73acf983866f48817552430cda72a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114371846141634194
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb2d9963aa2b2847b2fb958701a1d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114454213457106386
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2752,6 +2813,17 @@ MonoBehaviour:
   power: 10
   attackableArea: {fileID: 114955420748807208}
   holderEnemy: {fileID: 114781115712572064}
+--- !u!114 &114510710651999776
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3c1417fe11ef8f42b0df07f5bac78ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114553591831152694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2773,6 +2845,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4a6cfbf0dd8e1d439a47f857e952790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114555225068795440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3757f0070cd39ce45af7c8609dd1b760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114597013315382196
@@ -2922,19 +3005,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114953936989501196
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1419309862329462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d797136b62b114c66b457d9dadbeedcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swingAttackHandler: {fileID: 114815024595265850}
-  horizontalAttackHandler: {fileID: 114495501241000980}
 --- !u!114 &114955420748807208
 MonoBehaviour:
   m_ObjectHideFlags: 1
