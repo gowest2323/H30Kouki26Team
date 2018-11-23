@@ -85429,14 +85429,14 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
   m_Events:
-  - time: 0
+  - time: 1.1666666
     functionName: OniAttackStart
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 2.6666667
+  - time: 1.7083334
     functionName: OniAttackEnd
     data: 
     objectReferenceParameter: {fileID: 0}
