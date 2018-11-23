@@ -47,7 +47,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
         //これがないと、死亡したエネミーに攻撃が当たったとき、
         //エネミーのローテーションがおかしくなる(PassOutが実行されるため??)
         if (status.IsDead()) { return; }
-        status.Damage(damageSource.damage, (Slow.Instance.isSlowNow ? DamageMode.Kill : DamageMode.NotKill));
+        ApplyDamage(damageSource);
         //死亡したとき
         if (status.IsDead())
         {

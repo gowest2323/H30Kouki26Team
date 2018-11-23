@@ -25,4 +25,19 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     protected abstract Coroutine Think();
     public abstract void OnHit(DamageSource damageSource);
     public abstract void Countered();
+
+    /// <summary>
+    /// ダメージを適用します。
+    /// </summary>
+    /// <param name="damageSource"></param>
+    protected void ApplyDamage(DamageSource damageSource) {
+        var status = GetComponent<Status>();
+        var isBoss = GetComponent<BossMarker>() != null;
+        //ボスははじかないと死なない
+        if(isBoss) {
+            status.Damage(damageSource.damage, (Slow.Instance.isSlowNow ? DamageMode.Kill : DamageMode.NotKill));
+        } else {
+            status.Damage(damageSource.damage, DamageMode.Kill);
+        }
+    }
 }
