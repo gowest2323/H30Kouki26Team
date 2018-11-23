@@ -59,9 +59,11 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     }
 
     private IEnumerator StartShowBeam() {
+        var hook = GetComponentInParent<OniDeadHook>();
         var beam = GetComponentInChildren<BeamShot>();
         var animator = GetComponentInParent<EnemyAnimation>();
-        yield return new WaitWhile(() => !animator.IsEndAnimation(0.2f));
+//      yield return new WaitWhile(() => !animator.IsEndAnimation(0.2f));
+        yield return hook.Wait();
         beam.StartShot();
     }
 }

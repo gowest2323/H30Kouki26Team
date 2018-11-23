@@ -31,6 +31,7 @@ public class OniIdleHook : MonoBehaviour {
 	}
 
 	public IEnumerator Wait() {
+		yield return new WaitWhile(() => !animationNow);
 		yield return new WaitWhile(() => animationNow);
 	}
 }
