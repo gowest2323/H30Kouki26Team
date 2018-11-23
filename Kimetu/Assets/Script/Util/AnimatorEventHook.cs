@@ -215,6 +215,7 @@ public class CLASSNAME : MonoBehaviour {
 	}
 
 	public IEnumerator Wait() {
+		yield return new WaitWhile(() => !animationNow);
 		yield return new WaitWhile(() => animationNow);
 	}
 }
