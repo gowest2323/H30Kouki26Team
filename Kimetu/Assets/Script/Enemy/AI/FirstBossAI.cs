@@ -151,6 +151,7 @@ public class FirstBossAI : EnemyAI, IDamageable
     public void DeadEnd()
     {
         canUseHeal = true;
+        ShowBeam();
     }
 
     public override void UsedHeal()

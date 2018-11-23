@@ -12,6 +12,12 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     /// </summary>
     public bool canUseHeal { protected set; get; }
 
+    /// <summary>
+    /// はじきによって殺されたなら true.
+    /// </summary>
+    /// <value></value>
+    public bool deathByRepl { private set; get; }
+
     public virtual void UsedHeal()
     {
         canUseHeal = false;
@@ -39,5 +45,23 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
         } else {
             status.Damage(damageSource.damage, DamageMode.Kill);
         }
+        if(Slow.Instance.isSlowNow && status.IsDead()) {
+            this.deathByRepl = true;
+        }
+    }
+
+    /// <summary>
+    /// アニメーションが終了するまで待機したあとビームを発射します。
+    /// </summary>
+    /// <returns></returns>
+    protected void ShowBeam() {
+        StartCoroutine(StartShowBeam());
+    }
+
+    private IEnumerator StartShowBeam() {
+        var beam = GetComponentInChildren<BeamShot>();
+        var animator = GetComponentInParent<EnemyAnimation>();
+        yield return new WaitWhile(() => !animator.IsEndAnimation(0.2f));
+        beam.StartShot();
     }
 }

@@ -149,5 +149,6 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
     public void DeadEnd()
     {
         canUseHeal = true;
+        ShowBeam();
     }
 }
