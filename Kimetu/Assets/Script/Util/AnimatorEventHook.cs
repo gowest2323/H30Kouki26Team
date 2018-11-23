@@ -68,6 +68,9 @@ public class AnimatorEventHookEditor : Editor {
 		if(GUILayout.Button("DeleteAll")) {
 			DeleteAllAsset();
 		}
+		if(GUILayout.Button("Update")) {
+			UpdateAllAsset();
+		}
 		EditorGUILayout.EndVertical();
     }
 
@@ -120,12 +123,26 @@ public class AnimatorEventHookEditor : Editor {
 		AssetDatabase.Refresh();
 	}
 
-	private void CreateNewHook(AnimationClip clip, string fn) {
+	private void UpdateAllAsset() {
+		foreach(var clip in GetAllClips()) {
+			var fn = GetHookFileName(clip.name);
+			UpdateAsset(clip, fn);
+		}
+		AssetDatabase.Refresh();
+	}
+
+	private void UpdateAsset(AnimationClip clip, string fn) {
+		CreateNewHook(clip, fn, false);
+	}
+
+	private void CreateNewHook(AnimationClip clip, string fn, bool updateEvent=true) {
 		if(!Directory.Exists(PATH)) {
 			Directory.CreateDirectory(PATH);
 		}
 		//クリア
-		AnimationUtility.SetAnimationEvents(clip, new AnimationEvent[0]);
+		if(updateEvent) {
+			AnimationUtility.SetAnimationEvents(clip, new AnimationEvent[0]);
+		}
 		//開始と終了でイベントを追加
 		var startEvent = new AnimationEvent();
 		var endEvent = new AnimationEvent();
@@ -133,8 +150,10 @@ public class AnimatorEventHookEditor : Editor {
 		endEvent.functionName = GetAnimationName(clip.name) + "End";
 		startEvent.time = 0;
 		endEvent.time = clip.length;
-		AnimationUtility.SetAnimationEvents(clip,
-		new AnimationEvent[]{startEvent, endEvent});
+		if(updateEvent) {
+			AnimationUtility.SetAnimationEvents(clip,
+			new AnimationEvent[]{startEvent, endEvent});
+		}
 		//自動生成
 		var src = CreateSourceCode(
 			GetHookClassName(clip.name),
@@ -176,11 +195,11 @@ public class CLASSNAME : MonoBehaviour {
 	public IObservable<bool> trigger { get { return subject; }}
 	private Subject<bool> subject;
 
-	void Start() {
+	void Awake() {
 		this.subject = new Subject<bool>();
 	}
 
-	void End() {
+	void Start() {
 	}
 
 	public void START() {

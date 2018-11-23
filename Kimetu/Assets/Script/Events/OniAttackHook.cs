@@ -11,11 +11,11 @@ public class OniAttackHook : MonoBehaviour {
 	public IObservable<bool> trigger { get { return subject; }}
 	private Subject<bool> subject;
 
-	void Start() {
+	void Awake() {
 		this.subject = new Subject<bool>();
 	}
 
-	void End() {
+	void Start() {
 	}
 
 	public void OniAttackStart() {
