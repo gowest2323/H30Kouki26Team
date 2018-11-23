@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler
 {
@@ -32,11 +33,23 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler
     /// <value></value>
     protected bool running { private set; get; }
 
+    private System.IDisposable observer;
+
     protected virtual void Start()
     {
         attackCollider = GetComponent<Collider>();
         attackCollider.enabled = false;
         enemyAnimation = GetComponentInParent<EnemyAnimation>();
+        var attackHook = GetComponentInParent<OniAttackHook>();
+        this.observer = attackHook.trigger.Subscribe((e) => {
+            if(e) { AttackStart(); }
+            else { AttackEnd(); }
+        });
+    }
+
+    private void OnDestroy() {
+        //イベントの購読を終了
+        observer.Dispose();
     }
 
     public abstract IEnumerator Attack();
