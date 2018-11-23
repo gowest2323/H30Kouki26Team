@@ -1,10 +1,6 @@
 {
-    "name": "Kimetu",
-    "references": [
-        "NavMeshComponents",
-        "UniRx",
-        "UniRx.Async"
-    ],
+    "name": "UniRx.Async",
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

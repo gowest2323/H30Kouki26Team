@@ -1,11 +1,12 @@
 {
-    "name": "Kimetu",
+    "name": "UniRx.Examples",
     "references": [
-        "NavMeshComponents",
         "UniRx",
         "UniRx.Async"
     ],
-    "optionalUnityReferences": [],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false

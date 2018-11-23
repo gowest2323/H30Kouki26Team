@@ -1,12 +1,12 @@
 {
-    "name": "Kimetu",
+    "name": "UniRx.Async.Editor",
     "references": [
-        "NavMeshComponents",
-        "UniRx",
         "UniRx.Async"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false
 }
