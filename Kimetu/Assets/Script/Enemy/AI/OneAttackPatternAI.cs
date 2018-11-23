@@ -148,7 +148,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
 
     public void DeadEnd()
     {
-        canUseHeal = true;
+        canUseHeal = deathByRepl;
         if(deathByRepl) {
             ShowBeam();
         }

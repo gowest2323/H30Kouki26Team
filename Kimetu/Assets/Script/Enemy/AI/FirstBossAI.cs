@@ -150,7 +150,7 @@ public class FirstBossAI : EnemyAI, IDamageable
     /// </summary>
     public void DeadEnd()
     {
-        canUseHeal = true;
+        canUseHeal = deathByRepl;
         if(deathByRepl) {
             ShowBeam();
         }
