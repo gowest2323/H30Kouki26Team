@@ -153,6 +153,8 @@ public class FirstBossAI : EnemyAI, IDamageable
         canUseHeal = deathByRepl;
         if(deathByRepl) {
             ShowBeam();
+        } else {
+            Extinction();
         }
     }
 

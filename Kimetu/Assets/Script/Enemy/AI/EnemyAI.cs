@@ -58,11 +58,35 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
         StartCoroutine(StartShowBeam());
     }
 
+    /// <summary>
+    /// 鬼の体を五秒かけて黒くしたあと消します。
+    /// </summary>
+    protected void Extinction() {
+        StartCoroutine(StartExtinction());
+    }
+
+    private IEnumerator StartExtinction() {
+        var hook = GetComponentInParent<OniDeadHook>();
+        yield return hook.Wait();
+        var offset = 0f;
+        var seconds = 5f;
+        var separate = 100;
+        var mat = GetComponentInChildren<SkinnedMeshRenderer>().materials[0];
+        var start = mat.color;
+        var end = Color.black;
+        while(offset < seconds) {
+            yield return new WaitForSeconds(seconds / separate);
+            offset += (seconds / separate);
+            mat.color = Color.Lerp(start, end, offset / seconds);
+        }
+        mat.color = Color.black;
+        yield return new WaitForEndOfFrame();
+        GameObject.Destroy(gameObject);
+    }
+
     private IEnumerator StartShowBeam() {
         var hook = GetComponentInParent<OniDeadHook>();
         var beam = GetComponentInChildren<BeamShot>();
-        var animator = GetComponentInParent<EnemyAnimation>();
-//      yield return new WaitWhile(() => !animator.IsEndAnimation(0.2f));
         yield return hook.Wait();
         beam.StartShot();
     }

@@ -151,6 +151,8 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider
         canUseHeal = deathByRepl;
         if(deathByRepl) {
             ShowBeam();
+        } else {
+            Extinction();
         }
     }
 }
