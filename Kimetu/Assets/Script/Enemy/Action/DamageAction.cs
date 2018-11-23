@@ -24,7 +24,10 @@ public class DamageAction : MonoBehaviour, IEnemyActionable
         Debug.Log("damage start");
         if (damage == DamagePattern.Normal)
         {
-            //enemyAnimation.StartDamageAnimation();
+            if(Slow.Instance.isSlowNow) {
+                enemyAnimation.StartDamageAnimation();
+                yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
+            }
         }
         else
         {
