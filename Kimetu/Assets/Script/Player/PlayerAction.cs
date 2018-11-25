@@ -652,11 +652,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             yield break;
         }
 
-
         //ガード中方向入力がある時(四方向個別にアニメーションあり)、rotation維持
         //Dot()->同じ方向1、垂直0、正反対-1
+        var ax = Mathf.Abs(dir.x);
+        var az = Mathf.Abs(dir.z);
         //前
-        if (Vector3.Dot(transform.forward, dir) >= 0.4f)
+        if (az > ax && dir.z > 0)
         {
             //前進回避アニメーション
                 Debug.Log("forward");
@@ -664,8 +665,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
         }
         //横
-        else if (Vector3.Dot(transform.forward, dir) < 0.4f &&
-                Vector3.Dot(transform.forward, dir) > -0.4f)
+        else if (ax > az)
         {
             //右回避アニメーション
             if (dir.x > 0f)
@@ -683,7 +683,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             }
         }
         //後ろ
-        else//Vector3.Dot(transform.forward, dir) <= -0.4f
+        else// if(Vector3.Dot(-transform.forward, dir) >= 0.4f) //Vector3.Dot(transform.forward, dir) <= -0.4f
         {
                 Debug.Log("back");
             //後ろ回避アニメーション
@@ -726,7 +726,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
                 var selfPos = transform.position;
                 otherPos.y = selfPos.y;
                 dis = Vector3.Distance(otherPos, selfPos);
-                Debug.Log(dis);
+//                Debug.Log(dis);
 
                 if (dis <= limitRayDistance)
                 {
