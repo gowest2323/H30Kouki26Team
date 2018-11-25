@@ -616,7 +616,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //何の方向もない時
         if (dir == Vector3.zero)
         {
-                Debug.Log("back");
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
             //SE
@@ -639,7 +638,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (!isGuard)
         {
             //前進回避アニメーション
-                Debug.Log("forward");
             playerAnimation.StartForwardAvoidAnimation();
             yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
 
@@ -660,7 +658,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (az > ax && dir.z > 0)
         {
             //前進回避アニメーション
-                Debug.Log("forward");
             playerAnimation.StartForwardAvoidAnimation();
             yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
         }
@@ -670,14 +667,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             //右回避アニメーション
             if (dir.x > 0f)
             {
-                Debug.Log("right");
                 playerAnimation.StartRightAvoidAnimation();
                 yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeH, avoidMoveDistanceH);
             }
             //左回避アニメーション
             if (dir.x < 0f)
             {
-                Debug.Log("left");
                 playerAnimation.StartLeftAvoidAnimation();
                 yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeH, avoidMoveDistanceH);
             }
@@ -685,7 +680,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //後ろ
         else// if(Vector3.Dot(-transform.forward, dir) >= 0.4f) //Vector3.Dot(transform.forward, dir) <= -0.4f
         {
-                Debug.Log("back");
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
             yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
