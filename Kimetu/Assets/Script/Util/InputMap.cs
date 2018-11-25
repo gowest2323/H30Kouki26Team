@@ -90,4 +90,40 @@ public static class InputMap {
 			return winBinding[type];
 		#endif
 	}
+
+	/// <summary>
+	/// Dパッドの水平方向の入力状態を返します。
+	/// </summary>
+	/// <returns></returns>
+	public static float GetDPadHorizontal() {
+		#if UNITY_STANDALONE_OSX
+			if(Input.GetButtonDown("MAC_DPAD_LEFT")) {
+				return -1;
+			}
+			if(Input.GetButtonDown("MAC_DPAD_RIGHT")) {
+				return 1;
+			}
+			return 0;
+		#else
+			return Input.GetAxis("WIN_DPAD_HORIZONTAL");
+		#endif
+	}
+
+	/// <summary>
+	/// Dパッドの垂直方向の入力状態を返します。
+	/// </summary>
+	/// <returns></returns>
+	public static float GetDPadVertical() {
+		#if UNITY_STANDALONE_OSX
+			if(Input.GetButtonDown("MAC_DPAD_UP")) {
+				return -1;
+			}
+			if(Input.GetButtonDown("MAC_DPAD_DOWN")) {
+				return 1;
+			}
+			return 0;
+		#else
+			return Input.GetAxis("WIN_DPAD_VERTICAL");
+		#endif
+	}
 }
