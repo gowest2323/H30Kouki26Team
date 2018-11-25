@@ -12,10 +12,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private bool isAvoid;
     //攻撃中か
     private bool isAttack;
-    [SerializeField, Header("アニメーション時間")]
-    private float avoidMoveTime = 0.2f;//回避秒数(回避アニメーション移動部分の時間)
+    [SerializeField, Header("アニメーション時間(横)")]
+    private float avoidMoveTimeH = 0.2f;//回避秒数(回避アニメーション移動部分の時間)
     [SerializeField]
-    private float avoidMoveDistance = 2.0f;//回避距離
+    private float avoidMoveDistanceH = 2.0f;//回避距離
+    [SerializeField, Header("アニメーション時間(縦)")]
+    private float avoidMoveTimeV = 0.2f;//回避秒数(回避アニメーション移動部分の時間)
+    [SerializeField]
+    private float avoidMoveDistanceV = 2.0f;//回避距離
     [SerializeField]
     private float knockbackMoveTime;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
     [SerializeField]
@@ -579,12 +583,18 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
 
         //ガード中回避したらガード解除
+        //ここでガードを終了することで isGuard がfalseになってしまいます。
+        //AvoidCoroutineを見るとわかるのですが、
+        //このフラグが true の時のみ対応する方向へアニメーションするようになっています。
+        //それがここでGuardEndすることで無意味になってしまってるので、
+        //直前までガードしていたかどうかを引数で渡すようにしました。
+        var isGuardJustBefore = isGuard;
         if (isGuard) GuardEnd();
         state = PlayerState.Avoid;
         AudioManager.Instance.PlayPlayerSE(AudioName.kaihi.String());
 
         //回避コルーチンを開始する
-        StartCoroutine(AvoidCoroutine(dir));
+        StartCoroutine(AvoidCoroutine(dir, isGuardJustBefore));
 
         status.DecreaseStamina(decreaseAvoidStamina);
 
@@ -592,7 +602,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //PlayerControllerでisAvoidがtrueの時他のメソッドのUPDATEを停止
     }
 
-    private IEnumerator AvoidCoroutine(Vector3 dir)
+    private IEnumerator AvoidCoroutine(Vector3 dir, bool isGuard)
     {
         if (isAvoid) yield break;
 
@@ -606,12 +616,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //何の方向もない時
         if (dir == Vector3.zero)
         {
+                Debug.Log("back");
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
             //SE
             AudioManager.Instance.PlayPlayerSE(AudioName.Dodge.String());
 
-            yield return DirectionAvoid(-transform.forward);
+            yield return DirectionAvoid(-transform.forward, avoidMoveTimeV, avoidMoveDistanceV);
 
             yield return new WaitForEndOfFrame();
 
@@ -628,8 +639,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (!isGuard)
         {
             //前進回避アニメーション
+                Debug.Log("forward");
             playerAnimation.StartForwardAvoidAnimation();
-            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
+            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
 
             yield return new WaitForEndOfFrame();
             //TODO:ここに体制立ち直る隙間時間
@@ -647,8 +659,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (Vector3.Dot(transform.forward, dir) >= 0.4f)
         {
             //前進回避アニメーション
+                Debug.Log("forward");
             playerAnimation.StartForwardAvoidAnimation();
-            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
+            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
         }
         //横
         else if (Vector3.Dot(transform.forward, dir) < 0.4f &&
@@ -657,22 +670,25 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
             //右回避アニメーション
             if (dir.x > 0f)
             {
+                Debug.Log("right");
                 playerAnimation.StartRightAvoidAnimation();
-                yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
+                yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeH, avoidMoveDistanceH);
             }
             //左回避アニメーション
             if (dir.x < 0f)
             {
+                Debug.Log("left");
                 playerAnimation.StartLeftAvoidAnimation();
-                yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
+                yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeH, avoidMoveDistanceH);
             }
         }
         //後ろ
         else//Vector3.Dot(transform.forward, dir) <= -0.4f
         {
+                Debug.Log("back");
             //後ろ回避アニメーション
             playerAnimation.StartBackAvoidAnimation();
-            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized);
+            yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
         }
 
         //SE
@@ -687,7 +703,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         yield break;
     }
 
-    private IEnumerator DirectionAvoid(Vector3 dir)
+    private IEnumerator DirectionAvoid(Vector3 dir, float avoidMoveTime, float avoidMoveDistance)
     {
 
         LayerMask mask = LayerMask.GetMask("Stage");
