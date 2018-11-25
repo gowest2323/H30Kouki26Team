@@ -47,6 +47,7 @@ public class AnimatorEventHookEditor : Editor {
 		if(!Directory.Exists(PATH)) {
 			Directory.CreateDirectory(PATH);
 		}
+		CreateInterface();
     }
 
     public override void OnInspectorGUI () {
@@ -132,6 +133,7 @@ public class AnimatorEventHookEditor : Editor {
 	}
 
 	private void UpdateAsset(AnimationClip clip, string fn) {
+		CreateInterface();
 		CreateNewHook(clip, fn, false);
 	}
 
@@ -180,6 +182,29 @@ public class AnimatorEventHookEditor : Editor {
 		return "\"" + name + "\"";
 	}
 
+	private void CreateInterface() {
+		var path = PATH + "IEventHook.cs";
+		if(!File.Exists(path)) {
+			File.WriteAllText(path, GetInterface(), Encoding.UTF8);
+		}
+	}
+
+	private string GetInterface() {
+		return 
+@"//AUTO-GENERATED-CODE
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UniRx;
+
+public interface IEventHook {
+	bool animationNow { get; }
+	IObservable<bool> trigger { get; }
+	IEnumerator Wait();
+}";
+	}
+
 	private string GetTemplate() {
 		return 
 @"//AUTO-GENERATED-CODE
@@ -190,7 +215,7 @@ using UnityEngine;
 using UniRx;
 
 [DisallowMultipleComponent]
-public class CLASSNAME : MonoBehaviour {
+public class CLASSNAME : MonoBehaviour, IEventHook {
 	public bool animationNow { private set; get; }
 	public IObservable<bool> trigger { get { return subject; }}
 	private Subject<bool> subject;

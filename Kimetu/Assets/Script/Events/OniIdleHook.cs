@@ -6,7 +6,7 @@ using UnityEngine;
 using UniRx;
 
 [DisallowMultipleComponent]
-public class OniIdleHook : MonoBehaviour {
+public class OniIdleHook : MonoBehaviour, IEventHook {
 	public bool animationNow { private set; get; }
 	public IObservable<bool> trigger { get { return subject; }}
 	private Subject<bool> subject;
