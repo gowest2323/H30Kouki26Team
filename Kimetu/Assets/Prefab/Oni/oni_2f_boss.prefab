@@ -869,6 +869,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1611067533222852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4713207722756432}
+  - component: {fileID: 65181801478747126}
+  m_Layer: 2
+  m_Name: EnemyDeadArea
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1612862633877864
 GameObject:
   m_ObjectHideFlags: 1
@@ -2186,6 +2202,19 @@ Transform:
   m_Father: {fileID: 4762255521966266}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 33.900856, y: 14.694005, z: 9.778968}
+--- !u!4 &4713207722756432
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1611067533222852}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4924224352623166}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4726317011787950
 Transform:
   m_ObjectHideFlags: 1
@@ -2370,6 +2399,7 @@ Transform:
   - {fileID: 4171632895686106}
   - {fileID: 4284508343867148}
   - {fileID: 4221894017010240}
+  - {fileID: 4713207722756432}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2472,6 +2502,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!65 &65181801478747126
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1611067533222852}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.79, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65320472361731904
 BoxCollider:
   m_ObjectHideFlags: 1
