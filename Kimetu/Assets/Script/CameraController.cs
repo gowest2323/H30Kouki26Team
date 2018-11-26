@@ -30,7 +30,9 @@ public class CameraController : MonoBehaviour
     private int coroutineCount;
 
     [SerializeField]
-    private float angleY = 0.2f;
+    private float lockonCameraAngleY = 0.9f;
+    [SerializeField]
+    private float nearLockonCameraAngleY = 1.5f;
 
     [SerializeField]
     private float cameraHighestAngle = 45.0f;
@@ -208,14 +210,12 @@ public class CameraController : MonoBehaviour
         var waitOne = new WaitForEndOfFrame();
         var selfPos = transform.position;
         var playerPos = player.transform.position;
-        var playerLookNearPos = nearPos;
-        //nearPos.y = selfPos.y ;
-        playerLookNearPos.y = selfPos.y;
-        playerPos.y = selfPos.y;
+        var playerLookNearPos = nearPos;//注目標的(敵)の位置(足元)
         var selfStartRotation = transform.rotation;
-        var selfEndRotation = Quaternion.LookRotation(nearPos - selfPos, Vector3.up);
+        var selfEndRotation = Quaternion.LookRotation((nearPos + new Vector3(0, 1.7f, 0)) - selfPos, Vector3.up);//注目点と注目元の高さを頭ぐらいの高さに
         var playerStartRotation = player.transform.rotation;
-        var playerEndRotation = Quaternion.LookRotation(playerLookNearPos - playerPos, Vector3.up);
+        var playerEndRotation = Quaternion.LookRotation(new Vector3(playerLookNearPos.x, selfPos.y, playerLookNearPos.z) - new Vector3(playerPos.x, selfPos.y, playerPos.z),
+                                                        Vector3.up);//注目点と注目元の高さをカメラの高さに合わせないとプレイヤーが回転しちゃう
         if (Quaternion.Angle(selfStartRotation, selfEndRotation) < 0.1f &&
            Quaternion.Angle(playerStartRotation, playerEndRotation) < 0.1f)
         {
@@ -246,10 +246,10 @@ public class CameraController : MonoBehaviour
 
             //微妙に見下ろすように
             if (nowDistance < distance)
-                transform.position += (Vector3.up * angleY * 1.5f);
+                transform.position += (Vector3.up * nearLockonCameraAngleY);
                 //transform.position += (Vector3.up * angleY * 0.2f);
             else
-                transform.position += (Vector3.up * angleY);
+                transform.position += (Vector3.up * lockonCameraAngleY);
 
             //回転をプレイヤーへ適用
             var euler = transform.rotation.eulerAngles;
