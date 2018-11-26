@@ -3124,7 +3124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avoidMoveTimeH: 0.2
-  avoidMoveDistanceH: 2
+  avoidMoveDistanceH: 4
   avoidMoveTimeV: 0.2
   avoidMoveDistanceV: 2
   knockbackMoveTime: 0.3
