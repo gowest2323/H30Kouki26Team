@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowSpeed: 0.3
-  highSpeed: 1.2
-  slowTime: 10
+  highSpeed: 0.5
+  slowTime: 5
   colorChanger: {fileID: 114342283565978210}
 --- !u!222 &222776247932868008
 CanvasRenderer:
