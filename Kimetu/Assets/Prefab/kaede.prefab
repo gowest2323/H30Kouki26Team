@@ -3151,7 +3151,7 @@ MonoBehaviour:
   decreaseStaminaPerSecond: 0.3
   decreaseDashStamina: 1
   decreaseSlowSeconds: 0.3
-  decreaseSlowStamina: 2
+  decreaseSlowStamina: 1
   decreaseAttackStamina: 10
   decreaseAvoidStamina: 10
   playerCamera: {fileID: 0}
