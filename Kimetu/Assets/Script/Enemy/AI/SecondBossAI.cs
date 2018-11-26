@@ -47,7 +47,7 @@ public class SecondBossAI : EnemyAI, IDamageable
         //これがないと、死亡したエネミーに攻撃が当たったとき、
         //エネミーのローテーションがおかしくなる(PassOutが実行されるため??)
         if (status.IsDead()) { return; }
-        status.Damage(damageSource.damage);
+        ApplyDamage(damageSource);
         //現在の行動を停止
         StopCoroutine(currentActionCoroutine);
         //死亡したら倒れるモーション
