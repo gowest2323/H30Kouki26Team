@@ -854,7 +854,7 @@ GameObject:
   - component: {fileID: 114358632930587504}
   - component: {fileID: 114523276591920316}
   m_Layer: 10
-  m_Name: oni_2f_wimp_matsumoto
+  m_Name: oni_2f_wimp_ver2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

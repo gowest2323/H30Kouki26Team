@@ -18,6 +18,9 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler
         base.Start();
         System.Type type = EnemyAttackTypeDictionary.typeDictionary[attackType];
         var attackHook = GetComponentInParent(type) as IEventHook;
+        if(attackHook == null) {
+            Debug.Log("type: " + type.Name);
+        }
         this.observer = attackHook.trigger.Subscribe((e) => {
             if(e) { AttackStart(); }
             else { AttackEnd(); }
