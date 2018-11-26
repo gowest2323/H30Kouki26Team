@@ -13,6 +13,7 @@ MainCamera,
 Player,
 GameController,
 Enemy,
+EnemyDeadArea,
 }
 public static class TagNameManager
 {
@@ -26,6 +27,7 @@ public static class TagNameManager
     {TagName.Player,"Player"},
     {TagName.GameController,"GameController"},
     {TagName.Enemy,"Enemy"},
+    {TagName.EnemyDeadArea,"EnemyDeadArea"},
 };
     public static bool Equals(TagName tagname, string name)
     {

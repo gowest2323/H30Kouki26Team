@@ -34,8 +34,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4215234939251032}
-  - component: {fileID: 135645012980617654}
   - component: {fileID: 114731963327466154}
+  - component: {fileID: 65478380048652530}
   m_Layer: 0
   m_Name: PlayerSearchArea
   m_TagString: Untagged
@@ -3050,6 +3050,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.05284879, y: 0.052907996, z: 0.74299526}
   m_Center: {x: 0.00000023984964, y: -0.00782104, z: 0.0017480844}
+--- !u!65 &65478380048652530
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1025587044417096}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.1, z: 0.5}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!95 &95857902352247394
 Animator:
   serializedVersion: 3
@@ -3123,19 +3135,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52329d43218894034ac14a94577ad945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidMoveTime: 0.3
-  avoidMoveDistance: 2
+  avoidMoveTimeH: 0.2
+  avoidMoveDistanceH: 4
+  avoidMoveTimeV: 0.2
+  avoidMoveDistanceV: 2
   knockbackMoveTime: 0.3
   knockbackMoveDistance: 2
   rayDistance: 10
   limitRayDistance: 1.1
   weapon: {fileID: 0}
-  counterTime: 2
+  counterTime: 0.5
   pierceText: {fileID: 0}
   pierceHealHP: 100
   stageManager: {fileID: 0}
   decreaseStaminaPerSecond: 0.3
   decreaseDashStamina: 1
+  decreaseSlowSeconds: 0.3
+  decreaseSlowStamina: 2
   decreaseAttackStamina: 10
   decreaseAvoidStamina: 10
   playerCamera: {fileID: 0}
@@ -3193,21 +3209,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5feb6c883452c410b83eac6e43a2773f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAction: {fileID: 0}
   playerAnimation: {fileID: 0}
   weapon: {fileID: 0}
   phaseMax: 4
---- !u!135 &135645012980617654
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1025587044417096}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!137 &137660646161012282
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
