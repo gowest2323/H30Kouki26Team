@@ -95,6 +95,7 @@ public class PlayerAnimation :CharacterAnimation {
     public void StopGuardAnimation()
     {
         animator.SetBool("Guard", false);
+        animator.SetBool("GuardWalk", false);
     }
     public void StartGuardWalkAnimation()
     {
