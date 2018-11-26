@@ -34,8 +34,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4215234939251032}
-  - component: {fileID: 135645012980617654}
   - component: {fileID: 114731963327466154}
+  - component: {fileID: 65478380048652530}
   m_Layer: 0
   m_Name: PlayerSearchArea
   m_TagString: Untagged
@@ -3050,6 +3050,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.05284879, y: 0.052907996, z: 0.74299526}
   m_Center: {x: 0.00000023984964, y: -0.00782104, z: 0.0017480844}
+--- !u!65 &65478380048652530
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1025587044417096}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.1, z: 0.5}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!95 &95857902352247394
 Animator:
   serializedVersion: 3
@@ -3201,18 +3213,6 @@ MonoBehaviour:
   playerAnimation: {fileID: 0}
   weapon: {fileID: 0}
   phaseMax: 4
---- !u!135 &135645012980617654
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1025587044417096}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!137 &137660646161012282
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
