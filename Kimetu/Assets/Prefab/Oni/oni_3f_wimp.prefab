@@ -540,6 +540,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1330262910422018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4118695263617638}
+  - component: {fileID: 65192099809701824}
+  m_Layer: 2
+  m_Name: EnemyDeadArea
+  m_TagString: EnemyDeadArea
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1358690652219796
 GameObject:
   m_ObjectHideFlags: 1
@@ -1447,6 +1463,19 @@ Transform:
   m_Father: {fileID: 4474247569801242}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 24.991121, y: 0.36407137, z: -0.15457696}
+--- !u!4 &4118695263617638
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1330262910422018}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4788020716342986}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4120351838171238
 Transform:
   m_ObjectHideFlags: 1
@@ -2187,6 +2216,7 @@ Transform:
   - {fileID: 4916138392587764}
   - {fileID: 4266410400385354}
   - {fileID: 4310676351743276}
+  - {fileID: 4118695263617638}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2472,6 +2502,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!65 &65192099809701824
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1330262910422018}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 2.79, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65351473134366706
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -2632,6 +2674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e63dc0411adf7c4fbfacc927d44c4ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waistObjectName: mixamorig:Hips/mixamorig:Spine
   idle: {fileID: 114596707765325568}
   priorityAttack: {fileID: 114345448889935770}
   secondaryAttack: {fileID: 114833311285637518}
