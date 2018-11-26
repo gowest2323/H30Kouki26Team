@@ -3132,7 +3132,7 @@ MonoBehaviour:
   rayDistance: 10
   limitRayDistance: 1.1
   weapon: {fileID: 0}
-  counterTime: 1
+  counterTime: 0.5
   pierceText: {fileID: 0}
   pierceHealHP: 100
   stageManager: {fileID: 0}
