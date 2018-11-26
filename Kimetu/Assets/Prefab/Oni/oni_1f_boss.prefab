@@ -436,7 +436,7 @@ GameObject:
   - component: {fileID: 65518513725422068}
   m_Layer: 2
   m_Name: EnemyDeadArea
-  m_TagString: Enemy
+  m_TagString: EnemyDeadArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

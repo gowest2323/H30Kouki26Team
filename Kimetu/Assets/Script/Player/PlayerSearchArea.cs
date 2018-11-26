@@ -14,7 +14,7 @@ public class PlayerSearchArea : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
-        if (otherTag == TagName.Enemy)
+        if (otherTag == TagName.EnemyDeadArea)
         {
             EnemyAI enemy = other.GetComponentInParent<EnemyAI>();
             player.NearEnemy(enemy);
@@ -24,7 +24,7 @@ public class PlayerSearchArea : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
-        if (otherTag == TagName.Enemy)
+        if (otherTag == TagName.EnemyDeadArea)
         {
             EnemyAI enemy = other.GetComponentInParent<EnemyAI>();
             player.FarEnemy(enemy);
