@@ -462,8 +462,17 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         playerAnimation.StartCounterAnimation();
         //カウンター終了まで待機
         //カウンターのアニメーションが二つあるため二回分待機
+        var time = Time.time;
         yield return new WaitWhile(() => !playerAnimation.IsEndAnimation(Mathf.Epsilon));
         yield return new WaitWhile(() => !playerAnimation.IsEndAnimation(Mathf.Epsilon));
+        var elapsedAnimation = (Time.time - time);
+        time = Time.time;
+        while((Time.time - time) < (counterTime - elapsedAnimation)) {
+            if(Slow.Instance.isSlowNow) {
+                break;
+            }
+            yield return new WaitForEndOfFrame();
+        }
         //        yield return new WaitForSeconds(counterTime);
         playerAnimation.StopGuardAnimation();
         Debug.Log("counter end");

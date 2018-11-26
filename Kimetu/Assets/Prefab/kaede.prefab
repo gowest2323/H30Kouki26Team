@@ -3123,19 +3123,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52329d43218894034ac14a94577ad945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidMoveTime: 0.3
-  avoidMoveDistance: 2
+  avoidMoveTimeH: 0.2
+  avoidMoveDistanceH: 2
+  avoidMoveTimeV: 0.2
+  avoidMoveDistanceV: 2
   knockbackMoveTime: 0.3
   knockbackMoveDistance: 2
   rayDistance: 10
   limitRayDistance: 1.1
   weapon: {fileID: 0}
-  counterTime: 2
+  counterTime: 1
   pierceText: {fileID: 0}
   pierceHealHP: 100
   stageManager: {fileID: 0}
   decreaseStaminaPerSecond: 0.3
   decreaseDashStamina: 1
+  decreaseSlowSeconds: 0.3
+  decreaseSlowStamina: 2
   decreaseAttackStamina: 10
   decreaseAvoidStamina: 10
   playerCamera: {fileID: 0}
@@ -3193,6 +3197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5feb6c883452c410b83eac6e43a2773f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAction: {fileID: 0}
   playerAnimation: {fileID: 0}
   weapon: {fileID: 0}
   phaseMax: 4
