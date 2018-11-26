@@ -86,6 +86,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     private float dashSpeed = 15f;
     [SerializeField]
     private PlayerAttackSequence attackSequence;
+ 
 
     public CharacterAnimation characterAnimation { get { return playerAnimation; } }
 
@@ -553,7 +554,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         //まだ生きていたらダメージモーション
         else
         {
-            playerAnimation.StartDamageAnimation();
+            EffectManager.Instance.PlayerDamageEffectCreate(this.gameObject);
+            playerAnimation.StartDamageAnimation();         
             
         }
         
