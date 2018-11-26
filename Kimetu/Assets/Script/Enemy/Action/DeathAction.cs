@@ -38,6 +38,6 @@ public class DeathAction : MonoBehaviour, IEnemyActionable
     private IEnumerator Lay(float layTime)
     {
         enemyAnimation.StartDeathAnimation();
-        yield return enemyAnimation.IsEndAnimation(Mathf.Epsilon);
+        yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(Mathf.Epsilon));
     }
 }

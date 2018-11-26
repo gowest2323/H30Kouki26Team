@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstBossAI : EnemyAI, IDamageable
+public class FirstBossAI : EnemyAI, IEnemyInfoProvider
 {
     private bool isAction; //行動中か？
     [SerializeField]
     private IdleAction idle;
-    [SerializeField]
+    [SerializeField, Tooltip("振り下ろし")]
     private AttackAction swingAttack;
-    [SerializeField]
-    private AttackAction horizontalAttack;
+    [SerializeField, Tooltip("薙ぎ払い")]
+    private AttackAction nagiharaiAttack;
     [SerializeField]
     private NearPlayerAction nearPlayer;
     [SerializeField]
@@ -23,6 +23,8 @@ public class FirstBossAI : EnemyAI, IDamageable
     private EnemyStatus status;
     private EnemyAnimation enemyAnimation;
 
+    public string informationText { private set; get; }
+
     private void Start()
     {
         status = GetComponent<EnemyStatus>();
@@ -32,7 +34,10 @@ public class FirstBossAI : EnemyAI, IDamageable
 
     public override void Countered()
     {
-        Debug.Log("カウンター未実装");
+        //行動を停止し、ダメージアクションに移行
+        StopCoroutine(currentActionCoroutine);
+        currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack, DamagePattern.Countered));
+        currentState = EnemyState.Damage;
         return;
     }
 
@@ -95,11 +100,11 @@ public class FirstBossAI : EnemyAI, IDamageable
                     //振り下ろしが当たる範囲なら振り下ろす
                     if (swingAttack.CanAttack(player))
                     {
-                        return CoroutineManager.Instance.StartCoroutineEx(swingAttack.Action(ActionCallBack));
+                        return StartCoroutine(swingAttack.Action(ActionCallBack));
                     }
                     else
                     {
-                        return CoroutineManager.Instance.StartCoroutineEx(horizontalAttack.Action(ActionCallBack));
+                        return StartCoroutine(nagiharaiAttack.Action(ActionCallBack));
                     }
                 }
                 else
@@ -115,6 +120,11 @@ public class FirstBossAI : EnemyAI, IDamageable
     private void Update()
     {
         Action();
+        this.informationText = currentState.ToString();
+        if (currentState == EnemyState.MoveNear)
+        {
+            informationText = nearPlayer.informationText;
+        }
     }
 
     /// <summary>
@@ -151,9 +161,12 @@ public class FirstBossAI : EnemyAI, IDamageable
     public void DeadEnd()
     {
         canUseHeal = deathByRepl;
-        if(deathByRepl) {
+        if (deathByRepl)
+        {
             ShowBeam();
-        } else {
+        }
+        else
+        {
             Extinction();
         }
     }
