@@ -275,6 +275,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         else if (state == PlayerState.Counter)
         {
             StopCoroutine(counterCoroutine);
+            playerAnimation.StopGuardAnimation();
         }
         //攻撃可能なら攻撃開始
         if (attackSequence.Attack() == AttackResult.OK)
@@ -355,7 +356,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state != PlayerState.Defence &&
             state != PlayerState.KnockBack) return;
         this.isGuard = false;
-        playerAnimation.StopGuardWalkAnimation();
         playerAnimation.StopGuardAnimation();
         this.state = PlayerState.Idle;
     }
