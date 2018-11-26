@@ -62,6 +62,12 @@ public class PlayerAnimation :CharacterAnimation {
                 throw new System.ArgumentException();
         }
     }
+    public void CancelAttackAnimation() {
+        CancelAttackAnimation(0);
+        CancelAttackAnimation(1);
+        CancelAttackAnimation(2);
+        CancelAttackAnimation(3);
+    }
     public void CancelAttackAnimation(int phase) {
         //FIXME:配列か何かにいれる、or列挙をキーとしたDictionaryとかにいれる
         switch(phase) {
