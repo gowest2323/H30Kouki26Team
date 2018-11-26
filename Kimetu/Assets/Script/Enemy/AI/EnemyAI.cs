@@ -67,7 +67,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
 
     private IEnumerator StartExtinction() {
         var hook = GetComponentInParent<OniDeadHook>();
-        yield return hook.Wait();
+        var enemyAnimation = GetComponentInParent<EnemyAnimation>();
+        yield return enemyAnimation.WaitAnimation("oni", "dead");
         var offset = 0f;
         var seconds = 5f;
         var separate = 100;
@@ -87,7 +88,9 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     private IEnumerator StartShowBeam() {
         var hook = GetComponentInParent<OniDeadHook>();
         var beam = GetComponentInChildren<BeamShot>();
-        yield return hook.Wait();
+        var enemyAnimation = GetComponentInParent<EnemyAnimation>();
+        yield return enemyAnimation.WaitAnimation("oni", "dead");
+        //yield return hook.Wait();
         beam.StartShot();
     }
 }
