@@ -158,7 +158,12 @@ public class SecondBossAI : EnemyAI, IDamageable
     /// </summary>
     public void DeadEnd()
     {
-        canUseHeal = true;
+        canUseHeal = deathByRepl;
+        if(deathByRepl) {
+            ShowBeam();
+        } else {
+            Extinction();
+        }
     }
 
     public override void UsedHeal()
