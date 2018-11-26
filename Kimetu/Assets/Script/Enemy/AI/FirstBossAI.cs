@@ -25,8 +25,9 @@ public class FirstBossAI : EnemyAI, IEnemyInfoProvider
 
     public string informationText { private set; get; }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         status = GetComponent<EnemyStatus>();
         currentActionCoroutine = Think();
         canUseHeal = false;

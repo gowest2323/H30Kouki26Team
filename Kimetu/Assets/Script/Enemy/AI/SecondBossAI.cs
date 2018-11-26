@@ -8,9 +8,9 @@ public class SecondBossAI : EnemyAI, IDamageable
     private bool isAction; //行動中か？
     [SerializeField]
     private IdleAction idle;
-    [SerializeField,Tooltip("回転斬り")]
+    [SerializeField, Tooltip("回転斬り")]
     private AttackAction rotateSlash;
-    [SerializeField,Tooltip("二度斬り")]
+    [SerializeField, Tooltip("二度斬り")]
     private AttackAction twiceShash;
     [SerializeField, Tooltip("振り回し歩き")]
     private AttackAction hurimawashiAruki;
@@ -25,8 +25,9 @@ public class SecondBossAI : EnemyAI, IDamageable
     private EnemyStatus status;
     private EnemyAnimation enemyAnimation;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         status = GetComponent<EnemyStatus>();
         currentActionCoroutine = Think();
         canUseHeal = false;
@@ -100,7 +101,7 @@ public class SecondBossAI : EnemyAI, IDamageable
                     {
                         return StartCoroutine(twiceShash.Action(ActionCallBack));
                     }
-                    else if(rotateSlash.CanAttack(player))
+                    else if (rotateSlash.CanAttack(player))
                     {
                         return StartCoroutine(rotateSlash.Action(ActionCallBack));
                     }

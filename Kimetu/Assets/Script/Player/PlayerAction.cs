@@ -379,7 +379,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         EnemyAI nearEnemy = MostNearEnemy();
         var isBoss = nearEnemy.GetComponent<BossMarker>() != null;
         //敵のほうを向くまで待機
-        yield return StartCoroutine(RotateToTarget(nearEnemy.transform, 5.0f));
+        yield return StartCoroutine(RotateToTarget(nearEnemy.waistPosition, 5.0f));
         status.Heal(pierceHealHP);
         //吸生終了まで待機
         playerAnimation.StartKyuuseiAnimation();
@@ -806,13 +806,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <summary>
     /// ターゲットに向くように回転する
     /// </summary>
-    /// <param name="target">ターゲット</param>
+    /// <param name="targetPosition">ターゲットの座標</param>
     /// <param name="maxDegreesDelta">1フレームに回転する最大角度</param>
     /// <returns></returns>
-    private IEnumerator RotateToTarget(Transform target, float maxDegreesDelta)
+    private IEnumerator RotateToTarget(Vector3 targetPosition, float maxDegreesDelta)
     {
         Vector3 myPositionIgnoreY = new Vector3(transform.position.x, 0, transform.position.z);
-        Vector3 targetPositionIgnoreY = new Vector3(target.position.x, 0, target.position.z);
+        Vector3 targetPositionIgnoreY = new Vector3(targetPosition.x, 0, targetPosition.z);
         Quaternion toTarget = Quaternion.LookRotation(targetPositionIgnoreY - myPositionIgnoreY);
         this.transform.rotation = toTarget;
         yield return null;

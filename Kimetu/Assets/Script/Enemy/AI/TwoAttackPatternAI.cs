@@ -29,8 +29,9 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable
     private EnemyStatus status;
     private EnemyAnimation enemyAnimation;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         status = GetComponent<EnemyStatus>();
         currentActionCoroutine = Think();
         canUseHeal = false;
