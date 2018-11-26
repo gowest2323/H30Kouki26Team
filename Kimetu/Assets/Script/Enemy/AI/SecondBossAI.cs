@@ -8,10 +8,12 @@ public class SecondBossAI : EnemyAI, IDamageable
     private bool isAction; //行動中か？
     [SerializeField]
     private IdleAction idle;
-    [SerializeField]
-    private AttackAction beveledSlash;
-    [SerializeField]
-    private AttackAction swingDown;
+    [SerializeField,Tooltip("回転斬り")]
+    private AttackAction rotateSlash;
+    [SerializeField,Tooltip("二度斬り")]
+    private AttackAction twiceShash;
+    [SerializeField, Tooltip("振り回し歩き")]
+    private AttackAction hurimawashiAruki;
     [SerializeField]
     private NearPlayerAction nearPlayer;
     [SerializeField]
@@ -32,7 +34,10 @@ public class SecondBossAI : EnemyAI, IDamageable
 
     public override void Countered()
     {
-        Debug.Log("カウンター未実装");
+        //行動を停止し、ダメージアクションに移行
+        StopCoroutine(currentActionCoroutine);
+        currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack, DamagePattern.Countered));
+        currentState = EnemyState.Damage;
         return;
     }
 
@@ -90,14 +95,18 @@ public class SecondBossAI : EnemyAI, IDamageable
                 if (nearPlayer.isNearPlayer)
                 {
                     currentState = EnemyState.Attack;
-                    //振り下ろしが当たる範囲なら振り下ろす
-                    if (swingDown.CanAttack(player))
+                    //優先順位は二度斬り、回転斬り、振り回し歩きの順に高い
+                    if (twiceShash.CanAttack(player))
                     {
-                        return StartCoroutine(swingDown.Action(ActionCallBack));
+                        return StartCoroutine(twiceShash.Action(ActionCallBack));
+                    }
+                    else if(rotateSlash.CanAttack(player))
+                    {
+                        return StartCoroutine(rotateSlash.Action(ActionCallBack));
                     }
                     else
                     {
-                        return StartCoroutine(beveledSlash.Action(ActionCallBack));
+                        return StartCoroutine(hurimawashiAruki.Action(ActionCallBack));
                     }
                 }
                 else

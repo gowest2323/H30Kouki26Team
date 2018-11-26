@@ -38,7 +38,10 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable
 
     public override void Countered()
     {
-        Debug.Log("カウンター未実装");
+        //行動を停止し、ダメージアクションに移行
+        StopCoroutine(currentActionCoroutine);
+        currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack, DamagePattern.Countered));
+        currentState = EnemyState.Damage;
         return;
     }
 

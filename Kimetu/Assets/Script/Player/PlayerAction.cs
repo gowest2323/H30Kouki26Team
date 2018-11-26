@@ -122,16 +122,20 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         attackSequence.OnAttackPhaseFinished += () => state = PlayerState.Idle;
     }
 
-    void Update() {
+    void Update()
+    {
         DecreaseSlowStamina();
     }
 
-    private void DecreaseSlowStamina() {
-        if(!Slow.Instance.isSlowNow) {
+    private void DecreaseSlowStamina()
+    {
+        if (!Slow.Instance.isSlowNow)
+        {
             return;
         }
         this.slowElapsed += Time.deltaTime;
-        if(slowElapsed >= decreaseSlowSeconds) {
+        if (slowElapsed >= decreaseSlowSeconds)
+        {
             slowElapsed = 0;
             status.DecreaseStamina(decreaseSlowStamina);
         }
@@ -239,7 +243,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         }
     }
 
-    private bool IsNearOfWall() {
+    private bool IsNearOfWall()
+    {
         var pos = transform.position;
         RaycastHit hit;
         if (Physics.Raycast(pos + Vector3.up, transform.forward, out hit, 1, LayerMask.GetMask(LayerName.Stage.String())))
@@ -260,9 +265,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state == PlayerState.Pierce) return;
         //ダメージ中は攻撃しない
         if (state == PlayerState.Damage) return;
+        //カウンター中は攻撃しない
+        if (state == PlayerState.Counter) return;
         //スタミナが０なら攻撃できない
         if (status.GetStamina() == 0 || status.GetStamina() < 5) return;
-        
+
 
         //防御時はカウンター開始
         if (isGuard)
@@ -420,7 +427,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         if (state == PlayerState.Damage) return false;
         if (state == PlayerState.Pierce) return false;
         if (state == PlayerState.Attack) return false;
-        if(GetComponent<Status>().IsDead()) return false;
+        if (GetComponent<Status>().IsDead()) return false;
         //吸生可能な敵がいなければできない
         if (nearCanPierceEnemyList.Count <= 0) return false;
         return true;
@@ -540,7 +547,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
     /// <param name="damage"></param>
     private void Damage(DamageSource damage)
     {
-        if(status.IsDead()) { return; }
+        if (status.IsDead()) { return; }
         state = PlayerState.Damage;
         status.Damage(damage.damage, DamageMode.Kill);
         //死亡したら倒れるモーション
@@ -554,9 +561,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
         else
         {
             playerAnimation.StartDamageAnimation();
-            
+
         }
-        
+
     }
 
     /// <summary>
@@ -741,7 +748,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
                 var selfPos = transform.position;
                 otherPos.y = selfPos.y;
                 dis = Vector3.Distance(otherPos, selfPos);
-//                Debug.Log(dis);
+                //                Debug.Log(dis);
 
                 if (dis <= limitRayDistance)
                 {
