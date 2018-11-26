@@ -23,10 +23,10 @@ public class HorizontalAttack : EnemyAttack
     public override IEnumerator Attack()
     {
         Debug.Log("薙ぎ払い攻撃開始");
-        enemyAnimation.StartAttackAnimation(EnemyAttackType.HorizontalAttack);
+        enemyAnimation.StartAttackAnimation(EnemyAttackType.NagiharaiAttack);
         attackCollider.enabled = true;
         //アニメーション終了まで待機
-        yield return new WaitWhile(() => enemyAnimation.IsEndAnimation(0.02f));
+        yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
         attackCollider.enabled = false;
         Debug.Log("薙ぎ払い攻撃終了");
     }

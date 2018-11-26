@@ -7,6 +7,21 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     protected EnemyState currentState; //現在の状態
     protected EnemyState reserveState; //次の状態の予約
     protected Coroutine currentActionCoroutine; //現在の行動コルーチン
+    [SerializeField, Header("腰オブジェクトの名前")]
+    protected string waistObjectName = "mixamorig:Hips/mixamorig:Spine";
+    protected Transform waist; //腰オブジェクト
+
+    protected virtual void Start()
+    {
+        waist = transform.Find(waistObjectName);
+        UnityEngine.Assertions.Assert.IsNotNull(waist, "waist not found");
+    }
+
+    /// <summary>
+    /// 腰の座標
+    /// </summary>
+    public Vector3 waistPosition { get { return waist.position; } }
+
     /// <summary>
     /// 吸生に使われられるか？
     /// </summary>
@@ -36,16 +51,21 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     /// ダメージを適用します。
     /// </summary>
     /// <param name="damageSource"></param>
-    protected void ApplyDamage(DamageSource damageSource) {
+    protected void ApplyDamage(DamageSource damageSource)
+    {
         var status = GetComponent<Status>();
         var isBoss = GetComponent<BossMarker>() != null;
         //ボスははじかないと死なない
-        if(isBoss) {
+        if (isBoss)
+        {
             status.Damage(damageSource.damage, (Slow.Instance.isSlowNow ? DamageMode.Kill : DamageMode.NotKill));
-        } else {
+        }
+        else
+        {
             status.Damage(damageSource.damage, DamageMode.Kill);
         }
-        if(Slow.Instance.isSlowNow && status.IsDead()) {
+        if (Slow.Instance.isSlowNow && status.IsDead())
+        {
             this.deathByRepl = true;
         }
     }
@@ -54,27 +74,32 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
     /// アニメーションが終了するまで待機したあとビームを発射します。
     /// </summary>
     /// <returns></returns>
-    protected void ShowBeam() {
+    protected void ShowBeam()
+    {
         StartCoroutine(StartShowBeam());
     }
 
     /// <summary>
     /// 鬼の体を五秒かけて黒くしたあと消します。
     /// </summary>
-    protected void Extinction() {
+    protected void Extinction()
+    {
         StartCoroutine(StartExtinction());
     }
 
-    private IEnumerator StartExtinction() {
+    private IEnumerator StartExtinction()
+    {
         var hook = GetComponentInParent<OniDeadHook>();
-        yield return hook.Wait();
+        var enemyAnimation = GetComponentInParent<EnemyAnimation>();
+        yield return enemyAnimation.WaitAnimation("oni", "dead");
         var offset = 0f;
         var seconds = 5f;
         var separate = 100;
         var mat = GetComponentInChildren<SkinnedMeshRenderer>().materials[0];
         var start = mat.color;
         var end = Color.black;
-        while(offset < seconds) {
+        while (offset < seconds)
+        {
             yield return new WaitForSeconds(seconds / separate);
             offset += (seconds / separate);
             mat.color = Color.Lerp(start, end, offset / seconds);
@@ -84,10 +109,13 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable
         GameObject.Destroy(gameObject);
     }
 
-    private IEnumerator StartShowBeam() {
+    private IEnumerator StartShowBeam()
+    {
         var hook = GetComponentInParent<OniDeadHook>();
         var beam = GetComponentInChildren<BeamShot>();
-        yield return hook.Wait();
+        var enemyAnimation = GetComponentInParent<EnemyAnimation>();
+        yield return enemyAnimation.WaitAnimation("oni", "dead");
+        //yield return hook.Wait();
         beam.StartShot();
     }
 }

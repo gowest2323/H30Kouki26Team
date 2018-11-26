@@ -10,11 +10,17 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler
 {
     [SerializeField, Header("攻撃の種類")]
     private EnemyAttackType attackType;
+    [SerializeField,Header("攻撃のアニメーションの名前(oni@〇〇)")]
+    private string attackAnimationName = "attack";
     private System.IDisposable observer;
 
     protected override void Start() {
         base.Start();
-        var attackHook = GetComponentInParent<OniAttackHook>();
+        System.Type type = EnemyAttackTypeDictionary.typeDictionary[attackType];
+        var attackHook = GetComponentInParent(type) as IEventHook;
+        if(attackHook == null) {
+            Debug.Log("type: " + type.Name);
+        }
         this.observer = attackHook.trigger.Subscribe((e) => {
             if(e) { AttackStart(); }
             else { AttackEnd(); }
@@ -32,7 +38,7 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler
         yield return new WaitWhile(() =>
         {
             AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
-            return info.fullPathHash != Animator.StringToHash("Base Layer.oni@attack");
+            return info.fullPathHash != Animator.StringToHash("Base Layer.oni@" + attackAnimationName);
         });
         yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
     }

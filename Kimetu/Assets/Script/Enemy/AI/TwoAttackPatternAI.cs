@@ -29,8 +29,9 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable
     private EnemyStatus status;
     private EnemyAnimation enemyAnimation;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         status = GetComponent<EnemyStatus>();
         currentActionCoroutine = Think();
         canUseHeal = false;
@@ -38,7 +39,10 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable
 
     public override void Countered()
     {
-        Debug.Log("カウンター未実装");
+        //行動を停止し、ダメージアクションに移行
+        StopCoroutine(currentActionCoroutine);
+        currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack, DamagePattern.Countered));
+        currentState = EnemyState.Damage;
         return;
     }
 
@@ -48,7 +52,7 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable
         //これがないと、死亡したエネミーに攻撃が当たったとき、
         //エネミーのローテーションがおかしくなる(PassOutが実行されるため??)
         if (status.IsDead()) { return; }
-        status.Damage(damageSource.damage);
+        ApplyDamage(damageSource);
         //現在の行動を停止
         StopCoroutine(currentActionCoroutine);
         //死亡したら倒れるモーション
