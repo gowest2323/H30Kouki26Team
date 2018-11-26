@@ -51,6 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3dd124ab72dcd49affc4e9bd0e4c11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDamageEffect: {fileID: 0}
-  enemyDamageEffect: {fileID: 0}
+  playerDamageEffect: {fileID: 1142879947323016, guid: 16f3162719ea396459e8504e2a9ce72c,
+    type: 2}
+  enemyDamageEffect: {fileID: 1565601249010682, guid: 8f41792c564a55d488fac94508e55e25,
+    type: 2}
   limitTime: 1
