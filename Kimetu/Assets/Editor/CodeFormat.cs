@@ -71,6 +71,7 @@ public class CodeFormat : EditorWindow
 		if (GUILayout.Button("Format All"))
 		{
 			FormatAll();
+			Close();
 			return;
 		}
 		ShowExecutableFileBar();
