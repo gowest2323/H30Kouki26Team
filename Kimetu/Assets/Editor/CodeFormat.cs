@@ -120,6 +120,7 @@ public class CodeFormat : EditorWindow
 		this.astylePath = EditorGUILayout.TextField(astylePath);
 		if(temp != astylePath) {
 			PlayerPrefs.SetString(ASTYLE_PATH_KEY, astylePath);
+			PlayerPrefs.Save();
 		}
 		EditorGUILayout.EndHorizontal();
 	}
