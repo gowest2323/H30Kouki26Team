@@ -68,11 +68,32 @@ public class CodeFormat : EditorWindow
 			Init();
 			return;
 		}
+		if (GUILayout.Button("Format All"))
+		{
+			FormatAll();
+			return;
+		}
 		ShowExecutableFileBar();
 		ShowSearchBar();
 		ShowFileList();
 		EditorGUILayout.EndVertical();
 		EditorGUILayout.EndScrollView();
+	}
+
+	private void FormatAll() {
+		bool result = EditorUtility.DisplayDialog(
+			"- CodeFormat -",
+			"全てのファイルをフォーマットします。\nよろしいですか？",
+			"OK",
+			"取消し"
+		);
+		if(!result) {
+			return;
+		}
+		files.ForEach((e) => {
+			RunFormat(e);
+		});
+		AssetDatabase.Refresh();
 	}
 
 	/// <summary>
