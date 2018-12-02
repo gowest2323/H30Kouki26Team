@@ -168,6 +168,11 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable
     /// </summary>
     public void DeadEnd()
     {
-        canUseHeal = true;
+        canUseHeal = deathByRepl;
+        if(deathByRepl) {
+            ShowBeam();
+        } else {
+            Extinction();
+        }
     }
 }
