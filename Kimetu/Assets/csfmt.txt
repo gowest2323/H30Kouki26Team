@@ -1,7 +1,7 @@
 # c#のファイルとして認識する
 mode=cs
 # allmanスタイルにする
-style=allman
+style=java
 # インデントにタブを使う
 indent=tab=4
 # 継続行のインデントにもタブを使う(但し偶数個のタブでないときはwhite spaceで埋められる)
@@ -28,3 +28,5 @@ suffix=none
 break-blocks
 # コメントもインデントする
 indent-col1-comments
+#カンマの間にスペース
+pad-comma
