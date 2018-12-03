@@ -911,8 +911,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		yield break;
 	}
 
-	public void StartPosition(Vector3 position) {
+	/// <summary>
+	/// 開始する座標と角度を設定する
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="rotation"></param>
+	public void StartPositionRotation(Vector3 position, Quaternion rotation) {
 		this.gameObject.transform.position = position;
+		this.gameObject.transform.rotation = rotation;
 	}
 
 	/// <summary>
