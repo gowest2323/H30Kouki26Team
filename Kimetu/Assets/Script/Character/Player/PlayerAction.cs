@@ -255,6 +255,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	}
 
 	/// <summary>
+	/// 攻撃を行った時に呼ばれます。
+	/// 一定量スタミナを減らします。
+	/// </summary>
+	public void DecreaseAttackStamina() {
+		status.DecreaseStamina(decreaseAttackStamina);
+	}
+
+	/// <summary>
 	/// 攻撃を開始します。
 	/// </summary>
 	public void Attack() {
@@ -284,7 +292,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//攻撃可能なら攻撃開始
 		if (attackSequence.Attack() == AttackResult.OK) {
-			status.DecreaseStamina(decreaseAttackStamina);
 			state = PlayerState.Attack;
 
 			//スロー時は近い敵に近づく
