@@ -21,6 +21,7 @@ public class FirstBossAI : EnemyAI, IEnemyInfoProvider {
 	private GameObject player;
 	private EnemyStatus status;
 	private EnemyAnimation enemyAnimation;
+    private DamageMode damageMode;
 
 	public string informationText { private set; get; }
 
@@ -56,6 +57,14 @@ public class FirstBossAI : EnemyAI, IEnemyInfoProvider {
 		//まだ生きていたらダメージモーション
 		else {
 			currentState = EnemyState.Damage;
+            if(status.GetHP()==1)
+            {
+                EffectManager.Instance.EnemyDamageEffectCreate(gameObject, true);
+            }
+            else
+            {
+                EffectManager.Instance.EnemyDamageEffectCreate(gameObject, false);
+            }
 			//ダメージ状態に移行
 			currentActionCoroutine = CoroutineManager.Instance.StartCoroutineEx(damage.Action(ActionCallBack));
 			//enemyAnimation.StartDamageAnimation();

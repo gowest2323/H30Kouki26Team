@@ -75,7 +75,7 @@ public class Status : MonoBehaviour {
 		}
 
 		if (mode == DamageMode.NotKill && this.hp <= 0) {
-            EffectManager.Instance.EnemyDamageEffectCreate(gameObject, true);
+            
 			this.hp = 1;
 		}
 

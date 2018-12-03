@@ -21,12 +21,12 @@ public class DamageAction : MonoBehaviour, IEnemyActionable {
 
 		if (damage == DamagePattern.Normal) {
 			if (Slow.Instance.isSlowNow) {
-				EffectManager.Instance.EnemyDamageEffectCreate(gameObject,false);
+				
 				enemyAnimation.StartDamageAnimation();
 				yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
 			}
 
-			EffectManager.Instance.EnemyDamageEffectCreate(gameObject,false);
+			
 		} else {
 
 			enemyAnimation.StartReplAnimation();
