@@ -26,6 +26,10 @@ public class PlayerController : MonoBehaviour
     private PlayerStatus status;
     [SerializeField]
     private PauseManager pauseManager;
+
+    [SerializeField]
+    private float inputDisableSeconds = 0.5f;
+    private float inputDisableElapsed;
     // Use this for initialization
     void Start()
     {
@@ -51,6 +55,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(inputDisableElapsed < inputDisableSeconds) {
+            inputDisableElapsed += Time.deltaTime;
+            return;
+        }
         if(pauseManager.isPause) {
             return;
         }
