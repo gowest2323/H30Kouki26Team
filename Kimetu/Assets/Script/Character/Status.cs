@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 /// <summary>
 /// ダメージの種類。
@@ -10,19 +11,26 @@ public enum DamageMode {
 	NotKill
 }
 
-/// <summary>
-/// ダメージを受けると呼ばれます。
-/// </summary>
-public delegate void Damage();
-
-/// <summary>
-/// 死ぬと受けると呼ばれます。
-/// </summary>
-public delegate void Die();
 
 public class Status : MonoBehaviour {
-	public event Damage OnDamage = delegate { };
-	public event Die OnDie = delegate { };
+	/// <summary>
+	/// ダメージを受けたら呼ばれます。
+	/// </summary>
+	/// <value></value>
+	public IObservable<int> onDamage {
+		get { return mOnDamage; }
+	}
+	private Subject<int> mOnDamage;
+
+	/// <summary>
+	/// 死亡を受けたら呼ばれます。
+	/// </summary>
+	/// <value></value>
+	public IObservable<int> onDie {
+		get { return mOnDie; }
+	}
+	private Subject<int> mOnDie;
+
 	protected int hp;
 
 	[SerializeField]
@@ -58,7 +66,7 @@ public class Status : MonoBehaviour {
 		}
 
 		hp = hp - power;
-		OnDamage();
+		mOnDamage.OnNext(power);
 
 		if (this.hp <= 0) {
 			this.hp = 0;
@@ -69,7 +77,7 @@ public class Status : MonoBehaviour {
 		}
 
 		if (this.hp <= 0) {
-			OnDie();
+			mOnDie.OnNext(power);
 		}
 	}
 	public bool IsDead() {
