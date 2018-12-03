@@ -15,7 +15,6 @@ public class PlayerAnimation :CharacterAnimation {
 
     public void StopRunAnimation()
     {
-        animator.SetFloat("Speed", speed);
         animator.SetBool("Run", false);
     }
 
