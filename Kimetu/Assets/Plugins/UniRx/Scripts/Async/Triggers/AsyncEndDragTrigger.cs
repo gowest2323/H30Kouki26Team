@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncEndDragTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<PointerEventData> onEndDrag;
-        AsyncTriggerPromiseDictionary<PointerEventData> onEndDrags;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncEndDragTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<PointerEventData> onEndDrag;
+		AsyncTriggerPromiseDictionary<PointerEventData> onEndDrags;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onEndDrag, onEndDrags);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onEndDrag, onEndDrags);
+		}
 
 
-        void OnEndDrag(PointerEventData eventData)
-        {
-            TrySetResult(onEndDrag, onEndDrags, eventData);
-        }
+		void OnEndDrag(PointerEventData eventData) {
+			TrySetResult(onEndDrag, onEndDrags, eventData);
+		}
 
 
-        public UniTask OnEndDragAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onEndDrag, ref onEndDrags, cancellationToken);
-        }
+		public UniTask OnEndDragAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onEndDrag, ref onEndDrags, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

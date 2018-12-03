@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncCanvasGroupChangedTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<AsyncUnit> onCanvasGroupChanged;
-        AsyncTriggerPromiseDictionary<AsyncUnit> onCanvasGroupChangeds;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncCanvasGroupChangedTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<AsyncUnit> onCanvasGroupChanged;
+		AsyncTriggerPromiseDictionary<AsyncUnit> onCanvasGroupChangeds;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onCanvasGroupChanged, onCanvasGroupChangeds);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onCanvasGroupChanged, onCanvasGroupChangeds);
+		}
 
 
-        void OnCanvasGroupChanged()
-        {
-            TrySetResult(onCanvasGroupChanged, onCanvasGroupChangeds, AsyncUnit.Default);
-        }
+		void OnCanvasGroupChanged() {
+			TrySetResult(onCanvasGroupChanged, onCanvasGroupChangeds, AsyncUnit.Default);
+		}
 
 
-        public UniTask OnCanvasGroupChangedAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onCanvasGroupChanged, ref onCanvasGroupChangeds, cancellationToken);
-        }
+		public UniTask OnCanvasGroupChangedAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onCanvasGroupChanged, ref onCanvasGroupChangeds, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

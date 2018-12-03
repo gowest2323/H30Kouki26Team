@@ -20,7 +20,7 @@ public class DebugPlayerUI : MonoBehaviour {
 		Assert.IsTrue(spSlider != null);
 		Assert.IsTrue(status != null);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		hpSlider.value = status.GetHPRatio();

@@ -1,140 +1,122 @@
+
 ﻿#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
 
 #pragma warning disable CS1591
 
-using System;
+	using System;
+
 using System.Threading;
 using UniRx.Async;
 using UniRx.Async.Internal;
 
-namespace UniRx
-{
-    internal class ReactivePropertyReusablePromise<T> : IAwaiter<T>, IResolvePromise<T>
-    {
-        T result;
-        object continuation; // Action or Queue<Action>
-        MinimumQueue<(int, T)> queueValues;
-        bool running;
-        int waitingContinuationCount;
-        AwaiterStatus status;
+namespace UniRx {
+	internal class ReactivePropertyReusablePromise<T> : IAwaiter<T>, IResolvePromise<T> {
+		T result;
+		object continuation; // Action or Queue<Action>
+		MinimumQueue<(int, T)> queueValues;
+		bool running;
+		int waitingContinuationCount;
+		AwaiterStatus status;
 
-        internal readonly CancellationToken RegisteredCancelationToken;
+		internal readonly CancellationToken RegisteredCancelationToken;
 
-        public bool IsCompleted => status.IsCompleted();
-        public UniTask<T> Task => new UniTask<T>(this);
-        public AwaiterStatus Status => status;
+		public bool IsCompleted => status.IsCompleted();
+		public UniTask<T> Task => new UniTask<T>(this);
+		public AwaiterStatus Status => status;
 
-        public ReactivePropertyReusablePromise(CancellationToken cancellationToken)
-        {
-            this.RegisteredCancelationToken = cancellationToken;
-            this.status = AwaiterStatus.Pending;
+		public ReactivePropertyReusablePromise(CancellationToken cancellationToken) {
+			this.RegisteredCancelationToken = cancellationToken;
+			this.status = AwaiterStatus.Pending;
 
-            TaskTracker.TrackActiveTask(this, 3);
-        }
+			TaskTracker.TrackActiveTask(this, 3);
+		}
 
-        public T GetResult()
-        {
-            if (status == AwaiterStatus.Canceled) throw new OperationCanceledException();
-            return result;
-        }
+		public T GetResult() {
+			if (status == AwaiterStatus.Canceled) throw new OperationCanceledException();
 
-        void IAwaiter.GetResult()
-        {
-            GetResult();
-        }
+			return result;
+		}
 
-        public void SetCanceled()
-        {
-            status = AwaiterStatus.Canceled;
-            // run rest continuation.
-            TaskTracker.RemoveTracking(this);
+		void IAwaiter.GetResult() {
+			GetResult();
+		}
 
-            result = default(T);
-            InvokeContinuation(ref result);
-            // clear
-            continuation = null;
-            queueValues = null;
-        }
+		public void SetCanceled() {
+			status = AwaiterStatus.Canceled;
+			// run rest continuation.
+			TaskTracker.RemoveTracking(this);
 
-        public void InvokeContinuation(ref T value)
-        {
-            if (continuation == null) return;
+			result = default(T);
+			InvokeContinuation(ref result);
+			// clear
+			continuation = null;
+			queueValues = null;
+		}
 
-            if (continuation is Action act)
-            {
-                this.result = value;
-                continuation = null;
-                act();
-            }
-            else
-            {
-                if (waitingContinuationCount == 0) return;
+		public void InvokeContinuation(ref T value) {
+			if (continuation == null) return;
 
-                var q = (MinimumQueue<Action>)continuation;
-                if (queueValues == null) queueValues = new MinimumQueue<(int, T)>(4);
-                queueValues.Enqueue((waitingContinuationCount, value));
-                waitingContinuationCount = 0;
+			if (continuation is Action act) {
+				this.result = value;
+				continuation = null;
+				act();
+			} else {
+				if (waitingContinuationCount == 0) return;
 
-                if (!running)
-                {
-                    running = true;
-                    try
-                    {
-                        while (queueValues.Count != 0)
-                        {
-                            var (runCount, v) = queueValues.Dequeue();
-                            this.result = v;
-                            for (int i = 0; i < runCount; i++)
-                            {
-                                q.Dequeue().Invoke();
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        running = false;
-                    }
-                }
-            }
-        }
+				var q = (MinimumQueue<Action>)continuation;
 
-        public void OnCompleted(Action continuation)
-        {
-            UnsafeOnCompleted(continuation);
-        }
+				if (queueValues == null) queueValues = new MinimumQueue<(int, T)>(4);
 
-        public void UnsafeOnCompleted(Action action)
-        {
-            if (continuation == null)
-            {
-                continuation = action;
-                return;
-            }
-            else
-            {
-                if (continuation is Action act)
-                {
-                    var q = new MinimumQueue<Action>(4);
-                    q.Enqueue(act);
-                    q.Enqueue(action);
-                    continuation = q;
-                    waitingContinuationCount = 2;
-                    return;
-                }
-                else
-                {
-                    ((MinimumQueue<Action>)continuation).Enqueue(action);
-                    waitingContinuationCount++;
-                }
-            }
-        }
+				queueValues.Enqueue((waitingContinuationCount, value));
+				waitingContinuationCount = 0;
 
-        bool IResolvePromise<T>.TrySetResult(T value)
-        {
-            InvokeContinuation(ref value);
-            return true;
-        }
-    }
+				if (!running) {
+					running = true;
+
+					try {
+						while (queueValues.Count != 0) {
+							var (runCount, v) = queueValues.Dequeue();
+							this.result = v;
+
+							for (int i = 0; i < runCount; i++) {
+								q.Dequeue().Invoke();
+							}
+						}
+					} finally {
+						running = false;
+					}
+				}
+			}
+		}
+
+		public void OnCompleted(Action continuation) {
+			UnsafeOnCompleted(continuation);
+		}
+
+		public void UnsafeOnCompleted(Action action) {
+			if (continuation == null) {
+				continuation = action;
+				return;
+			} else {
+				if (continuation is Action act) {
+					var q = new MinimumQueue<Action>(4);
+					q.Enqueue(act);
+					q.Enqueue(action);
+					continuation = q;
+					waitingContinuationCount = 2;
+					return;
+				} else {
+					((MinimumQueue<Action>)continuation).Enqueue(action);
+					waitingContinuationCount++;
+				}
+			}
+		}
+
+		bool IResolvePromise<T>.TrySetResult(T value) {
+			InvokeContinuation(ref value);
+			return true;
+		}
+	}
 }
 
 #endif

@@ -23,31 +23,36 @@ public class TrackUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Assert.IsTrue(target != null);
-		if(this.canvasRect == null) {
+
+		if (this.canvasRect == null) {
 			this.canvasRect = GetComponent<RectTransform>();
 		}
-		if(this.uiRect == null) {
+
+		if (this.uiRect == null) {
 			this.uiRect = GetComponent<RectTransform>();
 		}
+
 		Assert.IsTrue(uiRect != null);
 		Assert.IsTrue(canvasRect != null);
 		this.track = true;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if(!track) { return; }
-		if(target == null) {
+		if (!track) { return; }
+
+		if (target == null) {
 			this.track = false;
 			return;
 		}
-		Vector2 ViewportPosition=Camera.main.WorldToViewportPoint(target.transform.position);
-		Vector2 WorldObject_ScreenPosition=new Vector2(
-		((ViewportPosition.x*canvasRect.sizeDelta.x)-(canvasRect.sizeDelta.x*0.5f)),
-		((ViewportPosition.y*canvasRect.sizeDelta.y)-(canvasRect.sizeDelta.y*0.5f)));
+
+		Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(target.transform.position);
+		Vector2 WorldObject_ScreenPosition = new Vector2(
+			((ViewportPosition.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f)),
+			((ViewportPosition.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f)));
 
 		//now you can set the position of the ui element
-		uiRect.anchoredPosition=WorldObject_ScreenPosition;
+		uiRect.anchoredPosition = WorldObject_ScreenPosition;
 	}
 
 	/// <summary>

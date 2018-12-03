@@ -1,399 +1,349 @@
+
 ﻿#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-using System;
+	using System;
+
 using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 
-namespace UniRx.Async.Internal
-{
-    // 'public', user can use this(but be careful).
+namespace UniRx.Async.Internal {
+	// 'public', user can use this(but be careful).
 
-    public abstract class ReusablePromise : IAwaiter
-    {
-        ExceptionDispatchInfo exception;
-        object continuation; // Action or Queue<Action>
-        AwaiterStatus status;
+	public abstract class ReusablePromise : IAwaiter {
+		ExceptionDispatchInfo exception;
+		object continuation; // Action or Queue<Action>
+		AwaiterStatus status;
 
-        public UniTask Task => new UniTask(this);
+		public UniTask Task => new UniTask(this);
 
-        // can override for control 'start/reset' timing.
-        public virtual bool IsCompleted => status.IsCompleted();
+		// can override for control 'start/reset' timing.
+		public virtual bool IsCompleted => status.IsCompleted();
 
-        public virtual void GetResult()
-        {
-            switch (status)
-            {
-                case AwaiterStatus.Succeeded:
-                    return;
-                case AwaiterStatus.Faulted:
-                    exception.Throw();
-                    break;
-                case AwaiterStatus.Canceled:
-                    throw new OperationCanceledException();
-                default:
-                    break;
-            }
+		public virtual void GetResult() {
+			switch (status) {
+				case AwaiterStatus.Succeeded:
+					return;
 
-            throw new InvalidOperationException("Invalid Status:" + status);
-        }
+				case AwaiterStatus.Faulted:
+					exception.Throw();
+					break;
 
-        public AwaiterStatus Status => status;
+				case AwaiterStatus.Canceled:
+					throw new OperationCanceledException();
 
-        void IAwaiter.GetResult()
-        {
-            GetResult();
-        }
+				default:
+					break;
+			}
 
-        public void ResetStatus(bool forceReset)
-        {
-            if (forceReset)
-            {
-                status = AwaiterStatus.Pending;
-            }
-            else if (status == AwaiterStatus.Succeeded)
-            {
-                status = AwaiterStatus.Pending;
-            }
-        }
+			throw new InvalidOperationException("Invalid Status:" + status);
+		}
 
-        public virtual bool TrySetCanceled()
-        {
-            if (status == AwaiterStatus.Pending)
-            {
-                status = AwaiterStatus.Canceled;
-                TryInvokeContinuation();
-                return true;
-            }
-            return false;
-        }
+		public AwaiterStatus Status => status;
 
-        public virtual bool TrySetException(Exception ex)
-        {
-            if (status == AwaiterStatus.Pending)
-            {
-                status = AwaiterStatus.Faulted;
-                exception = ExceptionDispatchInfo.Capture(ex);
-                TryInvokeContinuation();
-                return true;
-            }
-            return false;
-        }
+		void IAwaiter.GetResult() {
+			GetResult();
+		}
 
-        public virtual bool TrySetResult()
-        {
-            if (status == AwaiterStatus.Pending)
-            {
-                status = AwaiterStatus.Succeeded;
-                TryInvokeContinuation();
-                return true;
-            }
-            return false;
-        }
+		public void ResetStatus(bool forceReset) {
+			if (forceReset) {
+				status = AwaiterStatus.Pending;
+			} else if (status == AwaiterStatus.Succeeded) {
+				status = AwaiterStatus.Pending;
+			}
+		}
 
-        void TryInvokeContinuation()
-        {
-            if (continuation == null) return;
+		public virtual bool TrySetCanceled() {
+			if (status == AwaiterStatus.Pending) {
+				status = AwaiterStatus.Canceled;
+				TryInvokeContinuation();
+				return true;
+			}
 
-            if (continuation is Action act)
-            {
-                continuation = null;
-                act();
-            }
-            else
-            {
-                // reuse Queue(don't null clear)
-                var q = (MinimumQueue<Action>)continuation;
-                var size = q.Count;
-                for (int i = 0; i < size; i++)
-                {
-                    q.Dequeue().Invoke();
-                }
-            }
-        }
+			return false;
+		}
 
-        public void OnCompleted(Action action)
-        {
-            UnsafeOnCompleted(action);
-        }
+		public virtual bool TrySetException(Exception ex) {
+			if (status == AwaiterStatus.Pending) {
+				status = AwaiterStatus.Faulted;
+				exception = ExceptionDispatchInfo.Capture(ex);
+				TryInvokeContinuation();
+				return true;
+			}
 
-        public void UnsafeOnCompleted(Action action)
-        {
-            if (continuation == null)
-            {
-                continuation = action;
-                return;
-            }
-            else
-            {
-                if (continuation is Action act)
-                {
-                    var q = new MinimumQueue<Action>(4);
-                    q.Enqueue(act);
-                    q.Enqueue(action);
-                    continuation = q;
-                    return;
-                }
-                else
-                {
-                    ((MinimumQueue<Action>)continuation).Enqueue(action);
-                }
-            }
-        }
-    }
+			return false;
+		}
 
-    public abstract class ReusablePromise<T> : IAwaiter<T>
-    {
-        T result;
-        ExceptionDispatchInfo exception;
-        object continuation; // Action or Queue<Action>
-        AwaiterStatus status;
+		public virtual bool TrySetResult() {
+			if (status == AwaiterStatus.Pending) {
+				status = AwaiterStatus.Succeeded;
+				TryInvokeContinuation();
+				return true;
+			}
 
-        public UniTask<T> Task => new UniTask<T>(this);
+			return false;
+		}
 
-        // can override for control 'start/reset' timing.
-        public virtual bool IsCompleted => status.IsCompleted();
+		void TryInvokeContinuation() {
+			if (continuation == null) return;
 
-        protected T RawResult => result;
+			if (continuation is Action act) {
+				continuation = null;
+				act();
+			} else {
+				// reuse Queue(don't null clear)
+				var q = (MinimumQueue<Action>)continuation;
+				var size = q.Count;
 
-        protected void ForceSetResult(T result)
-        {
-            this.result = result;
-        }
+				for (int i = 0; i < size; i++) {
+					q.Dequeue().Invoke();
+				}
+			}
+		}
 
-        public virtual T GetResult()
-        {
-            switch (status)
-            {
-                case AwaiterStatus.Succeeded:
-                    return result;
-                case AwaiterStatus.Faulted:
-                    exception.Throw();
-                    break;
-                case AwaiterStatus.Canceled:
-                    throw new OperationCanceledException();
-                default:
-                    break;
-            }
+		public void OnCompleted(Action action) {
+			UnsafeOnCompleted(action);
+		}
 
-            throw new InvalidOperationException("Invalid Status:" + status);
-        }
+		public void UnsafeOnCompleted(Action action) {
+			if (continuation == null) {
+				continuation = action;
+				return;
+			} else {
+				if (continuation is Action act) {
+					var q = new MinimumQueue<Action>(4);
+					q.Enqueue(act);
+					q.Enqueue(action);
+					continuation = q;
+					return;
+				} else {
+					((MinimumQueue<Action>)continuation).Enqueue(action);
+				}
+			}
+		}
+	}
 
-        public AwaiterStatus Status => status;
+	public abstract class ReusablePromise<T> : IAwaiter<T> {
+		T result;
+		ExceptionDispatchInfo exception;
+		object continuation; // Action or Queue<Action>
+		AwaiterStatus status;
 
-        void IAwaiter.GetResult()
-        {
-            GetResult();
-        }
+		public UniTask<T> Task => new UniTask<T>(this);
 
-        public void ResetStatus(bool forceReset)
-        {
-            if (forceReset)
-            {
-                status = AwaiterStatus.Pending;
-            }
-            else if (status == AwaiterStatus.Succeeded)
-            {
-                status = AwaiterStatus.Pending;
-            }
-        }
+		// can override for control 'start/reset' timing.
+		public virtual bool IsCompleted => status.IsCompleted();
 
-        public virtual bool TrySetCanceled()
-        {
-            if (status == AwaiterStatus.Pending)
-            {
-                status = AwaiterStatus.Canceled;
-                TryInvokeContinuation();
-                return true;
-            }
-            return false;
-        }
+		protected T RawResult => result;
 
-        public virtual bool TrySetException(Exception ex)
-        {
-            if (status == AwaiterStatus.Pending)
-            {
-                status = AwaiterStatus.Faulted;
-                exception = ExceptionDispatchInfo.Capture(ex);
-                TryInvokeContinuation();
-                return true;
-            }
-            return false;
-        }
+		protected void ForceSetResult(T result) {
+			this.result = result;
+		}
 
-        public virtual bool TrySetResult(T result)
-        {
-            if (status == AwaiterStatus.Pending)
-            {
-                status = AwaiterStatus.Succeeded;
-                this.result = result;
-                TryInvokeContinuation();
-                return true;
-            }
-            return false;
-        }
+		public virtual T GetResult() {
+			switch (status) {
+				case AwaiterStatus.Succeeded:
+					return result;
 
-        protected void TryInvokeContinuation()
-        {
-            if (continuation == null) return;
+				case AwaiterStatus.Faulted:
+					exception.Throw();
+					break;
 
-            if (continuation is Action act)
-            {
-                continuation = null;
-                act();
-            }
-            else
-            {
-                // reuse Queue(don't null clear)
-                var q = (MinimumQueue<Action>)continuation;
-                var size = q.Count;
-                for (int i = 0; i < size; i++)
-                {
-                    q.Dequeue().Invoke();
-                }
-            }
-        }
+				case AwaiterStatus.Canceled:
+					throw new OperationCanceledException();
 
-        public void OnCompleted(Action action)
-        {
-            UnsafeOnCompleted(action);
-        }
+				default:
+					break;
+			}
 
-        public void UnsafeOnCompleted(Action action)
-        {
-            if (continuation == null)
-            {
-                continuation = action;
-                return;
-            }
-            else
-            {
-                if (continuation is Action act)
-                {
-                    var q = new MinimumQueue<Action>(4);
-                    q.Enqueue(act);
-                    q.Enqueue(action);
-                    continuation = q;
-                    return;
-                }
-                else
-                {
-                    ((MinimumQueue<Action>)continuation).Enqueue(action);
-                }
-            }
-        }
-    }
+			throw new InvalidOperationException("Invalid Status:" + status);
+		}
 
-#if !UniRxLibrary
+		public AwaiterStatus Status => status;
 
-    public abstract class PlayerLoopReusablePromiseBase : ReusablePromise, IPlayerLoopItem
-    {
-        readonly PlayerLoopTiming timing;
-        protected readonly CancellationToken cancellationToken;
-        bool isRunning = false;
+		void IAwaiter.GetResult() {
+			GetResult();
+		}
 
-#if UNITY_EDITOR
-        string capturedStackTraceForDebugging;
-#endif
+		public void ResetStatus(bool forceReset) {
+			if (forceReset) {
+				status = AwaiterStatus.Pending;
+			} else if (status == AwaiterStatus.Succeeded) {
+				status = AwaiterStatus.Pending;
+			}
+		}
 
-        public PlayerLoopReusablePromiseBase(PlayerLoopTiming timing, CancellationToken cancellationToken, int skipTrackFrameCountAdditive)
-        {
-            this.timing = timing;
-            this.cancellationToken = cancellationToken;
+		public virtual bool TrySetCanceled() {
+			if (status == AwaiterStatus.Pending) {
+				status = AwaiterStatus.Canceled;
+				TryInvokeContinuation();
+				return true;
+			}
 
-#if UNITY_EDITOR
-            this.capturedStackTraceForDebugging = TaskTracker.CaptureStackTrace(skipTrackFrameCountAdditive + 1); // 1 is self,
-#endif
-        }
+			return false;
+		}
 
-        public override bool IsCompleted
-        {
-            get
-            {
-                if (Status == AwaiterStatus.Canceled || Status == AwaiterStatus.Faulted) return true;
+		public virtual bool TrySetException(Exception ex) {
+			if (status == AwaiterStatus.Pending) {
+				status = AwaiterStatus.Faulted;
+				exception = ExceptionDispatchInfo.Capture(ex);
+				TryInvokeContinuation();
+				return true;
+			}
 
-                if (!isRunning)
-                {
-                    isRunning = true;
-                    ResetStatus(false);
-                    OnRunningStart();
-#if UNITY_EDITOR
-                    TaskTracker.TrackActiveTask(this, capturedStackTraceForDebugging);
-#endif
-                    PlayerLoopHelper.AddAction(timing, this);
-                }
-                return false;
-            }
-        }
+			return false;
+		}
 
-        protected abstract void OnRunningStart();
+		public virtual bool TrySetResult(T result) {
+			if (status == AwaiterStatus.Pending) {
+				status = AwaiterStatus.Succeeded;
+				this.result = result;
+				TryInvokeContinuation();
+				return true;
+			}
 
-        protected void Complete()
-        {
-            isRunning = false;
-#if UNITY_EDITOR
-            TaskTracker.RemoveTracking(this);
-#endif
-        }
+			return false;
+		}
 
-        public abstract bool MoveNext();
-    }
+		protected void TryInvokeContinuation() {
+			if (continuation == null) return;
 
-    public abstract class PlayerLoopReusablePromiseBase<T> : ReusablePromise<T>, IPlayerLoopItem
-    {
-        readonly PlayerLoopTiming timing;
-        protected readonly CancellationToken cancellationToken;
-        bool isRunning = false;
+			if (continuation is Action act) {
+				continuation = null;
+				act();
+			} else {
+				// reuse Queue(don't null clear)
+				var q = (MinimumQueue<Action>)continuation;
+				var size = q.Count;
 
-#if UNITY_EDITOR
-        string capturedStackTraceForDebugging;
-#endif
+				for (int i = 0; i < size; i++) {
+					q.Dequeue().Invoke();
+				}
+			}
+		}
 
-        public PlayerLoopReusablePromiseBase(PlayerLoopTiming timing, CancellationToken cancellationToken, int skipTrackFrameCountAdditive)
-        {
-            this.timing = timing;
-            this.cancellationToken = cancellationToken;
+		public void OnCompleted(Action action) {
+			UnsafeOnCompleted(action);
+		}
 
-#if UNITY_EDITOR
-            this.capturedStackTraceForDebugging = TaskTracker.CaptureStackTrace(skipTrackFrameCountAdditive + 1); // 1 is self,
-#endif
-        }
+		public void UnsafeOnCompleted(Action action) {
+			if (continuation == null) {
+				continuation = action;
+				return;
+			} else {
+				if (continuation is Action act) {
+					var q = new MinimumQueue<Action>(4);
+					q.Enqueue(act);
+					q.Enqueue(action);
+					continuation = q;
+					return;
+				} else {
+					((MinimumQueue<Action>)continuation).Enqueue(action);
+				}
+			}
+		}
+	}
 
-        public override bool IsCompleted
-        {
-            get
-            {
-                if (Status == AwaiterStatus.Canceled || Status == AwaiterStatus.Faulted) return true;
+	#if !UniRxLibrary
 
-                if (!isRunning)
-                {
-                    isRunning = true;
-                    ResetStatus(false);
-                    OnRunningStart();
-#if UNITY_EDITOR
-                    TaskTracker.TrackActiveTask(this, capturedStackTraceForDebugging);
-#endif
-                    PlayerLoopHelper.AddAction(timing, this);
-                }
-                return false;
-            }
-        }
+	public abstract class PlayerLoopReusablePromiseBase : ReusablePromise, IPlayerLoopItem {
+		readonly PlayerLoopTiming timing;
+		protected readonly CancellationToken cancellationToken;
+		bool isRunning = false;
 
-        protected abstract void OnRunningStart();
+		#if UNITY_EDITOR
+		string capturedStackTraceForDebugging;
+		#endif
 
-        protected void Complete()
-        {
-            isRunning = false;
-#if UNITY_EDITOR
-            TaskTracker.RemoveTracking(this);
-#endif
-        }
+		public PlayerLoopReusablePromiseBase(PlayerLoopTiming timing, CancellationToken cancellationToken, int skipTrackFrameCountAdditive) {
+			this.timing = timing;
+			this.cancellationToken = cancellationToken;
 
-        public abstract bool MoveNext();
-    }
+			#if UNITY_EDITOR
+			this.capturedStackTraceForDebugging = TaskTracker.CaptureStackTrace(skipTrackFrameCountAdditive + 1); // 1 is self,
+			#endif
+		}
 
-#endif
+		public override bool IsCompleted {
+			get {
+				if (Status == AwaiterStatus.Canceled || Status == AwaiterStatus.Faulted) return true;
+
+				if (!isRunning) {
+					isRunning = true;
+					ResetStatus(false);
+					OnRunningStart();
+					#if UNITY_EDITOR
+					TaskTracker.TrackActiveTask(this, capturedStackTraceForDebugging);
+					#endif
+					PlayerLoopHelper.AddAction(timing, this);
+				}
+
+				return false;
+			}
+		}
+
+		protected abstract void OnRunningStart();
+
+		protected void Complete() {
+			isRunning = false;
+			#if UNITY_EDITOR
+			TaskTracker.RemoveTracking(this);
+			#endif
+		}
+
+		public abstract bool MoveNext();
+	}
+
+	public abstract class PlayerLoopReusablePromiseBase<T> : ReusablePromise<T>, IPlayerLoopItem {
+		readonly PlayerLoopTiming timing;
+		protected readonly CancellationToken cancellationToken;
+		bool isRunning = false;
+
+		#if UNITY_EDITOR
+		string capturedStackTraceForDebugging;
+		#endif
+
+		public PlayerLoopReusablePromiseBase(PlayerLoopTiming timing, CancellationToken cancellationToken, int skipTrackFrameCountAdditive) {
+			this.timing = timing;
+			this.cancellationToken = cancellationToken;
+
+			#if UNITY_EDITOR
+			this.capturedStackTraceForDebugging = TaskTracker.CaptureStackTrace(skipTrackFrameCountAdditive + 1); // 1 is self,
+			#endif
+		}
+
+		public override bool IsCompleted {
+			get {
+				if (Status == AwaiterStatus.Canceled || Status == AwaiterStatus.Faulted) return true;
+
+				if (!isRunning) {
+					isRunning = true;
+					ResetStatus(false);
+					OnRunningStart();
+					#if UNITY_EDITOR
+					TaskTracker.TrackActiveTask(this, capturedStackTraceForDebugging);
+					#endif
+					PlayerLoopHelper.AddAction(timing, this);
+				}
+
+				return false;
+			}
+		}
+
+		protected abstract void OnRunningStart();
+
+		protected void Complete() {
+			isRunning = false;
+			#if UNITY_EDITOR
+			TaskTracker.RemoveTracking(this);
+			#endif
+		}
+
+		public abstract bool MoveNext();
+	}
+
+	#endif
 }
 
 #endif

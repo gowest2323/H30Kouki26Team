@@ -4,6 +4,5 @@
 //----------------------------------------------
 using UnityEngine;
 
-public class SABoneColliderChild : MonoBehaviour
-{
+public class SABoneColliderChild : MonoBehaviour {
 }

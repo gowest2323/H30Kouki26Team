@@ -5,19 +5,16 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class AttackAction : MonoBehaviour, IEnemyActionable
-{
-    [SerializeField]
-    private EnemyAttack attack;
+public class AttackAction : MonoBehaviour, IEnemyActionable {
+	[SerializeField]
+	private EnemyAttack attack;
 
-    public IEnumerator Action(UnityAction callBack)
-    {
-        yield return StartCoroutine(attack.Attack());
-        callBack.Invoke();
-    }
+	public IEnumerator Action(UnityAction callBack) {
+		yield return StartCoroutine(attack.Attack());
+		callBack.Invoke();
+	}
 
-    public bool CanAttack(GameObject target)
-    {
-        return attack.CanAttack(target);
-    }
+	public bool CanAttack(GameObject target) {
+		return attack.CanAttack(target);
+	}
 }

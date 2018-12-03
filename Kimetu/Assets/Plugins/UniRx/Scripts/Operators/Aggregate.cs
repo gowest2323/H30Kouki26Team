@@ -1,207 +1,173 @@
 ﻿using System;
 using UniRx.Operators;
 
-namespace UniRx.Operators
-{
-    internal class AggregateObservable<TSource> : OperatorObservableBase<TSource>
-    {
-        readonly IObservable<TSource> source;
-        readonly Func<TSource, TSource, TSource> accumulator;
+namespace UniRx.Operators {
+	internal class AggregateObservable<TSource> : OperatorObservableBase<TSource> {
+		readonly IObservable<TSource> source;
+		readonly Func<TSource, TSource, TSource> accumulator;
 
-        public AggregateObservable(IObservable<TSource> source, Func<TSource, TSource, TSource> accumulator)
-            : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.accumulator = accumulator;
-        }
+		public AggregateObservable(IObservable<TSource> source, Func<TSource, TSource, TSource> accumulator)
+			: base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.accumulator = accumulator;
+		}
 
-        protected override IDisposable SubscribeCore(IObserver<TSource> observer, IDisposable cancel)
-        {
-            return source.Subscribe(new Aggregate(this, observer, cancel));
-        }
+		protected override IDisposable SubscribeCore(IObserver<TSource> observer, IDisposable cancel) {
+			return source.Subscribe(new Aggregate(this, observer, cancel));
+		}
 
-        class Aggregate : OperatorObserverBase<TSource, TSource>
-        {
-            readonly AggregateObservable<TSource> parent;
-            TSource accumulation;
-            bool seenValue;
+		class Aggregate : OperatorObserverBase<TSource, TSource> {
+			readonly AggregateObservable<TSource> parent;
+			TSource accumulation;
+			bool seenValue;
 
-            public Aggregate(AggregateObservable<TSource> parent, IObserver<TSource> observer, IDisposable cancel) : base(observer, cancel)
-            {
-                this.parent = parent;
-                this.seenValue = false;
-            }
+			public Aggregate(AggregateObservable<TSource> parent, IObserver<TSource> observer, IDisposable cancel) : base(observer, cancel) {
+				this.parent = parent;
+				this.seenValue = false;
+			}
 
-            public override void OnNext(TSource value)
-            {
-                if (!seenValue)
-                {
-                    seenValue = true;
-                    accumulation = value;
-                }
-                else
-                {
-                    try
-                    {
-                        accumulation = parent.accumulator(accumulation, value);
-                    }
-                    catch (Exception ex)
-                    {
-                        try { observer.OnError(ex); }
-                        finally { Dispose(); }
-                        return;
-                    }
-                }
-            }
+			public override void OnNext(TSource value) {
+				if (!seenValue) {
+					seenValue = true;
+					accumulation = value;
+				} else {
+					try {
+						accumulation = parent.accumulator(accumulation, value);
+					} catch (Exception ex) {
+						try { observer.OnError(ex); }
+						finally { Dispose(); }
 
-            public override void OnError(Exception error)
-            {
-                try { observer.OnError(error); }
-                finally { Dispose(); }
-            }
+						return;
+					}
+				}
+			}
 
-            public override void OnCompleted()
-            {
-                if (!seenValue)
-                {
-                    throw new InvalidOperationException("Sequence contains no elements.");
-                }
+			public override void OnError(Exception error) {
+				try { observer.OnError(error); }
+				finally { Dispose(); }
+			}
 
-                observer.OnNext(accumulation);
-                try { observer.OnCompleted(); }
-                finally { Dispose(); }
-            }
-        }
-    }
+			public override void OnCompleted() {
+				if (!seenValue) {
+					throw new InvalidOperationException("Sequence contains no elements.");
+				}
 
-    internal class AggregateObservable<TSource, TAccumulate> : OperatorObservableBase<TAccumulate>
-    {
-        readonly IObservable<TSource> source;
-        readonly TAccumulate seed;
-        readonly Func<TAccumulate, TSource, TAccumulate> accumulator;
+				observer.OnNext(accumulation);
 
-        public AggregateObservable(IObservable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
-            : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.seed = seed;
-            this.accumulator = accumulator;
-        }
+				try { observer.OnCompleted(); }
+				finally { Dispose(); }
+			}
+		}
+	}
 
-        protected override IDisposable SubscribeCore(IObserver<TAccumulate> observer, IDisposable cancel)
-        {
-            return source.Subscribe(new Aggregate(this, observer, cancel));
-        }
+	internal class AggregateObservable<TSource, TAccumulate> : OperatorObservableBase<TAccumulate> {
+		readonly IObservable<TSource> source;
+		readonly TAccumulate seed;
+		readonly Func<TAccumulate, TSource, TAccumulate> accumulator;
 
-        class Aggregate : OperatorObserverBase<TSource, TAccumulate>
-        {
-            readonly AggregateObservable<TSource, TAccumulate> parent;
-            TAccumulate accumulation;
+		public AggregateObservable(IObservable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
+			: base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.seed = seed;
+			this.accumulator = accumulator;
+		}
 
-            public Aggregate(AggregateObservable<TSource, TAccumulate> parent, IObserver<TAccumulate> observer, IDisposable cancel) : base(observer, cancel)
-            {
-                this.parent = parent;
-                this.accumulation = parent.seed;
-            }
+		protected override IDisposable SubscribeCore(IObserver<TAccumulate> observer, IDisposable cancel) {
+			return source.Subscribe(new Aggregate(this, observer, cancel));
+		}
 
-            public override void OnNext(TSource value)
-            {
-                try
-                {
-                    accumulation = parent.accumulator(accumulation, value);
-                }
-                catch (Exception ex)
-                {
-                    try { observer.OnError(ex); }
-                    finally { Dispose(); }
-                    return;
-                }
-            }
+		class Aggregate : OperatorObserverBase<TSource, TAccumulate> {
+			readonly AggregateObservable<TSource, TAccumulate> parent;
+			TAccumulate accumulation;
 
-            public override void OnError(Exception error)
-            {
-                try { observer.OnError(error); }
-                finally { Dispose(); }
-            }
+			public Aggregate(AggregateObservable<TSource, TAccumulate> parent, IObserver<TAccumulate> observer, IDisposable cancel) : base(observer, cancel) {
+				this.parent = parent;
+				this.accumulation = parent.seed;
+			}
 
-            public override void OnCompleted()
-            {
-                observer.OnNext(accumulation);
-                try { observer.OnCompleted(); }
-                finally { Dispose(); }
-            }
-        }
-    }
+			public override void OnNext(TSource value) {
+				try {
+					accumulation = parent.accumulator(accumulation, value);
+				} catch (Exception ex) {
+					try { observer.OnError(ex); }
+					finally { Dispose(); }
 
-    internal class AggregateObservable<TSource, TAccumulate, TResult> : OperatorObservableBase<TResult>
-    {
-        readonly IObservable<TSource> source;
-        readonly TAccumulate seed;
-        readonly Func<TAccumulate, TSource, TAccumulate> accumulator;
-        readonly Func<TAccumulate, TResult> resultSelector;
+					return;
+				}
+			}
 
-        public AggregateObservable(IObservable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, Func<TAccumulate, TResult> resultSelector)
-            : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.seed = seed;
-            this.accumulator = accumulator;
-            this.resultSelector = resultSelector;
-        }
+			public override void OnError(Exception error) {
+				try { observer.OnError(error); }
+				finally { Dispose(); }
+			}
 
-        protected override IDisposable SubscribeCore(IObserver<TResult> observer, IDisposable cancel)
-        {
-            return source.Subscribe(new Aggregate(this, observer, cancel));
-        }
+			public override void OnCompleted() {
+				observer.OnNext(accumulation);
 
-        class Aggregate : OperatorObserverBase<TSource, TResult>
-        {
-            readonly AggregateObservable<TSource, TAccumulate, TResult> parent;
-            TAccumulate accumulation;
+				try { observer.OnCompleted(); }
+				finally { Dispose(); }
+			}
+		}
+	}
 
-            public Aggregate(AggregateObservable<TSource, TAccumulate, TResult> parent, IObserver<TResult> observer, IDisposable cancel) : base(observer, cancel)
-            {
-                this.parent = parent;
-                this.accumulation = parent.seed;
-            }
+	internal class AggregateObservable<TSource, TAccumulate, TResult> : OperatorObservableBase<TResult> {
+		readonly IObservable<TSource> source;
+		readonly TAccumulate seed;
+		readonly Func<TAccumulate, TSource, TAccumulate> accumulator;
+		readonly Func<TAccumulate, TResult> resultSelector;
 
-            public override void OnNext(TSource value)
-            {
-                try
-                {
-                    accumulation = parent.accumulator(accumulation, value);
-                }
-                catch (Exception ex)
-                {
-                    try { observer.OnError(ex); }
-                    finally { Dispose(); }
-                    return;
-                }
-            }
+		public AggregateObservable(IObservable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator, Func<TAccumulate, TResult> resultSelector)
+			: base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.seed = seed;
+			this.accumulator = accumulator;
+			this.resultSelector = resultSelector;
+		}
 
-            public override void OnError(Exception error)
-            {
-                try { observer.OnError(error); }
-                finally { Dispose(); }
-            }
+		protected override IDisposable SubscribeCore(IObserver<TResult> observer, IDisposable cancel) {
+			return source.Subscribe(new Aggregate(this, observer, cancel));
+		}
 
-            public override void OnCompleted()
-            {
-                TResult result;
-                try
-                {
-                    result = parent.resultSelector(accumulation);
-                }
-                catch (Exception ex)
-                {
-                    OnError(ex);
-                    return;
-                }
+		class Aggregate : OperatorObserverBase<TSource, TResult> {
+			readonly AggregateObservable<TSource, TAccumulate, TResult> parent;
+			TAccumulate accumulation;
 
-                observer.OnNext(result);
-                try { observer.OnCompleted(); }
-                finally { Dispose(); }
-            }
-        }
-    }
+			public Aggregate(AggregateObservable<TSource, TAccumulate, TResult> parent, IObserver<TResult> observer, IDisposable cancel) : base(observer, cancel) {
+				this.parent = parent;
+				this.accumulation = parent.seed;
+			}
+
+			public override void OnNext(TSource value) {
+				try {
+					accumulation = parent.accumulator(accumulation, value);
+				} catch (Exception ex) {
+					try { observer.OnError(ex); }
+					finally { Dispose(); }
+
+					return;
+				}
+			}
+
+			public override void OnError(Exception error) {
+				try { observer.OnError(error); }
+				finally { Dispose(); }
+			}
+
+			public override void OnCompleted() {
+				TResult result;
+
+				try {
+					result = parent.resultSelector(accumulation);
+				} catch (Exception ex) {
+					OnError(ex);
+					return;
+				}
+
+				observer.OnNext(result);
+
+				try { observer.OnCompleted(); }
+				finally { Dispose(); }
+			}
+		}
+	}
 }

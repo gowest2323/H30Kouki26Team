@@ -1,63 +1,56 @@
 ﻿using System;
 using UniRx.InternalUtil;
 
-namespace UniRx.Operators
-{
-    internal class Wait<T> : IObserver<T>
-    {
-        static readonly TimeSpan InfiniteTimeSpan = new TimeSpan(0, 0, 0, 0, -1); // from .NET 4.5
+namespace UniRx.Operators {
+	internal class Wait<T> : IObserver<T> {
+		static readonly TimeSpan InfiniteTimeSpan = new TimeSpan(0, 0, 0, 0, -1); // from .NET 4.5
 
-        readonly IObservable<T> source;
-        readonly TimeSpan timeout;
+		readonly IObservable<T> source;
+		readonly TimeSpan timeout;
 
-        System.Threading.ManualResetEvent semaphore;
+		System.Threading.ManualResetEvent semaphore;
 
-        bool seenValue = false;
-        T value = default(T);
-        Exception ex = default(Exception);
+		bool seenValue = false;
+		T value = default(T);
+		Exception ex = default(Exception);
 
-        public Wait(IObservable<T> source, TimeSpan timeout)
-        {
-            this.source = source;
-            this.timeout = timeout;
-        }
+		public Wait(IObservable<T> source, TimeSpan timeout) {
+			this.source = source;
+			this.timeout = timeout;
+		}
 
-        public T Run()
-        {
-            semaphore = new System.Threading.ManualResetEvent(false);
-            using (source.Subscribe(this))
-            {
-                var waitComplete = (timeout == InfiniteTimeSpan)
-                    ? semaphore.WaitOne()
-                    : semaphore.WaitOne(timeout);
+		public T Run() {
+			semaphore = new System.Threading.ManualResetEvent(false);
 
-                if (!waitComplete)
-                {
-                    throw new TimeoutException("OnCompleted not fired.");
-                }
-            }
+			using (source.Subscribe(this)) {
+				var waitComplete = (timeout == InfiniteTimeSpan)
+								   ? semaphore.WaitOne()
+								   : semaphore.WaitOne(timeout);
 
-            if (ex != null) ex.Throw();
-            if (!seenValue) throw new InvalidOperationException("No Elements.");
+				if (!waitComplete) {
+					throw new TimeoutException("OnCompleted not fired.");
+				}
+			}
 
-            return value;
-        }
+			if (ex != null) ex.Throw();
 
-        public void OnNext(T value)
-        {
-            seenValue = true;
-            this.value = value;
-        }
+			if (!seenValue) throw new InvalidOperationException("No Elements.");
 
-        public void OnError(Exception error)
-        {
-            this.ex = error;
-            semaphore.Set();
-        }
+			return value;
+		}
 
-        public void OnCompleted()
-        {
-            semaphore.Set();
-        }
-    }
+		public void OnNext(T value) {
+			seenValue = true;
+			this.value = value;
+		}
+
+		public void OnError(Exception error) {
+			this.ex = error;
+			semaphore.Set();
+		}
+
+		public void OnCompleted() {
+			semaphore.Set();
+		}
+	}
 }

@@ -37,20 +37,22 @@ public class PlayerAttackSequence : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(this.playerAction == null) {
+		if (this.playerAction == null) {
 			this.playerAction = GetComponent<PlayerAction>();
 		}
-		if(this.playerAnimation == null) {
+
+		if (this.playerAnimation == null) {
 			this.playerAnimation = GetComponent<PlayerAnimation>();
 		}
-		if(this.weapon == null) {
+
+		if (this.weapon == null) {
 			this.weapon = GetComponentInChildren<Weapon>();
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	/// <summary>
@@ -58,7 +60,7 @@ public class PlayerAttackSequence : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public AttackResult Attack() {
-		if(attackStack == 0) {
+		if (attackStack == 0) {
 			this.coroutine = StartCoroutine(StartAttack());
 		} else if (attackStack == phaseMax) {
 			//最後まで攻撃が入力されているなら無視
@@ -67,55 +69,60 @@ public class PlayerAttackSequence : MonoBehaviour {
 			StopAttack();
 			this.coroutine = StartCoroutine(StartAttack());
 		}
+
 		return AttackResult.OK;
 	}
 
 	private void StopAttack() {
-		if(this.coroutine != null) {
+		if (this.coroutine != null) {
 			StopCoroutine(coroutine);
 			this.coroutine = null;
 			System.GC.Collect();
 		}
 	}
 
-	private IEnumerator StartAttack()　{
-//        if (isAttack) yield break;
+	private IEnumerator StartAttack()　 {
+		//        if (isAttack) yield break;
 
-//        isAttack = true;
+		//        isAttack = true;
 		attackStack++;
-        Slow.Instance.PlayerAttacked(playerAnimation);
+		Slow.Instance.PlayerAttacked(playerAnimation);
 
-        weapon.AttackStart();
-        //playerAnimation.StartAttackAnimation();
+		weapon.AttackStart();
+		//playerAnimation.StartAttackAnimation();
 		StartAnimation();
-        //status.DecreaseStamina(decreaseAttackStamina);
-        AudioManager.Instance.PlayPlayerSE(AudioName.kougeki_1.String());
+		//status.DecreaseStamina(decreaseAttackStamina);
+		AudioManager.Instance.PlayPlayerSE(AudioName.kougeki_1.String());
 		yield return WaitFinish();
-        //state = PlayerState.Idle;
-    }
+		//state = PlayerState.Idle;
+	}
 
 	private IEnumerator WaitFinish() {
 		var start = Time.time;
-		while(!playerAnimation.IsEndAnimation(0.2f)) {
+
+		while (!playerAnimation.IsEndAnimation(0.2f)) {
 			yield return new WaitForEndOfFrame();
+
 			//ここで逐一ステートを確認する
 			//防御中なら中断する
-			if(playerAction.state == PlayerState.Defence ||
-			   playerAction.state == PlayerState.Damage) {
+			if (playerAction.state == PlayerState.Defence ||
+					playerAction.state == PlayerState.Damage) {
 				Finish(false);
 				playerAnimation.CancelAttackAnimation(resetPhase);
 				yield break;
 			}
 		}
+
 		//Debug.Log("animation " + (Time.time - start));
 		Finish(true);
 	}
 
 	private void Finish(bool notify) {
-        weapon.AttackEnd();
-        //isAttack = false;
+		weapon.AttackEnd();
+		//isAttack = false;
 		attackStack = 0;
-		if(notify) {
+
+		if (notify) {
 			OnAttackPhaseFinished();
 		}
 	}

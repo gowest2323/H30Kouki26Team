@@ -28,7 +28,7 @@ public class PrivateLogger {
 	/// </summary>
 	/// <param name="message"></param>
 	public void Log(object message) {
-		if(accessible) {
+		if (accessible) {
 			Debug.Log(message);
 		}
 	}
@@ -39,7 +39,7 @@ public class PrivateLogger {
 	/// </summary>
 	/// <param name="message"></param>
 	public void LogWarning(object message) {
-		if(accessible) {
+		if (accessible) {
 			Debug.LogWarning(message);
 		}
 	}
@@ -50,7 +50,7 @@ public class PrivateLogger {
 	/// <param name="format"></param>
 	/// <param name="args"></param>
 	public void LogFormat(string format, params object[] args) {
-		if(accessible) {
+		if (accessible) {
 			Debug.LogFormat(format, args);
 		}
 	}
@@ -60,7 +60,7 @@ public class PrivateLogger {
 	/// </summary>
 	/// <param name="message"></param>
 	public void LogError(object message) {
-		if(accessible) {
+		if (accessible) {
 			Debug.LogError(message);
 		}
 	}

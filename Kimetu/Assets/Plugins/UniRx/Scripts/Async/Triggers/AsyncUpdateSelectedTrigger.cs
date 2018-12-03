@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncUpdateSelectedTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<BaseEventData> onUpdateSelected;
-        AsyncTriggerPromiseDictionary<BaseEventData> onUpdateSelecteds;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncUpdateSelectedTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<BaseEventData> onUpdateSelected;
+		AsyncTriggerPromiseDictionary<BaseEventData> onUpdateSelecteds;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onUpdateSelected, onUpdateSelecteds);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onUpdateSelected, onUpdateSelecteds);
+		}
 
 
-        void OnUpdateSelected(BaseEventData eventData)
-        {
-            TrySetResult(onUpdateSelected, onUpdateSelecteds, eventData);
-        }
+		void OnUpdateSelected(BaseEventData eventData) {
+			TrySetResult(onUpdateSelected, onUpdateSelecteds, eventData);
+		}
 
 
-        public UniTask OnUpdateSelectedAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onUpdateSelected, ref onUpdateSelecteds, cancellationToken);
-        }
+		public UniTask OnUpdateSelectedAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onUpdateSelected, ref onUpdateSelecteds, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

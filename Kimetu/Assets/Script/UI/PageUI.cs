@@ -15,23 +15,27 @@ public class PageUI : MonoBehaviour {
 	void Start () {
 		Select(startPage);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		var inputH = InputMap.GetDPadHorizontal();
-		if(inputH < 0) {
+
+		if (inputH < 0) {
 			Select(selected - 1);
-		} else if(inputH > 0) {
+		} else if (inputH > 0) {
 			Select(selected + 1);
 		}
 	}
 
 	public void Select(int pageIndex) {
-		if(pageIndex < 0) pageIndex = 0;
-		if(pageIndex >= pages.Length) pageIndex = pages.Length-1;
-		foreach(var page in pages) {
+		if (pageIndex < 0) pageIndex = 0;
+
+		if (pageIndex >= pages.Length) pageIndex = pages.Length - 1;
+
+		foreach (var page in pages) {
 			page.SetActive(false);
 		}
+
 		pages[pageIndex].SetActive(true);
 		this.selected = pageIndex;
 	}

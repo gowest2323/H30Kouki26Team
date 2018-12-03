@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncParticleTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<GameObject> onParticleCollision;
-        AsyncTriggerPromiseDictionary<GameObject> onParticleCollisions;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncParticleTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<GameObject> onParticleCollision;
+		AsyncTriggerPromiseDictionary<GameObject> onParticleCollisions;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onParticleCollision, onParticleCollisions);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onParticleCollision, onParticleCollisions);
+		}
 
 
-        void OnParticleCollision(GameObject other)
-        {
-            TrySetResult(onParticleCollision, onParticleCollisions, other);
-        }
+		void OnParticleCollision(GameObject other) {
+			TrySetResult(onParticleCollision, onParticleCollisions, other);
+		}
 
 
-        public UniTask OnParticleCollisionAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onParticleCollision, ref onParticleCollisions, cancellationToken);
-        }
+		public UniTask OnParticleCollisionAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onParticleCollision, ref onParticleCollisions, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

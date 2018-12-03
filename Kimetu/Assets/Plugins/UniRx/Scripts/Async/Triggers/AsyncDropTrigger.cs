@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncDropTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<PointerEventData> onDrop;
-        AsyncTriggerPromiseDictionary<PointerEventData> onDrops;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncDropTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<PointerEventData> onDrop;
+		AsyncTriggerPromiseDictionary<PointerEventData> onDrops;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onDrop, onDrops);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onDrop, onDrops);
+		}
 
 
-        void OnDrop(PointerEventData eventData)
-        {
-            TrySetResult(onDrop, onDrops, eventData);
-        }
+		void OnDrop(PointerEventData eventData) {
+			TrySetResult(onDrop, onDrops, eventData);
+		}
 
 
-        public UniTask OnDropAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onDrop, ref onDrops, cancellationToken);
-        }
+		public UniTask OnDropAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onDrop, ref onDrops, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

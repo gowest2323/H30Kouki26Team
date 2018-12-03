@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncCancelTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<BaseEventData> onCancel;
-        AsyncTriggerPromiseDictionary<BaseEventData> onCancels;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncCancelTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<BaseEventData> onCancel;
+		AsyncTriggerPromiseDictionary<BaseEventData> onCancels;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onCancel, onCancels);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onCancel, onCancels);
+		}
 
 
-        void OnCancel(BaseEventData eventData)
-        {
-            TrySetResult(onCancel, onCancels, eventData);
-        }
+		void OnCancel(BaseEventData eventData) {
+			TrySetResult(onCancel, onCancels, eventData);
+		}
 
 
-        public UniTask OnCancelAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onCancel, ref onCancels, cancellationToken);
-        }
+		public UniTask OnCancelAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onCancel, ref onCancels, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

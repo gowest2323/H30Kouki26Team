@@ -5,10 +5,8 @@ using UnityEngine.AI;
 //動的に NavMesh　を焼くためのコンポーネント
 
 [DefaultExecutionOrder(-103)]
-public class BuildNavmesh : MonoBehaviour 
-{
-	void Awake () 
-	{
+public class BuildNavmesh : MonoBehaviour {
+	void Awake () {
 		GetComponent<NavMeshSurface> ().BuildNavMesh();
 	}
 }

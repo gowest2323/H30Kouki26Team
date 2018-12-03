@@ -7,10 +7,10 @@ public enum EnemyState {
 	Idle, //待機　
 	Move, //移動注
 	Attack, //攻撃時
-    Search, //索敵時
-    Damage, //被弾時
-    MoveNear, //接近中
-    Death, //倒れている
-    None,
+	Search, //索敵時
+	Damage, //被弾時
+	MoveNear, //接近中
+	Death, //倒れている
+	None,
 }
 

@@ -13,8 +13,7 @@ using ReducerProperty = SAColliderBuilderCommon.ReducerProperty;
 using ColliderProperty = SAColliderBuilderCommon.ColliderProperty;
 using RigidbodyProperty = SAColliderBuilderCommon.RigidbodyProperty;
 
-public class SAMeshCollider : MonoBehaviour
-{
+public class SAMeshCollider : MonoBehaviour {
 	public SplitMesh				splitMesh = new SplitMesh();
 	public SplitMode				splitMode = SplitMode.None;
 
@@ -48,70 +47,69 @@ public class SAMeshCollider : MonoBehaviour
 
 	//----------------------------------------------------------------------------------------------------------------
 
-	public void ChangeDefaultName( string defaultName )
-	{
+	public void ChangeDefaultName( string defaultName ) {
 		bool isModifyName = _IsModifyName();
 		this.defaultName = defaultName;
-		if( this.modifyNameEnalbed ) {
-			if( isModifyName ) {
+
+		if ( this.modifyNameEnalbed ) {
+			if ( isModifyName ) {
 				this.gameObject.name = _ComputeModifyName();
 			}
 		}
 	}
 
-	public void ChangeModified( bool modified )
-	{
+	public void ChangeModified( bool modified ) {
 		bool isModifyName = _IsModifyName();
 		this.modified = modified;
-		if( this.modifyNameEnalbed ) {
-			if( isModifyName ) {
+
+		if ( this.modifyNameEnalbed ) {
+			if ( isModifyName ) {
 				this.gameObject.name = _ComputeModifyName();
 			}
 		}
 	}
 
-	public void ChangeModifiedChildren( bool modifiedChildren )
-	{
+	public void ChangeModifiedChildren( bool modifiedChildren ) {
 		bool isModifyName = _IsModifyName();
 		this.modifiedChildren = modifiedChildren;
-		if( this.modifyNameEnalbed ) {
-			if( isModifyName ) {
+
+		if ( this.modifyNameEnalbed ) {
+			if ( isModifyName ) {
 				this.gameObject.name = _ComputeModifyName();
 			}
 		}
 	}
 
-	public void ResetModified()
-	{
+	public void ResetModified() {
 		bool isModifyName = _IsModifyName();
 		this.modified = false;
 		this.modifiedChildren = false;
-		if( this.modifyNameEnalbed ) {
-			if( isModifyName ) {
+
+		if ( this.modifyNameEnalbed ) {
+			if ( isModifyName ) {
 				this.gameObject.name = _ComputeModifyName();
 			}
 		}
 	}
 
-	public void ResetModifyName()
-	{
-		if( this.modifyNameEnalbed ) {
+	public void ResetModifyName() {
+		if ( this.modifyNameEnalbed ) {
 			this.gameObject.name = _ComputeModifyName();
 		}
 	}
 
-	public string _ComputeModifyName()
-	{
-		if( this.modifyNameEnalbed ) {
-			if( this.modified ) {
-				if( string.IsNullOrEmpty(this.defaultName) ) {
+	public string _ComputeModifyName() {
+		if ( this.modifyNameEnalbed ) {
+			if ( this.modified ) {
+				if ( string.IsNullOrEmpty(this.defaultName) ) {
 					return "*";
 				} else {
 					return this.defaultName + "*";
 				}
 			}
-			if( this.modifiedChildren ) {
-				if( string.IsNullOrEmpty(this.defaultName) ) {
+
+			if ( this.modifiedChildren ) {
+				if ( string.IsNullOrEmpty(this.defaultName) ) {
 					return "+";
 				} else {
 					return this.defaultName + "+";
@@ -119,17 +117,16 @@ public class SAMeshCollider : MonoBehaviour
 			}
 		}
 
-		if( string.IsNullOrEmpty(this.defaultName) ) {
+		if ( string.IsNullOrEmpty(this.defaultName) ) {
 			return "";
 		} else {
 			return this.defaultName;
 		}
 	}
 
-	public bool _IsModifyName()
-	{
-		if( this.modifyNameEnalbed ) {
-			if( string.IsNullOrEmpty(this.gameObject.name) ) {
+	public bool _IsModifyName() {
+		if ( this.modifyNameEnalbed ) {
+			if ( string.IsNullOrEmpty(this.gameObject.name) ) {
 				return string.IsNullOrEmpty(_ComputeModifyName());
 			} else {
 				return this.gameObject.name == _ComputeModifyName();

@@ -7,48 +7,41 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncRectTransformTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<AsyncUnit> onRectTransformDimensionsChange;
-        AsyncTriggerPromiseDictionary<AsyncUnit> onRectTransformDimensionsChanges;
-        AsyncTriggerPromise<AsyncUnit> onRectTransformRemoved;
-        AsyncTriggerPromiseDictionary<AsyncUnit> onRectTransformRemoveds;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncRectTransformTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<AsyncUnit> onRectTransformDimensionsChange;
+		AsyncTriggerPromiseDictionary<AsyncUnit> onRectTransformDimensionsChanges;
+		AsyncTriggerPromise<AsyncUnit> onRectTransformRemoved;
+		AsyncTriggerPromiseDictionary<AsyncUnit> onRectTransformRemoveds;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onRectTransformDimensionsChange, onRectTransformDimensionsChanges, onRectTransformRemoved, onRectTransformRemoveds);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onRectTransformDimensionsChange, onRectTransformDimensionsChanges, onRectTransformRemoved, onRectTransformRemoveds);
+		}
 
 
-        void OnRectTransformDimensionsChange()
-        {
-            TrySetResult(onRectTransformDimensionsChange, onRectTransformDimensionsChanges, AsyncUnit.Default);
-        }
+		void OnRectTransformDimensionsChange() {
+			TrySetResult(onRectTransformDimensionsChange, onRectTransformDimensionsChanges, AsyncUnit.Default);
+		}
 
 
-        public UniTask OnRectTransformDimensionsChangeAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onRectTransformDimensionsChange, ref onRectTransformDimensionsChanges, cancellationToken);
-        }
+		public UniTask OnRectTransformDimensionsChangeAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onRectTransformDimensionsChange, ref onRectTransformDimensionsChanges, cancellationToken);
+		}
 
 
-        void OnRectTransformRemoved()
-        {
-            TrySetResult(onRectTransformRemoved, onRectTransformRemoveds, AsyncUnit.Default);
-        }
+		void OnRectTransformRemoved() {
+			TrySetResult(onRectTransformRemoved, onRectTransformRemoveds, AsyncUnit.Default);
+		}
 
 
-        public UniTask OnRectTransformRemovedAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onRectTransformRemoved, ref onRectTransformRemoveds, cancellationToken);
-        }
+		public UniTask OnRectTransformRemovedAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onRectTransformRemoved, ref onRectTransformRemoveds, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

@@ -2,219 +2,199 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : SingletonMonoBehaviour<AudioManager>{
+public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 
-    //ボリューム保存用のkeyとデフォルト値
-    private const string BGM_VOLUME_KEY = "BGM_VOLUME_KEY";
-    private const string SE_VOLUME_KEY = "SE_VOLUME_KEY";
-    private const float BGM_VOLUME_DEFULT = 1.0f;
-    private const float SE_VOLUME_DEFULT = 1.0f;
+	//ボリューム保存用のkeyとデフォルト値
+	private const string BGM_VOLUME_KEY = "BGM_VOLUME_KEY";
+	private const string SE_VOLUME_KEY = "SE_VOLUME_KEY";
+	private const float BGM_VOLUME_DEFULT = 1.0f;
+	private const float SE_VOLUME_DEFULT = 1.0f;
 
-    //BGMがフェードするのにかかる時間
-    public const float BGM_FADE_SPEED_RATE_HIGH = 0.9f;
-    public const float BGM_FADE_SPEED_RATE_LOW = 0.3f;
-    private float _bgmFadeSpeedRate = BGM_FADE_SPEED_RATE_HIGH;
+	//BGMがフェードするのにかかる時間
+	public const float BGM_FADE_SPEED_RATE_HIGH = 0.9f;
+	public const float BGM_FADE_SPEED_RATE_LOW = 0.3f;
+	private float _bgmFadeSpeedRate = BGM_FADE_SPEED_RATE_HIGH;
 
-    //次流すBGM名、SE名
-    private string _nextBGMName;
-    private string _nextSEName;
+	//次流すBGM名、SE名
+	private string _nextBGMName;
+	private string _nextSEName;
 
-    //BGMをフェードアウト中か
-    private bool _isFadeOut = false;
+	//BGMをフェードアウト中か
+	private bool _isFadeOut = false;
 
-    //BGM用、SE用に分けてオーディオソースを持つ
-    public AudioSource AttachBGMSource, AttachPlayerSESource, AttachEnemySESource;
+	//BGM用、SE用に分けてオーディオソースを持つ
+	public AudioSource AttachBGMSource, AttachPlayerSESource, AttachEnemySESource;
 
-    //全Audioを保持
-    private Dictionary<string, AudioClip> _bgmDic, _seDic;
+	//全Audioを保持
+	private Dictionary<string, AudioClip> _bgmDic, _seDic;
 
-    //初期化
-　　private void Awake()
-    {
-        if (this != Instance)
-        {
-            Destroy(this);
-            return;
-        }
+	//初期化
+	　　private void Awake() {
+		if (this != Instance) {
+			Destroy(this);
+			return;
+		}
 
-        DontDestroyOnLoad(this.gameObject);
+		DontDestroyOnLoad(this.gameObject);
 
-        //リソースフォルダから全SE&BGMのファイルを読み込みセット
-        _bgmDic = new Dictionary<string, AudioClip>();
-        _seDic = new Dictionary<string, AudioClip>();
+		//リソースフォルダから全SE&BGMのファイルを読み込みセット
+		_bgmDic = new Dictionary<string, AudioClip>();
+		_seDic = new Dictionary<string, AudioClip>();
 
-        object[] bgmList = Resources.LoadAll("Audio/BGM");
-        object[] seList = Resources.LoadAll("Audio/SE");
+		object[] bgmList = Resources.LoadAll("Audio/BGM");
+		object[] seList = Resources.LoadAll("Audio/SE");
 
-        
-        foreach (AudioClip bgm in bgmList)
-        {
-            _bgmDic[bgm.name] = bgm;
-        }
-        foreach (AudioClip se in seList)
-        {
-            _seDic[se.name] = se;
-        }
-    }
 
-    private void Start()
-    {
-        AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
-        AttachPlayerSESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
-        AttachEnemySESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
-    }
+		foreach (AudioClip bgm in bgmList) {
+			_bgmDic[bgm.name] = bgm;
+		}
 
-    //SE
+		foreach (AudioClip se in seList) {
+			_seDic[se.name] = se;
+		}
+	}
 
-    /// <summary>
-    /// 指定したファイル名のSEを流す。第二引数のdelayに指定した時間だけ再生までの間隔をあける
-    /// </summary>
-    public void PlayPlayerSE(string seName,float delay = 0.0f)
-    {
-        if(!_seDic.ContainsKey(seName))
-        {
-            Debug.Log(seName + "という名前のSEがありません");
-            return;
-            
-        }
-        //防御だけ音量小さく
-        if(seName == AudioName.bougyokamae.String()) {
-            _nextSEName = seName;
-            AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip, 0.5f);
-            return;
-        }
+	private void Start() {
+		AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
+		AttachPlayerSESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
+		AttachEnemySESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
+	}
 
-        _nextSEName = seName;
-        DelayPlayerSE();
-       // Invoke("DelayPlaySE", delay);
-    }
+	//SE
 
-    private void DelayPlayerSE()
-    {
-    
-         AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
-      
-    }
-    /// <summary>
-    /// 指定したファイル名のSEを流す。第二引数のdelayに指定した時間だけ再生までの間隔をあける
-    /// </summary>
-    public void PlayEnemySE(string seName, float delay = 0.0f)
-    {
-        if (!_seDic.ContainsKey(seName))
-        {
-            Debug.Log(seName + "という名前のSEがありません");
-            return;
+	/// <summary>
+	/// 指定したファイル名のSEを流す。第二引数のdelayに指定した時間だけ再生までの間隔をあける
+	/// </summary>
+	public void PlayPlayerSE(string seName, float delay = 0.0f) {
+		if (!_seDic.ContainsKey(seName)) {
+			Debug.Log(seName + "という名前のSEがありません");
+			return;
 
-        }
+		}
 
-        _nextSEName = seName;
-        DelayEnemySE();
-        // Invoke("DelayPlaySE", delay);
-    }
+		//防御だけ音量小さく
+		if (seName == AudioName.bougyokamae.String()) {
+			_nextSEName = seName;
+			AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip, 0.5f);
+			return;
+		}
 
-    private void DelayEnemySE()
-    {
+		_nextSEName = seName;
+		DelayPlayerSE();
+		// Invoke("DelayPlaySE", delay);
+	}
 
-        AttachEnemySESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
+	private void DelayPlayerSE() {
 
-    }
+		AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
+
+	}
+	/// <summary>
+	/// 指定したファイル名のSEを流す。第二引数のdelayに指定した時間だけ再生までの間隔をあける
+	/// </summary>
+	public void PlayEnemySE(string seName, float delay = 0.0f) {
+		if (!_seDic.ContainsKey(seName)) {
+			Debug.Log(seName + "という名前のSEがありません");
+			return;
+
+		}
+
+		_nextSEName = seName;
+		DelayEnemySE();
+		// Invoke("DelayPlaySE", delay);
+	}
+
+	private void DelayEnemySE() {
+
+		AttachEnemySESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
+
+	}
 
 
 
-    //BGM
-    /// <summary>
+	//BGM
+	/// <summary>
 	/// 指定したファイル名のBGMを流す。ただし既に流れている場合は前の曲をフェードアウトさせてから。
 	/// 第二引数のfadeSpeedRateに指定した割合でフェードアウトするスピードが変わる
 	/// </summary>
-	public void PlayBGM(string bgmName, float fadeSpeedRate = BGM_FADE_SPEED_RATE_HIGH)
-    {
-        if (!_bgmDic.ContainsKey(bgmName))
-        {
-            Debug.Log(bgmName + "という名前のBGMがありません");
-            return;
-        }
+	public void PlayBGM(string bgmName, float fadeSpeedRate = BGM_FADE_SPEED_RATE_HIGH) {
+		if (!_bgmDic.ContainsKey(bgmName)) {
+			Debug.Log(bgmName + "という名前のBGMがありません");
+			return;
+		}
 
-        //現在BGMが流れていない時はそのまま流す
-        if (!AttachBGMSource.isPlaying)
-        {
-            _nextBGMName = "";
-            AttachBGMSource.clip = _bgmDic[bgmName] as AudioClip;
-            AttachBGMSource.Play();
-        }
-        //違うBGMが流れている時は、流れているBGMをフェードアウトさせてから次を流す。同じBGMが流れている時はスルー
-        else if (AttachBGMSource.clip.name != bgmName)
-        {
-            _nextBGMName = bgmName;
-           // FadeOutBGM(fadeSpeedRate);
-        }
+		//現在BGMが流れていない時はそのまま流す
+		if (!AttachBGMSource.isPlaying) {
+			_nextBGMName = "";
+			AttachBGMSource.clip = _bgmDic[bgmName] as AudioClip;
+			AttachBGMSource.Play();
+		}
+		//違うBGMが流れている時は、流れているBGMをフェードアウトさせてから次を流す。同じBGMが流れている時はスルー
+		else if (AttachBGMSource.clip.name != bgmName) {
+			_nextBGMName = bgmName;
+			// FadeOutBGM(fadeSpeedRate);
+		}
 
-    }
+	}
 
-    /// <summary>
-    /// 現在流れている曲をフェードアウトさせる
-    /// fadeSpeedRateに指定した割合でフェードアウトするスピードが変わる
-    /// </summary>
-    /// <param name="fadeSpeedRate"></param>
-    public void FadeOutBGM(float fadeSpeedRate = BGM_FADE_SPEED_RATE_LOW)
-    {
-        _bgmFadeSpeedRate = fadeSpeedRate;
-        _isFadeOut = true;
-    }
+	/// <summary>
+	/// 現在流れている曲をフェードアウトさせる
+	/// fadeSpeedRateに指定した割合でフェードアウトするスピードが変わる
+	/// </summary>
+	/// <param name="fadeSpeedRate"></param>
+	public void FadeOutBGM(float fadeSpeedRate = BGM_FADE_SPEED_RATE_LOW) {
+		_bgmFadeSpeedRate = fadeSpeedRate;
+		_isFadeOut = true;
+	}
 
-    private void Update()
-    {
-        if(!_isFadeOut)
-        {
-            return;
-        }
+	private void Update() {
+		if (!_isFadeOut) {
+			return;
+		}
 
-        //徐々にボリュームを下げていき、ボリュームが0になったらボリュームを戻し次の曲を流す
-        AttachBGMSource.volume = Time.deltaTime * _bgmFadeSpeedRate;
-        if(AttachBGMSource.volume <=0)
-        {
-            AttachBGMSource.Stop();
-            AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
-            _isFadeOut = false;
+		//徐々にボリュームを下げていき、ボリュームが0になったらボリュームを戻し次の曲を流す
+		AttachBGMSource.volume = Time.deltaTime * _bgmFadeSpeedRate;
 
-            if(!string.IsNullOrEmpty(_nextBGMName))
-            {
-                PlayBGM(_nextBGMName);
-            }
-        }
-    }
+		if (AttachBGMSource.volume <= 0) {
+			AttachBGMSource.Stop();
+			AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
+			_isFadeOut = false;
 
-    //音量変更
-    /// <summary>
-    /// BGMとSEのボリュームを別々に変更＆保存
-    /// </summary>
-    /// <param name="BGMVolume"></param>
-    /// <param name="SEVolume"></param>
-    public void ChangeVolume(float BGMVolume,float SEVolume)
-    {
-        AttachBGMSource.volume = BGMVolume;
-        AttachPlayerSESource.volume = SEVolume;
-        AttachEnemySESource.volume = SEVolume;
+			if (!string.IsNullOrEmpty(_nextBGMName)) {
+				PlayBGM(_nextBGMName);
+			}
+		}
+	}
 
-        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
-        PlayerPrefs.SetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
-    }
+	//音量変更
+	/// <summary>
+	/// BGMとSEのボリュームを別々に変更＆保存
+	/// </summary>
+	/// <param name="BGMVolume"></param>
+	/// <param name="SEVolume"></param>
+	public void ChangeVolume(float BGMVolume, float SEVolume) {
+		AttachBGMSource.volume = BGMVolume;
+		AttachPlayerSESource.volume = SEVolume;
+		AttachEnemySESource.volume = SEVolume;
 
-    /// <summary>
-    /// PlayerのSEがプレイ―中か
-    /// </summary>
-    /// <returns></returns>
-    public bool IsPlayingPlayerSE()
-    {
-        return AttachPlayerSESource.isPlaying;
-    }
+		PlayerPrefs.SetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
+		PlayerPrefs.SetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
+	}
 
-    /// <summary>
-    /// EnemyのSEがプレイ―中か
-    /// </summary>
-    /// <returns></returns>
-    public bool IsPlayingEnemySE()
-    {
-        return AttachEnemySESource.isPlaying;
-    }
+	/// <summary>
+	/// PlayerのSEがプレイ―中か
+	/// </summary>
+	/// <returns></returns>
+	public bool IsPlayingPlayerSE() {
+		return AttachPlayerSESource.isPlaying;
+	}
+
+	/// <summary>
+	/// EnemyのSEがプレイ―中か
+	/// </summary>
+	/// <returns></returns>
+	public bool IsPlayingEnemySE() {
+		return AttachEnemySESource.isPlaying;
+	}
 
 }

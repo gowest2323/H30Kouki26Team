@@ -6,28 +6,25 @@ using UnityEngine.Events;
 /// <summary>
 /// プレイヤーのサーチ範囲管理
 /// </summary>
-public class PlayerSearchArea : MonoBehaviour
-{
-    [SerializeField]
-    private PlayerAction player;
+public class PlayerSearchArea : MonoBehaviour {
+	[SerializeField]
+	private PlayerAction player;
 
-    private void OnTriggerStay(Collider other)
-    {
-        TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
-        if (otherTag == TagName.EnemyDeadArea)
-        {
-            EnemyAI enemy = other.GetComponentInParent<EnemyAI>();
-            player.NearEnemy(enemy);
-        }
-    }
+	private void OnTriggerStay(Collider other) {
+		TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
 
-    private void OnTriggerExit(Collider other)
-    {
-        TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
-        if (otherTag == TagName.EnemyDeadArea)
-        {
-            EnemyAI enemy = other.GetComponentInParent<EnemyAI>();
-            player.FarEnemy(enemy);
-        }
-    }
+		if (otherTag == TagName.EnemyDeadArea) {
+			EnemyAI enemy = other.GetComponentInParent<EnemyAI>();
+			player.NearEnemy(enemy);
+		}
+	}
+
+	private void OnTriggerExit(Collider other) {
+		TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
+
+		if (otherTag == TagName.EnemyDeadArea) {
+			EnemyAI enemy = other.GetComponentInParent<EnemyAI>();
+			player.FarEnemy(enemy);
+		}
+	}
 }

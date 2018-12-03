@@ -31,20 +31,22 @@ using SAMeshColliderProperty		= SAMeshColliderCommon.SAMeshColliderProperty;
 using SAMeshColliderBuilderProperty	= SAMeshColliderCommon.SAMeshColliderBuilderProperty;
 
 [CustomEditor(typeof(SAMeshCollider))]
-public class SAMeshColliderInspector : Editor
-{
-	public override void OnInspectorGUI()
-	{
+public class SAMeshColliderInspector : Editor {
+	public override void OnInspectorGUI() {
 		SAMeshCollider meshCollider = (SAMeshCollider)target;
-		if( meshCollider.edittingMeshCollidertProperty == null ) {
-			if( meshCollider.meshColliderProperty != null ) {
+
+		if ( meshCollider.edittingMeshCollidertProperty == null ) {
+			if ( meshCollider.meshColliderProperty != null ) {
 				meshCollider.edittingMeshCollidertProperty = meshCollider.meshColliderProperty.Copy();
 			}
 		}
+
 		SAMeshColliderProperty meshColliderProperty = meshCollider.edittingMeshCollidertProperty;
-		if( meshColliderProperty != null ) {
+
+		if ( meshColliderProperty != null ) {
 			SplitProperty splitProperty = meshColliderProperty.splitProperty;
-			if( splitProperty != null ) {
+
+			if ( splitProperty != null ) {
 				GUILayout.Label( "Split", EditorStyles.boldLabel );
 				// Split Material
 				GUI.enabled = ((int)meshCollider.splitMode <= (int)SplitMode.None);
@@ -81,12 +83,13 @@ public class SAMeshColliderInspector : Editor
 		EditorGUILayout.Separator();
 		meshCollider.cleanupModified = EditorGUILayout.Toggle( "Cleanup Modified", meshCollider.cleanupModified );
 		meshCollider.isDebug = EditorGUILayout.Toggle( "Is Debug", meshCollider.isDebug );
-		
+
 		EditorGUILayout.Separator();
-		
+
 		EditorGUILayout.BeginHorizontal();
-		if( GUILayout.Button("Set Default") ) {
-			if( meshCollider.defaultMeshColliderProperty != null ) {
+
+		if ( GUILayout.Button("Set Default") ) {
+			if ( meshCollider.defaultMeshColliderProperty != null ) {
 				float beginTime = Time.realtimeSinceStartup;
 				meshCollider.meshColliderProperty = meshCollider.defaultMeshColliderProperty.Copy();
 				meshCollider.edittingMeshCollidertProperty = null;
@@ -98,12 +101,15 @@ public class SAMeshColliderInspector : Editor
 				Debug.Log("Processed.[" + (endTime - beginTime) + " sec]" );
 			}
 		}
+
 		GUILayout.FlexibleSpace();
-		if( GUILayout.Button("Revert") ) {
+
+		if ( GUILayout.Button("Revert") ) {
 			meshCollider.edittingMeshCollidertProperty = null;
 		}
-		if( GUILayout.Button("Cleanup") ) {
-			if( meshCollider.edittingMeshCollidertProperty != null ) {
+
+		if ( GUILayout.Button("Cleanup") ) {
+			if ( meshCollider.edittingMeshCollidertProperty != null ) {
 				meshCollider.meshColliderProperty = meshCollider.edittingMeshCollidertProperty;
 				meshCollider.edittingMeshCollidertProperty = null;
 				Cleanup( meshCollider );
@@ -112,8 +118,9 @@ public class SAMeshColliderInspector : Editor
 				Debug.Log("Cleanuped.");
 			}
 		}
-		if( GUILayout.Button("Process") ) {
-			if( meshCollider.edittingMeshCollidertProperty != null ) {
+
+		if ( GUILayout.Button("Process") ) {
+			if ( meshCollider.edittingMeshCollidertProperty != null ) {
 				float beginTime = Time.realtimeSinceStartup;
 				meshCollider.meshColliderProperty = meshCollider.edittingMeshCollidertProperty;
 				meshCollider.edittingMeshCollidertProperty = null;
@@ -124,12 +131,12 @@ public class SAMeshColliderInspector : Editor
 				Debug.Log("Processed.[" + (endTime - beginTime) + " sec]" );
 			}
 		}
+
 		EditorGUILayout.EndHorizontal();
 	}
 
-	static void Process( SAMeshCollider meshCollider )
-	{
-		if( meshCollider == null ) {
+	static void Process( SAMeshCollider meshCollider ) {
+		if ( meshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
@@ -137,11 +144,13 @@ public class SAMeshColliderInspector : Editor
 		Cleanup( meshCollider );
 
 		MeshCache meshCache = null;
-		if( meshCollider.splitMode == SplitMode.None ||
-		    meshCollider.splitMode == SplitMode.Material ||
-			meshCollider.splitMode == SplitMode.Primitive ) {
+
+		if ( meshCollider.splitMode == SplitMode.None ||
+				meshCollider.splitMode == SplitMode.Material ||
+				meshCollider.splitMode == SplitMode.Primitive ) {
 			meshCache = SAMeshColliderEditorCommon.GetParentMeshCache( meshCollider );
-			if( meshCache == null ) {
+
+			if ( meshCache == null ) {
 				Debug.LogError("Mesh not found:" + meshCollider.name);
 				return;
 			}
@@ -149,44 +158,47 @@ public class SAMeshColliderInspector : Editor
 
 		List<ReducerTask> reducerTasks = new List<ReducerTask>();
 
-		switch( meshCollider.splitMode ) {
-		case SplitMode.None:
-			ProcessRoot( reducerTasks, meshCache, meshCollider );
-			break;
-		case SplitMode.Material:
-			ProcessMaterial( reducerTasks, meshCache, meshCollider );
-			break;
-		case SplitMode.Primitive:
-			ProcessPrimitive( reducerTasks, meshCache, meshCollider );
-			break;
-		case SplitMode.Polygon:
-			ProcessPolygon( reducerTasks, meshCollider );
-			break;
+		switch ( meshCollider.splitMode ) {
+			case SplitMode.None:
+				ProcessRoot( reducerTasks, meshCache, meshCollider );
+				break;
+
+			case SplitMode.Material:
+				ProcessMaterial( reducerTasks, meshCache, meshCollider );
+				break;
+
+			case SplitMode.Primitive:
+				ProcessPrimitive( reducerTasks, meshCache, meshCollider );
+				break;
+
+			case SplitMode.Polygon:
+				ProcessPolygon( reducerTasks, meshCollider );
+				break;
 		}
 
 		SAMeshColliderEditorCommon.Reduce( reducerTasks, meshCollider.isDebug );
 	}
 
-	static void ProcessRoot( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider meshCollider )
-	{
-		if( reducerTasks == null || meshCache == null || meshCollider == null ) {
+	static void ProcessRoot( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider meshCollider ) {
+		if ( reducerTasks == null || meshCache == null || meshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SplitMesh splitMesh = meshCollider.splitMesh;
-		if( splitMesh == null ) {
+
+		if ( splitMesh == null ) {
 			Debug.LogError("");
 			return;
 		}
-		
+
 		SAMeshColliderEditorCommon.MarkManualProcessingToParent( meshCollider );
 
-		if( meshCollider.splitMaterialEnabled ) {
+		if ( meshCollider.splitMaterialEnabled ) {
 			SplitMaterial( reducerTasks, meshCache, meshCollider, meshCollider );
-		} else if( meshCollider.splitPrimitiveEnabled ) {
+		} else if ( meshCollider.splitPrimitiveEnabled ) {
 			SplitPrimitive( reducerTasks, meshCache, meshCollider, meshCollider );
-		} else if( meshCollider.splitPolygonNormalEnabled ) {
+		} else if ( meshCollider.splitPolygonNormalEnabled ) {
 			SAMeshColliderEditorCommon.MakeSplitMeshTriangles( meshCache, splitMesh );
 			SplitPolygon( reducerTasks, meshCache, meshCollider, meshCollider );
 		} else {
@@ -195,41 +207,43 @@ public class SAMeshColliderInspector : Editor
 		}
 	}
 
-	static void SplitMaterial( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider parentMeshCollider, SAMeshCollider rootMeshCollider )
-	{
-		if( reducerTasks == null || meshCache == null || parentMeshCollider == null || rootMeshCollider == null ) {
+	static void SplitMaterial( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider parentMeshCollider, SAMeshCollider rootMeshCollider ) {
+		if ( reducerTasks == null || meshCache == null || parentMeshCollider == null || rootMeshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SplitMesh parentSplitMesh = parentMeshCollider.splitMesh;
-		if( parentSplitMesh == null ) {
+
+		if ( parentSplitMesh == null ) {
 			Debug.LogError("");
 			return;
 		}
-		
+
 		SAMeshColliderEditorCommon.CleanupSelfSAMeshCollider( parentMeshCollider );
-		
+
 		SAMeshCollider[] existingMeshColliders = SAMeshColliderEditorCommon.GetChildSAMeshColliders( parentMeshCollider.gameObject );
-		
+
 		SplitMesh[] resplitMeshes = SAMeshColliderEditorCommon.MakeSplitMeshesByMaterial( meshCache );
-		
-		if( resplitMeshes == null || resplitMeshes.Length == 0 ) {
+
+		if ( resplitMeshes == null || resplitMeshes.Length == 0 ) {
 			return;
 		}
 
 		Material[] materials = meshCache.materials;
 
-		for( int i = 0; i < resplitMeshes.Length; ++i ) {
+		for ( int i = 0; i < resplitMeshes.Length; ++i ) {
 			SplitMesh resplitMesh = resplitMeshes[i];
 			SAMeshCollider existingMeshCollider = SAMeshColliderEditorCommon.FindSAMeshCollider( existingMeshColliders, resplitMesh );
-			if( existingMeshCollider != null && existingMeshCollider.modified ) {
+
+			if ( existingMeshCollider != null && existingMeshCollider.modified ) {
 				continue;
 			}
 
 			string resplitMeshColliderName = SAMeshColliderEditorCommon.GetSAMeshColliderName_Material( materials, i );
 			SAMeshCollider resplitMeshCollider = null;
-			if( existingMeshCollider != null ) {
+
+			if ( existingMeshCollider != null ) {
 				resplitMeshCollider = existingMeshCollider;
 				SAMeshColliderEditorCommon.SetupSAMeshCollider(
 					parentMeshCollider,
@@ -238,15 +252,15 @@ public class SAMeshColliderInspector : Editor
 				resplitMesh = resplitMeshCollider.splitMesh;
 			} else {
 				resplitMeshCollider = SAMeshColliderEditorCommon.CreateSAMeshCollider(
-					parentMeshCollider,
-					resplitMeshColliderName,
-					resplitMesh,
-					SplitMode.Primitive );
+										  parentMeshCollider,
+										  resplitMeshColliderName,
+										  resplitMesh,
+										  SplitMode.Primitive );
 			}
 
-			if( resplitMeshCollider.splitPrimitiveEnabled ) {
+			if ( resplitMeshCollider.splitPrimitiveEnabled ) {
 				SplitPrimitive( reducerTasks, meshCache, resplitMeshCollider, rootMeshCollider );
-			} else if( resplitMeshCollider.splitPolygonNormalEnabled ) {
+			} else if ( resplitMeshCollider.splitPolygonNormalEnabled ) {
 				SAMeshColliderEditorCommon.MakeSplitMeshTriangles( meshCache, resplitMesh );
 				SplitPolygon( reducerTasks, meshCache, resplitMeshCollider, rootMeshCollider );
 			} else {
@@ -256,24 +270,24 @@ public class SAMeshColliderInspector : Editor
 		}
 	}
 
-	static void ProcessMaterial( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider meshCollider )
-	{
-		if( reducerTasks == null || meshCache == null || meshCollider == null ) {
+	static void ProcessMaterial( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider meshCollider ) {
+		if ( reducerTasks == null || meshCache == null || meshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SplitMesh splitMesh = meshCollider.splitMesh;
-		if( splitMesh == null ) {
+
+		if ( splitMesh == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SAMeshColliderEditorCommon.MarkManualProcessingToParent( meshCollider );
 
-		if( meshCollider.splitPrimitiveEnabled ) {
+		if ( meshCollider.splitPrimitiveEnabled ) {
 			SplitPrimitive( reducerTasks, meshCache, meshCollider, meshCollider );
-		} else if( meshCollider.splitPolygonNormalEnabled ) {
+		} else if ( meshCollider.splitPolygonNormalEnabled ) {
 			SAMeshColliderEditorCommon.MakeSplitMeshTriangles( meshCache, splitMesh );
 			SplitPolygon( reducerTasks, meshCache, meshCollider, meshCollider );
 		} else {
@@ -282,39 +296,41 @@ public class SAMeshColliderInspector : Editor
 		}
 	}
 
-	static void SplitPrimitive( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider parentMeshCollider, SAMeshCollider rootMeshCollider )
-	{
-		if( reducerTasks == null || meshCache == null || parentMeshCollider == null || rootMeshCollider == null ) {
+	static void SplitPrimitive( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider parentMeshCollider, SAMeshCollider rootMeshCollider ) {
+		if ( reducerTasks == null || meshCache == null || parentMeshCollider == null || rootMeshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SplitMesh parentSplitMesh = parentMeshCollider.splitMesh;
-		if( parentSplitMesh == null ) {
+
+		if ( parentSplitMesh == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SAMeshColliderEditorCommon.CleanupSelfSAMeshCollider( parentMeshCollider );
-		
+
 		SAMeshCollider[] existingMeshColliders = SAMeshColliderEditorCommon.GetChildSAMeshColliders( parentMeshCollider.gameObject );
-		
+
 		SplitMesh[] resplitMeshes = SAMeshColliderEditorCommon.MakeSplitMeshesByPrimitive( meshCache, parentSplitMesh );
 
-		if( resplitMeshes == null || resplitMeshes.Length == 0 ) {
+		if ( resplitMeshes == null || resplitMeshes.Length == 0 ) {
 			return;
 		}
 
-		for( int i = 0; i < resplitMeshes.Length; ++i ) {
+		for ( int i = 0; i < resplitMeshes.Length; ++i ) {
 			SplitMesh resplitMesh = resplitMeshes[i];
 			SAMeshCollider existingMeshCollider = SAMeshColliderEditorCommon.FindSAMeshCollider( existingMeshColliders, resplitMesh );
-			if( existingMeshCollider != null && existingMeshCollider.modified ) {
+
+			if ( existingMeshCollider != null && existingMeshCollider.modified ) {
 				continue;
 			}
 
 			string resplitMeshColliderName = SAMeshColliderEditorCommon.GetSAMeshColliderName_Primitive( i );
 			SAMeshCollider resplitMeshCollider = null;
-			if( existingMeshCollider != null ) {
+
+			if ( existingMeshCollider != null ) {
 				resplitMeshCollider = existingMeshCollider;
 				SAMeshColliderEditorCommon.SetupSAMeshCollider(
 					parentMeshCollider,
@@ -323,13 +339,13 @@ public class SAMeshColliderInspector : Editor
 				resplitMesh = resplitMeshCollider.splitMesh;
 			} else {
 				resplitMeshCollider = SAMeshColliderEditorCommon.CreateSAMeshCollider(
-					parentMeshCollider,
-					resplitMeshColliderName,
-					resplitMesh,
-					SplitMode.Primitive );
+										  parentMeshCollider,
+										  resplitMeshColliderName,
+										  resplitMesh,
+										  SplitMode.Primitive );
 			}
 
-			if( resplitMeshCollider.splitPolygonNormalEnabled ) {
+			if ( resplitMeshCollider.splitPolygonNormalEnabled ) {
 				SAMeshColliderEditorCommon.MakeSplitMeshTriangles( meshCache, resplitMesh );
 				SplitPolygon( reducerTasks, meshCache, resplitMeshCollider, rootMeshCollider );
 			} else {
@@ -339,22 +355,22 @@ public class SAMeshColliderInspector : Editor
 		}
 	}
 
-	static void ProcessPrimitive( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider meshCollider )
-	{
-		if( reducerTasks == null || meshCache == null || meshCollider == null ) {
+	static void ProcessPrimitive( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider meshCollider ) {
+		if ( reducerTasks == null || meshCache == null || meshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
-		
+
 		SplitMesh splitMesh = meshCollider.splitMesh;
-		if( splitMesh == null ) {
+
+		if ( splitMesh == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SAMeshColliderEditorCommon.MarkManualProcessingToParent( meshCollider );
 
-		if( meshCollider.splitPolygonNormalEnabled ) {
+		if ( meshCollider.splitPolygonNormalEnabled ) {
 			SAMeshColliderEditorCommon.MakeSplitMeshTriangles( meshCache, splitMesh );
 			SplitPolygon( reducerTasks, meshCache, meshCollider, meshCollider );
 		} else {
@@ -363,15 +379,15 @@ public class SAMeshColliderInspector : Editor
 		}
 	}
 
-	static void SplitPolygon( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider parentMeshCollider, SAMeshCollider rootMeshCollider )
-	{
-		if( reducerTasks == null || meshCache == null || parentMeshCollider == null || rootMeshCollider == null ) {
+	static void SplitPolygon( List<ReducerTask> reducerTasks, MeshCache meshCache, SAMeshCollider parentMeshCollider, SAMeshCollider rootMeshCollider ) {
+		if ( reducerTasks == null || meshCache == null || parentMeshCollider == null || rootMeshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		SplitMesh parentSplitMesh = parentMeshCollider.splitMesh;
-		if( parentSplitMesh == null ) {
+
+		if ( parentSplitMesh == null ) {
 			Debug.LogError("");
 			return;
 		}
@@ -382,20 +398,22 @@ public class SAMeshColliderInspector : Editor
 
 		SplitMesh[] resplitMeshes = SAMeshColliderEditorCommon.MakeSplitMeshesByPolygon( meshCache, parentSplitMesh, rootMeshCollider.splitPolygonNormalAngle );
 
-		if( resplitMeshes == null || resplitMeshes.Length == 0 ) {
+		if ( resplitMeshes == null || resplitMeshes.Length == 0 ) {
 			return;
 		}
 
-		for( int i = 0; i < resplitMeshes.Length; ++i ) {
+		for ( int i = 0; i < resplitMeshes.Length; ++i ) {
 			SplitMesh resplitMesh = resplitMeshes[i];
 			SAMeshCollider existingMeshCollider = SAMeshColliderEditorCommon.FindSAMeshCollider( existingMeshColliders, resplitMesh );
-			if( existingMeshCollider != null && existingMeshCollider.modified ) {
+
+			if ( existingMeshCollider != null && existingMeshCollider.modified ) {
 				continue;
 			}
 
 			string resplitMeshColliderName = SAMeshColliderEditorCommon.GetSAMeshColliderName_Polygon( i );
 			SAMeshCollider resplitMeshCollider = null;
-			if( existingMeshCollider != null ) {
+
+			if ( existingMeshCollider != null ) {
 				resplitMeshCollider = existingMeshCollider;
 				SAMeshColliderEditorCommon.SetupSAMeshCollider(
 					parentMeshCollider,
@@ -404,10 +422,10 @@ public class SAMeshColliderInspector : Editor
 				resplitMesh = resplitMeshCollider.splitMesh;
 			} else {
 				resplitMeshCollider = SAMeshColliderEditorCommon.CreateSAMeshCollider(
-					parentMeshCollider,
-					resplitMeshColliderName,
-					resplitMesh,
-					SplitMode.Polygon );
+										  parentMeshCollider,
+										  resplitMeshColliderName,
+										  resplitMesh,
+										  SplitMode.Polygon );
 			}
 
 			SAMeshColliderEditorCommon.SalvageMeshByPolygon( resplitMesh );
@@ -415,15 +433,15 @@ public class SAMeshColliderInspector : Editor
 		}
 	}
 
-	static void ProcessPolygon( List<ReducerTask> reducerTasks, SAMeshCollider meshCollider )
-	{
-		if( reducerTasks == null || meshCollider == null ) {
+	static void ProcessPolygon( List<ReducerTask> reducerTasks, SAMeshCollider meshCollider ) {
+		if ( reducerTasks == null || meshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}
-		
+
 		SplitMesh splitMesh = meshCollider.splitMesh;
-		if( splitMesh == null ) {
+
+		if ( splitMesh == null ) {
 			Debug.LogError("");
 			return;
 		}
@@ -434,9 +452,8 @@ public class SAMeshColliderInspector : Editor
 		SAMeshColliderEditorCommon.RegistReducerTask( reducerTasks, meshCollider );
 	}
 
-	static void Cleanup( SAMeshCollider meshCollider )
-	{
-		if( meshCollider == null ) {
+	static void Cleanup( SAMeshCollider meshCollider ) {
+		if ( meshCollider == null ) {
 			Debug.LogError("");
 			return;
 		}

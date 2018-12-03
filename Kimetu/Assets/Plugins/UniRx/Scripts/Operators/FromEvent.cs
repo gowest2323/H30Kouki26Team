@@ -3,321 +3,266 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace UniRx.Operators
-{
-    // FromEvent, FromEventPattern
+namespace UniRx.Operators {
+	// FromEvent, FromEventPattern
 
-    internal class FromEventPatternObservable<TDelegate, TEventArgs> : OperatorObservableBase<EventPattern<TEventArgs>>
-        where TEventArgs : EventArgs
-    {
-        readonly Func<EventHandler<TEventArgs>, TDelegate> conversion;
-        readonly Action<TDelegate> addHandler;
-        readonly Action<TDelegate> removeHandler;
+	internal class FromEventPatternObservable<TDelegate, TEventArgs> : OperatorObservableBase<EventPattern<TEventArgs>>
+		where TEventArgs : EventArgs {
+		readonly Func<EventHandler<TEventArgs>, TDelegate> conversion;
+		readonly Action<TDelegate> addHandler;
+		readonly Action<TDelegate> removeHandler;
 
-        public FromEventPatternObservable(Func<EventHandler<TEventArgs>, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
-            : base(false)
-        {
-            this.conversion = conversion;
-            this.addHandler = addHandler;
-            this.removeHandler = removeHandler;
-        }
+		public FromEventPatternObservable(Func<EventHandler<TEventArgs>, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
+			: base(false) {
+			this.conversion = conversion;
+			this.addHandler = addHandler;
+			this.removeHandler = removeHandler;
+		}
 
-        protected override IDisposable SubscribeCore(IObserver<EventPattern<TEventArgs>> observer, IDisposable cancel)
-        {
-            var fe = new FromEventPattern(this, observer);
-            return fe.Register() ?  fe : Disposable.Empty;
-        }
+		protected override IDisposable SubscribeCore(IObserver<EventPattern<TEventArgs>> observer, IDisposable cancel) {
+			var fe = new FromEventPattern(this, observer);
+			return fe.Register() ?  fe : Disposable.Empty;
+		}
 
-        class FromEventPattern : IDisposable
-        {
-            readonly FromEventPatternObservable<TDelegate, TEventArgs> parent;
-            readonly IObserver<EventPattern<TEventArgs>> observer;
-            TDelegate handler;
+		class FromEventPattern : IDisposable {
+			readonly FromEventPatternObservable<TDelegate, TEventArgs> parent;
+			readonly IObserver<EventPattern<TEventArgs>> observer;
+			TDelegate handler;
 
-            public FromEventPattern(FromEventPatternObservable<TDelegate, TEventArgs> parent, IObserver<EventPattern<TEventArgs>> observer)
-            {
-                this.parent = parent;
-                this.observer = observer;
-            }
+			public FromEventPattern(FromEventPatternObservable<TDelegate, TEventArgs> parent, IObserver<EventPattern<TEventArgs>> observer) {
+				this.parent = parent;
+				this.observer = observer;
+			}
 
-            public bool Register()
-            {
-                handler = parent.conversion(OnNext);
-                try
-                {
-                    parent.addHandler(handler);
-                }
-                catch (Exception ex)
-                {
-                    observer.OnError(ex);
-                    return false;
-                }
-                return true;
-            }
+			public bool Register() {
+				handler = parent.conversion(OnNext);
 
-            void OnNext(object sender, TEventArgs eventArgs)
-            {
-                observer.OnNext(new EventPattern<TEventArgs>(sender, eventArgs));
-            }
+				try {
+					parent.addHandler(handler);
+				} catch (Exception ex) {
+					observer.OnError(ex);
+					return false;
+				}
 
-            public void Dispose()
-            {
-                if (handler != null)
-                {
-                    parent.removeHandler(handler);
-                    handler = default(TDelegate);
-                }
-            }
-        }
-    }
+				return true;
+			}
 
-    internal class FromEventObservable<TDelegate> : OperatorObservableBase<Unit>
-    {
-        readonly Func<Action, TDelegate> conversion;
-        readonly Action<TDelegate> addHandler;
-        readonly Action<TDelegate> removeHandler;
+			void OnNext(object sender, TEventArgs eventArgs) {
+				observer.OnNext(new EventPattern<TEventArgs>(sender, eventArgs));
+			}
 
-        public FromEventObservable(Func<Action, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
-            : base(false)
-        {
-            this.conversion = conversion;
-            this.addHandler = addHandler;
-            this.removeHandler = removeHandler;
-        }
+			public void Dispose() {
+				if (handler != null) {
+					parent.removeHandler(handler);
+					handler = default(TDelegate);
+				}
+			}
+		}
+	}
 
-        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
-        {
-            var fe = new FromEvent(this, observer);
-            return fe.Register() ?  fe : Disposable.Empty;
-        }
+	internal class FromEventObservable<TDelegate> : OperatorObservableBase<Unit> {
+		readonly Func<Action, TDelegate> conversion;
+		readonly Action<TDelegate> addHandler;
+		readonly Action<TDelegate> removeHandler;
 
-        class FromEvent : IDisposable
-        {
-            readonly FromEventObservable<TDelegate> parent;
-            readonly IObserver<Unit> observer;
-            TDelegate handler;
+		public FromEventObservable(Func<Action, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
+			: base(false) {
+			this.conversion = conversion;
+			this.addHandler = addHandler;
+			this.removeHandler = removeHandler;
+		}
 
-            public FromEvent(FromEventObservable<TDelegate> parent, IObserver<Unit> observer)
-            {
-                this.parent = parent;
-                this.observer = observer;
-            }
+		protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel) {
+			var fe = new FromEvent(this, observer);
+			return fe.Register() ?  fe : Disposable.Empty;
+		}
 
-            public bool Register()
-            {
-                handler = parent.conversion(OnNext);
+		class FromEvent : IDisposable {
+			readonly FromEventObservable<TDelegate> parent;
+			readonly IObserver<Unit> observer;
+			TDelegate handler;
 
-                try
-                {
-                    parent.addHandler(handler);
-                }
-                catch (Exception ex)
-                {
-                    observer.OnError(ex);
-                    return false;
-                }
-                return true;
-            }
+			public FromEvent(FromEventObservable<TDelegate> parent, IObserver<Unit> observer) {
+				this.parent = parent;
+				this.observer = observer;
+			}
 
-            void OnNext()
-            {
-                observer.OnNext(Unit.Default);
-            }
+			public bool Register() {
+				handler = parent.conversion(OnNext);
 
-            public void Dispose()
-            {
-                if (handler != null)
-                {
-                    parent.removeHandler(handler);
-                    handler = default(TDelegate);
-                }
-            }
-        }
-    }
+				try {
+					parent.addHandler(handler);
+				} catch (Exception ex) {
+					observer.OnError(ex);
+					return false;
+				}
 
-    internal class FromEventObservable<TDelegate, TEventArgs> : OperatorObservableBase<TEventArgs>
-    {
-        readonly Func<Action<TEventArgs>, TDelegate> conversion;
-        readonly Action<TDelegate> addHandler;
-        readonly Action<TDelegate> removeHandler;
+				return true;
+			}
 
-        public FromEventObservable(Func<Action<TEventArgs>, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
-            : base(false)
-        {
-            this.conversion = conversion;
-            this.addHandler = addHandler;
-            this.removeHandler = removeHandler;
-        }
+			void OnNext() {
+				observer.OnNext(Unit.Default);
+			}
 
-        protected override IDisposable SubscribeCore(IObserver<TEventArgs> observer, IDisposable cancel)
-        {
-            var fe = new FromEvent(this, observer);
-            return fe.Register() ?  fe : Disposable.Empty;
-        }
+			public void Dispose() {
+				if (handler != null) {
+					parent.removeHandler(handler);
+					handler = default(TDelegate);
+				}
+			}
+		}
+	}
 
-        class FromEvent : IDisposable
-        {
-            readonly FromEventObservable<TDelegate, TEventArgs> parent;
-            readonly IObserver<TEventArgs> observer;
-            TDelegate handler;
+	internal class FromEventObservable<TDelegate, TEventArgs> : OperatorObservableBase<TEventArgs> {
+		readonly Func<Action<TEventArgs>, TDelegate> conversion;
+		readonly Action<TDelegate> addHandler;
+		readonly Action<TDelegate> removeHandler;
 
-            public FromEvent(FromEventObservable<TDelegate, TEventArgs> parent, IObserver<TEventArgs> observer)
-            {
-                this.parent = parent;
-                this.observer = observer;
-            }
+		public FromEventObservable(Func<Action<TEventArgs>, TDelegate> conversion, Action<TDelegate> addHandler, Action<TDelegate> removeHandler)
+			: base(false) {
+			this.conversion = conversion;
+			this.addHandler = addHandler;
+			this.removeHandler = removeHandler;
+		}
 
-            public bool Register()
-            {
-                handler = parent.conversion(OnNext);
+		protected override IDisposable SubscribeCore(IObserver<TEventArgs> observer, IDisposable cancel) {
+			var fe = new FromEvent(this, observer);
+			return fe.Register() ?  fe : Disposable.Empty;
+		}
 
-                try
-                {
-                    parent.addHandler(handler);
-                }
-                catch (Exception ex)
-                {
-                    observer.OnError(ex);
-                    return false;
-                }
-                return true;
-            }
+		class FromEvent : IDisposable {
+			readonly FromEventObservable<TDelegate, TEventArgs> parent;
+			readonly IObserver<TEventArgs> observer;
+			TDelegate handler;
 
-            void OnNext(TEventArgs args)
-            {
-                observer.OnNext(args);
-            }
+			public FromEvent(FromEventObservable<TDelegate, TEventArgs> parent, IObserver<TEventArgs> observer) {
+				this.parent = parent;
+				this.observer = observer;
+			}
 
-            public void Dispose()
-            {
-                if (handler != null)
-                {
-                    parent.removeHandler(handler);
-                    handler = default(TDelegate);
-                }
-            }
-        }
-    }
+			public bool Register() {
+				handler = parent.conversion(OnNext);
 
-    internal class FromEventObservable : OperatorObservableBase<Unit>
-    {
-        readonly Action<Action> addHandler;
-        readonly Action<Action> removeHandler;
+				try {
+					parent.addHandler(handler);
+				} catch (Exception ex) {
+					observer.OnError(ex);
+					return false;
+				}
 
-        public FromEventObservable(Action<Action> addHandler, Action<Action> removeHandler)
-            : base(false)
-        {
-            this.addHandler = addHandler;
-            this.removeHandler = removeHandler;
-        }
+				return true;
+			}
 
-        protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel)
-        {
-            var fe = new FromEvent(this, observer);
-            return fe.Register() ?  fe : Disposable.Empty;
-        }
+			void OnNext(TEventArgs args) {
+				observer.OnNext(args);
+			}
 
-        class FromEvent : IDisposable
-        {
-            readonly FromEventObservable parent;
-            readonly IObserver<Unit> observer;
-            Action handler;
+			public void Dispose() {
+				if (handler != null) {
+					parent.removeHandler(handler);
+					handler = default(TDelegate);
+				}
+			}
+		}
+	}
 
-            public FromEvent(FromEventObservable parent, IObserver<Unit> observer)
-            {
-                this.parent = parent;
-                this.observer = observer;
-                this.handler = OnNext;
-            }
+	internal class FromEventObservable : OperatorObservableBase<Unit> {
+		readonly Action<Action> addHandler;
+		readonly Action<Action> removeHandler;
 
-            public bool Register()
-            {
-                try
-                {
-                    parent.addHandler(handler);
-                }
-                catch (Exception ex)
-                {
-                    observer.OnError(ex);
-                    return false;
-                }
-                return true;
-            }
+		public FromEventObservable(Action<Action> addHandler, Action<Action> removeHandler)
+			: base(false) {
+			this.addHandler = addHandler;
+			this.removeHandler = removeHandler;
+		}
 
-            void OnNext()
-            {
-                observer.OnNext(Unit.Default);
-            }
+		protected override IDisposable SubscribeCore(IObserver<Unit> observer, IDisposable cancel) {
+			var fe = new FromEvent(this, observer);
+			return fe.Register() ?  fe : Disposable.Empty;
+		}
 
-            public void Dispose()
-            {
-                if (handler != null)
-                {
-                    parent.removeHandler(handler);
-                    handler = null;
-                }
-            }
-        }
-    }
+		class FromEvent : IDisposable {
+			readonly FromEventObservable parent;
+			readonly IObserver<Unit> observer;
+			Action handler;
 
-    internal class FromEventObservable_<T> : OperatorObservableBase<T>
-    {
-        readonly Action<Action<T>> addHandler;
-        readonly Action<Action<T>> removeHandler;
+			public FromEvent(FromEventObservable parent, IObserver<Unit> observer) {
+				this.parent = parent;
+				this.observer = observer;
+				this.handler = OnNext;
+			}
 
-        public FromEventObservable_(Action<Action<T>> addHandler, Action<Action<T>> removeHandler)
-            : base(false)
-        {
-            this.addHandler = addHandler;
-            this.removeHandler = removeHandler;
-        }
+			public bool Register() {
+				try {
+					parent.addHandler(handler);
+				} catch (Exception ex) {
+					observer.OnError(ex);
+					return false;
+				}
 
-        protected override IDisposable SubscribeCore(IObserver<T> observer, IDisposable cancel)
-        {
-            var fe = new FromEvent(this, observer);
-            return fe.Register() ?  fe : Disposable.Empty;
-        }
+				return true;
+			}
 
-        class FromEvent : IDisposable
-        {
-            readonly FromEventObservable_<T> parent;
-            readonly IObserver<T> observer;
-            Action<T> handler;
+			void OnNext() {
+				observer.OnNext(Unit.Default);
+			}
 
-            public FromEvent(FromEventObservable_<T> parent, IObserver<T> observer)
-            {
-                this.parent = parent;
-                this.observer = observer;
-                this.handler = OnNext;
-            }
+			public void Dispose() {
+				if (handler != null) {
+					parent.removeHandler(handler);
+					handler = null;
+				}
+			}
+		}
+	}
 
-            public bool Register()
-            {
-                try
-                {
-                    parent.addHandler(handler);
-                }
-                catch (Exception ex)
-                {
-                    observer.OnError(ex);
-                    return false;
-                }
-                return true;
-            }
+	internal class FromEventObservable_<T> : OperatorObservableBase<T> {
+		readonly Action<Action<T>> addHandler;
+		readonly Action<Action<T>> removeHandler;
 
-            void OnNext(T value)
-            {
-                observer.OnNext(value);
-            }
+		public FromEventObservable_(Action<Action<T>> addHandler, Action<Action<T>> removeHandler)
+			: base(false) {
+			this.addHandler = addHandler;
+			this.removeHandler = removeHandler;
+		}
 
-            public void Dispose()
-            {
-                if (handler != null)
-                {
-                    parent.removeHandler(handler);
-                    handler = null;
-                }
-            }
-        }
-    }
+		protected override IDisposable SubscribeCore(IObserver<T> observer, IDisposable cancel) {
+			var fe = new FromEvent(this, observer);
+			return fe.Register() ?  fe : Disposable.Empty;
+		}
+
+		class FromEvent : IDisposable {
+			readonly FromEventObservable_<T> parent;
+			readonly IObserver<T> observer;
+			Action<T> handler;
+
+			public FromEvent(FromEventObservable_<T> parent, IObserver<T> observer) {
+				this.parent = parent;
+				this.observer = observer;
+				this.handler = OnNext;
+			}
+
+			public bool Register() {
+				try {
+					parent.addHandler(handler);
+				} catch (Exception ex) {
+					observer.OnError(ex);
+					return false;
+				}
+
+				return true;
+			}
+
+			void OnNext(T value) {
+				observer.OnNext(value);
+			}
+
+			public void Dispose() {
+				if (handler != null) {
+					parent.removeHandler(handler);
+					handler = null;
+				}
+			}
+		}
+	}
 }

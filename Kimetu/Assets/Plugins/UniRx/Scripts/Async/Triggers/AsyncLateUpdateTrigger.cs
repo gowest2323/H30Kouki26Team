@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncLateUpdateTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<AsyncUnit> lateUpdate;
-        AsyncTriggerPromiseDictionary<AsyncUnit> lateUpdates;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncLateUpdateTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<AsyncUnit> lateUpdate;
+		AsyncTriggerPromiseDictionary<AsyncUnit> lateUpdates;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(lateUpdate, lateUpdates);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(lateUpdate, lateUpdates);
+		}
 
 
-        void LateUpdate()
-        {
-            TrySetResult(lateUpdate, lateUpdates, AsyncUnit.Default);
-        }
+		void LateUpdate() {
+			TrySetResult(lateUpdate, lateUpdates, AsyncUnit.Default);
+		}
 
 
-        public UniTask LateUpdateAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref lateUpdate, ref lateUpdates, cancellationToken);
-        }
+		public UniTask LateUpdateAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref lateUpdate, ref lateUpdates, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

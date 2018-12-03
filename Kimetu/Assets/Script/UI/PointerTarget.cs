@@ -11,13 +11,13 @@ public class PointerTarget : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(pointerPosition == null) {
+		if (pointerPosition == null) {
 			pointerPosition = transform;
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 }

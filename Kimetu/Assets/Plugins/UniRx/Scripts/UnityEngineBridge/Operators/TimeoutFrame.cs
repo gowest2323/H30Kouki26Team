@@ -6,137 +6,122 @@ using UnityObservable = UniRx.ObservableUnity;
 using UnityObservable = UniRx.Observable;
 #endif
 
-namespace UniRx.Operators
-{
-    internal class TimeoutFrameObservable<T> : OperatorObservableBase<T>
-    {
-        readonly IObservable<T> source;
-        readonly int frameCount;
-        readonly FrameCountType frameCountType;
+namespace UniRx.Operators {
+	internal class TimeoutFrameObservable<T> : OperatorObservableBase<T> {
+		readonly IObservable<T> source;
+		readonly int frameCount;
+		readonly FrameCountType frameCountType;
 
-        public TimeoutFrameObservable(IObservable<T> source, int frameCount, FrameCountType frameCountType) : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.frameCount = frameCount;
-            this.frameCountType = frameCountType;
-        }
+		public TimeoutFrameObservable(IObservable<T> source, int frameCount, FrameCountType frameCountType) : base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.frameCount = frameCount;
+			this.frameCountType = frameCountType;
+		}
 
-        protected override IDisposable SubscribeCore(IObserver<T> observer, IDisposable cancel)
-        {
-            return new TimeoutFrame(this, observer, cancel).Run();
-        }
+		protected override IDisposable SubscribeCore(IObserver<T> observer, IDisposable cancel) {
+			return new TimeoutFrame(this, observer, cancel).Run();
+		}
 
-        class TimeoutFrame : OperatorObserverBase<T, T>
-        {
-            readonly TimeoutFrameObservable<T> parent;
-            readonly object gate = new object();
-            ulong objectId = 0ul;
-            bool isTimeout = false;
-            SingleAssignmentDisposable sourceSubscription;
-            SerialDisposable timerSubscription;
+		class TimeoutFrame : OperatorObserverBase<T, T> {
+			readonly TimeoutFrameObservable<T> parent;
+			readonly object gate = new object();
+			ulong objectId = 0ul;
+			bool isTimeout = false;
+			SingleAssignmentDisposable sourceSubscription;
+			SerialDisposable timerSubscription;
 
-            public TimeoutFrame(TimeoutFrameObservable<T> parent, IObserver<T> observer, IDisposable cancel) : base(observer, cancel)
-            {
-                this.parent = parent;
-            }
+			public TimeoutFrame(TimeoutFrameObservable<T> parent, IObserver<T> observer, IDisposable cancel) : base(observer, cancel) {
+				this.parent = parent;
+			}
 
-            public IDisposable Run()
-            {
-                sourceSubscription = new SingleAssignmentDisposable();
-                timerSubscription = new SerialDisposable();
-                timerSubscription.Disposable = RunTimer(objectId);
-                sourceSubscription.Disposable = parent.source.Subscribe(this);
+			public IDisposable Run() {
+				sourceSubscription = new SingleAssignmentDisposable();
+				timerSubscription = new SerialDisposable();
+				timerSubscription.Disposable = RunTimer(objectId);
+				sourceSubscription.Disposable = parent.source.Subscribe(this);
 
-                return StableCompositeDisposable.Create(timerSubscription, sourceSubscription);
-            }
+				return StableCompositeDisposable.Create(timerSubscription, sourceSubscription);
+			}
 
-            IDisposable RunTimer(ulong timerId)
-            {
-                return UnityObservable.TimerFrame(parent.frameCount, parent.frameCountType)
-                    .Subscribe(new TimeoutFrameTick(this, timerId));
-            }
+			IDisposable RunTimer(ulong timerId) {
+				return UnityObservable.TimerFrame(parent.frameCount, parent.frameCountType)
+					   .Subscribe(new TimeoutFrameTick(this, timerId));
+			}
 
-            public override void OnNext(T value)
-            {
-                ulong useObjectId;
-                bool timeout;
-                lock (gate)
-                {
-                    timeout = isTimeout;
-                    objectId++;
-                    useObjectId = objectId;
-                }
-                if (timeout) return;
+			public override void OnNext(T value) {
+				ulong useObjectId;
+				bool timeout;
 
-                timerSubscription.Disposable = Disposable.Empty; // cancel old timer
-                observer.OnNext(value);
-                timerSubscription.Disposable = RunTimer(useObjectId);
-            }
+				lock (gate) {
+					timeout = isTimeout;
+					objectId++;
+					useObjectId = objectId;
+				}
 
-            public override void OnError(Exception error)
-            {
-                bool timeout;
-                lock (gate)
-                {
-                    timeout = isTimeout;
-                    objectId++;
-                }
-                if (timeout) return;
+				if (timeout) return;
 
-                timerSubscription.Dispose();
-                try { observer.OnError(error); } finally { Dispose(); }
-            }
+				timerSubscription.Disposable = Disposable.Empty; // cancel old timer
+				observer.OnNext(value);
+				timerSubscription.Disposable = RunTimer(useObjectId);
+			}
 
-            public override void OnCompleted()
-            {
-                bool timeout;
-                lock (gate)
-                {
-                    timeout = isTimeout;
-                    objectId++;
-                }
-                if (timeout) return;
+			public override void OnError(Exception error) {
+				bool timeout;
 
-                timerSubscription.Dispose();
-                try { observer.OnCompleted(); } finally { Dispose(); }
-            }
+				lock (gate) {
+					timeout = isTimeout;
+					objectId++;
+				}
 
-            class TimeoutFrameTick : IObserver<long>
-            {
-                readonly TimeoutFrame parent;
-                readonly ulong timerId;
+				if (timeout) return;
 
-                public TimeoutFrameTick(TimeoutFrame parent, ulong timerId)
-                {
-                    this.parent = parent;
-                    this.timerId = timerId;
-                }
+				timerSubscription.Dispose();
+				try { observer.OnError(error); } finally { Dispose(); }
+			}
 
-                public void OnCompleted()
-                {
-                }
+			public override void OnCompleted() {
+				bool timeout;
 
-                public void OnError(Exception error)
-                {
-                }
+				lock (gate) {
+					timeout = isTimeout;
+					objectId++;
+				}
 
-                public void OnNext(long _)
-                {
+				if (timeout) return;
+
+				timerSubscription.Dispose();
+				try { observer.OnCompleted(); } finally { Dispose(); }
+			}
+
+			class TimeoutFrameTick : IObserver<long> {
+				readonly TimeoutFrame parent;
+				readonly ulong timerId;
+
+				public TimeoutFrameTick(TimeoutFrame parent, ulong timerId) {
+					this.parent = parent;
+					this.timerId = timerId;
+				}
+
+				public void OnCompleted() {
+				}
+
+				public void OnError(Exception error) {
+				}
+
+				public void OnNext(long _) {
 
 
-                    lock (parent.gate)
-                    {
-                        if (parent.objectId == timerId)
-                        {
-                            parent.isTimeout = true;
-                        }
-                    }
-                    if (parent.isTimeout)
-                    {
-                        try { parent.observer.OnError(new TimeoutException()); } finally { parent.Dispose(); }
-                    }
-                }
-            }
-        }
-    }
+					lock (parent.gate) {
+						if (parent.objectId == timerId) {
+							parent.isTimeout = true;
+						}
+					}
+
+					if (parent.isTimeout) {
+						try { parent.observer.OnError(new TimeoutException()); } finally { parent.Dispose(); }
+					}
+				}
+			}
+		}
+	}
 }
