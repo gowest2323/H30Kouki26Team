@@ -873,7 +873,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1634250384741530
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
@@ -1444,7 +1444,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4103169253131594
 Transform:
@@ -1625,7 +1625,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4257547200782856
 Transform:
@@ -1706,7 +1706,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4365164779401034
 Transform:
@@ -1748,7 +1748,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4382952153604682
 Transform:
@@ -1832,7 +1832,7 @@ Transform:
   - {fileID: 4153411754354146}
   - {fileID: 4503793629526630}
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 16.453085, y: 71.030495, z: 5.8535423}
 --- !u!4 &4474247569801242
 Transform:
@@ -1854,12 +1854,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1634250384741530}
-  m_LocalRotation: {x: -0.62821454, y: 0.30558535, z: -0.4207757, w: 0.57871574}
-  m_LocalPosition: {x: 0.335922, y: 0.35945198, z: -0.14856444}
+  m_LocalRotation: {x: 0.06803501, y: 0.16575414, z: 0.7801732, w: 0.59935534}
+  m_LocalPosition: {x: -0.25389957, y: 0.7136555, z: 0.7639494}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4650272917688162}
-  m_Father: {fileID: 4859698528610004}
+  m_Father: {fileID: 4788020716342986}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4494372368205668
@@ -2222,6 +2222,7 @@ Transform:
   - {fileID: 4783903961890494}
   - {fileID: 224287679650323622}
   - {fileID: 4718677256844746}
+  - {fileID: 4478792203485934}
   - {fileID: 4290892368974912}
   - {fileID: 4451241506593214}
   - {fileID: 4916138392587764}
@@ -2287,7 +2288,6 @@ Transform:
   - {fileID: 4135746785258728}
   - {fileID: 4217594168426430}
   - {fileID: 4826130902316878}
-  - {fileID: 4478792203485934}
   m_Father: {fileID: 4290769006313628}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 22.721046, y: 49.94164, z: -39.769794}
@@ -2385,7 +2385,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4788020716342986}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4923381286535568
 Transform:
@@ -3012,6 +3012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1908878796493439371514b079216a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waistObjectName: mixamorig:Hips/mixamorig:Spine
   idle: {fileID: 114596707765325568}
   attack: {fileID: 114833311285637518}
   search: {fileID: 114000452703489516}
