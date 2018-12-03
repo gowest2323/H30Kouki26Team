@@ -10,8 +10,6 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float lockRange = 10.0f;
     bool isLockOn;
-    bool interval;
-    float intervalTime;
    public bool isInverted_UpDown;
    public bool isInverted_LeftRight;
 
@@ -52,9 +50,7 @@ public class CameraController : MonoBehaviour
     {
         offset = transform.position - player.transform.position;
         isLockOn = false;
-        interval = false;
         GetIsInveted();
-        intervalTime = 0;
         // 回転の初期化
         vRotation = Quaternion.Euler(20, 0, 0);         // 垂直回転(X軸を軸とする回転)は、30度見下ろす回転
         hRotation = Quaternion.identity;                // 水平回転(Y軸を軸とする回転)は、無回転
@@ -74,7 +70,6 @@ public class CameraController : MonoBehaviour
         DefaultControl();
         IsLockOnChange();
         LockOn();
-        Interval();
        
     }
 
@@ -265,13 +260,11 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetButtonDown(InputMap.Type.RStickClick.GetInputName()))
         {
-            if (interval == true) return;
             isLockOn = !isLockOn;
             if (isLockOn == false)
             {
                 chooseTargetSelf = false;
             }
-            interval = true;
         }
 
         if (isLockOn == true)
@@ -289,23 +282,10 @@ public class CameraController : MonoBehaviour
             if (nearObj == null)
             {
                 isLockOn = false;
-                interval = false;
             }
         }
     }
 
-    private void Interval()
-    {
-        if (interval)
-        {
-            intervalTime += 0.1f;
-            if (intervalTime >= 0.6f)
-            {
-                interval = false;
-                intervalTime = 0;
-            }
-        }
-    }
 
     /// <summary>
     /// 近くにあるtagnameのオブジェクトを向きで取得
