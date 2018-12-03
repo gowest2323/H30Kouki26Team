@@ -191,7 +191,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		playerAnimation.StartWalkAnimation();
 		var pos = transform.position;
 		transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
-        EffectManager.Instance.PlayerMoveEffectCreate(gameObject,false);
+		EffectManager.Instance.PlayerMoveEffectCreate(gameObject, false);
 
 		if (!isGuard) {
 			if (changeRotation || isAvoid) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
@@ -232,14 +232,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		}
 
 		if (!isGuard) playerAnimation.StartRunAnimation();
-      
-        dash.Update(Slow.Instance.PlayerDeltaTime());
+
+		dash.Update(Slow.Instance.PlayerDeltaTime());
 		float t = Mathf.Clamp(dash.dashTimeCounter, 1.0f, 10.0f);
 		//transform.position += dir * 10 * Slow.Instance.playerDeltaTime;
 		transform.position += playerCamera.hRotation * dir * 10 * t * Slow.Instance.PlayerDeltaTime();
 		transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation;
-      
-        if (!AudioManager.Instance.IsPlayingPlayerSE()) {
+
+		if (!AudioManager.Instance.IsPlayingPlayerSE()) {
 			AudioManager.Instance.PlayPlayerSE(AudioName.Dash.String());
 		}
 	}
@@ -584,8 +584,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		}
 		//まだ生きていたらダメージモーション
 		else {
+			PlayVibration.Instance.StartVibration(0.5f);
 			EffectManager.Instance.PlayerDamageEffectCreate(this.gameObject);
 			playerAnimation.StartDamageAnimation();
+
 
 		}
 
@@ -759,9 +761,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
 			offset += diff;
 			var percent = offset / avoidMoveTime;
-            EffectManager.Instance.PlayerMoveEffectCreate(gameObject,true);
+			EffectManager.Instance.PlayerMoveEffectCreate(gameObject, true);
 
-            if (Physics.Raycast(ray, out hit, rayDistance, mask)) {
+			if (Physics.Raycast(ray, out hit, rayDistance, mask)) {
 				Debug.Log("stageに当たった");
 				var otherPos = hit.collider.transform.position + Vector3.up;
 				var selfPos = transform.position;
@@ -836,18 +838,18 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		state = PlayerState.KnockBack;
 
 		AudioManager.Instance.PlayPlayerSE(AudioName.bougyouke.String());
-       
-        StartCoroutine(PlayerKockBack(damageSource));
-       
+
+		StartCoroutine(PlayerKockBack(damageSource));
+
 	}
 
 	private IEnumerator PlayerKockBack(DamageSource damageSource) {
 		//ノックバックアニメーション
 		playerAnimation.StartKnockBackAnimation();
-       
-        //敵が攻撃した方向取得
-        //NOTE:EnemyActionクラスは削除されました
-        EnemyAI enemy = (EnemyAI)damageSource.attackCharacter;
+
+		//敵が攻撃した方向取得
+		//NOTE:EnemyActionクラスは削除されました
+		EnemyAI enemy = (EnemyAI)damageSource.attackCharacter;
 		Vector3 enemyPosXZ = Vector3.Scale(enemy.transform.position, new Vector3(1, 0, 1));
 		Vector3 myPosXZ = Vector3.Scale(transform.position, new Vector3(1, 0, 1));
 		Vector3 enemyAttackDir = (myPosXZ - enemyPosXZ).normalized;
@@ -863,16 +865,17 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		var col = GetComponent<Collider>();
 		//ノックバック後の位置
 		var endPos = startPos + (-transform.forward * knockbackMoveDistance);
-       
-        while (offset < knockbackMoveTime) {
+
+		while (offset < knockbackMoveTime) {
 			var t = Time.time;
 			yield return new WaitForEndOfFrame();
 			col.enabled = false;
 			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
 			offset += diff;
 			var percent = offset / knockbackMoveTime;
-            EffectManager.Instance.PlayerMoveEffectCreate(gameObject,true);
-            if (Physics.Raycast(ray.origin, ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage"))) {
+			EffectManager.Instance.PlayerMoveEffectCreate(gameObject, true);
+
+			if (Physics.Raycast(ray.origin, ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage"))) {
 				var selfPos = transform.position + Vector3.up;
 				var otherPos = hit.collider.transform.position;
 				otherPos.y = selfPos.y;
