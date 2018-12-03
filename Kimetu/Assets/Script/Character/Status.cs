@@ -38,6 +38,8 @@ public class Status : MonoBehaviour {
 	public virtual void Awake() {
 		//ここで初期化しないと動かない場合がある
 		this.hp = maxHP;
+		this.mOnDamage = new Subject<int>();
+		this.mOnDie = new Subject<int>();
 	}
 
 	public virtual void Start() {
