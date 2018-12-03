@@ -25,14 +25,14 @@ public class PointerUI : MonoBehaviour {
 			this.cameraController = Camera.main.gameObject.GetComponentInChildren<CameraController>();
 		}
 
-		image.color = image.color * new Vector4(1, 1, 0.5f, 0);
+		//image.color = image.color * new Vector4(1, 1, 0.5f, 0);
 		this.nearEnemyInfo = typeof(CameraController).GetField("nearObj", BindingFlags.NonPublic | BindingFlags.Instance);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		var color = image.color;
-		color.a = (cameraController.IsLockOn() ? 0.5f : 0);
+		color.a = (cameraController.IsLockOn() ? 1 : 0);
 		image.color = color;
 		FixImagePosition();
 	}
