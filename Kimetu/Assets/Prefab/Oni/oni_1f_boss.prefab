@@ -1301,7 +1301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4361654447871398}
   - component: {fileID: 65386363524362144}
-  - component: {fileID: 114480606988302012}
+  - component: {fileID: 114665701852994694}
   m_Layer: 0
   m_Name: HurioroshiArea
   m_TagString: Untagged
@@ -2754,7 +2754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 15
-  attackableArea: {fileID: 114480606988302012}
+  attackableArea: {fileID: 114665701852994694}
   holderEnemy: {fileID: 114340366861905178}
   attackType: 0
   attackAnimationName: hurioroshi
@@ -2896,18 +2896,6 @@ MonoBehaviour:
   searchableAngle: 360
   searchRange: 4
   gizmosColor: {r: 1, g: 1, b: 1, a: 0.53333336}
---- !u!114 &114480606988302012
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1982847122623118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d3b91a2439fb44390a38348888ef68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eyeTransform: {fileID: 4988422212956260}
 --- !u!114 &114528470849857692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2990,6 +2978,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4aa8f36cc565194da3867466eee42ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114665701852994694
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1982847122623118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a467ac740040e41b6b67d200301e25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeTransform: {fileID: 4988422212956260}
+  searchCollider: {fileID: 65386363524362144}
 --- !u!114 &114702242916851580
 MonoBehaviour:
   m_ObjectHideFlags: 1

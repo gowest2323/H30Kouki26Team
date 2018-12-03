@@ -2601,6 +2601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e12ea6e78c08147bc624b9f3d237b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waistObjectName: mixamorig:Hips/mixamorig:Spine
   idle: {fileID: 114925294177130654}
   rotateSlash: {fileID: 114215369004435980}
   twiceShash: {fileID: 114224350007516290}
