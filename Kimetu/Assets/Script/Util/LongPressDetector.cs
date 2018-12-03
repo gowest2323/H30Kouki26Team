@@ -19,6 +19,8 @@ public delegate void LongPressing(float elapsed);
 /// <param name="elapsed"></param>
 public delegate void LongPressingOverTime(float elapsed);
 
+public delegate void LongPressTrigger(float elapsed);
+
 /// <summary>
 /// 長押しが正常に完了すると呼ばれるデリゲート。
 /// </summary>
@@ -38,6 +40,7 @@ public class LongPressDetector : MonoBehaviour {
 	public event LongPressingOverTime OnLongPressingOverTime = delegate { };
 	public event LongPressComplete OnLongPressComplete = delegate { };
 	public event LongPressEnd OnLongPressEnd = delegate { };
+	public event LongPressTrigger OnLongPressTrigger = delegate { };
 
 	[SerializeField]
 	private InputMap.Type type;
@@ -46,9 +49,19 @@ public class LongPressDetector : MonoBehaviour {
 	private float seconds;
 	public float pushSeconds { private set { seconds = value; } get { return seconds; } }
 	private float elapsed;
+	private bool triggered;
 	public float progress { get { return Mathf.Clamp01(elapsed / pushSeconds); }}
 
 	private void Start() {
+		Cancel();
+	}
+
+	/// <summary>
+	/// 入力状態をキャンセルします。
+	/// </summary>
+	public void Cancel() {
+		this.elapsed = 0;
+		this.triggered = false;
 	}
 
 	public void Update() {
@@ -63,6 +76,10 @@ public class LongPressDetector : MonoBehaviour {
 
 			if (elapsed > pushSeconds) {
 				OnLongPressingOverTime(elapsed);
+				if(!triggered) {
+					OnLongPressTrigger(elapsed);
+					this.triggered = true;
+				}
 			}
 
 			OnLongPressing(elapsed);
