@@ -2745,7 +2745,8 @@ MonoBehaviour:
   nearJudgeArea: {fileID: 114154747790072484}
   eyeTransform: {fileID: 4683930439328432}
   agent: {fileID: 195521335224061128}
-  limitNearTime: 5
+  limitNearTime: 10
+  limitIdleTime: 5
   useRay: 0
   lookRotationSpeed: 6
 --- !u!114 &114308658900368698
