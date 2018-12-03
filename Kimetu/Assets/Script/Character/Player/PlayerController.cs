@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown(InputMap.Type.LButton.GetInputName()))
         {
             if (!cameraController.IsLockOn())
-                cameraController.CameraToPlayerBack();
+                cameraController.PositionToPlayerBack();
 
             action.GuardStart(dir);
         }
