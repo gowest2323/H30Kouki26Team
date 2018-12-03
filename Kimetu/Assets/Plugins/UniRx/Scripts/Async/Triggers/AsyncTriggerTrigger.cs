@@ -7,62 +7,53 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncTriggerTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<Collider> onTriggerEnter;
-        AsyncTriggerPromiseDictionary<Collider> onTriggerEnters;
-        AsyncTriggerPromise<Collider> onTriggerExit;
-        AsyncTriggerPromiseDictionary<Collider> onTriggerExits;
-        AsyncTriggerPromise<Collider> onTriggerStay;
-        AsyncTriggerPromiseDictionary<Collider> onTriggerStays;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncTriggerTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<Collider> onTriggerEnter;
+		AsyncTriggerPromiseDictionary<Collider> onTriggerEnters;
+		AsyncTriggerPromise<Collider> onTriggerExit;
+		AsyncTriggerPromiseDictionary<Collider> onTriggerExits;
+		AsyncTriggerPromise<Collider> onTriggerStay;
+		AsyncTriggerPromiseDictionary<Collider> onTriggerStays;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onTriggerEnter, onTriggerEnters, onTriggerExit, onTriggerExits, onTriggerStay, onTriggerStays);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onTriggerEnter, onTriggerEnters, onTriggerExit, onTriggerExits, onTriggerStay, onTriggerStays);
+		}
 
 
-        void OnTriggerEnter(Collider other)
-        {
-            TrySetResult(onTriggerEnter, onTriggerEnters, other);
-        }
+		void OnTriggerEnter(Collider other) {
+			TrySetResult(onTriggerEnter, onTriggerEnters, other);
+		}
 
 
-        public UniTask OnTriggerEnterAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onTriggerEnter, ref onTriggerEnters, cancellationToken);
-        }
+		public UniTask OnTriggerEnterAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onTriggerEnter, ref onTriggerEnters, cancellationToken);
+		}
 
 
-        void OnTriggerExit(Collider other)
-        {
-            TrySetResult(onTriggerExit, onTriggerExits, other);
-        }
+		void OnTriggerExit(Collider other) {
+			TrySetResult(onTriggerExit, onTriggerExits, other);
+		}
 
 
-        public UniTask OnTriggerExitAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onTriggerExit, ref onTriggerExits, cancellationToken);
-        }
+		public UniTask OnTriggerExitAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onTriggerExit, ref onTriggerExits, cancellationToken);
+		}
 
 
-        void OnTriggerStay(Collider other)
-        {
-            TrySetResult(onTriggerStay, onTriggerStays, other);
-        }
+		void OnTriggerStay(Collider other) {
+			TrySetResult(onTriggerStay, onTriggerStays, other);
+		}
 
 
-        public UniTask OnTriggerStayAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onTriggerStay, ref onTriggerStays, cancellationToken);
-        }
+		public UniTask OnTriggerStayAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onTriggerStay, ref onTriggerStays, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

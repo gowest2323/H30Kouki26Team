@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncPointerUpTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<PointerEventData> onPointerUp;
-        AsyncTriggerPromiseDictionary<PointerEventData> onPointerUps;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncPointerUpTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<PointerEventData> onPointerUp;
+		AsyncTriggerPromiseDictionary<PointerEventData> onPointerUps;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onPointerUp, onPointerUps);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onPointerUp, onPointerUps);
+		}
 
 
-        void OnPointerUp(PointerEventData eventData)
-        {
-            TrySetResult(onPointerUp, onPointerUps, eventData);
-        }
+		void OnPointerUp(PointerEventData eventData) {
+			TrySetResult(onPointerUp, onPointerUps, eventData);
+		}
 
 
-        public UniTask OnPointerUpAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onPointerUp, ref onPointerUps, cancellationToken);
-        }
+		public UniTask OnPointerUpAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onPointerUp, ref onPointerUps, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

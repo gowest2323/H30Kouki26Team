@@ -31,16 +31,19 @@ public struct AnimationArgument {
 	public bool boolValue;
 
 	public void Apply(Animator animator) {
-		switch(kind) {
+		switch (kind) {
 			case AnimationArgumentKind.Int:
 				animator.SetInteger(name, intValue);
 				break;
+
 			case AnimationArgumentKind.Float:
 				animator.SetFloat(name, floatValue);
 				break;
+
 			case AnimationArgumentKind.Bool:
 				animator.SetBool(name, boolValue);
 				break;
+
 			case AnimationArgumentKind.Trigger:
 				animator.SetTrigger(name);
 				break;
@@ -71,22 +74,25 @@ public class AnimationDebugger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(this.animator == null) {
+		if (this.animator == null) {
 			this.animator = GetComponent<Animator>();
 		}
+
 		#if UNITY_EDITOR
 		Apply();
 		#endif
 		//AnimatorController animatorController = AnimatorController.GetEffectiveAnimatorController(animator);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		#if UNITY_EDITOR
 		animator.speed = speed;
-		if((isLoop && IsFinished()) || current != argument.name) {
+
+		if ((isLoop && IsFinished()) || current != argument.name) {
 			Apply();
 		}
+
 		#endif
 	}
 
@@ -98,7 +104,7 @@ public class AnimationDebugger : MonoBehaviour {
 	private bool IsFinished() {
 		//CharacterAnimationより
 		AnimatorStateInfo animatorInfo = animator.GetCurrentAnimatorStateInfo(0);
-        return animatorInfo.normalizedTime > 1.0f - Mathf.Epsilon;
+		return animatorInfo.normalizedTime > 1.0f - Mathf.Epsilon;
 	}
 
 	public AnimationArgument GetArgument() {
@@ -106,41 +112,46 @@ public class AnimationDebugger : MonoBehaviour {
 	}
 	#if UNITY_EDITOR
 	public List<AnimatorControllerParameter> GetAllParameters() {
-		if(controller == null) { return new List<AnimatorControllerParameter>(); }
+		if (controller == null) { return new List<AnimatorControllerParameter>(); }
+
 		return controller.parameters.ToList();
 	}
 
 	public List<AnimationClip> GetAllClips() {
-		if(controller == null) { return new List<AnimationClip>(); }
+		if (controller == null) { return new List<AnimationClip>(); }
+
 		return controller.animationClips.ToList();
 	}
 	#endif
 }
 #if UNITY_EDITOR
 [CustomEditor (typeof(AnimationDebugger))]
-public class AnimationDebuggerEditor : Editor　{
+public class AnimationDebuggerEditor : Editor　 {
 	private AnimationDebugger self = null;
 
-    void OnEnable () {
-        this.self = (AnimationDebugger) target;
-    }
+	void OnEnable () {
+		this.self = (AnimationDebugger) target;
+	}
 
-    public override void OnInspectorGUI () {
+	public override void OnInspectorGUI () {
 		base.OnInspectorGUI ();
 		var parameters = self.GetAllParameters();
 		var arg = self.GetArgument();
-		if(parameters.Count == 0) {
+
+		if (parameters.Count == 0) {
 			EditorGUILayout.LabelField("Controllerを設定してください。");
 			return;
 		}
-		if(!parameters.Any((e) => e.name == arg.name)) {
+
+		if (!parameters.Any((e) => e.name == arg.name)) {
 			EditorGUILayout.LabelField(string.Format("({0})は存在しません。", arg.name));
 		}
+
 		var parameterStr = parameters
-			.Select((e) => e.name + "(" + e.type + ")")
-			.Aggregate((a, b) => a + "\n" + b);
+						   .Select((e) => e.name + "(" + e.type + ")")
+						   .Aggregate((a, b) => a + "\n" + b);
 		parameterStr = string.Format("使用可能なパラメーター\n{0}", parameterStr);
 		EditorGUILayout.TextArea(parameterStr);
-    }
+	}
 }
 #endif

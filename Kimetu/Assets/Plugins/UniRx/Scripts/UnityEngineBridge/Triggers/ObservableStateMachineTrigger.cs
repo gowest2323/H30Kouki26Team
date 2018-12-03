@@ -4,140 +4,122 @@
 using System; // require keep for Windows Universal App
 using UnityEngine;
 
-namespace UniRx.Triggers
-{
-    [DisallowMultipleComponent]
-    public class ObservableStateMachineTrigger : StateMachineBehaviour
-    {
-        public class OnStateInfo
-        {
-            public Animator Animator { get; private set; }
-            public AnimatorStateInfo StateInfo { get; private set; }
-            public int LayerIndex { get; private set; }
+namespace UniRx.Triggers {
+	[DisallowMultipleComponent]
+	public class ObservableStateMachineTrigger : StateMachineBehaviour {
+		public class OnStateInfo {
+			public Animator Animator { get; private set; }
+			public AnimatorStateInfo StateInfo { get; private set; }
+			public int LayerIndex { get; private set; }
 
-            public OnStateInfo(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-            {
-                Animator = animator;
-                StateInfo = stateInfo;
-                LayerIndex = layerIndex;
-            }
-        }
+			public OnStateInfo(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+				Animator = animator;
+				StateInfo = stateInfo;
+				LayerIndex = layerIndex;
+			}
+		}
 
-        public class OnStateMachineInfo
-        {
-            public Animator Animator { get; private set; }
-            public int StateMachinePathHash { get; private set; }
+		public class OnStateMachineInfo {
+			public Animator Animator { get; private set; }
+			public int StateMachinePathHash { get; private set; }
 
-            public OnStateMachineInfo(Animator animator, int stateMachinePathHash)
-            {
-                Animator = animator;
-                StateMachinePathHash = stateMachinePathHash;
-            }
-        }
+			public OnStateMachineInfo(Animator animator, int stateMachinePathHash) {
+				Animator = animator;
+				StateMachinePathHash = stateMachinePathHash;
+			}
+		}
 
-        // OnStateExit
+		// OnStateExit
 
-        Subject<OnStateInfo> onStateExit;
+		Subject<OnStateInfo> onStateExit;
 
-        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        {
-            if (onStateExit != null) onStateExit.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
-        }
+		public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+			if (onStateExit != null) onStateExit.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
+		}
 
-        public IObservable<OnStateInfo> OnStateExitAsObservable()
-        {
-            return onStateExit ?? (onStateExit = new Subject<OnStateInfo>());
-        }
+		public IObservable<OnStateInfo> OnStateExitAsObservable() {
+			return onStateExit ?? (onStateExit = new Subject<OnStateInfo>());
+		}
 
-        // OnStateEnter
+		// OnStateEnter
 
-        Subject<OnStateInfo> onStateEnter;
+		Subject<OnStateInfo> onStateEnter;
 
-        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        {
-            if (onStateEnter != null) onStateEnter.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
-        }
+		public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+			if (onStateEnter != null) onStateEnter.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
+		}
 
-        public IObservable<OnStateInfo> OnStateEnterAsObservable()
-        {
-            return onStateEnter ?? (onStateEnter = new Subject<OnStateInfo>());
-        }
+		public IObservable<OnStateInfo> OnStateEnterAsObservable() {
+			return onStateEnter ?? (onStateEnter = new Subject<OnStateInfo>());
+		}
 
-        // OnStateIK
+		// OnStateIK
 
-        Subject<OnStateInfo> onStateIK;
+		Subject<OnStateInfo> onStateIK;
 
-        public override void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        {
-            if(onStateIK !=null) onStateIK.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
-        }
+		public override void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+			if (onStateIK != null) onStateIK.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
+		}
 
-        public IObservable<OnStateInfo> OnStateIKAsObservable()
-        {
-            return onStateIK ?? (onStateIK = new Subject<OnStateInfo>());
-        }
+		public IObservable<OnStateInfo> OnStateIKAsObservable() {
+			return onStateIK ?? (onStateIK = new Subject<OnStateInfo>());
+		}
 
-        // Does not implments OnStateMove.
-        // ObservableStateMachine Trigger makes stop animating.
-        // By defining OnAnimatorMove, you are signifying that you want to intercept the movement of the root object and apply it yourself.
-        // http://fogbugz.unity3d.com/default.asp?700990_9jqaim4ev33i8e9h
+		// Does not implments OnStateMove.
+		// ObservableStateMachine Trigger makes stop animating.
+		// By defining OnAnimatorMove, you are signifying that you want to intercept the movement of the root object and apply it yourself.
+		// http://fogbugz.unity3d.com/default.asp?700990_9jqaim4ev33i8e9h
 
-        //// OnStateMove
+		//// OnStateMove
 
-        //Subject<OnStateInfo> onStateMove;
+		//Subject<OnStateInfo> onStateMove;
 
-        //public override void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        //{
-        //    if (onStateMove != null) onStateMove.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
-        //}
+		//public override void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+		//{
+		//    if (onStateMove != null) onStateMove.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
+		//}
 
-        //public IObservable<OnStateInfo> OnStateMoveAsObservable()
-        //{
-        //    return onStateMove ?? (onStateMove = new Subject<OnStateInfo>());
-        //}
+		//public IObservable<OnStateInfo> OnStateMoveAsObservable()
+		//{
+		//    return onStateMove ?? (onStateMove = new Subject<OnStateInfo>());
+		//}
 
-        // OnStateUpdate
+		// OnStateUpdate
 
-        Subject<OnStateInfo> onStateUpdate;
+		Subject<OnStateInfo> onStateUpdate;
 
-        public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        {
-            if (onStateUpdate != null) onStateUpdate.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
-        }
+		public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+			if (onStateUpdate != null) onStateUpdate.OnNext(new OnStateInfo(animator, stateInfo, layerIndex));
+		}
 
-        public IObservable<OnStateInfo> OnStateUpdateAsObservable()
-        {
-            return onStateUpdate ?? (onStateUpdate = new Subject<OnStateInfo>());
-        }
+		public IObservable<OnStateInfo> OnStateUpdateAsObservable() {
+			return onStateUpdate ?? (onStateUpdate = new Subject<OnStateInfo>());
+		}
 
-        // OnStateMachineEnter
+		// OnStateMachineEnter
 
-        Subject<OnStateMachineInfo> onStateMachineEnter;
+		Subject<OnStateMachineInfo> onStateMachineEnter;
 
-        public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
-        {
-            if (onStateMachineEnter != null) onStateMachineEnter.OnNext(new OnStateMachineInfo(animator, stateMachinePathHash));
-        }
+		public override void OnStateMachineEnter(Animator animator, int stateMachinePathHash) {
+			if (onStateMachineEnter != null) onStateMachineEnter.OnNext(new OnStateMachineInfo(animator, stateMachinePathHash));
+		}
 
-        public IObservable<OnStateMachineInfo> OnStateMachineEnterAsObservable()
-        {
-            return onStateMachineEnter ?? (onStateMachineEnter = new Subject<OnStateMachineInfo>());
-        }
+		public IObservable<OnStateMachineInfo> OnStateMachineEnterAsObservable() {
+			return onStateMachineEnter ?? (onStateMachineEnter = new Subject<OnStateMachineInfo>());
+		}
 
-        // OnStateMachineExit
+		// OnStateMachineExit
 
-        Subject<OnStateMachineInfo> onStateMachineExit;
+		Subject<OnStateMachineInfo> onStateMachineExit;
 
-        public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
-        {
-            if (onStateMachineExit != null) onStateMachineExit.OnNext(new OnStateMachineInfo(animator, stateMachinePathHash));
-        }
+		public override void OnStateMachineExit(Animator animator, int stateMachinePathHash) {
+			if (onStateMachineExit != null) onStateMachineExit.OnNext(new OnStateMachineInfo(animator, stateMachinePathHash));
+		}
 
-        public IObservable<OnStateMachineInfo> OnStateMachineExitAsObservable()
-        {
-            return onStateMachineExit ?? (onStateMachineExit = new Subject<OnStateMachineInfo>());
-        }
-    }
+		public IObservable<OnStateMachineInfo> OnStateMachineExitAsObservable() {
+			return onStateMachineExit ?? (onStateMachineExit = new Subject<OnStateMachineInfo>());
+		}
+	}
 }
 
 #endif

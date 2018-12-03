@@ -12,8 +12,8 @@ public enum PlayerState {
 	Avoid, //回避時
 	Defence, //防御時
 	Dash, //ダッシュ時
-    Damage,//ダメージ時
-    Counter, //カウンター攻撃時
-    Pierce, //吸生中
-    KnockBack, //ノックバック中
+	Damage,//ダメージ時
+	Counter, //カウンター攻撃時
+	Pierce, //吸生中
+	KnockBack, //ノックバック中
 }

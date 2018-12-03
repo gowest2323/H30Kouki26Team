@@ -5,31 +5,25 @@ using System; // require keep for Windows Universal App
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Triggers
-{
-    [DisallowMultipleComponent]
-    public class ObservableDragTrigger : ObservableTriggerBase, IEventSystemHandler, IDragHandler
-    {
-        Subject<PointerEventData> onDrag;
+namespace UniRx.Triggers {
+	[DisallowMultipleComponent]
+	public class ObservableDragTrigger : ObservableTriggerBase, IEventSystemHandler, IDragHandler {
+		Subject<PointerEventData> onDrag;
 
-        void IDragHandler.OnDrag(PointerEventData eventData)
-        {
-            if (onDrag != null) onDrag.OnNext(eventData);
-        }
+		void IDragHandler.OnDrag(PointerEventData eventData) {
+			if (onDrag != null) onDrag.OnNext(eventData);
+		}
 
-        public IObservable<PointerEventData> OnDragAsObservable()
-        {
-            return onDrag ?? (onDrag = new Subject<PointerEventData>());
-        }
+		public IObservable<PointerEventData> OnDragAsObservable() {
+			return onDrag ?? (onDrag = new Subject<PointerEventData>());
+		}
 
-        protected override void RaiseOnCompletedOnDestroy()
-        {
-            if (onDrag != null)
-            {
-                onDrag.OnCompleted();
-            }
-        }
-    }
+		protected override void RaiseOnCompletedOnDestroy() {
+			if (onDrag != null) {
+				onDrag.OnCompleted();
+			}
+		}
+	}
 }
 
 

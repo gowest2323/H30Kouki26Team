@@ -14,15 +14,16 @@ public class CameraArea : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(target == null) {
+		if (target == null) {
 			this.target = Camera.main;
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		CheckVisible();
-		if(debugMode) {
+
+		if (debugMode) {
 			Debug.Log("isVisible: " + isVisible);
 		}
 	}
@@ -32,20 +33,24 @@ public class CameraArea : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public bool IsHitRay() {
-		if(player == null) {
+		if (player == null) {
 			this.player = GameObject.FindGameObjectWithTag(TagName.Player.String());
 		}
+
 		//ちょっとだけプレイヤーのコライダーを無効にする
 		var collider = player.GetComponent<Collider>();
 		collider.enabled = false;
+
 		try {
 			var cameraPos = target.transform.position;
 			var lookPos = transform.position;
 			var dir = (lookPos - cameraPos).normalized;
 			RaycastHit hit;
-			if(Physics.Raycast(new Ray(cameraPos, dir), out hit)) {
+
+			if (Physics.Raycast(new Ray(cameraPos, dir), out hit)) {
 				return hit.collider.gameObject == gameObject;
 			}
+
 			return false;
 		} finally {
 			collider.enabled = true;
@@ -60,8 +65,7 @@ public class CameraArea : MonoBehaviour {
 		var p = transform.position;
 		Vector4 pos = VP * new Vector4(p.x, p.y, p.z, 1.0f);
 
-		if (pos.w == 0)
-		{
+		if (pos.w == 0) {
 			isVisible = true;
 			return;
 		}
@@ -69,39 +73,37 @@ public class CameraArea : MonoBehaviour {
 		float x = pos.x / pos.w;
 		float y = pos.y / pos.w;
 		float z = pos.z / pos.w;
-		if (x < -1.0f)
-		{
-			isVisible = false;
-			return;
-		}
-		if (x > 1.0f)
-		{
+
+		if (x < -1.0f) {
 			isVisible = false;
 			return;
 		}
 
-		if (y < -1.0f)
-		{
-			isVisible = false;
-			return;
-		}
-		if (y > 1.0f)
-		{
+		if (x > 1.0f) {
 			isVisible = false;
 			return;
 		}
 
-		if (z < -1.0f)
-		{
+		if (y < -1.0f) {
 			isVisible = false;
 			return;
 		}
 
-		if (z > 1.0f)
-		{
+		if (y > 1.0f) {
 			isVisible = false;
 			return;
 		}
+
+		if (z < -1.0f) {
+			isVisible = false;
+			return;
+		}
+
+		if (z > 1.0f) {
+			isVisible = false;
+			return;
+		}
+
 		isVisible = true;
 	}
 }

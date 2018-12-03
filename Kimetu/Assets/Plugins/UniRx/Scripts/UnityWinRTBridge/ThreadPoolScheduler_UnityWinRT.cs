@@ -1,6 +1,8 @@
+
 ﻿#if UNITY_METRO
 
 using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,90 +13,76 @@ using System.Threading;
 using System.Threading.Tasks;
 #endif
 
-namespace UniRx
-{
-    public static partial class Scheduler
-    {
-        public static readonly IScheduler ThreadPool = new ThreadPoolScheduler();
+namespace UniRx {
+public static partial class Scheduler {
+	public static readonly IScheduler ThreadPool = new ThreadPoolScheduler();
 
-        class ThreadPoolScheduler : IScheduler
-        {
-            public DateTimeOffset Now
-            {
-                get { return Scheduler.Now; }
-            }
+		class ThreadPoolScheduler : IScheduler {
+			public DateTimeOffset Now {
+				get { return Scheduler.Now; }
+			}
 
-            public IDisposable Schedule(Action action)
-            {
-                var d = new BooleanDisposable();
-#if NETFX_CORE
+			public IDisposable Schedule(Action action) {
+				var d = new BooleanDisposable();
+				#if NETFX_CORE
 
-                Task.Run(()=>
-                {
-                    if (!d.IsDisposed)
-                    {
-                        action();
-                    }
-                });
+				Task.Run(() => {
+					if (!d.IsDisposed) {
+						action();
+					}
+				});
 
-#else
-                Action act = () =>
-                {
-                    if (!d.IsDisposed)
-                    {
-                        action();
-                    }
-                };
+				#else
+				Action act = () => {
+					if (!d.IsDisposed) {
+						action();
+					}
+				};
 
-                act.BeginInvoke(ar => act.EndInvoke(ar), null);
+				act.BeginInvoke(ar => act.EndInvoke(ar), null);
 
-#endif
+				#endif
 
-                return d;
-            }
+				return d;
+			}
 
-            public IDisposable Schedule(TimeSpan dueTime, Action action)
-            {
-                var wait = Scheduler.Normalize(dueTime);
+			public IDisposable Schedule(TimeSpan dueTime, Action action) {
+				var wait = Scheduler.Normalize(dueTime);
 
-                var d = new BooleanDisposable();
+				var d = new BooleanDisposable();
 
-#if NETFX_CORE
+				#if NETFX_CORE
 
-                Task.Run(()=>
-                {
-                    if (!d.IsDisposed)
-                    {
-                        if (wait.Ticks > 0)
-                        {
-                            Thread.Sleep(wait);
-                        }
-                        action();
-                    }
-                });
+				Task.Run(() => {
+					if (!d.IsDisposed) {
+						if (wait.Ticks > 0) {
+							Thread.Sleep(wait);
+						}
 
-#else
+						action();
+					}
+				});
 
-                Action act = () =>
-                {
-                    if (!d.IsDisposed)
-                    {
-                        if (wait.Ticks > 0)
-                        {
-                            Thread.Sleep(wait);
-                        }
-                        action();
-                    }
-                };
+				#else
 
-                act.BeginInvoke(ar => act.EndInvoke(ar), null);
+				Action act = () => {
+					if (!d.IsDisposed) {
+						if (wait.Ticks > 0) {
+							Thread.Sleep(wait);
+						}
 
-#endif
+						action();
+					}
+				};
 
-                return d;
-            }
-        }
-    }
+				act.BeginInvoke(ar => act.EndInvoke(ar), null);
+
+				#endif
+
+				return d;
+			}
+		}
+	}
 }
 
 #endif

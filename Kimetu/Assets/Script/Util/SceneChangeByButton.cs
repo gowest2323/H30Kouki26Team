@@ -8,18 +8,18 @@ using UnityEngine;
 public class SceneChangeByButton : MonoBehaviour {
 	[SerializeField]
 	private InputMap.Type type;
-	
+
 	[SerializeField]
 	private SceneName sceneName;
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButton(type.GetInputName())) {
+		if (Input.GetButton(type.GetInputName())) {
 			SceneChanger.Instance().Change(sceneName, new FadeData(1f, 1f, Color.black));
 		}
 	}

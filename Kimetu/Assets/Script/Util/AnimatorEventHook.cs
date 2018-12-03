@@ -20,12 +20,12 @@ public class AnimatorEventHook : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	#if UNITY_EDITOR
@@ -41,65 +41,80 @@ public class AnimatorEventHookEditor : Editor {
 	private AnimatorEventHook self = null;
 	private AnimatorController controller;
 
-    void OnEnable () {
-        this.self = (AnimatorEventHook) target;
+	void OnEnable () {
+		this.self = (AnimatorEventHook) target;
 		this.controller = self.GetController();
-		if(!Directory.Exists(PATH)) {
+
+		if (!Directory.Exists(PATH)) {
 			Directory.CreateDirectory(PATH);
 		}
-		CreateInterface();
-    }
 
-    public override void OnInspectorGUI () {
+		CreateInterface();
+	}
+
+	public override void OnInspectorGUI () {
 		base.OnInspectorGUI ();
-		if(this.controller == null) {
+
+		if (this.controller == null) {
 			this.controller = self.GetController();
 		}
-		if(IsProgress()) {
+
+		if (IsProgress()) {
 			return;
 		}
+
 		var animator = self.gameObject.GetComponent<Animator>();
 		EditorGUILayout.BeginVertical();
-		foreach(var clip in GetAllClips()) {
+
+		foreach (var clip in GetAllClips()) {
 			DoLayout(clip);
 		}
-		if(GUILayout.Button("CreateAll")) {
+
+		if (GUILayout.Button("CreateAll")) {
 			CreateAllAsset();
 		}
-		if(GUILayout.Button("DeleteAll")) {
+
+		if (GUILayout.Button("DeleteAll")) {
 			DeleteAllAsset();
 		}
-		if(GUILayout.Button("Update")) {
+
+		if (GUILayout.Button("Update")) {
 			UpdateAllAsset();
 		}
+
 		EditorGUILayout.EndVertical();
-    }
+	}
 
 	private void DoLayout(AnimationClip clip) {
 		var e = new AnimationEvent();
 		var fn = GetHookFileName(clip.name);
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.LabelField(GetHookClassName(clip.name));
-		if(File.Exists(fn)) {
-			if(GUILayout.Button("Delete")) { DeleteAsset(clip, fn); }
+
+		if (File.Exists(fn)) {
+			if (GUILayout.Button("Delete")) { DeleteAsset(clip, fn); }
 		} else {
-			if(GUILayout.Button("Create")) { CreateAsset(clip, fn); }
+			if (GUILayout.Button("Create")) { CreateAsset(clip, fn); }
 		}
+
 		EditorGUILayout.EndHorizontal();
 	}
 
 	private bool IsProgress() {
- 		return (EditorApplication.isPlaying) ||
-            (Application.isPlaying) ||
-            (EditorApplication.isCompiling);
+		return (EditorApplication.isPlaying) ||
+			   (Application.isPlaying) ||
+			   (EditorApplication.isCompiling);
 	}
 
 	private void CreateAllAsset() {
-		foreach(var clip in GetAllClips()) {
+		foreach (var clip in GetAllClips()) {
 			var fn = GetHookFileName(clip.name);
-			if(File.Exists(fn)) continue;
+
+			if (File.Exists(fn)) continue;
+
 			CreateNewHook(clip, fn);
 		}
+
 		AssetDatabase.Refresh();
 	}
 
@@ -111,11 +126,14 @@ public class AnimatorEventHookEditor : Editor {
 	}
 
 	private void DeleteAllAsset() {
-		foreach(var clip in GetAllClips()) {
+		foreach (var clip in GetAllClips()) {
 			var fn = GetHookFileName(clip.name);
-			if(!File.Exists(fn)) continue;
+
+			if (!File.Exists(fn)) continue;
+
 			File.Delete(fn);
 		}
+
 		AssetDatabase.Refresh();
 	}
 
@@ -125,10 +143,11 @@ public class AnimatorEventHookEditor : Editor {
 	}
 
 	private void UpdateAllAsset() {
-		foreach(var clip in GetAllClips()) {
+		foreach (var clip in GetAllClips()) {
 			var fn = GetHookFileName(clip.name);
 			UpdateAsset(clip, fn);
 		}
+
 		AssetDatabase.Refresh();
 	}
 
@@ -137,14 +156,16 @@ public class AnimatorEventHookEditor : Editor {
 		CreateNewHook(clip, fn, false);
 	}
 
-	private void CreateNewHook(AnimationClip clip, string fn, bool updateEvent=true) {
-		if(!Directory.Exists(PATH)) {
+	private void CreateNewHook(AnimationClip clip, string fn, bool updateEvent = true) {
+		if (!Directory.Exists(PATH)) {
 			Directory.CreateDirectory(PATH);
 		}
+
 		//クリア
-		if(updateEvent) {
+		if (updateEvent) {
 			AnimationUtility.SetAnimationEvents(clip, new AnimationEvent[0]);
 		}
+
 		//開始と終了でイベントを追加
 		var startEvent = new AnimationEvent();
 		var endEvent = new AnimationEvent();
@@ -152,16 +173,18 @@ public class AnimatorEventHookEditor : Editor {
 		endEvent.functionName = GetAnimationName(clip.name) + "End";
 		startEvent.time = 0;
 		endEvent.time = clip.length;
-		if(updateEvent) {
+
+		if (updateEvent) {
 			AnimationUtility.SetAnimationEvents(clip,
-			new AnimationEvent[]{startEvent, endEvent});
+												new AnimationEvent[] {startEvent, endEvent});
 		}
+
 		//自動生成
 		var src = CreateSourceCode(
-			GetHookClassName(clip.name),
-			startEvent.functionName,
-			endEvent.functionName
-		);
+					  GetHookClassName(clip.name),
+					  startEvent.functionName,
+					  endEvent.functionName
+				  );
 		File.WriteAllText(fn, src, Encoding.UTF8);
 	}
 
@@ -184,14 +207,15 @@ public class AnimatorEventHookEditor : Editor {
 
 	private void CreateInterface() {
 		var path = PATH + "IEventHook.cs";
-		if(!File.Exists(path)) {
+
+		if (!File.Exists(path)) {
 			File.WriteAllText(path, GetInterface(), Encoding.UTF8);
 		}
 	}
 
 	private string GetInterface() {
-		return 
-@"//AUTO-GENERATED-CODE
+		return
+			@"//AUTO-GENERATED-CODE
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -206,8 +230,8 @@ public interface IEventHook {
 	}
 
 	private string GetTemplate() {
-		return 
-@"//AUTO-GENERATED-CODE
+		return
+			@"//AUTO-GENERATED-CODE
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -270,12 +294,14 @@ public class CLASSNAME : MonoBehaviour, IEventHook {
 	}
 
 	public List<AnimatorControllerParameter> GetAllParameters() {
-		if(controller == null) { return new List<AnimatorControllerParameter>(); }
+		if (controller == null) { return new List<AnimatorControllerParameter>(); }
+
 		return controller.parameters.ToList();
 	}
 
 	public List<AnimationClip> GetAllClips() {
-		if(controller == null) { return new List<AnimationClip>(); }
+		if (controller == null) { return new List<AnimationClip>(); }
+
 		return controller.animationClips.ToList();
 	}
 }

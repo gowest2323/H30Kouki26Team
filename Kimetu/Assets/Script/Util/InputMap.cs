@@ -69,10 +69,13 @@ public static class InputMap {
 			{Type.LStickClick, "WIN_LStickClick"},
 			{Type.RStickClick, "WIN_RStickClick"},
 		};
-		foreach(var e in System.Enum.GetValues(typeof(Type))) {
+
+		foreach (var e in System.Enum.GetValues(typeof(Type))) {
 			Type type = (Type)e;
-			if(!macBinding.ContainsKey(type)) macBinding[type] = "NULL";
-			if(!winBinding.ContainsKey(type)) winBinding[type] = "NULL";
+
+			if (!macBinding.ContainsKey(type)) macBinding[type] = "NULL";
+
+			if (!winBinding.ContainsKey(type)) winBinding[type] = "NULL";
 		}
 	}
 
@@ -83,11 +86,11 @@ public static class InputMap {
 	/// <returns></returns>
 	public static string GetInputName(this Type type) {
 		#if UNITY_STANDALONE_WIN
-			return winBinding[type];
+		return winBinding[type];
 		#elif UNITY_STANDALONE_OSX
-			return macBinding[type];
+		return macBinding[type];
 		#else
-			return winBinding[type];
+		return winBinding[type];
 		#endif
 	}
 
@@ -97,15 +100,18 @@ public static class InputMap {
 	/// <returns></returns>
 	public static float GetDPadHorizontal() {
 		#if UNITY_STANDALONE_OSX
-			if(Input.GetButtonDown("MAC_DPAD_LEFT")) {
-				return -1;
-			}
-			if(Input.GetButtonDown("MAC_DPAD_RIGHT")) {
-				return 1;
-			}
-			return 0;
+
+		if (Input.GetButtonDown("MAC_DPAD_LEFT")) {
+			return -1;
+		}
+
+		if (Input.GetButtonDown("MAC_DPAD_RIGHT")) {
+			return 1;
+		}
+
+		return 0;
 		#else
-			return Input.GetAxis("WIN_DPAD_HORIZONTAL");
+		return Input.GetAxis("WIN_DPAD_HORIZONTAL");
 		#endif
 	}
 
@@ -115,15 +121,18 @@ public static class InputMap {
 	/// <returns></returns>
 	public static float GetDPadVertical() {
 		#if UNITY_STANDALONE_OSX
-			if(Input.GetButtonDown("MAC_DPAD_UP")) {
-				return -1;
-			}
-			if(Input.GetButtonDown("MAC_DPAD_DOWN")) {
-				return 1;
-			}
-			return 0;
+
+		if (Input.GetButtonDown("MAC_DPAD_UP")) {
+			return -1;
+		}
+
+		if (Input.GetButtonDown("MAC_DPAD_DOWN")) {
+			return 1;
+		}
+
+		return 0;
 		#else
-			return Input.GetAxis("WIN_DPAD_VERTICAL");
+		return Input.GetAxis("WIN_DPAD_VERTICAL");
 		#endif
 	}
 }

@@ -16,13 +16,12 @@ using ShapeType = SAColliderBuilderCommon.ShapeType;
 using MeshType = SAColliderBuilderCommon.MeshType;
 using SliceMode = SAColliderBuilderCommon.SliceMode;
 
-public class SABoneColliderBuilder : MonoBehaviour
-{
+public class SABoneColliderBuilder : MonoBehaviour {
 	public SABoneColliderBuilderProperty	boneColliderBuilderProperty = new SABoneColliderBuilderProperty();
-	
+
 	[System.NonSerialized]
 	public SABoneColliderBuilderProperty	edittingBoneColliderBuilderProperty = null;
-	
+
 	[System.NonSerialized]
 	public bool								cleanupModified = false;
 	[System.NonSerialized]

@@ -6,118 +6,98 @@ using UnityObservable = UniRx.ObservableUnity;
 using UnityObservable = UniRx.Observable;
 #endif
 
-namespace UniRx.Operators
-{
-    internal class ThrottleFirstFrameObservable<T> : OperatorObservableBase<T>
-    {
-        readonly IObservable<T> source;
-        readonly int frameCount;
-        readonly FrameCountType frameCountType;
+namespace UniRx.Operators {
+	internal class ThrottleFirstFrameObservable<T> : OperatorObservableBase<T> {
+		readonly IObservable<T> source;
+		readonly int frameCount;
+		readonly FrameCountType frameCountType;
 
-        public ThrottleFirstFrameObservable(IObservable<T> source, int frameCount, FrameCountType frameCountType) : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.frameCount = frameCount;
-            this.frameCountType = frameCountType;
-        }
+		public ThrottleFirstFrameObservable(IObservable<T> source, int frameCount, FrameCountType frameCountType) : base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.frameCount = frameCount;
+			this.frameCountType = frameCountType;
+		}
 
-        protected override IDisposable SubscribeCore(IObserver<T> observer, IDisposable cancel)
-        {
-            return new ThrottleFirstFrame(this, observer, cancel).Run();
-        }
+		protected override IDisposable SubscribeCore(IObserver<T> observer, IDisposable cancel) {
+			return new ThrottleFirstFrame(this, observer, cancel).Run();
+		}
 
-        class ThrottleFirstFrame : OperatorObserverBase<T, T>
-        {
-            readonly ThrottleFirstFrameObservable<T> parent;
-            readonly object gate = new object();
-            bool open = true;
-            SerialDisposable cancelable;
+		class ThrottleFirstFrame : OperatorObserverBase<T, T> {
+			readonly ThrottleFirstFrameObservable<T> parent;
+			readonly object gate = new object();
+			bool open = true;
+			SerialDisposable cancelable;
 
-            ThrottleFirstFrameTick tick;
+			ThrottleFirstFrameTick tick;
 
-            public ThrottleFirstFrame(ThrottleFirstFrameObservable<T> parent, IObserver<T> observer, IDisposable cancel) : base(observer, cancel)
-            {
-                this.parent = parent;
-            }
+			public ThrottleFirstFrame(ThrottleFirstFrameObservable<T> parent, IObserver<T> observer, IDisposable cancel) : base(observer, cancel) {
+				this.parent = parent;
+			}
 
-            public IDisposable Run()
-            {
-                tick = new ThrottleFirstFrameTick(this);
-                cancelable = new SerialDisposable();
+			public IDisposable Run() {
+				tick = new ThrottleFirstFrameTick(this);
+				cancelable = new SerialDisposable();
 
-                var subscription = parent.source.Subscribe(this);
-                return StableCompositeDisposable.Create(cancelable, subscription);
-            }
+				var subscription = parent.source.Subscribe(this);
+				return StableCompositeDisposable.Create(cancelable, subscription);
+			}
 
-            void OnNext()
-            {
-                lock (gate)
-                {
-                    open = true;
-                }
-            }
+			void OnNext() {
+				lock (gate) {
+					open = true;
+				}
+			}
 
-            public override void OnNext(T value)
-            {
-                lock (gate)
-                {
-                    if (!open) return;
-                    observer.OnNext(value);
-                    open = false;
-                }
+			public override void OnNext(T value) {
+				lock (gate) {
+					if (!open) return;
 
-                var d = new SingleAssignmentDisposable();
-                cancelable.Disposable = d;
-                d.Disposable = UnityObservable.TimerFrame(parent.frameCount, parent.frameCountType)
-                    .Subscribe(tick);
-            }
+					observer.OnNext(value);
+					open = false;
+				}
 
-            public override void OnError(Exception error)
-            {
-                cancelable.Dispose();
+				var d = new SingleAssignmentDisposable();
+				cancelable.Disposable = d;
+				d.Disposable = UnityObservable.TimerFrame(parent.frameCount, parent.frameCountType)
+							   .Subscribe(tick);
+			}
 
-                lock (gate)
-                {
-                    try { observer.OnError(error); } finally { Dispose(); }
-                }
-            }
+			public override void OnError(Exception error) {
+				cancelable.Dispose();
 
-            public override void OnCompleted()
-            {
-                cancelable.Dispose();
+				lock (gate) {
+					try { observer.OnError(error); } finally { Dispose(); }
+				}
+			}
 
-                lock (gate)
-                {
-                    try { observer.OnCompleted(); } finally { Dispose(); }
-                }
-            }
+			public override void OnCompleted() {
+				cancelable.Dispose();
 
-            // immutable, can share.
-            class ThrottleFirstFrameTick : IObserver<long>
-            {
-                readonly ThrottleFirstFrame parent;
+				lock (gate) {
+					try { observer.OnCompleted(); } finally { Dispose(); }
+				}
+			}
 
-                public ThrottleFirstFrameTick(ThrottleFirstFrame parent)
-                {
-                    this.parent = parent;
-                }
+			// immutable, can share.
+			class ThrottleFirstFrameTick : IObserver<long> {
+				readonly ThrottleFirstFrame parent;
 
-                public void OnCompleted()
-                {
-                }
+				public ThrottleFirstFrameTick(ThrottleFirstFrame parent) {
+					this.parent = parent;
+				}
 
-                public void OnError(Exception error)
-                {
-                }
+				public void OnCompleted() {
+				}
 
-                public void OnNext(long _)
-                {
-                    lock (parent.gate)
-                    {
-                        parent.open = true;
-                    }
-                }
-            }
-        }
-    }
+				public void OnError(Exception error) {
+				}
+
+				public void OnNext(long _) {
+					lock (parent.gate) {
+						parent.open = true;
+					}
+				}
+			}
+		}
+	}
 }

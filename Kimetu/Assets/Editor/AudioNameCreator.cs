@@ -14,23 +14,21 @@ using System.Collections.Generic;
 /// <summary>
 /// オーディオのファイル名を定数で管理するクラスを作成するスクリプト
 /// </summary>
-public static class AudioNameCreator{
+public static class AudioNameCreator {
 
 	private const string COMMAND_NAME  = "Editor/Audio";        // コマンド名
 	private const string EXPORT_PATH   = "Assets/Script/Define/AudioName.cs"; //作成したスクリプトを保存するパス
 
 	// ファイル名(拡張子あり、なし)
-	private static readonly string FILENAME = Path.GetFileName(EXPORT_PATH);                   
+	private static readonly string FILENAME = Path.GetFileName(EXPORT_PATH);
 	private static readonly string FILENAME_WITHOUT_EXTENSION = Path.GetFileNameWithoutExtension(EXPORT_PATH);
 
 	/// <summary>
 	/// オーディオのファイル名を定数で管理するクラスを作成します
 	/// </summary>
 	[MenuItem(COMMAND_NAME)]
-	public static void Create()
-	{
-		if (!CanCreate())
-		{
+	public static void Create() {
+		if (!CanCreate()) {
 			return;
 		}
 
@@ -42,8 +40,7 @@ public static class AudioNameCreator{
 	/// <summary>
 	/// スクリプトを作成します
 	/// </summary>
-	public static void CreateScript()
-	{
+	public static void CreateScript() {
 		var nameList = new List<string>();
 		//指定したパスのリソースを全て取得
 		nameList.AddRange(Resources.LoadAll("Audio/BGM").ToList().Select((e) => {
@@ -58,8 +55,8 @@ public static class AudioNameCreator{
 		var builder = EnumCreaterSupporter.CreateSctipt("AudioName", nameList.ToArray());
 
 		string directoryName = Path.GetDirectoryName(EXPORT_PATH);
-		if (!Directory.Exists(directoryName))
-		{
+
+		if (!Directory.Exists(directoryName)) {
 			Directory.CreateDirectory(directoryName);
 		}
 
@@ -71,8 +68,7 @@ public static class AudioNameCreator{
 	/// オーディオのファイル名を定数で管理するクラスを作成できるかどうかを取得します
 	/// </summary>
 	[MenuItem(COMMAND_NAME, true)]
-	private static bool CanCreate()
-	{
+	private static bool CanCreate() {
 		return !EditorApplication.isPlaying && !Application.isPlaying && !EditorApplication.isCompiling;
 	}
 

@@ -4,33 +4,27 @@
 using System;
 using UnityEngine;
 
-namespace UniRx.Triggers
-{
-    [DisallowMultipleComponent]
-    public class ObservableCanvasGroupChangedTrigger : ObservableTriggerBase
-    {
-        Subject<Unit> onCanvasGroupChanged;
+namespace UniRx.Triggers {
+	[DisallowMultipleComponent]
+	public class ObservableCanvasGroupChangedTrigger : ObservableTriggerBase {
+		Subject<Unit> onCanvasGroupChanged;
 
-        // Callback that is sent if the canvas group is changed
-        void OnCanvasGroupChanged()
-        {
-            if (onCanvasGroupChanged != null) onCanvasGroupChanged.OnNext(Unit.Default);
-        }
+		// Callback that is sent if the canvas group is changed
+		void OnCanvasGroupChanged() {
+			if (onCanvasGroupChanged != null) onCanvasGroupChanged.OnNext(Unit.Default);
+		}
 
-        /// <summary>Callback that is sent if the canvas group is changed.</summary>
-        public IObservable<Unit> OnCanvasGroupChangedAsObservable()
-        {
-            return onCanvasGroupChanged ?? (onCanvasGroupChanged = new Subject<Unit>());
-        }
+		/// <summary>Callback that is sent if the canvas group is changed.</summary>
+		public IObservable<Unit> OnCanvasGroupChangedAsObservable() {
+			return onCanvasGroupChanged ?? (onCanvasGroupChanged = new Subject<Unit>());
+		}
 
-        protected override void RaiseOnCompletedOnDestroy()
-        {
-            if (onCanvasGroupChanged != null)
-            {
-                onCanvasGroupChanged.OnCompleted();
-            }
-        }
-    }
+		protected override void RaiseOnCompletedOnDestroy() {
+			if (onCanvasGroupChanged != null) {
+				onCanvasGroupChanged.OnCompleted();
+			}
+		}
+	}
 }
 
 #endif

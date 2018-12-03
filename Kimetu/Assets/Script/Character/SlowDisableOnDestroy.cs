@@ -12,14 +12,14 @@ public class SlowDisableOnDestroy : MonoBehaviour {
 	void Start () {
 		this.characterAnimation = GetComponent<CharacterAnimation>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	private void OnDestroy() {
-		if(Slow.Instance != null && characterAnimation != null) {
+		if (Slow.Instance != null && characterAnimation != null) {
 			Slow.Instance.Remove(characterAnimation);
 		}
 	}

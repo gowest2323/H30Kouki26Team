@@ -7,62 +7,53 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncCollision2DTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<Collision2D> onCollisionEnter2D;
-        AsyncTriggerPromiseDictionary<Collision2D> onCollisionEnter2Ds;
-        AsyncTriggerPromise<Collision2D> onCollisionExit2D;
-        AsyncTriggerPromiseDictionary<Collision2D> onCollisionExit2Ds;
-        AsyncTriggerPromise<Collision2D> onCollisionStay2D;
-        AsyncTriggerPromiseDictionary<Collision2D> onCollisionStay2Ds;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncCollision2DTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<Collision2D> onCollisionEnter2D;
+		AsyncTriggerPromiseDictionary<Collision2D> onCollisionEnter2Ds;
+		AsyncTriggerPromise<Collision2D> onCollisionExit2D;
+		AsyncTriggerPromiseDictionary<Collision2D> onCollisionExit2Ds;
+		AsyncTriggerPromise<Collision2D> onCollisionStay2D;
+		AsyncTriggerPromiseDictionary<Collision2D> onCollisionStay2Ds;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onCollisionEnter2D, onCollisionEnter2Ds, onCollisionExit2D, onCollisionExit2Ds, onCollisionStay2D, onCollisionStay2Ds);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onCollisionEnter2D, onCollisionEnter2Ds, onCollisionExit2D, onCollisionExit2Ds, onCollisionStay2D, onCollisionStay2Ds);
+		}
 
 
-        void OnCollisionEnter2D(Collision2D coll)
-        {
-            TrySetResult(onCollisionEnter2D, onCollisionEnter2Ds, coll);
-        }
+		void OnCollisionEnter2D(Collision2D coll) {
+			TrySetResult(onCollisionEnter2D, onCollisionEnter2Ds, coll);
+		}
 
 
-        public UniTask OnCollisionEnter2DAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onCollisionEnter2D, ref onCollisionEnter2Ds, cancellationToken);
-        }
+		public UniTask OnCollisionEnter2DAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onCollisionEnter2D, ref onCollisionEnter2Ds, cancellationToken);
+		}
 
 
-        void OnCollisionExit2D(Collision2D coll)
-        {
-            TrySetResult(onCollisionExit2D, onCollisionExit2Ds, coll);
-        }
+		void OnCollisionExit2D(Collision2D coll) {
+			TrySetResult(onCollisionExit2D, onCollisionExit2Ds, coll);
+		}
 
 
-        public UniTask OnCollisionExit2DAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onCollisionExit2D, ref onCollisionExit2Ds, cancellationToken);
-        }
+		public UniTask OnCollisionExit2DAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onCollisionExit2D, ref onCollisionExit2Ds, cancellationToken);
+		}
 
 
-        void OnCollisionStay2D(Collision2D coll)
-        {
-            TrySetResult(onCollisionStay2D, onCollisionStay2Ds, coll);
-        }
+		void OnCollisionStay2D(Collision2D coll) {
+			TrySetResult(onCollisionStay2D, onCollisionStay2Ds, coll);
+		}
 
 
-        public UniTask OnCollisionStay2DAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onCollisionStay2D, ref onCollisionStay2Ds, cancellationToken);
-        }
+		public UniTask OnCollisionStay2DAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onCollisionStay2D, ref onCollisionStay2Ds, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

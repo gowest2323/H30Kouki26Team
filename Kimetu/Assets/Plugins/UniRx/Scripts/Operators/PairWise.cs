@@ -1,120 +1,100 @@
 ﻿using System;
 
-namespace UniRx.Operators
-{
-    internal class PairwiseObservable<T, TR> : OperatorObservableBase<TR>
-    {
-        readonly IObservable<T> source;
-        readonly Func<T, T, TR> selector;
+namespace UniRx.Operators {
+	internal class PairwiseObservable<T, TR> : OperatorObservableBase<TR> {
+		readonly IObservable<T> source;
+		readonly Func<T, T, TR> selector;
 
-        public PairwiseObservable(IObservable<T> source, Func<T, T, TR> selector)
-            : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.selector = selector;
-        }
+		public PairwiseObservable(IObservable<T> source, Func<T, T, TR> selector)
+			: base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.selector = selector;
+		}
 
-        protected override IDisposable SubscribeCore(IObserver<TR> observer, IDisposable cancel)
-        {
-            return source.Subscribe(new Pairwise(this, observer, cancel));
-        }
+		protected override IDisposable SubscribeCore(IObserver<TR> observer, IDisposable cancel) {
+			return source.Subscribe(new Pairwise(this, observer, cancel));
+		}
 
-        class Pairwise : OperatorObserverBase<T, TR>
-        {
-            readonly PairwiseObservable<T, TR> parent;
-            T prev = default(T);
-            bool isFirst = true;
+		class Pairwise : OperatorObserverBase<T, TR> {
+			readonly PairwiseObservable<T, TR> parent;
+			T prev = default(T);
+			bool isFirst = true;
 
-            public Pairwise(PairwiseObservable<T, TR> parent, IObserver<TR> observer, IDisposable cancel)
-                : base(observer, cancel)
-            {
-                this.parent = parent;
-            }
+			public Pairwise(PairwiseObservable<T, TR> parent, IObserver<TR> observer, IDisposable cancel)
+				: base(observer, cancel) {
+				this.parent = parent;
+			}
 
-            public override void OnNext(T value)
-            {
-                if (isFirst)
-                {
-                    isFirst = false;
-                    prev = value;
-                    return;
-                }
+			public override void OnNext(T value) {
+				if (isFirst) {
+					isFirst = false;
+					prev = value;
+					return;
+				}
 
-                TR v;
-                try
-                {
-                    v = parent.selector(prev, value);
-                    prev = value;
-                }
-                catch (Exception ex)
-                {
-                    try { observer.OnError(ex); } finally { Dispose(); }
-                    return;
-                }
+				TR v;
 
-                observer.OnNext(v);
-            }
+				try {
+					v = parent.selector(prev, value);
+					prev = value;
+				} catch (Exception ex) {
+					try { observer.OnError(ex); } finally { Dispose(); }
 
-            public override void OnError(Exception error)
-            {
-                try { observer.OnError(error); } finally { Dispose(); }
-            }
+					return;
+				}
 
-            public override void OnCompleted()
-            {
-                try { observer.OnCompleted(); } finally { Dispose(); }
-            }
-        }
-    }
+				observer.OnNext(v);
+			}
 
-    internal class PairwiseObservable<T> : OperatorObservableBase<Pair<T>>
-    {
-        readonly IObservable<T> source;
+			public override void OnError(Exception error) {
+				try { observer.OnError(error); } finally { Dispose(); }
+			}
 
-        public PairwiseObservable(IObservable<T> source)
-            : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-        }
+			public override void OnCompleted() {
+				try { observer.OnCompleted(); } finally { Dispose(); }
+			}
+		}
+	}
 
-        protected override IDisposable SubscribeCore(IObserver<Pair<T>> observer, IDisposable cancel)
-        {
-            return source.Subscribe(new Pairwise(observer, cancel));
-        }
+	internal class PairwiseObservable<T> : OperatorObservableBase<Pair<T>> {
+		readonly IObservable<T> source;
 
-        class Pairwise : OperatorObserverBase<T, Pair<T>>
-        {
-            T prev = default(T);
-            bool isFirst = true;
+		public PairwiseObservable(IObservable<T> source)
+			: base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+		}
 
-            public Pairwise(IObserver<Pair<T>> observer, IDisposable cancel)
-                : base(observer, cancel)
-            {
-            }
+		protected override IDisposable SubscribeCore(IObserver<Pair<T>> observer, IDisposable cancel) {
+			return source.Subscribe(new Pairwise(observer, cancel));
+		}
 
-            public override void OnNext(T value)
-            {
-                if (isFirst)
-                {
-                    isFirst = false;
-                    prev = value;
-                    return;
-                }
+		class Pairwise : OperatorObserverBase<T, Pair<T>> {
+			T prev = default(T);
+			bool isFirst = true;
 
-                var pair = new Pair<T>(prev, value);
-                prev = value;
-                observer.OnNext(pair);
-            }
+			public Pairwise(IObserver<Pair<T>> observer, IDisposable cancel)
+				: base(observer, cancel) {
+			}
 
-            public override void OnError(Exception error)
-            {
-                try { observer.OnError(error); } finally { Dispose(); }
-            }
+			public override void OnNext(T value) {
+				if (isFirst) {
+					isFirst = false;
+					prev = value;
+					return;
+				}
 
-            public override void OnCompleted()
-            {
-                try { observer.OnCompleted(); } finally { Dispose(); }
-            }
-        }
-    }
+				var pair = new Pair<T>(prev, value);
+				prev = value;
+				observer.OnNext(pair);
+			}
+
+			public override void OnError(Exception error) {
+				try { observer.OnError(error); } finally { Dispose(); }
+			}
+
+			public override void OnCompleted() {
+				try { observer.OnCompleted(); } finally { Dispose(); }
+			}
+		}
+	}
 }

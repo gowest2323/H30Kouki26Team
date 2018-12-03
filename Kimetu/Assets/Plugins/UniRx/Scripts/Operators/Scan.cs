@@ -1,139 +1,114 @@
 ﻿using System;
 using UniRx.Operators;
 
-namespace UniRx.Operators
-{
-    internal class ScanObservable<TSource> : OperatorObservableBase<TSource>
-    {
-        readonly IObservable<TSource> source;
-        readonly Func<TSource, TSource, TSource> accumulator;
+namespace UniRx.Operators {
+	internal class ScanObservable<TSource> : OperatorObservableBase<TSource> {
+		readonly IObservable<TSource> source;
+		readonly Func<TSource, TSource, TSource> accumulator;
 
-        public ScanObservable(IObservable<TSource> source, Func<TSource, TSource, TSource> accumulator)
-            : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.accumulator = accumulator;
-        }
+		public ScanObservable(IObservable<TSource> source, Func<TSource, TSource, TSource> accumulator)
+			: base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.accumulator = accumulator;
+		}
 
-        protected override IDisposable SubscribeCore(IObserver<TSource> observer, IDisposable cancel)
-        {
-            return source.Subscribe(new Scan(this, observer, cancel));
-        }
+		protected override IDisposable SubscribeCore(IObserver<TSource> observer, IDisposable cancel) {
+			return source.Subscribe(new Scan(this, observer, cancel));
+		}
 
-        class Scan : OperatorObserverBase<TSource, TSource>
-        {
-            readonly ScanObservable<TSource> parent;
-            TSource accumulation;
-            bool isFirst;
+		class Scan : OperatorObserverBase<TSource, TSource> {
+			readonly ScanObservable<TSource> parent;
+			TSource accumulation;
+			bool isFirst;
 
-            public Scan(ScanObservable<TSource> parent, IObserver<TSource> observer, IDisposable cancel) : base(observer, cancel)
-            {
-                this.parent = parent;
-                this.isFirst = true;
-            }
+			public Scan(ScanObservable<TSource> parent, IObserver<TSource> observer, IDisposable cancel) : base(observer, cancel) {
+				this.parent = parent;
+				this.isFirst = true;
+			}
 
-            public override void OnNext(TSource value)
-            {
-                if (isFirst)
-                {
-                    isFirst = false;
-                    accumulation = value;
-                }
-                else
-                {
-                    try
-                    {
-                        accumulation = parent.accumulator(accumulation, value);
-                    }
-                    catch (Exception ex)
-                    {
-                        try { observer.OnError(ex); }
-                        finally { Dispose(); }
-                        return;
-                    }
-                }
+			public override void OnNext(TSource value) {
+				if (isFirst) {
+					isFirst = false;
+					accumulation = value;
+				} else {
+					try {
+						accumulation = parent.accumulator(accumulation, value);
+					} catch (Exception ex) {
+						try { observer.OnError(ex); }
+						finally { Dispose(); }
 
-                observer.OnNext(accumulation);
-            }
+						return;
+					}
+				}
 
-            public override void OnError(Exception error)
-            {
-                try { observer.OnError(error); }
-                finally { Dispose(); }
-            }
+				observer.OnNext(accumulation);
+			}
 
-            public override void OnCompleted()
-            {
-                try { observer.OnCompleted(); }
-                finally { Dispose(); }
-            }
-        }
-    }
+			public override void OnError(Exception error) {
+				try { observer.OnError(error); }
+				finally { Dispose(); }
+			}
 
-    internal class ScanObservable<TSource, TAccumulate> : OperatorObservableBase<TAccumulate>
-    {
-        readonly IObservable<TSource> source;
-        readonly TAccumulate seed;
-        readonly Func<TAccumulate, TSource, TAccumulate> accumulator;
+			public override void OnCompleted() {
+				try { observer.OnCompleted(); }
+				finally { Dispose(); }
+			}
+		}
+	}
 
-        public ScanObservable(IObservable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
-            : base(source.IsRequiredSubscribeOnCurrentThread())
-        {
-            this.source = source;
-            this.seed = seed;
-            this.accumulator = accumulator;
-        }
+	internal class ScanObservable<TSource, TAccumulate> : OperatorObservableBase<TAccumulate> {
+		readonly IObservable<TSource> source;
+		readonly TAccumulate seed;
+		readonly Func<TAccumulate, TSource, TAccumulate> accumulator;
 
-        protected override IDisposable SubscribeCore(IObserver<TAccumulate> observer, IDisposable cancel)
-        {
-            return source.Subscribe(new Scan(this, observer, cancel));
-        }
+		public ScanObservable(IObservable<TSource> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> accumulator)
+			: base(source.IsRequiredSubscribeOnCurrentThread()) {
+			this.source = source;
+			this.seed = seed;
+			this.accumulator = accumulator;
+		}
 
-        class Scan : OperatorObserverBase<TSource, TAccumulate>
-        {
-            readonly ScanObservable<TSource, TAccumulate> parent;
-            TAccumulate accumulation;
-            bool isFirst;
+		protected override IDisposable SubscribeCore(IObserver<TAccumulate> observer, IDisposable cancel) {
+			return source.Subscribe(new Scan(this, observer, cancel));
+		}
 
-            public Scan(ScanObservable<TSource, TAccumulate> parent, IObserver<TAccumulate> observer, IDisposable cancel) : base(observer, cancel)
-            {
-                this.parent = parent;
-                this.isFirst = true;
-            }
+		class Scan : OperatorObserverBase<TSource, TAccumulate> {
+			readonly ScanObservable<TSource, TAccumulate> parent;
+			TAccumulate accumulation;
+			bool isFirst;
 
-            public override void OnNext(TSource value)
-            {
-                if (isFirst)
-                {
-                    isFirst = false;
-                    accumulation = parent.seed;
-                }
+			public Scan(ScanObservable<TSource, TAccumulate> parent, IObserver<TAccumulate> observer, IDisposable cancel) : base(observer, cancel) {
+				this.parent = parent;
+				this.isFirst = true;
+			}
 
-                try
-                {
-                    accumulation = parent.accumulator(accumulation, value);
-                }
-                catch (Exception ex)
-                {
-                    try { observer.OnError(ex); }
-                    finally { Dispose(); }
-                    return;
-                }
+			public override void OnNext(TSource value) {
+				if (isFirst) {
+					isFirst = false;
+					accumulation = parent.seed;
+				}
 
-                observer.OnNext(accumulation);
-            }
+				try {
+					accumulation = parent.accumulator(accumulation, value);
+				} catch (Exception ex) {
+					try { observer.OnError(ex); }
+					finally { Dispose(); }
 
-            public override void OnError(Exception error)
-            {
-                try { observer.OnError(error); }
-                finally { Dispose(); }
-            }
+					return;
+				}
 
-            public override void OnCompleted()
-            {
-                try { observer.OnCompleted(); }
-                finally { Dispose(); }
-            }
-        }
-    }
+				observer.OnNext(accumulation);
+			}
+
+			public override void OnError(Exception error) {
+				try { observer.OnError(error); }
+				finally { Dispose(); }
+			}
+
+			public override void OnCompleted() {
+				try { observer.OnCompleted(); }
+				finally { Dispose(); }
+			}
+		}
+	}
 }

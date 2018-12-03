@@ -818,7 +818,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4290892368974912}
   - component: {fileID: 65989849755674250}
-  - component: {fileID: 114639810818635208}
+  - component: {fileID: 114000031491304826}
   m_Layer: 0
   m_Name: SwingDownAttackableArea
   m_TagString: Untagged
@@ -1854,8 +1854,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1634250384741530}
-  m_LocalRotation: {x: -0.62821454, y: 0.30558535, z: -0.4207757, w: 0.57871574}
-  m_LocalPosition: {x: 0.335922, y: 0.35945198, z: -0.14856444}
+  m_LocalRotation: {x: -0.62821454, y: 0.30558532, z: -0.42077565, w: 0.57871574}
+  m_LocalPosition: {x: 0.33592194, y: 0.3594518, z: -0.14856446}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4650272917688162}
@@ -2566,6 +2566,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114000031491304826
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1584144046824156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a467ac740040e41b6b67d200301e25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeTransform: {fileID: 4683930439328432}
+  searchCollider: {fileID: 65989849755674250}
 --- !u!114 &114000452703489516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2602,7 +2615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 9
-  attackableArea: {fileID: 114639810818635208}
+  attackableArea: {fileID: 114000031491304826}
   holderEnemy: {fileID: 114696172197081054}
   attackType: 0
   attackAnimationName: hurioroshi
@@ -2978,18 +2991,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 80
---- !u!114 &114639810818635208
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1584144046824156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d3b91a2439fb44390a38348888ef68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eyeTransform: {fileID: 4683930439328432}
 --- !u!114 &114676328182511932
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3012,6 +3013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1908878796493439371514b079216a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waistObjectName: mixamorig:Hips/mixamorig:Spine
   idle: {fileID: 114596707765325568}
   attack: {fileID: 114833311285637518}
   search: {fileID: 114000452703489516}

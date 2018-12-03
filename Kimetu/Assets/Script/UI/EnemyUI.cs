@@ -14,9 +14,10 @@ public class EnemyUI : MonoBehaviour {
 	private void Awake() {
 		//本番環境では無効化
 		#if !(UNITY_EDITOR)
-		if(text != null) {
+		if (text != null) {
 			text.gameObject.SetActive(false);
 		}
+
 		#endif
 	}
 
@@ -31,9 +32,11 @@ public class EnemyUI : MonoBehaviour {
 		slider.transform.LookAt(Camera.main.transform.transform, Vector3.up);
 		slider.transform.Rotate(new Vector3(0, 180, 0));
 		#if UNITY_EDITOR
-		if(provider != null) {
+
+		if (provider != null) {
 			text.text = provider.informationText;
 		}
+
 		text.transform.LookAt(Camera.main.transform.transform, Vector3.up);
 		text.transform.Rotate(new Vector3(0, 180, 0));
 		#endif

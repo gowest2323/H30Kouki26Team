@@ -29,29 +29,31 @@ using ColliderOption				= SAColliderBuilderEditorCommon.ColliderOption;
 using ReducerTask					= SABoneColliderEditorCommon.ReducerTask;
 
 [CustomEditor(typeof(SABoneColliderBuilder))]
-public class SABoneColliderBuilderInspector : Editor
-{
-	public override void OnInspectorGUI()
-	{
+public class SABoneColliderBuilderInspector : Editor {
+	public override void OnInspectorGUI() {
 		SABoneColliderBuilder boneColliderBuilder = (SABoneColliderBuilder)target;
-		if( boneColliderBuilder.edittingBoneColliderBuilderProperty == null ) {
-			if( boneColliderBuilder.boneColliderBuilderProperty != null ) {
+
+		if ( boneColliderBuilder.edittingBoneColliderBuilderProperty == null ) {
+			if ( boneColliderBuilder.boneColliderBuilderProperty != null ) {
 				boneColliderBuilder.edittingBoneColliderBuilderProperty = boneColliderBuilder.boneColliderBuilderProperty.Copy();
 			}
 		}
+
 		SABoneColliderBuilderProperty boneColliderBuilderProperty = boneColliderBuilder.edittingBoneColliderBuilderProperty;
-		if( boneColliderBuilderProperty != null ) {
+
+		if ( boneColliderBuilderProperty != null ) {
 			SplitProperty splitProperty = boneColliderBuilderProperty.splitProperty;
-			if( splitProperty != null ) {
+
+			if ( splitProperty != null ) {
 				GUILayout.Label( "Split", EditorStyles.boldLabel );
 				SABoneColliderEditorCommon.SplitInspectorGUI( splitProperty );
 			}
-			
+
 			EditorGUILayout.Separator();
 			GUILayout.Label( "Reducer", EditorStyles.boldLabel );
 			SAColliderBuilderEditorCommon.ReducerInspectorGUI( boneColliderBuilderProperty.reducerProperty,
-			                                                  ReducerOption.ColliderToChild );
-			
+					ReducerOption.ColliderToChild );
+
 			GUI.enabled = boneColliderBuilderProperty.reducerProperty.shapeType != ShapeType.None;
 			EditorGUILayout.Separator();
 			GUILayout.Label( "Collider", EditorStyles.boldLabel );
@@ -61,23 +63,27 @@ public class SABoneColliderBuilderInspector : Editor
 			SAColliderBuilderEditorCommon.RigidbodyInspectorGUI( boneColliderBuilderProperty.rigidbodyProperty );
 			GUI.enabled = true;
 		}
-		
+
 		EditorGUILayout.Separator();
-		if( boneColliderBuilderProperty != null ) {
+
+		if ( boneColliderBuilderProperty != null ) {
 			boneColliderBuilderProperty.modifyNameEnabled = EditorGUILayout.Toggle( "Modify Name", boneColliderBuilderProperty.modifyNameEnabled );
 		}
+
 		boneColliderBuilder.cleanupModified = EditorGUILayout.Toggle( "Cleanup Modified", boneColliderBuilder.cleanupModified );
 		boneColliderBuilder.isDebug = EditorGUILayout.Toggle( "Is Debug", boneColliderBuilder.isDebug );
-		
+
 		EditorGUILayout.Separator();
-		
+
 		EditorGUILayout.BeginHorizontal();
 		GUILayout.FlexibleSpace();
-		if( GUILayout.Button("Revert") ) {
+
+		if ( GUILayout.Button("Revert") ) {
 			boneColliderBuilder.edittingBoneColliderBuilderProperty = null;
 		}
-		if( GUILayout.Button("Cleanup") ) {
-			if( boneColliderBuilder.edittingBoneColliderBuilderProperty != null ) {
+
+		if ( GUILayout.Button("Cleanup") ) {
+			if ( boneColliderBuilder.edittingBoneColliderBuilderProperty != null ) {
 				boneColliderBuilder.boneColliderBuilderProperty = boneColliderBuilder.edittingBoneColliderBuilderProperty;
 				boneColliderBuilder.edittingBoneColliderBuilderProperty = null;
 				Cleanup( boneColliderBuilder );
@@ -86,8 +92,9 @@ public class SABoneColliderBuilderInspector : Editor
 				Debug.Log("Cleanuped.");
 			}
 		}
-		if( GUILayout.Button("Process") ) {
-			if( boneColliderBuilder.edittingBoneColliderBuilderProperty != null ) {
+
+		if ( GUILayout.Button("Process") ) {
+			if ( boneColliderBuilder.edittingBoneColliderBuilderProperty != null ) {
 				boneColliderBuilder.boneColliderBuilderProperty = boneColliderBuilder.edittingBoneColliderBuilderProperty;
 				boneColliderBuilder.edittingBoneColliderBuilderProperty = null;
 				float beginTime = Time.realtimeSinceStartup;
@@ -98,31 +105,35 @@ public class SABoneColliderBuilderInspector : Editor
 				Debug.Log("Processed.[" + (endTime - beginTime) + " sec]" );
 			}
 		}
+
 		EditorGUILayout.EndHorizontal();
 	}
 
-	static void Process( SABoneColliderBuilder boneColliderBuilder )
-	{
-		if( boneColliderBuilder == null || boneColliderBuilder.colliderProperty == null ) {
+	static void Process( SABoneColliderBuilder boneColliderBuilder ) {
+		if ( boneColliderBuilder == null || boneColliderBuilder.colliderProperty == null ) {
 			Debug.LogError("");
 			return;
 		}
 
 		string collidersPath = null;
-		if( boneColliderBuilder.colliderProperty.isCreateAsset ) {
+
+		if ( boneColliderBuilder.colliderProperty.isCreateAsset ) {
 			collidersPath = SABoneColliderEditorCommon.GetCollidersPath( boneColliderBuilder.gameObject );
-			if( string.IsNullOrEmpty( collidersPath ) ) {
+
+			if ( string.IsNullOrEmpty( collidersPath ) ) {
 				Debug.LogWarning( "Not found collidersPath. Can't create asset." );
 			}
 		}
+
 		HashSet<Transform> boneHashSet = SABoneColliderEditorCommon.GetBoneHashSet( boneColliderBuilder.gameObject );
 
 		SABoneColliderEditorCommon.BoneMeshCache boneMeshCache = new SABoneColliderEditorCommon.BoneMeshCache();
 		boneMeshCache.Process( boneColliderBuilder.transform.gameObject );
 
 		List<ReducerTask> reducerTasks = new List<ReducerTask>();
-		foreach( Transform transform in boneColliderBuilder.transform ) {
-			if( SAColliderBuilderEditorCommon.IsRootTransform( transform ) ) {
+
+		foreach ( Transform transform in boneColliderBuilder.transform ) {
+			if ( SAColliderBuilderEditorCommon.IsRootTransform( transform ) ) {
 				// Nothing.
 			} else {
 				_ProcessTransform( transform, reducerTasks, boneColliderBuilder, boneHashSet, boneMeshCache );
@@ -137,33 +148,34 @@ public class SABoneColliderBuilderInspector : Editor
 		List<ReducerTask> reducerTasks,
 		SABoneColliderBuilder boneColliderBuilder,
 		HashSet<Transform> boneHashSet,
-		SABoneColliderEditorCommon.BoneMeshCache boneMeshCache )
-	{
-		if( transform == null || reducerTasks == null || boneColliderBuilder == null ||
-		   	boneHashSet == null || boneMeshCache == null ) {
+		SABoneColliderEditorCommon.BoneMeshCache boneMeshCache ) {
+		if ( transform == null || reducerTasks == null || boneColliderBuilder == null ||
+				boneHashSet == null || boneMeshCache == null ) {
 			return;
 		}
 
-		if( boneHashSet.Contains( transform ) ) {
+		if ( boneHashSet.Contains( transform ) ) {
 			SABoneCollider boneCollider = transform.gameObject.GetComponent< SABoneCollider >();
-			if( boneCollider != null ) {
-				if( boneColliderBuilder.cleanupModified || !boneCollider.modified ) {
+
+			if ( boneCollider != null ) {
+				if ( boneColliderBuilder.cleanupModified || !boneCollider.modified ) {
 					SABoneColliderEditorCommon.DestroySABoneCollider( boneCollider );
 					boneCollider = null;
 				}
-				if( boneCollider != null && boneCollider.recursivery ) {
+
+				if ( boneCollider != null && boneCollider.recursivery ) {
 					return; // Skip modified children.
 				}
 			}
 
-			if( boneCollider == null ) { // Don't overwrite modified.
+			if ( boneCollider == null ) { // Don't overwrite modified.
 				boneCollider = SABoneColliderEditorCommon.CreateSABoneCollider( transform.gameObject, boneColliderBuilder );
 				SABoneColliderEditorCommon.RegistReducerTask( reducerTasks, boneCollider, boneMeshCache );
 			}
 		}
 
-		foreach( Transform childTransform in transform ) {
-			if( SAColliderBuilderEditorCommon.IsRootTransform( childTransform ) ) {
+		foreach ( Transform childTransform in transform ) {
+			if ( SAColliderBuilderEditorCommon.IsRootTransform( childTransform ) ) {
 				// Nothing.
 			} else {
 				_ProcessTransform( childTransform, reducerTasks, boneColliderBuilder, boneHashSet, boneMeshCache );
@@ -171,16 +183,16 @@ public class SABoneColliderBuilderInspector : Editor
 		}
 	}
 
-	static void Cleanup( SABoneColliderBuilder boneColliderBuilder )
-	{
-		if( boneColliderBuilder == null ) {
+	static void Cleanup( SABoneColliderBuilder boneColliderBuilder ) {
+		if ( boneColliderBuilder == null ) {
 			Debug.LogError("");
 			return;
 		}
-		
+
 		HashSet<Transform> boneHashSet = SABoneColliderEditorCommon.GetBoneHashSet( boneColliderBuilder.gameObject );
-		foreach( Transform transform in boneColliderBuilder.transform ) {
-			if( SAColliderBuilderEditorCommon.IsRootTransform( transform ) ) {
+
+		foreach ( Transform transform in boneColliderBuilder.transform ) {
+			if ( SAColliderBuilderEditorCommon.IsRootTransform( transform ) ) {
 				// Nothing.
 			} else {
 				_CleanupTransform( transform, boneColliderBuilder, boneHashSet );
@@ -191,27 +203,28 @@ public class SABoneColliderBuilderInspector : Editor
 	static void _CleanupTransform(
 		Transform transform,
 		SABoneColliderBuilder boneColliderBuilder,
-		HashSet<Transform> boneHashSet )
-	{
-		if( transform == null || boneColliderBuilder == null || boneHashSet == null ) {
+		HashSet<Transform> boneHashSet ) {
+		if ( transform == null || boneColliderBuilder == null || boneHashSet == null ) {
 			return;
 		}
-		
-		if( boneHashSet.Contains( transform ) ) {
+
+		if ( boneHashSet.Contains( transform ) ) {
 			SABoneCollider boneCollider = transform.gameObject.GetComponent< SABoneCollider >();
-			if( boneCollider != null ) {
-				if( boneColliderBuilder.cleanupModified || !boneCollider.modified ) {
+
+			if ( boneCollider != null ) {
+				if ( boneColliderBuilder.cleanupModified || !boneCollider.modified ) {
 					SABoneColliderEditorCommon.DestroySABoneCollider( boneCollider );
 					boneCollider = null;
 				}
-				if( boneCollider != null && boneCollider.recursivery ) {
+
+				if ( boneCollider != null && boneCollider.recursivery ) {
 					return;
 				}
 			}
 		}
-		
-		foreach( Transform childTransform in transform ) {
-			if( SAColliderBuilderEditorCommon.IsRootTransform( childTransform ) ) {
+
+		foreach ( Transform childTransform in transform ) {
+			if ( SAColliderBuilderEditorCommon.IsRootTransform( childTransform ) ) {
 				// Nothing.
 			} else {
 				_CleanupTransform( childTransform, boneColliderBuilder, boneHashSet );

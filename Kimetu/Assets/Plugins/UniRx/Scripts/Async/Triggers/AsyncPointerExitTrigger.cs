@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncPointerExitTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<PointerEventData> onPointerExit;
-        AsyncTriggerPromiseDictionary<PointerEventData> onPointerExits;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncPointerExitTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<PointerEventData> onPointerExit;
+		AsyncTriggerPromiseDictionary<PointerEventData> onPointerExits;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onPointerExit, onPointerExits);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onPointerExit, onPointerExits);
+		}
 
 
-        void OnPointerExit(PointerEventData eventData)
-        {
-            TrySetResult(onPointerExit, onPointerExits, eventData);
-        }
+		void OnPointerExit(PointerEventData eventData) {
+			TrySetResult(onPointerExit, onPointerExits, eventData);
+		}
 
 
-        public UniTask OnPointerExitAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onPointerExit, ref onPointerExits, cancellationToken);
-        }
+		public UniTask OnPointerExitAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onPointerExit, ref onPointerExits, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

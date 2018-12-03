@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncUpdateTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<AsyncUnit> update;
-        AsyncTriggerPromiseDictionary<AsyncUnit> updates;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncUpdateTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<AsyncUnit> update;
+		AsyncTriggerPromiseDictionary<AsyncUnit> updates;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(update, updates);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(update, updates);
+		}
 
 
-        void Update()
-        {
-            TrySetResult(update, updates, AsyncUnit.Default);
-        }
+		void Update() {
+			TrySetResult(update, updates, AsyncUnit.Default);
+		}
 
 
-        public UniTask UpdateAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref update, ref updates, cancellationToken);
-        }
+		public UniTask UpdateAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref update, ref updates, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

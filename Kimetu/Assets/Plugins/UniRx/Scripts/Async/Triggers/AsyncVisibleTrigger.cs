@@ -7,48 +7,41 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncVisibleTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<AsyncUnit> onBecameInvisible;
-        AsyncTriggerPromiseDictionary<AsyncUnit> onBecameInvisibles;
-        AsyncTriggerPromise<AsyncUnit> onBecameVisible;
-        AsyncTriggerPromiseDictionary<AsyncUnit> onBecameVisibles;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncVisibleTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<AsyncUnit> onBecameInvisible;
+		AsyncTriggerPromiseDictionary<AsyncUnit> onBecameInvisibles;
+		AsyncTriggerPromise<AsyncUnit> onBecameVisible;
+		AsyncTriggerPromiseDictionary<AsyncUnit> onBecameVisibles;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onBecameInvisible, onBecameInvisibles, onBecameVisible, onBecameVisibles);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onBecameInvisible, onBecameInvisibles, onBecameVisible, onBecameVisibles);
+		}
 
 
-        void OnBecameInvisible()
-        {
-            TrySetResult(onBecameInvisible, onBecameInvisibles, AsyncUnit.Default);
-        }
+		void OnBecameInvisible() {
+			TrySetResult(onBecameInvisible, onBecameInvisibles, AsyncUnit.Default);
+		}
 
 
-        public UniTask OnBecameInvisibleAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onBecameInvisible, ref onBecameInvisibles, cancellationToken);
-        }
+		public UniTask OnBecameInvisibleAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onBecameInvisible, ref onBecameInvisibles, cancellationToken);
+		}
 
 
-        void OnBecameVisible()
-        {
-            TrySetResult(onBecameVisible, onBecameVisibles, AsyncUnit.Default);
-        }
+		void OnBecameVisible() {
+			TrySetResult(onBecameVisible, onBecameVisibles, AsyncUnit.Default);
+		}
 
 
-        public UniTask OnBecameVisibleAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onBecameVisible, ref onBecameVisibles, cancellationToken);
-        }
+		public UniTask OnBecameVisibleAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onBecameVisible, ref onBecameVisibles, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

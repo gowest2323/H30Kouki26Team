@@ -1,152 +1,151 @@
+
 ﻿#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-using System;
+	using System;
+
 using System.Threading;
 
-namespace UniRx.Async.Internal
-{
-    // Same interface as System.Buffers.ArrayPool<T> but only provides Shared.
+namespace UniRx.Async.Internal {
+	// Same interface as System.Buffers.ArrayPool<T> but only provides Shared.
 
-    public sealed class ArrayPool<T> // public, can use from other assembly.
-    {
-        // Same size as System.Buffers.DefaultArrayPool<T>
-        const int DefaultMaxNumberOfArraysPerBucket = 50;
+	public sealed class ArrayPool<T> { // public, can use from other assembly.
+		// Same size as System.Buffers.DefaultArrayPool<T>
+		const int DefaultMaxNumberOfArraysPerBucket = 50;
 
-        static readonly T[] EmptyArray = new T[0];
+		static readonly T[] EmptyArray = new T[0];
 
-        public static readonly ArrayPool<T> Shared = new ArrayPool<T>();
+		public static readonly ArrayPool<T> Shared = new ArrayPool<T>();
 
-        readonly MinimumQueue<T[]>[] buckets;
-        readonly SpinLock[] locks;
+		readonly MinimumQueue<T[]>[] buckets;
+		readonly SpinLock[] locks;
 
-        ArrayPool()
-        {
-            // see: GetQueueIndex
-            buckets = new MinimumQueue<T[]>[18];
-            locks = new SpinLock[18];
-            for (int i = 0; i < buckets.Length; i++)
-            {
-                buckets[i] = new MinimumQueue<T[]>(4);
-                locks[i] = new SpinLock(false);
-            }
-        }
+		ArrayPool() {
+			// see: GetQueueIndex
+			buckets = new MinimumQueue<T[]>[18];
+			locks = new SpinLock[18];
 
-        public T[] Rent(int minimumLength)
-        {
-            if (minimumLength < 0)
-            {
-                throw new ArgumentOutOfRangeException("minimumLength");
-            }
-            else if (minimumLength == 0)
-            {
-                return EmptyArray;
-            }
+			for (int i = 0; i < buckets.Length; i++) {
+				buckets[i] = new MinimumQueue<T[]>(4);
+				locks[i] = new SpinLock(false);
+			}
+		}
 
-            var size = CalculateSize(minimumLength);
-            var index = GetQueueIndex(size);
-            if (index != -1)
-            {
-                var q = buckets[index];
-                var lockTaken = false;
-                try
-                {
-                    locks[index].Enter(ref lockTaken);
+		public T[] Rent(int minimumLength) {
+			if (minimumLength < 0) {
+				throw new ArgumentOutOfRangeException("minimumLength");
+			} else if (minimumLength == 0) {
+				return EmptyArray;
+			}
 
-                    if (q.Count != 0)
-                    {
-                        return q.Dequeue();
-                    }
-                }
-                finally
-                {
-                    if (lockTaken) locks[index].Exit(false);
-                }
-            }
+			var size = CalculateSize(minimumLength);
+			var index = GetQueueIndex(size);
 
-            return new T[size];
-        }
+			if (index != -1) {
+				var q = buckets[index];
+				var lockTaken = false;
 
-        public void Return(T[] array, bool clearArray = false)
-        {
-            if (array == null || array.Length == 0)
-            {
-                return;
-            }
+				try {
+					locks[index].Enter(ref lockTaken);
 
-            var index = GetQueueIndex(array.Length);
-            if (index != -1)
-            {
-                if (clearArray)
-                {
-                    Array.Clear(array, 0, array.Length);
-                }
+					if (q.Count != 0) {
+						return q.Dequeue();
+					}
+				} finally {
+					if (lockTaken) locks[index].Exit(false);
+				}
+			}
 
-                var q = buckets[index];
-                var lockTaken = false;
+			return new T[size];
+		}
 
-                try
-                {
-                    locks[index].Enter(ref lockTaken);
+		public void Return(T[] array, bool clearArray = false) {
+			if (array == null || array.Length == 0) {
+				return;
+			}
 
-                    if (q.Count > DefaultMaxNumberOfArraysPerBucket)
-                    {
-                        return;
-                    }
+			var index = GetQueueIndex(array.Length);
 
-                    q.Enqueue(array);
-                }
-                finally
-                {
-                    if (lockTaken) locks[index].Exit(false);
-                }
-            }
-        }
+			if (index != -1) {
+				if (clearArray) {
+					Array.Clear(array, 0, array.Length);
+				}
 
-        static int CalculateSize(int size)
-        {
-            size--;
-            size |= size >> 1;
-            size |= size >> 2;
-            size |= size >> 4;
-            size |= size >> 8;
-            size |= size >> 16;
-            size += 1;
+				var q = buckets[index];
+				var lockTaken = false;
 
-            if (size < 8)
-            {
-                size = 8;
-            }
+				try {
+					locks[index].Enter(ref lockTaken);
 
-            return size;
-        }
+					if (q.Count > DefaultMaxNumberOfArraysPerBucket) {
+						return;
+					}
 
-        static int GetQueueIndex(int size)
-        {
-            switch (size)
-            {
-                case 8: return 0;
-                case 16: return 1;
-                case 32: return 2;
-                case 64: return 3;
-                case 128: return 4;
-                case 256: return 5;
-                case 512: return 6;
-                case 1024: return 7;
-                case 2048: return 8;
-                case 4096: return 9;
-                case 8192: return 10;
-                case 16384: return 11;
-                case 32768: return 12;
-                case 65536: return 13;
-                case 131072: return 14;
-                case 262144: return 15;
-                case 524288: return 16;
-                case 1048576: return 17; // max array length
-                default:
-                    return -1;
-            }
-        }
-    }
+					q.Enqueue(array);
+				} finally {
+					if (lockTaken) locks[index].Exit(false);
+				}
+			}
+		}
+
+		static int CalculateSize(int size) {
+			size--;
+			size |= size >> 1;
+			size |= size >> 2;
+			size |= size >> 4;
+			size |= size >> 8;
+			size |= size >> 16;
+			size += 1;
+
+			if (size < 8) {
+				size = 8;
+			}
+
+			return size;
+		}
+
+		static int GetQueueIndex(int size) {
+			switch (size) {
+				case 8: return 0;
+
+				case 16: return 1;
+
+				case 32: return 2;
+
+				case 64: return 3;
+
+				case 128: return 4;
+
+				case 256: return 5;
+
+				case 512: return 6;
+
+				case 1024: return 7;
+
+				case 2048: return 8;
+
+				case 4096: return 9;
+
+				case 8192: return 10;
+
+				case 16384: return 11;
+
+				case 32768: return 12;
+
+				case 65536: return 13;
+
+				case 131072: return 14;
+
+				case 262144: return 15;
+
+				case 524288: return 16;
+
+				case 1048576: return 17; // max array length
+
+				default:
+					return -1;
+			}
+		}
+	}
 }
 #endif

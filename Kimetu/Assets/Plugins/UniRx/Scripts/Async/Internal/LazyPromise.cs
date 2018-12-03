@@ -1,130 +1,109 @@
+
 ﻿#if CSHARP_7_OR_LATER || (UNITY_2018_3_OR_NEWER && (NET_STANDARD_2_0 || NET_4_6))
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-using System;
+	using System;
+
 using System.Threading;
 
-namespace UniRx.Async.Internal
-{
-    internal sealed class LazyPromise : IAwaiter
-    {
-        Func<UniTask> factory;
-        UniTask value;
+namespace UniRx.Async.Internal {
+	internal sealed class LazyPromise : IAwaiter {
+		Func<UniTask> factory;
+		UniTask value;
 
-        public LazyPromise(Func<UniTask> factory)
-        {
-            this.factory = factory;
-        }
+		public LazyPromise(Func<UniTask> factory) {
+			this.factory = factory;
+		}
 
-        void Create()
-        {
-            var f = Interlocked.Exchange(ref factory, null);
-            if (f != null)
-            {
-                value = f();
-            }
-        }
+		void Create() {
+			var f = Interlocked.Exchange(ref factory, null);
 
-        public bool IsCompleted
-        {
-            get
-            {
-                Create();
-                return value.IsCompleted;
-            }
-        }
+			if (f != null) {
+				value = f();
+			}
+		}
 
-        public AwaiterStatus Status
-        {
-            get
-            {
-                Create();
-                return value.Status;
-            }
-        }
+		public bool IsCompleted {
+			get {
+				Create();
+				return value.IsCompleted;
+			}
+		}
 
-        public void GetResult()
-        {
-            Create();
-            value.GetResult();
-        }
+		public AwaiterStatus Status {
+			get {
+				Create();
+				return value.Status;
+			}
+		}
 
-        void IAwaiter.GetResult()
-        {
-            GetResult();
-        }
+		public void GetResult() {
+			Create();
+			value.GetResult();
+		}
 
-        public void UnsafeOnCompleted(Action continuation)
-        {
-            Create();
-            value.GetAwaiter().UnsafeOnCompleted(continuation);
-        }
+		void IAwaiter.GetResult() {
+			GetResult();
+		}
 
-        public void OnCompleted(Action continuation)
-        {
-            UnsafeOnCompleted(continuation);
-        }
-    }
+		public void UnsafeOnCompleted(Action continuation) {
+			Create();
+			value.GetAwaiter().UnsafeOnCompleted(continuation);
+		}
 
-    internal sealed class LazyPromise<T> : IAwaiter<T>
-    {
-        Func<UniTask<T>> factory;
-        UniTask<T> value;
+		public void OnCompleted(Action continuation) {
+			UnsafeOnCompleted(continuation);
+		}
+	}
 
-        public LazyPromise(Func<UniTask<T>> factory)
-        {
-            this.factory = factory;
-        }
+	internal sealed class LazyPromise<T> : IAwaiter<T> {
+		Func<UniTask<T>> factory;
+		UniTask<T> value;
 
-        void Create()
-        {
-            var f = Interlocked.Exchange(ref factory, null);
-            if (f != null)
-            {
-                value = f();
-            }
-        }
+		public LazyPromise(Func<UniTask<T>> factory) {
+			this.factory = factory;
+		}
 
-        public bool IsCompleted
-        {
-            get
-            {
-                Create();
-                return value.IsCompleted;
-            }
-        }
+		void Create() {
+			var f = Interlocked.Exchange(ref factory, null);
 
-        public AwaiterStatus Status
-        {
-            get
-            {
-                    Create();
-                    return value.Status;
-            }
-        }
+			if (f != null) {
+				value = f();
+			}
+		}
 
-        public T GetResult()
-        {
-            Create();
-            return value.Result;
-        }
+		public bool IsCompleted {
+			get {
+				Create();
+				return value.IsCompleted;
+			}
+		}
 
-        void IAwaiter.GetResult()
-        {
-            GetResult();
-        }
+		public AwaiterStatus Status {
+			get {
+				Create();
+				return value.Status;
+			}
+		}
 
-        public void UnsafeOnCompleted(Action continuation)
-        {
-            Create();
-            value.GetAwaiter().UnsafeOnCompleted(continuation);
-        }
+		public T GetResult() {
+			Create();
+			return value.Result;
+		}
 
-        public void OnCompleted(Action continuation)
-        {
-            UnsafeOnCompleted(continuation);
-        }
-    }
+		void IAwaiter.GetResult() {
+			GetResult();
+		}
+
+		public void UnsafeOnCompleted(Action continuation) {
+			Create();
+			value.GetAwaiter().UnsafeOnCompleted(continuation);
+		}
+
+		public void OnCompleted(Action continuation) {
+			UnsafeOnCompleted(continuation);
+		}
+	}
 }
 
 #endif

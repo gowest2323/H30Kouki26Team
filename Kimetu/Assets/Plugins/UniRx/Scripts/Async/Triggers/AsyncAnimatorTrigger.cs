@@ -6,48 +6,41 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncAnimatorTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<int> onAnimatorIK;
-        AsyncTriggerPromiseDictionary<int> onAnimatorIKs;
-        AsyncTriggerPromise<AsyncUnit> onAnimatorMove;
-        AsyncTriggerPromiseDictionary<AsyncUnit> onAnimatorMoves;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncAnimatorTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<int> onAnimatorIK;
+		AsyncTriggerPromiseDictionary<int> onAnimatorIKs;
+		AsyncTriggerPromise<AsyncUnit> onAnimatorMove;
+		AsyncTriggerPromiseDictionary<AsyncUnit> onAnimatorMoves;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onAnimatorIK, onAnimatorIKs, onAnimatorMove, onAnimatorMoves);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onAnimatorIK, onAnimatorIKs, onAnimatorMove, onAnimatorMoves);
+		}
 
 
-        void OnAnimatorIK(int layerIndex)
-        {
-            TrySetResult(onAnimatorIK, onAnimatorIKs, layerIndex);
-        }
+		void OnAnimatorIK(int layerIndex) {
+			TrySetResult(onAnimatorIK, onAnimatorIKs, layerIndex);
+		}
 
 
-        public UniTask OnAnimatorIKAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onAnimatorIK, ref onAnimatorIKs, cancellationToken);
-        }
+		public UniTask OnAnimatorIKAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onAnimatorIK, ref onAnimatorIKs, cancellationToken);
+		}
 
 
-        void OnAnimatorMove()
-        {
-            TrySetResult(onAnimatorMove, onAnimatorMoves, AsyncUnit.Default);
-        }
+		void OnAnimatorMove() {
+			TrySetResult(onAnimatorMove, onAnimatorMoves, AsyncUnit.Default);
+		}
 
 
-        public UniTask OnAnimatorMoveAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onAnimatorMove, ref onAnimatorMoves, cancellationToken);
-        }
+		public UniTask OnAnimatorMoveAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onAnimatorMove, ref onAnimatorMoves, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

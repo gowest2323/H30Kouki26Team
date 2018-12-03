@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncMoveTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<AxisEventData> onMove;
-        AsyncTriggerPromiseDictionary<AxisEventData> onMoves;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncMoveTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<AxisEventData> onMove;
+		AsyncTriggerPromiseDictionary<AxisEventData> onMoves;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onMove, onMoves);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onMove, onMoves);
+		}
 
 
-        void OnMove(AxisEventData eventData)
-        {
-            TrySetResult(onMove, onMoves, eventData);
-        }
+		void OnMove(AxisEventData eventData) {
+			TrySetResult(onMove, onMoves, eventData);
+		}
 
 
-        public UniTask OnMoveAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onMove, ref onMoves, cancellationToken);
-        }
+		public UniTask OnMoveAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onMove, ref onMoves, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif

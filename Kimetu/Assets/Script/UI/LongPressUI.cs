@@ -51,49 +51,62 @@ public class LongPressUI : MonoBehaviour {
 		this.informations = new ILongPressInformation[targets.Length];
 		this.detectors = new LongPressDetector[targets.Length];
 		this.current = -1;
-		for(int i=0; i<targets.Length; i++) informations[i] = targets[i].GetComponent<ILongPressInformation>();
-		for(int i=0; i<targets.Length; i++) detectors[i] = targets[i].GetComponent<LongPressDetector>();
+
+		for (int i = 0; i < targets.Length; i++) informations[i] = targets[i].GetComponent<ILongPressInformation>();
+
+		for (int i = 0; i < targets.Length; i++) detectors[i] = targets[i].GetComponent<LongPressDetector>();
+
 		Assert.IsTrue(text != null);
 		Assert.IsTrue(slider != null);
+
 		//FIXME:雑
-		for(int i=0; i<targets.Length; i++) {
+		for (int i = 0; i < targets.Length; i++) {
 			var detector = detectors[i];
 			var info = informations[i];
 			var mi = new MutableInt(i);
 			detector.OnLongPressBegin += () => {
-				if(this.current != mi.value) { return; }
+				if (this.current != mi.value) { return; }
+
 				slider.value = 0;
-				if(info != null) text.text = info.longPressMessage;
+
+				if (info != null) text.text = info.longPressMessage;
 				else text.text = defaultText;
 			};
 			detector.OnLongPressing += (e) => {
-				if(this.current != mi.value) { return; }
+				if (this.current != mi.value) { return; }
+
 				slider.value = detector.progress;
-				if(info != null) text.text = info.longPressMessage;
+
+				if (info != null) text.text = info.longPressMessage;
 				else text.text = defaultText;
 			};
 			detector.OnLongPressEnd += () => {
-				if(this.current != mi.value) { return; }
+				if (this.current != mi.value) { return; }
+
 				slider.value = 0;
-				if(info != null) text.text = info.longPressMessage;
+
+				if (info != null) text.text = info.longPressMessage;
 				else text.text = defaultText;
 			};
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		this.current = -1;
 		panel.SetActive(false);
-		for(int i=0; i<informations.Length; i++) {
+
+		for (int i = 0; i < informations.Length; i++) {
 			var info = informations[i];
-			if(info.canLongPress) {
+
+			if (info.canLongPress) {
 				this.current = i;
 				panel.SetActive(true);
 				break;
 			}
 		}
-		if(this.current == -1) {
+
+		if (this.current == -1) {
 			slider.value = 0;
 			text.text = defaultText;
 		}

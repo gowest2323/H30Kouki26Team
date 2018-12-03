@@ -7,34 +7,29 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UniRx.Async.Triggers
-{
-    [DisallowMultipleComponent]
-    public class AsyncDeselectTrigger : AsyncTriggerBase
-    {
-        AsyncTriggerPromise<BaseEventData> onDeselect;
-        AsyncTriggerPromiseDictionary<BaseEventData> onDeselects;
+namespace UniRx.Async.Triggers {
+	[DisallowMultipleComponent]
+	public class AsyncDeselectTrigger : AsyncTriggerBase {
+		AsyncTriggerPromise<BaseEventData> onDeselect;
+		AsyncTriggerPromiseDictionary<BaseEventData> onDeselects;
 
 
-        protected override IEnumerable<ICancelablePromise> GetPromises()
-        {
-            return Concat(onDeselect, onDeselects);
-        }
+		protected override IEnumerable<ICancelablePromise> GetPromises() {
+			return Concat(onDeselect, onDeselects);
+		}
 
 
-        void OnDeselect(BaseEventData eventData)
-        {
-            TrySetResult(onDeselect, onDeselects, eventData);
-        }
+		void OnDeselect(BaseEventData eventData) {
+			TrySetResult(onDeselect, onDeselects, eventData);
+		}
 
 
-        public UniTask OnDeselectAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetOrAddPromise(ref onDeselect, ref onDeselects, cancellationToken);
-        }
+		public UniTask OnDeselectAsync(CancellationToken cancellationToken = default(CancellationToken)) {
+			return GetOrAddPromise(ref onDeselect, ref onDeselects, cancellationToken);
+		}
 
 
-    }
+	}
 }
 
 #endif
