@@ -818,7 +818,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4290892368974912}
   - component: {fileID: 65989849755674250}
-  - component: {fileID: 114639810818635208}
   - component: {fileID: 114000031491304826}
   m_Layer: 0
   m_Name: SwingDownAttackableArea
@@ -2616,7 +2615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 9
-  attackableArea: {fileID: 114639810818635208}
+  attackableArea: {fileID: 114000031491304826}
   holderEnemy: {fileID: 114696172197081054}
   attackType: 0
   attackAnimationName: hurioroshi
@@ -2992,18 +2991,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 80
---- !u!114 &114639810818635208
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1584144046824156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3d3b91a2439fb44390a38348888ef68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eyeTransform: {fileID: 4683930439328432}
 --- !u!114 &114676328182511932
 MonoBehaviour:
   m_ObjectHideFlags: 1
