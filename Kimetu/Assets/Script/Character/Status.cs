@@ -75,6 +75,7 @@ public class Status : MonoBehaviour {
 		}
 
 		if (mode == DamageMode.NotKill && this.hp <= 0) {
+            
 			this.hp = 1;
 		}
 

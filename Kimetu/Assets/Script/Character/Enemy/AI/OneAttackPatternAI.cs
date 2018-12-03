@@ -53,6 +53,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		} else {
 			//行動を停止し、ダメージアクションに移行
 			StopCoroutine(currentActionCoroutine);
+            EffectManager.Instance.EnemyDamageEffectCreate(gameObject, false);
 			currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack));
 			currentState = EnemyState.Damage;
 		}
