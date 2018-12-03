@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 114833311285637518}
   - component: {fileID: 114269861106063020}
   - component: {fileID: 114508426203476012}
+  - component: {fileID: 114591439501752126}
   - component: {fileID: 114000452703489516}
   - component: {fileID: 114856599124189036}
   m_Layer: 0
@@ -45,7 +46,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1017031549772674
 GameObject:
@@ -2755,7 +2756,8 @@ MonoBehaviour:
   nearJudgeArea: {fileID: 114883825610081762}
   eyeTransform: {fileID: 4683930439328432}
   agent: {fileID: 195521335224061128}
-  limitNearTime: 5
+  limitNearTime: 10
+  limitIdleTime: 5
   useRay: 1
   lookRotationSpeed: 6
 --- !u!114 &114274937553131736
@@ -2967,6 +2969,22 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114591439501752126
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1009843223762776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9495740f77355f64194860e1ff8eaa38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  remainingDistance: 0.7
+  remainingRotate: 1
+  rotateSecond: 1
+  searchArea: {fileID: 114313406104384926}
+  parentTransform: {fileID: 4788020716342986}
 --- !u!114 &114596707765325568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3016,6 +3034,7 @@ MonoBehaviour:
   waistObjectName: mixamorig:Hips/mixamorig:Spine
   idle: {fileID: 114596707765325568}
   attack: {fileID: 114833311285637518}
+  defaultPositionMove: {fileID: 114591439501752126}
   search: {fileID: 114000452703489516}
   nearPlayer: {fileID: 114269861106063020}
   damage: {fileID: 114508426203476012}
