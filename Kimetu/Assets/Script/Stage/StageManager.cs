@@ -8,8 +8,9 @@ using UnityEditor;
 
 public class StageManager : MonoBehaviour {
 	[SerializeField]
-	private Transform firstPosition;
+	private Transform first;
 	private Vector3 restartPosition;//
+	private Quaternion restartRotation;
 	[SerializeField]
 	private EnemySpawnerManager manager;
 	private static bool resum = false;
@@ -17,24 +18,33 @@ public class StageManager : MonoBehaviour {
 	private void Start() {
 		//データがそんざいしなければ最初の場所から開始
 		if (!StageDataPrefs.IsSavedData() || !StageManager.resum) {
-			restartPosition = firstPosition.position;
+			restartPosition = first.position;
+			restartRotation = first.rotation;
 			return;
 		}
 
 		//データが存在するならその場所から開始
-		restartPosition = StageDataPrefs.GetCheckPosition();
+		SubstituteSavedCheckPointTransform();
 		//プレイヤーの座標を書き換える
 		GameObject player = GameObject.FindGameObjectWithTag(TagName.Player.String());
 		PlayerAction playerAction = player.GetComponent<PlayerAction>();
-		playerAction.StartPosition(restartPosition);
+		playerAction.StartPositionRotation(restartPosition, restartRotation);
+		CameraController camera = GameObject.FindObjectOfType<CameraController>();
+		camera.PositionToPlayerBack();
 		StageManager.resum = false;
 
 	}
 
-	public void Pass(Vector3 position) {
+	/// <summary>
+	/// チェックポイントを通過した
+	/// </summary>
+	/// <param name="position">座標</param>
+	/// <param name="rotation">角度</param>
+	public void Pass(Vector3 position, Quaternion rotation) {
 		restartPosition = position;
+		restartRotation = rotation;
 		//リスタート地点を保存
-		StageDataPrefs.SaveCheckPoint(position);
+		StageDataPrefs.SaveCheckPoint(restartPosition, restartRotation);
 		//現在のシーン番号を保存
 		string currentScene = SceneManager.GetActiveScene().name;
 		int currentStageNumber = StageNumber.GetStageNumber(currentScene);
@@ -51,23 +61,32 @@ public class StageManager : MonoBehaviour {
 		string stage = StageNumber.GetStageName(currentStageNumber);
 		SceneChanger.Instance().Change(SceneNameManager.GetKeyByValue(stage), fadeData);
 	}
+
+	/// <summary>
+	/// 再開場所と角度を取得し代入する
+	/// </summary>
+	private void SubstituteSavedCheckPointTransform() {
+		restartPosition = StageDataPrefs.GetCheckPointPosition();
+		restartRotation = StageDataPrefs.GetCheckPointRotation();
+	}
 }
 
 #if UNITY_EDITOR
-[CustomEditor (typeof(StageManager))]
-public class StageManagerEditor : Editor　 {
+[CustomEditor(typeof(StageManager))]
+public class StageManagerEditor : Editor {
 	private StageManager self = null;
 
-	void OnEnable () {
-		this.self = (StageManager) target;
+	void OnEnable() {
+		this.self = (StageManager)target;
 	}
 
-	public override void OnInspectorGUI () {
-		base.OnInspectorGUI ();
+	public override void OnInspectorGUI() {
+		base.OnInspectorGUI();
 		EditorGUILayout.Separator();
 		EditorGUILayout.BeginVertical();
 		EditorGUILayout.IntField("ステージ番号", StageDataPrefs.GetStageNumber());
-		EditorGUILayout.Vector3Field("座標", StageDataPrefs.GetCheckPosition());
+		EditorGUILayout.Vector3Field("座標", StageDataPrefs.GetCheckPointPosition());
+		EditorGUILayout.Vector3Field("回転", StageDataPrefs.GetCheckPointRotation().eulerAngles);
 
 		if (GUILayout.Button("消去")) {
 			StageDataPrefs.DeleteAll();
