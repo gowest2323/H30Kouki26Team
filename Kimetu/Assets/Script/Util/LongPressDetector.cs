@@ -68,6 +68,7 @@ public class LongPressDetector : MonoBehaviour {
 		//押された瞬間
 		if (Input.GetButtonDown(type.GetInputName())) {
 			this.elapsed = 0;
+			this.triggered = false;
 			OnLongPressBegin();
 		}
 		//押されている
