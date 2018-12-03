@@ -43,6 +43,7 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable {
 		isNearPlayer = false;
 		agent.isStopped = false;
 		enemyAnimation.StartRunAnimation();
+      
 
 		float time = 0.0f;
 
@@ -51,9 +52,9 @@ public class NearPlayerAction : MonoBehaviour, IEnemyActionable {
 			informationText = "MoveNear";
 			bool isPlayerInArea = nearJudgeArea.IsPlayerInArea(playerObj, true);
 			bool isLookAtPlayer = IsLookAtPlayer(playerObj);
-
-			//範囲外かつ視界外で一定時間経過後に追跡終了
-			if (!isPlayerInArea && !isLookAtPlayer) {
+            EffectManager.Instance.EnemyMoveEffectCreate(gameObject);
+            //範囲外かつ視界外で一定時間経過後に追跡終了
+            if (!isPlayerInArea && !isLookAtPlayer) {
 				time += Slow.Instance.DeltaTime();
 
 				if (time > limitNearTime) {

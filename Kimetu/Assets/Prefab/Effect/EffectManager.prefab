@@ -55,4 +55,10 @@ MonoBehaviour:
     type: 2}
   enemyDamageEffect: {fileID: 1565601249010682, guid: 8f41792c564a55d488fac94508e55e25,
     type: 2}
+  playerMoveEffect: {fileID: 1565601249010682, guid: 719f62d8e027e2d48a1f4a58deb54002,
+    type: 2}
+  enemyMoveEffect: {fileID: 1565601249010682, guid: 286a472b2b988f440a9c2caa32083695,
+    type: 2}
+  playerViolentMoveEffect: {fileID: 1565601249010682, guid: 61466ca6d2cf7d9449d6d78a4f804f04,
+    type: 2}
   limitTime: 1
