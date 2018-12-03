@@ -13,6 +13,7 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
 	private SceneName nextSceneName;
 
 	private GameObject player;
+	private PlayerState state;
 
 	//ILongPressInformation
 	public string longPressMessage { get { return "次のステージへ";}}
@@ -42,6 +43,11 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
 	// Update is called once per frame
 	void Update() {
 		if (playerStay && !IsPlayerAlive()) {
+			ActivateCanvas(false);
+		}
+
+		if (player.GetComponent<PlayerAction>().state == PlayerState.Damage) {
+			GetComponent<LongPressDetector>().Cancel();
 			ActivateCanvas(false);
 		}
 	}
