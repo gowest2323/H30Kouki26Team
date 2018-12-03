@@ -16,9 +16,15 @@ public class PlayVibration : SingletonMonoBehaviour<PlayVibration> {
 	private IEnumerator Play(float vibrationTime)
 
 	{
+		#if UNITY_STANDALONE_WIN
 		XInputDotNetPure.GamePad.SetVibration(0, 1.0f, 1.0f);
 		yield return new WaitForSeconds(vibrationTime);
 		XInputDotNetPure.GamePad.SetVibration(0, 0.0f, 0.0f);
+		#else
+		//macでも動かせるはずだけど
+		//まだ環境設定できてないのでとりあえず
+		yield return new WaitForSeconds(vibrationTime);
+		#endif
 
 	}
 
