@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UniRx;
 
 public class ChangeStage : MonoBehaviour, ILongPressInformation {
 	private bool playerStay;
@@ -46,10 +47,14 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
 			ActivateCanvas(false);
 		}
 
-		if (player.GetComponent<PlayerAction>().state == PlayerState.Damage) {
+		//if (player.GetComponent<PlayerAction>().state == PlayerState.Damage) {
+		//}
+
+		player.GetComponent<Status>().onDamage.Subscribe((e) => {
+			//ここにダメージ受けた時の処理
 			GetComponent<LongPressDetector>().Cancel();
-			ActivateCanvas(false);
-		}
+			//ActivateCanvas(false);
+		});
 	}
 
 	public void OnTriggerEnter(Collider other) {
