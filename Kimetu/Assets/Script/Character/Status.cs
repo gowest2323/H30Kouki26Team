@@ -10,7 +10,19 @@ public enum DamageMode {
 	NotKill
 }
 
+/// <summary>
+/// ダメージを受けると呼ばれます。
+/// </summary>
+public delegate void Damage();
+
+/// <summary>
+/// 死ぬと受けると呼ばれます。
+/// </summary>
+public delegate void Die();
+
 public class Status : MonoBehaviour {
+	public event Damage OnDamage = delegate { };
+	public event Die OnDie = delegate { };
 	protected int hp;
 
 	[SerializeField]
@@ -41,7 +53,12 @@ public class Status : MonoBehaviour {
 	}
 
 	public void Damage(int power, DamageMode mode = DamageMode.NotKill) {
+		if (this.hp <= 0) {
+			return;
+		}
+
 		hp = hp - power;
+		OnDamage();
 
 		if (this.hp <= 0) {
 			this.hp = 0;
@@ -49,6 +66,10 @@ public class Status : MonoBehaviour {
 
 		if (mode == DamageMode.NotKill && this.hp <= 0) {
 			this.hp = 1;
+		}
+
+		if (this.hp <= 0) {
+			OnDie();
 		}
 	}
 	public bool IsDead() {
