@@ -2695,7 +2695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyeTransform: {fileID: 4683930439328432}
-  searchCollider: {fileID: 0}
+  searchCollider: {fileID: 135401387698239788}
 --- !u!114 &114318638817935754
 MonoBehaviour:
   m_ObjectHideFlags: 1
