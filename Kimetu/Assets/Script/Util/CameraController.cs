@@ -53,16 +53,9 @@ public class CameraController : MonoBehaviour {
 		interval = false;
 		GetIsInveted();
 		intervalTime = 0;
-		// 回転の初期化
-		vRotation = Quaternion.Euler(20, 0, 0);         // 垂直回転(X軸を軸とする回転)は、30度見下ろす回転
-		hRotation = Quaternion.identity;                // 水平回転(Y軸を軸とする回転)は、無回転
-		transform.rotation = hRotation * vRotation;     // 最終的なカメラの回転は、垂直回転してから水平回転する合成回転
 
-		nowDistance = defaultDistance;
-
-		// 位置の初期化
-		// player位置から距離distanceだけ手前に引いた位置を設定します
-		transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
+        // 回転・位置の初期化
+        PositionToPlayerBack();
 	}
 
 	// Update is called once per frame
@@ -439,14 +432,13 @@ public class CameraController : MonoBehaviour {
 
 	//カメラがプレイヤーの背後に戻す
 	public void PositionToPlayerBack() {
-		vRotation = Quaternion.Euler(20, 0, 0);
-		hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);//プレイヤーの向きに合わせ
+        //回転
+        vRotation = Quaternion.Euler(20, 0, 0);                                     // 垂直回転(X軸を軸とする回転)は、20度見下ろす回転
+        hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);// 水平回転(Y軸を軸とする回転)は、プレイヤーの向きに合わせ
+        transform.rotation = hRotation * vRotation;                                 // 最終的なカメラの回転は、垂直回転してから水平回転する合成回転
 
-		//回転
-		transform.rotation = hRotation * vRotation;
-
-		// 位置
-		nowDistance = defaultDistance;
+        // 位置
+        nowDistance = defaultDistance;
 		transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
 	}
 
