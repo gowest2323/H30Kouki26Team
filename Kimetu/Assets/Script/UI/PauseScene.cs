@@ -21,10 +21,23 @@ public class PauseScene : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (visibleControlInfo && Input.GetButton(InputMap.Type.AButton.GetInputName())) {
+		ChangeScene();
+	}
+
+	private void ChangeScene() {
+		if (!visibleControlInfo || !Input.GetButton(InputMap.Type.AButton.GetInputName())) {
+			return;
+		}
+		var listUI = controlInfoPanel.GetComponent<ListUI>();
+		if(listUI.selected == 0) {
+			//戻る
 			this.visibleControlInfo = false;
 			controlInfoPanel.SetActive(false);
 			SetEnabledButtons(true);
+		} else if(listUI.selected == 1) {
+			//タイトルへ
+			Time.timeScale = 1;
+			SceneChanger.Instance().Change(SceneName.Title, new FadeData(1, 1, Color.black));
 		}
 	}
 
