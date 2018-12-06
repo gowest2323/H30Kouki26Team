@@ -18,16 +18,21 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
 
 	//ILongPressInformation
 	public string longPressMessage { get { return "次のステージへ";}}
-	public bool canLongPress { get { return playerStay && IsPlayerAlive(); }}
+	public bool canLongPress { get { return playerStay && IsPlayerAlive() && !toNextStage; }}
+
+	private bool toNextStage;
 
 	// Use this for initialization
 	void Start () {
 		this.player = GameObject.FindGameObjectWithTag("Player");
 		playerStay = false;
+		this.toNextStage = false;
 		canvas.gameObject.SetActive(false);
 		GetComponent<LongPressDetector>();
-		GetComponent<LongPressDetector>().OnLongPressComplete += () => {
+		GetComponent<LongPressDetector>().OnLongPressTrigger += (e) => {
 			Debug.Log("stay " + playerStay);
+			this.canvas.gameObject.SetActive(false);
+			this.toNextStage = true;
 
 			if (playerStay == true) {
 				//現在のステージ番号を保存
