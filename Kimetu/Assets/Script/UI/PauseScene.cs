@@ -15,6 +15,7 @@ public class PauseScene : MonoBehaviour {
 	private GameObject controlInfoPanel;
 
 	private bool visibleControlInfo;
+	private int changeScene;
 
 	private void Start() {
 		pauseManager = GameObject.FindObjectOfType<PauseManager>();
@@ -25,20 +26,30 @@ public class PauseScene : MonoBehaviour {
 	}
 
 	private void ChangeScene() {
-		if (!visibleControlInfo || !Input.GetButton(InputMap.Type.AButton.GetInputName())) {
+		if (!visibleControlInfo || !Input.GetButtonDown(InputMap.Type.AButton.GetInputName())) {
 			return;
 		}
+		if(changeScene == 0) {
+			StartCoroutine(LateChangeScene());
+		}
+	}
+
+	private IEnumerator LateChangeScene() {
+		this.changeScene++;
 		var listUI = controlInfoPanel.GetComponent<ListUI>();
 		if(listUI.selected == 0) {
 			//戻る
-			this.visibleControlInfo = false;
 			controlInfoPanel.SetActive(false);
 			SetEnabledButtons(true);
+			//遅延させないとすぐに戻ってしまう
+			yield return new WaitForSecondsRealtime(1f);
+			this.visibleControlInfo = false;
 		} else if(listUI.selected == 1) {
 			//タイトルへ
 			Time.timeScale = 1;
 			SceneChanger.Instance().Change(SceneName.Title, new FadeData(1, 1, Color.black));
 		}
+		this.changeScene--;
 	}
 
 	/// <summary>
