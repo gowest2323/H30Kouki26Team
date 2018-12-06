@@ -14,7 +14,7 @@ public class ListUI : MonoBehaviour {
 	[SerializeField]
 	private Icon[] icons;
 
-	private int selected;
+	public int selected { private set; get; }
 
 	private float time;
 
