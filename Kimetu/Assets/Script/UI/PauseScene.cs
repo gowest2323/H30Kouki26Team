@@ -29,7 +29,8 @@ public class PauseScene : MonoBehaviour {
 		if (!visibleControlInfo || !Input.GetButtonDown(InputMap.Type.AButton.GetInputName())) {
 			return;
 		}
-		if(changeScene == 0) {
+
+		if (changeScene == 0) {
 			StartCoroutine(LateChangeScene());
 		}
 	}
@@ -37,18 +38,20 @@ public class PauseScene : MonoBehaviour {
 	private IEnumerator LateChangeScene() {
 		this.changeScene++;
 		var listUI = controlInfoPanel.GetComponent<ListUI>();
-		if(listUI.selected == 0) {
+
+		if (listUI.selected == 0) {
 			//戻る
 			controlInfoPanel.SetActive(false);
 			SetEnabledButtons(true);
 			//遅延させないとすぐに戻ってしまう
 			yield return new WaitForSecondsRealtime(1f);
 			this.visibleControlInfo = false;
-		} else if(listUI.selected == 1) {
+		} else if (listUI.selected == 1) {
 			//タイトルへ
 			Time.timeScale = 1;
 			SceneChanger.Instance().Change(SceneName.Title, new FadeData(1, 1, Color.black));
 		}
+
 		this.changeScene--;
 	}
 

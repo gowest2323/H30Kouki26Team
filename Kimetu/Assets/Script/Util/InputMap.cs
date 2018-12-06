@@ -152,13 +152,14 @@ public static class InputMap {
 	/// </summary>
 	/// <returns></returns>
 	public static Direction GetVerticalDirection() {
-		if(Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) >= 0.9f ||
-		   InputMap.GetDPadVertical() < 0) {
-			   return Direction.Up;
-		} else if(Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) <= -0.9f ||
-			InputMap.GetDPadVertical() > 0) {
-				return Direction.Down;
+		if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) >= 0.9f ||
+				InputMap.GetDPadVertical() < 0) {
+			return Direction.Up;
+		} else if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) <= -0.9f ||
+				   InputMap.GetDPadVertical() > 0) {
+			return Direction.Down;
 		}
+
 		return Direction.None;
 	}
 
@@ -168,13 +169,14 @@ public static class InputMap {
 	/// </summary>
 	/// <returns></returns>
 	public static Direction GetHorizontalDirection() {
-		if(Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()) <= -0.9f ||
-		   InputMap.GetDPadHorizontal() < 0) {
-			   return Direction.Left;
-		} else if(Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()) >= 0.9f ||
-			InputMap.GetDPadHorizontal() > 0) {
-				return Direction.Right;
+		if (Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()) <= -0.9f ||
+				InputMap.GetDPadHorizontal() < 0) {
+			return Direction.Left;
+		} else if (Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()) >= 0.9f ||
+				   InputMap.GetDPadHorizontal() > 0) {
+			return Direction.Right;
 		}
+
 		return Direction.None;
 	}
 
@@ -184,10 +186,11 @@ public static class InputMap {
 	/// <param name="dir"></param>
 	/// <returns></returns>
 	public static bool IsDetectedInput(this Direction dir) {
-		if(dir == Direction.None) {
+		if (dir == Direction.None) {
 			throw new System.InvalidProgramException();
 		}
+
 		return GetHorizontalDirection() == dir ||
-		       GetVerticalDirection() == dir;
+			   GetVerticalDirection() == dir;
 	}
 }
