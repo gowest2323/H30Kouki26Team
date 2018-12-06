@@ -18,9 +18,11 @@ public class MenuUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) >= 0.9f) {
+		if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) >= 0.9f ||
+		InputMap.GetDPadVertical() < 0) {
 			Select(this.selected - 1);
-		} else if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) <= -0.9f) {
+		} else if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) <= -0.9f ||
+		InputMap.GetDPadVertical() > 0) {
 			Select(this.selected + 1);
 		}
 	}
