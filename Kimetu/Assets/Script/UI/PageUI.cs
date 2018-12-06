@@ -18,11 +18,9 @@ public class PageUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		var inputH = InputMap.GetDPadHorizontal();
-
-		if (inputH < 0) {
+		if (InputMap.Direction.Left.IsDetectedInput()) {
 			Select(selected - 1);
-		} else if (inputH > 0) {
+		} else if (InputMap.Direction.Right.IsDetectedInput()) {
 			Select(selected + 1);
 		}
 	}

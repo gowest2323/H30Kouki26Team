@@ -8,6 +8,16 @@ using UnityEngine;
 /// </summary>
 public static class InputMap {
 	/// <summary>
+	/// 入力方向を表す列挙。
+	/// </summary>
+	public enum Direction {
+		None,
+		Left,
+		Right,
+		Up,
+		Down,
+	}
+	/// <summary>
 	/// 入力方法。
 	/// </summary>
 	public enum Type {
@@ -134,5 +144,50 @@ public static class InputMap {
 		#else
 		return Input.GetAxis("WIN_DPAD_VERTICAL");
 		#endif
+	}
+
+	/// <summary>
+	/// 垂直方向の向きを返します。
+	/// DPadとスティックの両方で判別します。
+	/// </summary>
+	/// <returns></returns>
+	public static Direction GetVerticalDirection() {
+		if(Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) >= 0.9f ||
+		   InputMap.GetDPadVertical() < 0) {
+			   return Direction.Up;
+		} else if(Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) <= -0.9f ||
+			InputMap.GetDPadVertical() > 0) {
+				return Direction.Down;
+		}
+		return Direction.None;
+	}
+
+	/// <summary>
+	/// 水平方向の向きを返します。
+	/// DPadとスティックの両方で判別します。
+	/// </summary>
+	/// <returns></returns>
+	public static Direction GetHorizontalDirection() {
+		if(Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()) <= -0.9f ||
+		   InputMap.GetDPadHorizontal() < 0) {
+			   return Direction.Left;
+		} else if(Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()) >= 0.9f ||
+			InputMap.GetDPadHorizontal() > 0) {
+				return Direction.Right;
+		}
+		return Direction.None;
+	}
+
+	/// <summary>
+	/// 指定の方向に入力されているなら true.
+	/// </summary>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public static bool IsDetectedInput(this Direction dir) {
+		if(dir == Direction.None) {
+			throw new System.InvalidProgramException();
+		}
+		return GetHorizontalDirection() == dir ||
+		       GetVerticalDirection() == dir;
 	}
 }

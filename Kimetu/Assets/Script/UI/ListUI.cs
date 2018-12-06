@@ -26,11 +26,9 @@ public class ListUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) >= 0.9f ||
-		   InputMap.GetDPadVertical() < 0) {
+		if (InputMap.Direction.Up.IsDetectedInput()) {
 			Select(this.selected - 1);
-		} else if (Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName()) <= -0.9f ||
-			InputMap.GetDPadVertical() > 0) {
+		} else if (InputMap.Direction.Down.IsDetectedInput()) {
 			Select(this.selected + 1);
 		}
 	}
