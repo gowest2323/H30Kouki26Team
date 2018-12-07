@@ -212,6 +212,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1145995006174578
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4406315435985988}
+  m_Layer: 0
+  m_Name: End
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1147270654188316
 GameObject:
   m_ObjectHideFlags: 1
@@ -596,6 +611,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1369432287505612
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4446004545590668}
+  m_Layer: 9
+  m_Name: EnemyClubEffectArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1372461779203536
 GameObject:
   m_ObjectHideFlags: 1
@@ -927,6 +957,21 @@ GameObject:
   - component: {fileID: 4315431722720192}
   m_Layer: 0
   m_Name: mixamorig:RightHandRing3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1634592724775292
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4886508541884402}
+  m_Layer: 0
+  m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1877,6 +1922,20 @@ Transform:
   m_Father: {fileID: 4245998597154018}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 80.39292, y: 36.307564, z: 37.23954}
+--- !u!4 &4406315435985988
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1145995006174578}
+  m_LocalRotation: {x: -0.00000014901158, y: -0.0000000036168926, z: 0.00000021500625,
+    w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.42799985}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4446004545590668}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4414423849131772
 Transform:
   m_ObjectHideFlags: 1
@@ -1937,6 +1996,21 @@ Transform:
   m_Father: {fileID: 4947676867674384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -8.149576, y: -8.711685, z: -43.33325}
+--- !u!4 &4446004545590668
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1369432287505612}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4886508541884402}
+  - {fileID: 4406315435985988}
+  m_Father: {fileID: 4710504470577104}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4456220342199210
 Transform:
   m_ObjectHideFlags: 1
@@ -2190,7 +2264,8 @@ Transform:
   m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4446004545590668}
   m_Father: {fileID: 4783105728511640}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
@@ -2262,6 +2337,19 @@ Transform:
   m_Father: {fileID: 4602833233240304}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -61.98459, y: -33.234085, z: -31.24383}
+--- !u!4 &4886508541884402
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1634592724775292}
+  m_LocalRotation: {x: -0.00000008940694, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.27600005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4446004545590668}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4889239005579422
 Transform:
   m_ObjectHideFlags: 1
@@ -2840,6 +2928,7 @@ MonoBehaviour:
   eyeTransform: {fileID: 4988422212956260}
   agent: {fileID: 195567509885065854}
   limitNearTime: 5
+  limitIdleTime: 0
   useRay: 0
   lookRotationSpeed: 6
 --- !u!114 &114361511653906742
