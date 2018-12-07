@@ -47,6 +47,7 @@ public class Sword : Weapon {
 			} else if (countDict[other.gameObject] >= 1) {
 				return;
 			}
+			AudioManager.Instance.PlayPlayerSE(AudioName.CutHit.String());
 
 			//衝突したときの最近点を衝突点とする
 			Vector3 hitPos = other.ClosestPointOnBounds(this.transform.position);
