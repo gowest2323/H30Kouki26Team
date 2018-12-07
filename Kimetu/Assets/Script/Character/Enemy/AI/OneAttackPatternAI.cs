@@ -57,6 +57,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		if (status.IsDead()) {
 			Death();
 		} else {
+            ShowDamageEffect();
 			//行動を停止し、ダメージアクションに移行
 			if (currentActionCoroutine != null) {
 				StopCoroutine(currentActionCoroutine);
