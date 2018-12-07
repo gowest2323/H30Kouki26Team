@@ -23,7 +23,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 	private bool _isFadeOut = false;
 
 	//BGM用、SE用に分けてオーディオソースを持つ
-	public AudioSource AttachBGMSource, AttachPlayerSESource, AttachEnemySESource;
+	public AudioSource AttachBGMSource, AttachPlayerSESource, AttachEnemySESource, AttachEchoSESource;
 
 	//全Audioを保持
 	private Dictionary<string, AudioClip> _bgmDic, _seDic;
@@ -80,19 +80,14 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 		}
 
 		_nextSEName = seName;
-		DelayPlayerSE();
-		// Invoke("DelayPlaySE", delay);
-	}
-
-	private void DelayPlayerSE() {
-
 		AttachPlayerSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
-
 	}
+
 	/// <summary>
-	/// 指定したファイル名のSEを流す。第二引数のdelayに指定した時間だけ再生までの間隔をあける
+	/// 反響するSEを再生します。
 	/// </summary>
-	public void PlayEnemySE(string seName, float delay = 0.0f) {
+	/// <param name="seName"></param>
+	public void PlayEchoSE(string seName) {
 		if (!_seDic.ContainsKey(seName)) {
 			Debug.Log(seName + "という名前のSEがありません");
 			return;
@@ -100,16 +95,24 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 		}
 
 		_nextSEName = seName;
-		DelayEnemySE();
+		AttachEchoSESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
+	}
+
+
+	/// <summary>
+	/// 指定したファイル名のSEを流す。第二引数のdelayに指定した時間だけ再生までの間隔をあける
+	/// </summary>
+	public void PlayEnemySE(string seName) {
+		if (!_seDic.ContainsKey(seName)) {
+			Debug.Log(seName + "という名前のSEがありません");
+			return;
+
+		}
+
+		_nextSEName = seName;
+		AttachEnemySESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
 		// Invoke("DelayPlaySE", delay);
 	}
-
-	private void DelayEnemySE() {
-
-		AttachEnemySESource.PlayOneShot(_seDic[_nextSEName] as AudioClip);
-
-	}
-
 
 
 	//BGM
