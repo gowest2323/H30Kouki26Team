@@ -17,8 +17,6 @@ public class FirstBossAI : EnemyAI, IEnemyInfoProvider {
 	private DamageAction damage;
 	[SerializeField]
 	private DeathAction death;
-	[SerializeField]
-	private GameObject player;
 	private EnemyStatus status;
 	private EnemyAnimation enemyAnimation;
     private DamageMode damageMode;

@@ -23,10 +23,7 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable {
 	private DamageAction damage;
 	[SerializeField]
 	private DeathAction death;
-	[SerializeField]
-	private GameObject player;
 	private EnemyStatus status;
-	private EnemyAnimation enemyAnimation;
 
 	protected override void Start() {
 		base.Start();

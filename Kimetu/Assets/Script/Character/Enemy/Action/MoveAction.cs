@@ -33,7 +33,7 @@ public class MoveAction : MonoBehaviour, IEnemyActionable
     [SerializeField, Header("敵の視界")]
     private EnemySearchableAreaBase searchArea;
     private GameObject player;
-    private Transform topTransform; //Enemyの一番上のTransform
+    protected Transform topTransform; //Enemyの一番上のTransform
 
     protected virtual void Start()
     {

@@ -18,13 +18,13 @@ public class StageManager : MonoBehaviour {
 	private void Start() {
 		//データがそんざいしなければ最初の場所から開始
 		if (!StageDataPrefs.IsSavedData() || !StageManager.resum) {
-			restartPosition = first.position;
+			restartPosition = new Vector3(first.position.x, 0, first.position.z);
 			restartRotation = first.rotation;
-			return;
+		} else {
+			//データが存在するならその場所から開始
+			SubstituteSavedCheckPointTransform();
 		}
 
-		//データが存在するならその場所から開始
-		SubstituteSavedCheckPointTransform();
 		//プレイヤーの座標を書き換える
 		GameObject player = GameObject.FindGameObjectWithTag(TagName.Player.String());
 		PlayerAction playerAction = player.GetComponent<PlayerAction>();
@@ -63,7 +63,7 @@ public class StageManager : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// 再開場所と角度を取得し代入する
+	/// 再開場所と角度を保存されたデータから取得し代入する
 	/// </summary>
 	private void SubstituteSavedCheckPointTransform() {
 		restartPosition = StageDataPrefs.GetCheckPointPosition();

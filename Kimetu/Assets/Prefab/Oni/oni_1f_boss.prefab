@@ -2619,6 +2619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 1
+  searchArea: {fileID: 114151567094262862}
 --- !u!114 &114151031053590876
 MonoBehaviour:
   m_ObjectHideFlags: 1

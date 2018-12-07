@@ -4,16 +4,23 @@ using UnityEngine;
 
 public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected EnemyState currentState; //現在の状態
-	protected EnemyState reserveState; //次の状態の予約
 	protected Coroutine currentActionCoroutine; //現在の行動コルーチン
 	[SerializeField, Header("腰オブジェクトの名前")]
 	protected string waistObjectName = "mixamorig:Hips/mixamorig:Spine";
 	protected Transform waist; //腰オブジェクト
+	protected List<EnemyState> reserveStates; //行動予約
+	protected GameObject player;
 
 	protected virtual void Start() {
 		waist = transform.Find(waistObjectName);
 		UnityEngine.Assertions.Assert.IsNotNull(waist, "waist not found");
+		player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+		UnityEngine.Assertions.Assert.IsNotNull(player, "player not found");
+		reserveStates = new List<EnemyState>();
+		currentState = EnemyState.Idle;
 	}
+
+	public void AddState(EnemyState state) { reserveStates.Add(state); }
 
 	/// <summary>
 	/// 腰の座標
