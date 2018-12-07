@@ -29,27 +29,8 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		status = GetComponent<EnemyStatus>();
 		currentActionCoroutine = Think();
 		canUseHeal = false;
-		auraPlace = FindRec(gameObject.transform.parent, "mixamorig:Neck");
+		auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
 	}
-
-	//FIXME:EnemyEffectGeneratorのコピペ
-	private GameObject FindRec(Transform target, string name)
-    {
-         var e = target.Find(name);
-        if (e != null)
-        {
-            return e.gameObject;
-        }
-        for (int i = 0; i < target.childCount; i++)
-        {
-            var subtree = FindRec(target.GetChild(i), name);
-            if (subtree != null)
-            {
-                return subtree;
-            }
-        }
-        return null;
-    }
 
 	public override void Countered() {
 		//行動を停止し、ダメージアクションに移行

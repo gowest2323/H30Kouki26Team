@@ -29,7 +29,7 @@ public class EnemyEffectGenerator : MonoBehaviour {
         var objs = GameObject.FindGameObjectsWithTag(TagName.Enemy.String());
         foreach(var obj in objs)
         {
-            var effectArea = FindRec(obj.transform, "EnemyClubEffectArea");
+            var effectArea = obj.transform.FindRec("EnemyClubEffectArea");
             var start = effectArea.transform.Find("Start");
             var end = effectArea.transform.Find("End");
             //エネミーに対応したエフェクトを作成
@@ -41,25 +41,5 @@ public class EnemyEffectGenerator : MonoBehaviour {
             //保存
             enemyEffectList.Add(effect);
         }
-    }
-
-
-    private GameObject FindRec(Transform target, string name)
-    {
-
-        var e = target.Find(name);
-        if (e != null)
-        {
-            return e.gameObject;
-        }
-        for(int i=0; i<target.childCount; i++)
-        {
-            var subtree = FindRec(target.GetChild(i), name);
-            if(subtree != null)
-            {
-                return subtree;
-            }
-        }
-        return null;
     }
 }
