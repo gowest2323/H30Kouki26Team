@@ -85,10 +85,10 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 3d715b0f65d195c438fc7a0dcad002cd, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 200
     m_Alignment: 4
@@ -97,7 +97,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Stage\u540D\u524D(\u5DEE\u3057\u66FF\u3048\u5F85\u3061)"
+  m_Text: "\u30B9\u30C6\u30FC\u30B8\u540D\u524D(\u5DEE\u3057\u66FF\u3048\u5F85\u3061)"
 --- !u!114 &114472716028226756
 MonoBehaviour:
   m_ObjectHideFlags: 1

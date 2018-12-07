@@ -83,8 +83,7 @@ public class SceneChanger : MonoBehaviour
         //フェードアウトし終わるまで待機
         yield return StartCoroutine(Fade.Instance().FadeOutCoroutine(fade.fadeOutTime, fade.fadeColor));
         //シーンを変更する
-        yield return StartCoroutine(LoadData(scene.String()));
-        //TODO：ステージの名前
+        yield return StartCoroutine(LoadData(scene));
 
         //フェードイン処理
         yield return StartCoroutine(Fade.Instance().FadeInCoroutine(fade.fadeInTime, fade.fadeColor));
@@ -107,13 +106,13 @@ public class SceneChanger : MonoBehaviour
     /// 非同期ロード
     /// </summary>
     /// <returns></returns>
-    private IEnumerator LoadData(string sceneName)
+    private IEnumerator LoadData(SceneName scene)
     {
         //ロードキャンパス生成
         loadCanvas = Instantiate((GameObject)Resources.Load("Prefab/LoadCanvas"));
         yield return new WaitForSeconds(0.5f);
 
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation async = SceneManager.LoadSceneAsync(scene.String());
         async.allowSceneActivation = false;// シーン遷移をしない
 
         Image loadImage = loadCanvas.GetComponentInChildren<Image>();
@@ -132,7 +131,8 @@ public class SceneChanger : MonoBehaviour
         loadText.text = "100%";
         yield return new WaitForSeconds(0.5f);
 
-        yield return StartCoroutine(StageName());
+        //ステージ名表示
+        yield return StartCoroutine(StageName(scene));
 
         async.allowSceneActivation = true;// シーン遷移許可
     }
@@ -141,16 +141,24 @@ public class SceneChanger : MonoBehaviour
     /// ステージ名前表示コルーチン
     /// </summary>
     /// <returns></returns>
-    private IEnumerator StageName()
+    private IEnumerator StageName(SceneName scene)
     {
         Destroy(loadCanvas);
-        stageNameCanvas = Instantiate((GameObject)Resources.Load("Prefab/StageNameCanvas"));
-        yield return new WaitForSeconds(1f);//fadein
+        if (SceneNameManager.sceneUInames[scene] == null)
+        {
+            yield return null;
+        }
+        else
+        {
+            stageNameCanvas = Instantiate((GameObject)Resources.Load("Prefab/StageNameCanvas"));
 
+            stageNameCanvas.GetComponentInChildren<Text>().text = SceneNameManager.sceneUInames[scene];
+            yield return new WaitForSeconds(1f);//fadein
 
-        yield return new WaitForSeconds(1.5f);//表示
-        stageNameCanvas.GetComponentInChildren<Animator>().SetBool("isFadeOut", true);
+            yield return new WaitForSeconds(1.5f);//表示
+            stageNameCanvas.GetComponentInChildren<Animator>().SetBool("isFadeOut", true);
 
-        yield return new WaitForSeconds(1f);//fadeout
+            yield return new WaitForSeconds(1f);//fadeout
+        }
     }
 }
