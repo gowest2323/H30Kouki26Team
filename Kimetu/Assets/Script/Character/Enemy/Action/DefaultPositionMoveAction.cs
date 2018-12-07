@@ -10,6 +10,9 @@ public class DefaultPositionMoveAction : MoveAction {
 	}
 
 	public bool IsDefaultPosition() {
+		if(this.topTransform == null) {
+			this.topTransform = GetTopTransform();
+		}
 		//距離が一定以上離れていたらその場所にいない
 		if (Vector3.Distance(movePosition, topTransform.position) > 0.1f) { return false; }
 

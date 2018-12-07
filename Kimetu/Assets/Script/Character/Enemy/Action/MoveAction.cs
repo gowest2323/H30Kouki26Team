@@ -132,7 +132,7 @@ public class MoveAction : MonoBehaviour, IEnemyActionable
     /// Enemyの一番上のTransformの取得
     /// </summary>
     /// <returns></returns>
-    private Transform GetTopTransform()
+    protected Transform GetTopTransform()
     {
         //1番上のEnemyにはRigidBodyがついているためそのTransformを利用
         return GetComponentInParent<Rigidbody>().transform;
