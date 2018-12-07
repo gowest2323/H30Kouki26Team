@@ -12,6 +12,7 @@ public class SceneChanger : MonoBehaviour
     private Coroutine currentCoroutine;
 
     private GameObject loadCanvas;
+    private GameObject stageNameCanvas;
 
     [RuntimeInitializeOnLoadMethod()]
     public static SceneChanger Instance()
@@ -83,7 +84,6 @@ public class SceneChanger : MonoBehaviour
         yield return StartCoroutine(Fade.Instance().FadeOutCoroutine(fade.fadeOutTime, fade.fadeColor));
         //シーンを変更する
         yield return StartCoroutine(LoadData(scene.String()));
-        //SceneManager.LoadScene(scene.String());
         //TODO：ステージの名前
 
         //フェードイン処理
@@ -126,12 +126,31 @@ public class SceneChanger : MonoBehaviour
             //サークル回転はアニメーションで
 
             loadText.text = (async.progress * 100).ToString("F0") + "%";
-            yield return new WaitForSeconds(0);
+            yield return new WaitForEndOfFrame();
         }
 
         loadText.text = "100%";
         yield return new WaitForSeconds(0.5f);
 
+        yield return StartCoroutine(StageName());
+
         async.allowSceneActivation = true;// シーン遷移許可
+    }
+
+    /// <summary>
+    /// ステージ名前表示コルーチン
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator StageName()
+    {
+        Destroy(loadCanvas);
+        stageNameCanvas = Instantiate((GameObject)Resources.Load("Prefab/StageNameCanvas"));
+        yield return new WaitForSeconds(1f);//fadein
+
+
+        yield return new WaitForSeconds(1.5f);//表示
+        stageNameCanvas.GetComponentInChildren<Animator>().SetBool("isFadeOut", true);
+
+        yield return new WaitForSeconds(1f);//fadeout
     }
 }
