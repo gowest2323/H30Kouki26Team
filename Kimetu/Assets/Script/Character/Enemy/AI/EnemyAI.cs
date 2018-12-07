@@ -12,6 +12,9 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected GameObject player;
 	private Status mStatus;
 
+	[SerializeField, Header("黒くなって消えるのにかかる時間")]
+	private float extinctionSeconds = 2.5f;
+
 	protected virtual void Start() {
 		waist = transform.Find(waistObjectName);
 		UnityEngine.Assertions.Assert.IsNotNull(waist, "waist not found");
@@ -125,7 +128,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		var enemyAnimation = GetComponentInParent<EnemyAnimation>();
 		yield return enemyAnimation.WaitAnimation("oni", "dead");
 		var offset = 0f;
-		var seconds = 5f;
+		var seconds = extinctionSeconds;
 		var separate = 100;
 		var mat = GetComponentInChildren<SkinnedMeshRenderer>().materials[0];
 		var start = mat.color;
