@@ -59,6 +59,7 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable {
 		}
 		//まだ生きていたらダメージモーション
 		else {
+            ShowDamageEffect();
 			currentState = EnemyState.Damage;
 			//ダメージ状態に移行
 			currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack));

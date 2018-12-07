@@ -79,6 +79,23 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		StartCoroutine(StartExtinction());
 	}
 
+	/// <summary>
+	/// ダメージエフェクトを発生させます。
+	/// ボスの場合は専用のものを発生させます。
+	/// </summary>
+	protected void ShowDamageEffect() {
+		var status = GetComponent<Status>();
+		var isBoss = GetComponent<BossMarker>() != null;
+		if(status.IsDead()) {
+			return;
+		}
+		if(isBoss && status.GetHP()==1) {
+            EffectManager.Instance.EnemyDamageEffectCreate(gameObject, true);
+        } else {
+        	EffectManager.Instance.EnemyDamageEffectCreate(gameObject, false);
+        }
+	}
+
 	private IEnumerator StartExtinction() {
 		var hook = GetComponentInParent<OniDeadHook>();
 		var enemyAnimation = GetComponentInParent<EnemyAnimation>();
