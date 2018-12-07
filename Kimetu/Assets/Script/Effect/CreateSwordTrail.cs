@@ -29,6 +29,11 @@ public class CreateSwordTrail : MonoBehaviour {
 	}
 
 	void LateUpdate () {
+		//エネミーが消えたら消えるように
+		if(startPosition == null || endPosition == null) {
+			GameObject.Destroy(gameObject);
+			return;
+		}
 
 		//　必要頂点数を超えたら削除
 		if (startPoints.Count >= saveMeshNum + 1) {
