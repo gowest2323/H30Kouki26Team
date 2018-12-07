@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimation : CharacterAnimation {
+	[SerializeField]
+	private GameObject healEffectPrefab;
 
 	// Use this for initialization
 
@@ -139,6 +141,9 @@ public class PlayerAnimation : CharacterAnimation {
 	}
 
 	public void PlayKyuseiSE() {
+		var effect = GameObject.Instantiate(healEffectPrefab);
 		AudioManager.Instance.PlayPlayerSE(AudioName.kyusei.String());
+		effect.transform.position = transform.position;
+		GameObject.Destroy(effect, 2f);
 	}
 }

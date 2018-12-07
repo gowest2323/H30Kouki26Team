@@ -3111,6 +3111,7 @@ MonoBehaviour:
   longPressDetector: {fileID: 114059307054834580}
   staminaHealTime: 0.05
   pauseManager: {fileID: 0}
+  inputDisableSeconds: 0.5
 --- !u!114 &114059307054834580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3173,6 +3174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67bc53d2b139c2740b3e9cd8a7585822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healEffectPrefab: {fileID: 1752285523633858, guid: d3032da73b4cd44ffbb0d3981b77793e,
+    type: 2}
 --- !u!114 &114516274821518502
 MonoBehaviour:
   m_ObjectHideFlags: 1
