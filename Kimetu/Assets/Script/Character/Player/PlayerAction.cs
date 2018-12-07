@@ -533,7 +533,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//カウンター発生時間内ならカウンター発生
 		if (counterDeltaTime < counterTime) {
-			AudioManager.Instance.PlayEchoSE(AudioName.hajiki.String());
+			AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
 			Debug.Log("counter succeed");
 			damageSource.attackCharacter.Countered();
 			GuardEnd();
