@@ -113,7 +113,7 @@ public class SceneChanger : MonoBehaviour
         loadCanvas = Instantiate((GameObject)Resources.Load("Prefab/LoadCanvas"));
         yield return new WaitForSeconds(0.5f);
 
-        AsyncOperation async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false;// シーン遷移をしない
 
         Image loadImage = loadCanvas.GetComponentInChildren<Image>();
@@ -123,10 +123,10 @@ public class SceneChanger : MonoBehaviour
         while (async.progress < 0.9f)
         {
             //ロード進展
-            loadImage.rectTransform.Rotate(new Vector3(0, 0, 30));
+            //サークル回転はアニメーションで
 
             loadText.text = (async.progress * 100).ToString("F0") + "%";
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(0);
         }
 
         loadText.text = "100%";
