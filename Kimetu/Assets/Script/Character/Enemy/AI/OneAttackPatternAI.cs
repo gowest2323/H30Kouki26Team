@@ -20,7 +20,6 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 	[SerializeField, Tooltip("死亡アクション")]
 	private DeathAction death;
 	private EnemyStatus status; //敵のステータス
-	private GameObject auraPlace;//オーラエフェクトの位置
 
 	public string informationText { private set; get; }
 
@@ -29,7 +28,6 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		status = GetComponent<EnemyStatus>();
 		currentActionCoroutine = Think();
 		canUseHeal = false;
-		auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
 	}
 
 	public override void Countered() {
@@ -173,10 +171,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		if (currentState == EnemyState.MoveNear) {
 			informationText = nearPlayer.informationText;
 		}
-		if (!status.IsDead())
-        {
-            EffectManager.Instance.EnemyAuraCreate(auraPlace);
-        }
+		UpdateAura();
 	}
 
 	private void Action() {

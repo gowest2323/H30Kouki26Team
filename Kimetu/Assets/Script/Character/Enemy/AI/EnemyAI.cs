@@ -10,6 +10,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected Transform waist; //腰オブジェクト
 	protected List<EnemyState> reserveStates; //行動予約
 	protected GameObject player;
+	private Status status;
 
 	protected virtual void Start() {
 		waist = transform.Find(waistObjectName);
@@ -18,6 +19,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		UnityEngine.Assertions.Assert.IsNotNull(player, "player not found");
 		reserveStates = new List<EnemyState>();
 		currentState = EnemyState.Idle;
+		this.auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
+		this.status = GetComponent<Status>();
 	}
 
 	public void AddState(EnemyState state) { reserveStates.Add(state); }
@@ -54,6 +57,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	[SerializeField]
     private GameObject dieEffectPrefab;
 
+	protected GameObject auraPlace;//オーラエフェクトの位置
+
 	/// <summary>
 	/// ダメージを適用します。
 	/// </summary>
@@ -72,6 +77,15 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		if (Slow.Instance.isSlowNow && status.IsDead()) {
 			this.deathByRepl = true;
 		}
+	}
+
+	/// <summary>
+	/// オーラエフェクトを更新します。
+	/// </summary>
+	protected void UpdateAura() {
+		if (!status.IsDead()) {
+            EffectManager.Instance.EnemyAuraCreate(auraPlace);
+        }
 	}
 
 	/// <summary>
