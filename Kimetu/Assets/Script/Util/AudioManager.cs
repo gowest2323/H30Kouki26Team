@@ -58,7 +58,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 		AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
 		AttachPlayerSESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
 		AttachEnemySESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
-	}
+    }
 
 	//SE
 
@@ -138,7 +138,17 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 			// FadeOutBGM(fadeSpeedRate);
 		}
 
-	}
+    }
+
+    public void StartBGM()
+    {
+        PlayBGM(AudioName.horror_zone2.String());
+    }
+
+    public void StopBGM()
+    {
+        AttachBGMSource.Stop();
+    }
 
 	/// <summary>
 	/// 現在流れている曲をフェードアウトさせる
@@ -151,6 +161,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 	}
 
 	private void Update() {
+
 		if (!_isFadeOut) {
 			return;
 		}
@@ -165,7 +176,8 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 
 			if (!string.IsNullOrEmpty(_nextBGMName)) {
 				PlayBGM(_nextBGMName);
-			}
+                Debug.Log(_nextBGMName);
+            }
 		}
 	}
 
