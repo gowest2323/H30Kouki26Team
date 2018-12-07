@@ -140,11 +140,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 
     }
 
-    public void StartBGM()
-    {
-        PlayBGM(AudioName.horror_zone2.String());
-    }
-
     public void StopBGM()
     {
         AttachBGMSource.Stop();
