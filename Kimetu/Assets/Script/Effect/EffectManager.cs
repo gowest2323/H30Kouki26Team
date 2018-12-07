@@ -9,7 +9,8 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 	public GameObject playerMoveEffect;
 	public GameObject enemyMoveEffect;
 	public GameObject playerViolentMoveEffect;
-	public GameObject bossDamageEffect;
+	public GameObject shieldEffect;
+	public GameObject auraEffect;
 	GameObject effect;
 	[SerializeField]
 	private float limitTime = 1.0f;
@@ -26,9 +27,9 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 		Destroy(obj, 1f);
 	}
 
-	public void EnemyDamageEffectCreate(GameObject target, bool isBoss) {
-		if (isBoss) {
-			effect = bossDamageEffect;
+	public void EnemyDamageEffectCreate(GameObject target, bool isShield) {
+		if (isShield) {
+			effect = shieldEffect;
 		} else {
 			effect = enemyDamageEffect;
 		}
@@ -64,6 +65,13 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 		var obj = GameObject.Instantiate(enemyMoveEffect, Vector3.zero, Quaternion.identity, this.transform.parent) as GameObject;
 		obj.transform.position = enemy.transform.position;
 		Destroy(obj, 0.5f);
+
+	}
+	public void EnemyAuraCreate(GameObject enemy) {
+
+		var obj = GameObject.Instantiate(auraEffect) as GameObject;
+		obj.transform.position = enemy.transform.position ;
+		Destroy(obj, 0.1f);
 
 	}
 
