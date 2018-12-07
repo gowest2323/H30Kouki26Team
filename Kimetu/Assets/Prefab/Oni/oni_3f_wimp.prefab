@@ -648,6 +648,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1437828849395916
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4894691150871170}
+  m_Layer: 9
+  m_Name: EnemyClubEffectArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1452190938532130
 GameObject:
   m_ObjectHideFlags: 1
@@ -703,6 +718,21 @@ GameObject:
   - component: {fileID: 4953167136993544}
   m_Layer: 0
   m_Name: mixamorig:RightHandIndex3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1486152489517282
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4144059790020378}
+  m_Layer: 0
+  m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1249,6 +1279,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1879001349804458
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4403472332755484}
+  m_Layer: 0
+  m_Name: End
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1879149545445786
 GameObject:
   m_ObjectHideFlags: 1
@@ -1504,6 +1549,19 @@ Transform:
   m_Father: {fileID: 4859698528610004}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 47.07351, y: 13.825893, z: 7.38041}
+--- !u!4 &4144059790020378
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1486152489517282}
+  m_LocalRotation: {x: -0.00000008940694, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.27600005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4894691150871170}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4153411754354146
 Transform:
   m_ObjectHideFlags: 1
@@ -1739,6 +1797,20 @@ Transform:
   m_Father: {fileID: 4754544248927260}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -79.78058, y: -148.71022, z: 148.34802}
+--- !u!4 &4403472332755484
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1879001349804458}
+  m_LocalRotation: {x: -0.00000014901158, y: -0.0000000036168926, z: 0.00000021500625,
+    w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.42799985}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4894691150871170}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4411578723472720
 Transform:
   m_ObjectHideFlags: 1
@@ -2016,7 +2088,8 @@ Transform:
   m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4894691150871170}
   m_Father: {fileID: 4478792203485934}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
@@ -2308,6 +2381,21 @@ Transform:
   m_Father: {fileID: 4710814592036710}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 28.406572, y: -9.104448, z: -5.3617334}
+--- !u!4 &4894691150871170
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1437828849395916}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4144059790020378}
+  - {fileID: 4403472332755484}
+  m_Father: {fileID: 4650272917688162}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4895458130161976
 Transform:
   m_ObjectHideFlags: 1
