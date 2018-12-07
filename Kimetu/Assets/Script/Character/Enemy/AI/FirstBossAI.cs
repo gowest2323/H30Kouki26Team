@@ -119,6 +119,7 @@ public class FirstBossAI : EnemyAI, IEnemyInfoProvider {
 		if (currentState == EnemyState.MoveNear) {
 			informationText = nearPlayer.informationText;
 		}
+		UpdateAura();
 	}
 
 	/// <summary>

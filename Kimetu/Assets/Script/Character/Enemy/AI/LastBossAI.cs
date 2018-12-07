@@ -110,6 +110,7 @@ public class LastBossAI : EnemyAI, IDamageable {
 
 	private void Update() {
 		Action();
+		UpdateAura();
 	}
 
 	/// <summary>

@@ -113,6 +113,7 @@ public class SecondBossAI : EnemyAI, IDamageable {
 
 	private void Update() {
 		Action();
+		UpdateAura();
 	}
 
 	/// <summary>

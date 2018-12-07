@@ -122,6 +122,7 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable {
 
 	private void Update() {
 		Action();
+		UpdateAura();
 	}
 
 	/// <summary>
