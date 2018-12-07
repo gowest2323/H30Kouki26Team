@@ -18,6 +18,7 @@ public enum SceneName {
 	Option,
 	//PlayerDead,
 }
+
 public static class SceneNameManager {
 	public static Dictionary<SceneName, string> scenenames = new Dictionary<SceneName, string> {
 		{SceneName.GamePlay, "GamePlay"},
@@ -34,7 +35,17 @@ public static class SceneNameManager {
 		{SceneName.Option, "Option"},
 		//{SceneName.PlayerDead,"PlayerDead"},
 	};
-	public static bool Equals(SceneName scenename, string name) {
+
+    public static Dictionary<SceneName, string> sceneUInames = new Dictionary<SceneName, string> {
+        {SceneName.Stage01, "一階"},
+        {SceneName.Stage01_Boss, "一階　ボス"},
+        {SceneName.Stage02, "二階"},
+        {SceneName.Stage02_Boss, "二階　ボス"},
+        {SceneName.Stage03, "三階"},
+        {SceneName.Stage03_Boss, "三階　ボス"},
+	};
+
+    public static bool Equals(SceneName scenename, string name) {
 		return scenenames[scenename] == name;
 	}
 	public static bool Equals(string name, SceneName scenename) {
