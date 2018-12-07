@@ -20,6 +20,8 @@ public class BeamShot : MonoBehaviour {
 
 	[SerializeField]
 	private BeamMode mode = BeamMode.Up;
+	[SerializeField]
+	private bool startOnAwake = false;
 	private bool beamActive;
 
 	// Use this for initialization
@@ -27,6 +29,12 @@ public class BeamShot : MonoBehaviour {
 		beamParticle = GetComponent<ParticleSystem> ();
 		lineRenderer = GetComponent<LineRenderer> ();
 		beamParticle.Stop();
+	}
+
+	private void Start() {
+		if(startOnAwake) {
+			StartShot();
+		}
 	}
 
 	// Update is called once per frame
