@@ -10,7 +10,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected Transform waist; //腰オブジェクト
 	protected List<EnemyState> reserveStates; //行動予約
 	protected GameObject player;
-	private Status status;
+	private Status mStatus;
 
 	protected virtual void Start() {
 		waist = transform.Find(waistObjectName);
@@ -20,7 +20,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		reserveStates = new List<EnemyState>();
 		currentState = EnemyState.Idle;
 		this.auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
-		this.status = GetComponent<Status>();
+		this.mStatus = GetComponent<Status>();
 	}
 
 	public void AddState(EnemyState state) { reserveStates.Add(state); }
@@ -83,7 +83,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	/// オーラエフェクトを更新します。
 	/// </summary>
 	protected void UpdateAura() {
-		if (!status.IsDead()) {
+		if (!mStatus.IsDead()) {
             EffectManager.Instance.EnemyAuraCreate(auraPlace);
         }
 	}
