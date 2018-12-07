@@ -2924,7 +2924,6 @@ MonoBehaviour:
   nearPlayer: {fileID: 114459337163960156}
   damage: {fileID: 114011148045514058}
   death: {fileID: 114601620879426286}
-  player: {fileID: 0}
 --- !u!114 &114261283287249466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3149,6 +3148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 1
+  searchArea: {fileID: 114015018082461138}
 --- !u!114 &114815024595265850
 MonoBehaviour:
   m_ObjectHideFlags: 1

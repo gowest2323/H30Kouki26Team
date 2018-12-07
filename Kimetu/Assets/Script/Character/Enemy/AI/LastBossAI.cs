@@ -19,8 +19,6 @@ public class LastBossAI : EnemyAI, IDamageable {
 	private DamageAction damage;
 	[SerializeField]
 	private DeathAction death;
-	[SerializeField]
-	private GameObject player;
 	private EnemyStatus status;
 	private EnemyAnimation enemyAnimation;
 

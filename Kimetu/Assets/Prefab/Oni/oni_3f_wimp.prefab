@@ -2772,7 +2772,6 @@ MonoBehaviour:
   nearPlayer: {fileID: 114269861106063020}
   damage: {fileID: 114508426203476012}
   death: {fileID: 114856599124189036}
-  player: {fileID: 0}
 --- !u!114 &114236489258629522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2836,7 +2835,6 @@ MonoBehaviour:
   eyeTransform: {fileID: 4683930439328432}
   agent: {fileID: 195521335224061128}
   limitNearTime: 10
-  limitIdleTime: 5
   useRay: 0
   lookRotationSpeed: 6
 --- !u!114 &114308658900368698
@@ -3072,6 +3070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 1
+  searchArea: {fileID: 114836712426916860}
 --- !u!114 &114606335470331022
 MonoBehaviour:
   m_ObjectHideFlags: 1

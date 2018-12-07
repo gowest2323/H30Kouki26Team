@@ -4,6 +4,7 @@ using UnityEngine;
 
 //NOTE:Enemyの種類ごとに XXXState を用意する必要があるかもしれません
 public enum EnemyState {
+	None, //デフォルト値
 	Idle, //待機　
 	Move, //移動中
 	Attack, //攻撃時
@@ -12,6 +13,5 @@ public enum EnemyState {
 	MoveNear, //接近中
     MoveDefaultPosition, //デフォルトの場所に移動中
 	Death, //倒れている
-	None,
 }
 
