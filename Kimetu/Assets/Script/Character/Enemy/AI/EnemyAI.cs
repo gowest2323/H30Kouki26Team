@@ -44,6 +44,9 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	public abstract void OnHit(DamageSource damageSource);
 	public abstract void Countered();
 
+	[SerializeField]
+    private GameObject dieEffectPrefab;
+
 	/// <summary>
 	/// ダメージを適用します。
 	/// </summary>
@@ -106,6 +109,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		var mat = GetComponentInChildren<SkinnedMeshRenderer>().materials[0];
 		var start = mat.color;
 		var end = Color.black;
+		var particle = GameObject.Instantiate(dieEffectPrefab);
+		particle.transform.position = GetComponentInChildren<BeamShot>().transform.position;
 
 		while (offset < seconds) {
 			yield return new WaitForSeconds(seconds / separate);
@@ -115,6 +120,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 
 		mat.color = Color.black;
 		yield return new WaitForEndOfFrame();
+		GameObject.Destroy(particle);
 		GameObject.Destroy(gameObject);
 	}
 

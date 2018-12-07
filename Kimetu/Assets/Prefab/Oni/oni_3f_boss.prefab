@@ -2690,6 +2690,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waistObjectName: mixamorig:Hips/mixamorig:Spine
+  dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
+    type: 2}
   idle: {fileID: 114925294177130654}
   rotateSlash: {fileID: 114215369004435980}
   twiceShash: {fileID: 114224350007516290}

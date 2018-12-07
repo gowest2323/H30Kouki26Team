@@ -2763,6 +2763,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waistObjectName: mixamorig:Hips/mixamorig:Spine
+  dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
+    type: 2}
   idle: {fileID: 114596707765325568}
   priorityAttack: {fileID: 114345448889935770}
   secondaryAttack: {fileID: 114833311285637518}
