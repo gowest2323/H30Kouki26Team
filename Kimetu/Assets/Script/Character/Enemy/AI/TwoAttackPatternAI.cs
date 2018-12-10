@@ -47,8 +47,11 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable {
 		if (status.IsDead()) { return; }
 
 		ApplyDamage(damageSource);
+
 		//現在の行動を停止
-		StopCoroutine(currentActionCoroutine);
+		if (currentActionCoroutine != null) {
+			StopCoroutine(currentActionCoroutine);
+		}
 
 		//死亡したら倒れるモーション
 		if (status.IsDead()) {
@@ -56,7 +59,7 @@ public class TwoAttackPatternAI : EnemyAI, IDamageable {
 		}
 		//まだ生きていたらダメージモーション
 		else {
-            ShowDamageEffect();
+			ShowDamageEffect();
 			currentState = EnemyState.Damage;
 			//ダメージ状態に移行
 			currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack));
