@@ -7,6 +7,7 @@ public class PlayVibration : SingletonMonoBehaviour<PlayVibration> {
 	private static bool disableVibrationAtExit = false;
 
 	public void StartVibration(float time) {
+		#if UNITY_STANDALONE_WIN
 		//アプリケーション終了時にバイブレーションを停止
 		if (!disableVibrationAtExit) {
 			disableVibrationAtExit = true;
@@ -14,6 +15,7 @@ public class PlayVibration : SingletonMonoBehaviour<PlayVibration> {
 				XInputDotNetPure.GamePad.SetVibration(0, 0.0f, 0.0f);
 			};
 		}
+		#endif
 
 		StartCoroutine(Play(time));
 	}
