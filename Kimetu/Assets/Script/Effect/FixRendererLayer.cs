@@ -10,7 +10,7 @@ public class FixRendererLayer : MonoBehaviour {
 	private Renderer target;
 
 	[SerializeField]
-	private SortingLayer sortingLayer;
+	private string sortingLayer;
 
 	[SerializeField]
 	private int orderInLayer = 0;
@@ -21,7 +21,7 @@ public class FixRendererLayer : MonoBehaviour {
 			this.target = GetComponent<Renderer>();
 		}
 
-		target.sortingLayerName = sortingLayer.name;
+		target.sortingLayerName = sortingLayer;
 		target.sortingOrder = orderInLayer;
 	}
 
