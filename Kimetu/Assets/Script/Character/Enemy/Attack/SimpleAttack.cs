@@ -28,8 +28,8 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 			if (e) { AttackStart(); }
 			else { AttackEnd(); }
 		});
-        UnityEngine.Assertions.Assert.IsNotNull(areaDrawer, "Attack Area Drawer is null");
-    }
+		UnityEngine.Assertions.Assert.IsNotNull(areaDrawer, "Attack Area Drawer is null");
+	}
 
 	private void OnDestroy() {
 		//イベントの購読を終了
@@ -41,14 +41,10 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
             areaDrawer.DrawStart();
         }
 		enemyAnimation.StartAttackAnimation(attackType);
-		yield return new WaitWhile(() => {
-			AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
-			return info.fullPathHash != Animator.StringToHash("Base Layer.oni@" + attackAnimationName);
-		});
-		yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));        
+		yield return enemyAnimation.WaitAnimation("oni", attackAnimationName);
         if(areaDrawer != null) {
-            areaDrawer.DrawEnd();
-        }
+			areaDrawer.DrawEnd();
+		}
 	}
 
 	protected override void OnHit(Collider collider) {

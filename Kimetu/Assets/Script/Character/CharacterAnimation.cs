@@ -47,10 +47,19 @@ public abstract class CharacterAnimation : MonoBehaviour {
 	/// <param name="animationName">Animatorないのステートの名前</param>
 	/// <returns></returns>
 	public IEnumerator WaitAnimation(string characterName, string animationName) {
+		AnimatorStateInfo info;
 		yield return new WaitWhile(() => {
-			AnimatorStateInfo info = this.animator.GetCurrentAnimatorStateInfo(0);
+			//現在のアニメーション情報
+			info = animator.GetCurrentAnimatorStateInfo(0);
+			//今再生中のアニメーション名がattackAnimationNameでない間待機
 			return info.fullPathHash != Animator.StringToHash("Base Layer." + characterName + "@" + animationName);
 		});
-		yield return new WaitWhile(() => !this.IsEndAnimation(0.02f));
+		info = animator.GetCurrentAnimatorStateInfo(0);
+		//アニメーションが終了するまで待機
+		yield return new WaitWhile(() => {
+			info = animator.GetCurrentAnimatorStateInfo(0);
+			//アニメーション名が変わっている場合があるのでそれを調べる
+			return !IsEndAnimation(0.02f) && info.fullPathHash == Animator.StringToHash("Base Layer." + characterName + "@" + animationName);
+		});
 	}
 }
