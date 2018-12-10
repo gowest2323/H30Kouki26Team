@@ -21,16 +21,16 @@ public class DamageAction : MonoBehaviour, IEnemyActionable {
 
 		if (damage == DamagePattern.Normal) {
 			if (Slow.Instance.isSlowNow) {
-				
+
 				enemyAnimation.StartDamageAnimation();
-				yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
+				yield return enemyAnimation.WaitAnimation("oni", "hit");
 			}
 
-			
+
 		} else {
 
 			enemyAnimation.StartReplAnimation();
-			yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
+			yield return enemyAnimation.WaitAnimation("oni", "repl");
 		}
 
 		yield return null;

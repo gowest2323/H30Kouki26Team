@@ -16,6 +16,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	[SerializeField, Range(0.0f, 1.0f), Tooltip("最大アルファ値")]
 	private float maxMaterialAlpha;
 	private int materialAlphaPropertyID;
+	private System.IDisposable coroutine;
 
 	private void Start() {
 		drawAreaObject = Instantiate(drawAreaObject);
@@ -33,7 +34,6 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	/// 描画開始
 	/// </summary>
 	public void DrawStart() {
-		drawAreaObject.SetActive(true);
 		//床にレイを飛ばして床の場所を取得
 		Ray ray = new Ray(transform.position, Vector3.down);
 		RaycastHit hit;
@@ -43,7 +43,13 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 			drawAreaObject.transform.position = hit.point + Vector3.up * 0.03f;
 		}
 
-		StartCoroutine(DrawStartFade());
+		if (coroutine != null) {
+			coroutine.Dispose();
+		}
+
+		coroutine = Observable.FromCoroutine(() => DrawStartFade())
+					.TakeUntilDestroy(this.gameObject).Subscribe();
+		//StartCoroutine(DrawStartFade());
 	}
 
 	/// <summary>
@@ -54,6 +60,8 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 		float time = 0.0f;
 		float alpha = 0.0f;
 		float slowDelta = 0.0f;
+		drawAreaObject.SetActive(true);
+		areaPrefabMaterial.SetFloat(materialAlphaPropertyID, alpha);
 
 		while (time < fadeInTime) {
 			slowDelta = Slow.Instance.DeltaTime();
@@ -69,7 +77,12 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	/// 描画終了
 	/// </summary>
 	public void DrawEnd() {
-		StartCoroutine(DrawEndFade());
+		if (coroutine != null) {
+			coroutine.Dispose();
+		}
+
+		coroutine = Observable.FromCoroutine(() => DrawEndFade())
+					.TakeUntilDestroy(this.gameObject).Subscribe();
 	}
 
 	/// <summary>
@@ -80,6 +93,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 		float time = 0.0f;
 		float alpha = maxMaterialAlpha;
 		float slowDelta = 0.0f;
+		areaPrefabMaterial.SetFloat(materialAlphaPropertyID, alpha);
 
 		while (time < fadeOutTime) {
 			slowDelta = Slow.Instance.DeltaTime();
