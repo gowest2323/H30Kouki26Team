@@ -11,7 +11,7 @@ public class IdleAction : MonoBehaviour, IEnemyActionable {
 	private EnemyAnimation enemyAnimation;
 	[SerializeField]
 	private EnemySearchableAreaBase searchArea;
-	public bool isFindPlayer { get; private set; }
+	public bool isPlayerInArea { get; private set; }
 	private GameObject player;
 
 	private void Start() {
@@ -27,23 +27,23 @@ public class IdleAction : MonoBehaviour, IEnemyActionable {
 		yield return Action(callBack, waitTime);
 	}
 
-	public IEnumerator Action(UnityAction callBack, float waitTime) {
-		isFindPlayer = false;
+	public IEnumerator Action(UnityAction callBack, float waitTime, bool searchPlayer = false) {
+		isPlayerInArea = false;
 		enemyAnimation.StopRunAnimation();
 		float time = 0.0f;
 
 		while (time < waitTime) {
-			if (searchArea.IsPlayerInArea(player, true)) {
-				isFindPlayer = true;
+			if (searchPlayer && searchArea.IsPlayerInArea(player, true)) {
+				isPlayerInArea = true;
 				callBack.Invoke();
 				yield break;
 			}
 
-			time += Slow.Instance.DeltaTime();
-			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+			float slowDeltaTime = Slow.Instance.DeltaTime();
+			time += slowDeltaTime;
+			yield return new WaitForSeconds(slowDeltaTime);
 		}
 
-		yield return new WaitForSeconds(waitTime);
 		callBack.Invoke();
 	}
 }

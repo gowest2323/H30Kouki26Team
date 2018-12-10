@@ -12,8 +12,6 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 	[SerializeField, Header("攻撃のアニメーションの名前(oni@〇〇)")]
 	private string attackAnimationName = "attack";
 	private System.IDisposable observer;
-	[SerializeField]
-	private EnemyAttackAreaDrawer areaDrawer;
 
 	protected override void Start() {
 		base.Start();
@@ -28,7 +26,6 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 			if (e) { AttackStart(); }
 			else { AttackEnd(); }
 		});
-		UnityEngine.Assertions.Assert.IsNotNull(areaDrawer, "Attack Area Drawer is null");
 	}
 
 	private void OnDestroy() {
@@ -37,12 +34,14 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 	}
 
 	public override IEnumerator Attack() {
-        if(areaDrawer != null) {
-            areaDrawer.DrawStart();
-        }
+		if (areaDrawer != null) {
+			areaDrawer.DrawStart();
+		}
+
 		enemyAnimation.StartAttackAnimation(attackType);
 		yield return enemyAnimation.WaitAnimation("oni", attackAnimationName);
-        if(areaDrawer != null) {
+
+		if (areaDrawer != null) {
 			areaDrawer.DrawEnd();
 		}
 	}

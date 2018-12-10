@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4488163443387270}
   - component: {fileID: 114233216018598250}
   m_Layer: 10
-  m_Name: AttackEreaCenter
+  m_Name: AttackAreaCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 
 public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
-	private bool isAction; //行動中か？
 	[SerializeField, Tooltip("待機アクション")]
 	private IdleAction idle;
 	[SerializeField, Tooltip("攻撃アクション")]
@@ -32,11 +31,9 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 
 	public override void Countered() {
 		//行動を停止し、ダメージアクションに移行
-		if (currentActionCoroutine != null) {
-			StopCoroutine(currentActionCoroutine);
-		}
-
-		currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack, DamagePattern.Countered));
+		StopAction();
+		isAction = true;
+		currentActionCoroutine = CoroutineManager.Instance.StartCoroutineEx(damage.Action(ActionCallBack, DamagePattern.Countered));
 		currentState = EnemyState.Damage;
 		return;
 	}
@@ -57,13 +54,11 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		if (status.IsDead()) {
 			Death();
 		} else {
-            ShowDamageEffect();
+			ShowDamageEffect();
 			//行動を停止し、ダメージアクションに移行
-			if (currentActionCoroutine != null) {
-				StopCoroutine(currentActionCoroutine);
-			}
-
-			currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack));
+			StopAction();
+			isAction = true;
+			currentActionCoroutine = CoroutineManager.Instance.StartCoroutineEx(damage.Action(ActionCallBack));
 			currentState = EnemyState.Damage;
 		}
 	}
@@ -76,17 +71,16 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		//行動予約がある
 		if (nextReservedState != EnemyState.None) {
 			reserveStates.RemoveAt(0);
-			EnemyState next = nextReservedState;
 
 			//接近行動が予約されている
-			if (next == EnemyState.MoveNear) {
+			if (nextReservedState == EnemyState.MoveNear) {
 				currentState = EnemyState.MoveNear;
-				return StartCoroutine(nearPlayer.Action(ActionCallBack));
+				return CoroutineManager.Instance.StartCoroutineEx(nearPlayer.Action(ActionCallBack));
 			}
 			//元の場所に戻ることが予約されている
-			else if (next == EnemyState.MoveDefaultPosition) {
+			else if (nextReservedState == EnemyState.MoveDefaultPosition) {
 				currentState = EnemyState.MoveDefaultPosition;
-				return StartCoroutine(defaultPositionMove.Action(ActionCallBack));
+				return CoroutineManager.Instance.StartCoroutineEx(defaultPositionMove.Action(ActionCallBack));
 			}
 		}
 
@@ -94,73 +88,73 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		switch (currentState) {
 			//待機状態からはプレイヤーを探索
 			case EnemyState.Idle:
-				if (idle.isFindPlayer) {
+				if (idle.isPlayerInArea) {
 					currentState = EnemyState.MoveNear;
-					return StartCoroutine(nearPlayer.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(nearPlayer.Action(ActionCallBack));
 				}
 				//元の場所にいなければ元の場所に戻る
 				else if (!defaultPositionMove.IsDefaultPosition()) {
 					currentState = EnemyState.MoveDefaultPosition;
-					return StartCoroutine(defaultPositionMove.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(defaultPositionMove.Action(ActionCallBack));
 				} else {
 					currentState = EnemyState.Search;
-					return StartCoroutine(search.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(search.Action(ActionCallBack));
 				}
 
 			//攻撃後は待機
 			case EnemyState.Attack:
 				currentState = EnemyState.Idle;
-				return StartCoroutine(idle.Action(ActionCallBack, 0.25f));
+				return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack, 0.25f));
 
 			//索敵後、プレイヤーを見つけていたら接近。そうでなければ待機。
 			case EnemyState.Search:
 				if (search.canSearched) {
 					currentState = EnemyState.MoveNear;
-					return StartCoroutine(nearPlayer.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(nearPlayer.Action(ActionCallBack));
 				} else {
 					currentState = EnemyState.Idle;
-					return StartCoroutine(idle.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack));
 				}
 
 			//ダメージを受けた後は待機後接近する。
 			case EnemyState.Damage:
 				reserveStates.Add(EnemyState.MoveNear);
 				currentState = EnemyState.Idle;
-				return StartCoroutine(idle.Action(ActionCallBack, 0.5f));
+				return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack, 0.5f));
 
 			//接近後はプレイヤーが近くにいれば攻撃
 			case EnemyState.MoveNear:
 				if (nearPlayer.isNearPlayer) {
 					currentState = EnemyState.Attack;
-					return StartCoroutine(attack.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(attack.Action(ActionCallBack));
 				}
 				//プレイヤーが近くにおらず、見失ったなら初期位置に戻る
 				else if (nearPlayer.isMissingPlayer) {
 					currentState = EnemyState.Idle;
 					reserveStates.Add(EnemyState.MoveDefaultPosition);
-					return StartCoroutine(defaultPositionMove.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(defaultPositionMove.Action(ActionCallBack));
 				}
 				//それ以外は待機。
 				else {
 					currentState = EnemyState.Idle;
-					return StartCoroutine(idle.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack));
 				}
 
 			//初期位置に戻る行動の後はプレイヤーを発見していたら接近。
 			case EnemyState.MoveDefaultPosition:
 				if (defaultPositionMove.isDetectPlayer) {
 					currentState = EnemyState.MoveNear;
-					return StartCoroutine(nearPlayer.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(nearPlayer.Action(ActionCallBack));
 				}
 				//発見していなければその場で待機。
 				else {
 					currentState = EnemyState.Idle;
-					return StartCoroutine(idle.Action(ActionCallBack));
+					return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack));
 				}
 
 			default:
 				Debug.Log("default " + currentState);
-				return StartCoroutine(idle.Action(ActionCallBack));
+				return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack));
 		}
 	}
 
@@ -171,6 +165,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		if (currentState == EnemyState.MoveNear) {
 			informationText = nearPlayer.informationText;
 		}
+
 		UpdateAura();
 	}
 
@@ -187,11 +182,8 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 	}
 
 	private void Death() {
-		if (currentActionCoroutine != null) {
-			StopCoroutine(currentActionCoroutine);
-		}
-
-		currentActionCoroutine = StartCoroutine(death.Action(DeadEnd));
+		StopAction();
+		currentActionCoroutine = CoroutineManager.Instance.StartCoroutineEx(death.Action(DeadEnd));
 		currentState = EnemyState.Death;
 		isAction = true;
 	}

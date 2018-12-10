@@ -9,6 +9,8 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 	protected EnemySearchableAreaBase attackableArea;
 	[SerializeField]
 	protected EnemyAI holderEnemy;
+	[SerializeField, Tooltip("攻撃範囲描画オブジェクト")]
+	protected EnemyAttackAreaDrawer areaDrawer;
 	protected Collider attackCollider;
 	protected EnemyAnimation enemyAnimation;
 	/// <summary>
@@ -36,6 +38,7 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 		attackCollider = GetComponent<Collider>();
 		attackCollider.enabled = false;
 		enemyAnimation = GetComponentInParent<EnemyAnimation>();
+		UnityEngine.Assertions.Assert.IsNotNull(areaDrawer, "Attack Area Drawer is null");
 	}
 
 	public abstract IEnumerator Attack();

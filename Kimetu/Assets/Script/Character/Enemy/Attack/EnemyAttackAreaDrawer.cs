@@ -16,7 +16,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	[SerializeField, Range(0.0f, 1.0f), Tooltip("最大アルファ値")]
 	private float maxMaterialAlpha;
 	private int materialAlphaPropertyID;
-	private System.IDisposable coroutine;
+	private Coroutine coroutine;
 
 	private void Start() {
 		drawAreaObject = Instantiate(drawAreaObject);
@@ -44,12 +44,10 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 		}
 
 		if (coroutine != null) {
-			coroutine.Dispose();
+			CoroutineManager.Instance.StopCoroutineEx(coroutine);
 		}
 
-		coroutine = Observable.FromCoroutine(() => DrawStartFade())
-					.TakeUntilDestroy(this.gameObject).Subscribe();
-		//StartCoroutine(DrawStartFade());
+		coroutine = CoroutineManager.Instance.StartCoroutineEx(DrawStartFade());
 	}
 
 	/// <summary>
@@ -78,11 +76,10 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	/// </summary>
 	public void DrawEnd() {
 		if (coroutine != null) {
-			coroutine.Dispose();
+			CoroutineManager.Instance.StopCoroutineEx(coroutine);
 		}
 
-		coroutine = Observable.FromCoroutine(() => DrawEndFade())
-					.TakeUntilDestroy(this.gameObject).Subscribe();
+		coroutine = CoroutineManager.Instance.StartCoroutineEx(DrawEndFade());
 	}
 
 	/// <summary>

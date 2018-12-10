@@ -11,6 +11,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected List<EnemyState> reserveStates; //行動予約
 	protected GameObject player;
 	private Status mStatus;
+	protected bool isAction;
 
 	[SerializeField, Header("黒くなって消えるのにかかる時間")]
 	private float extinctionSeconds = 2.5f;
@@ -25,8 +26,6 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		this.auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
 		this.mStatus = GetComponent<Status>();
 	}
-
-	public void AddState(EnemyState state) { reserveStates.Add(state); }
 
 	/// <summary>
 	/// 腰の座標
@@ -58,7 +57,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	public abstract void Countered();
 
 	[SerializeField]
-    private GameObject dieEffectPrefab;
+	private GameObject dieEffectPrefab;
 
 	protected GameObject auraPlace;//オーラエフェクトの位置
 
@@ -87,8 +86,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	/// </summary>
 	protected void UpdateAura() {
 		if (!mStatus.IsDead()) {
-            EffectManager.Instance.EnemyAuraCreate(auraPlace);
-        }
+			EffectManager.Instance.EnemyAuraCreate(auraPlace);
+		}
 	}
 
 	/// <summary>
@@ -113,14 +112,16 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected void ShowDamageEffect() {
 		var status = GetComponent<Status>();
 		var isBoss = GetComponent<BossMarker>() != null;
-		if(status.IsDead()) {
+
+		if (status.IsDead()) {
 			return;
 		}
-		if(isBoss && status.GetHP()==1) {
-            EffectManager.Instance.EnemyDamageEffectCreate(gameObject, true);
-        } else {
-        	EffectManager.Instance.EnemyDamageEffectCreate(gameObject, false);
-        }
+
+		if (isBoss && status.GetHP() == 1) {
+			EffectManager.Instance.EnemyDamageEffectCreate(gameObject, true);
+		} else {
+			EffectManager.Instance.EnemyDamageEffectCreate(gameObject, false);
+		}
 	}
 
 	private IEnumerator StartExtinction() {
@@ -155,5 +156,13 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		yield return enemyAnimation.WaitAnimation("oni", "dead");
 		//yield return hook.Wait();
 		beam.StartShot();
+	}
+
+	protected void StopAction() {
+		if (currentActionCoroutine != null) {
+			CoroutineManager.Instance.StopCoroutineEx(currentActionCoroutine);
+		}
+
+		isAction = false;
 	}
 }
