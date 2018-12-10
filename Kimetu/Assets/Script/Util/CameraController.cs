@@ -57,6 +57,9 @@ public class CameraController : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
+		if(player == null) {
+			this.player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+		}
 		offset = transform.position - player.transform.position;
 		isLockOn = false;
 		interval = false;
