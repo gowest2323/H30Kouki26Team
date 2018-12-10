@@ -35,7 +35,7 @@ public class MoveAction : MonoBehaviour, IEnemyActionable
     private GameObject player;
     protected Transform topTransform; //Enemyの一番上のTransform
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         enemyAnimation = GetComponentInParent<EnemyAnimation>();
         agent = GetComponentInParent<NavMeshAgent>();

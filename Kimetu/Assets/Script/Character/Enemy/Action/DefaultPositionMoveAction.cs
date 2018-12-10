@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DefaultPositionMoveAction : MoveAction {
-	protected override void Start() {
-		base.Start();
+	protected override void Awake() {
+		base.Awake();
 		movePosition = this.transform.position;
 		moveRotation = this.transform.rotation;
 	}
