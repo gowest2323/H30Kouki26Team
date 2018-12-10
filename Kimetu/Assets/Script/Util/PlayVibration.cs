@@ -1,10 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayVibration : SingletonMonoBehaviour<PlayVibration> {
+	private static bool disableVibrationAtExit = false;
 
 	public void StartVibration(float time) {
+		//アプリケーション終了時にバイブレーションを停止
+		if (!disableVibrationAtExit) {
+			disableVibrationAtExit = true;
+			AppDomain.CurrentDomain.ProcessExit += (sender, e) => {
+				XInputDotNetPure.GamePad.SetVibration(0, 0.0f, 0.0f);
+			};
+		}
+
 		StartCoroutine(Play(time));
 	}
 
