@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4952457103293416}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: PlayerDamageEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4113921443861150}
   - component: {fileID: 198122575262845054}
   - component: {fileID: 199996639453408730}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DamageEffect2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
