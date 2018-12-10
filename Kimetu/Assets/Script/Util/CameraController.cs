@@ -427,7 +427,7 @@ public class CameraController : MonoBehaviour {
 			distanceW = 0;
 		}
 
-		return distanceW;
+        return distanceW = distanceW > defaultDistance ? defaultDistance : distanceW;
 	}
 
 	//カメラがプレイヤーの背後に戻す
