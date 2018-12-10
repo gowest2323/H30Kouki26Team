@@ -135,12 +135,14 @@ public class PlayerController : MonoBehaviour {
 		//}
 	}
 	private void Dash() {
+		#if UNITY_EDITOR
 		var dir = new Vector3(
 			Input.GetAxis(InputMap.Type.LStick_Horizontal.GetInputName()),
 			0,
 			Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
 		);
 		action.Dash(dir * 1.05f);
+		#endif
 	}
 
 	private void Avoid() {
