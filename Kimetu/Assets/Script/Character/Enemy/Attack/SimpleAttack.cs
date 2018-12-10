@@ -37,14 +37,18 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 	}
 
 	public override IEnumerator Attack() {
-		areaDrawer.DrawStart();
+        if(areaDrawer != null) {
+            areaDrawer.DrawStart();
+        }
 		enemyAnimation.StartAttackAnimation(attackType);
 		yield return new WaitWhile(() => {
 			AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
 			return info.fullPathHash != Animator.StringToHash("Base Layer.oni@" + attackAnimationName);
 		});
 		yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));        
-		areaDrawer.DrawEnd();
+        if(areaDrawer != null) {
+            areaDrawer.DrawEnd();
+        }
 	}
 
 	protected override void OnHit(Collider collider) {
