@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour {
 	public GameObject player;
@@ -46,8 +47,15 @@ public class CameraController : MonoBehaviour {
 	private bool chooseTargetSelf = false;//手動でロックオンターゲット選択か？
 	private bool isCheckingTargetChange = false;//ターゲット変更チェック中か？
 
-	// Use this for initialization
-	private void Start() {
+
+    bool isPierceMove = false;// 吸生カメラ中か
+
+    private PlayerState prePlayerState;// 前フレームのPlayerState
+    private PlayerState curPlayerState;// 現フレームのPlayerState
+
+
+    // Use this for initialization
+    private void Start() {
 		offset = transform.position - player.transform.position;
 		isLockOn = false;
 		interval = false;
@@ -60,15 +68,22 @@ public class CameraController : MonoBehaviour {
 
 	// Update is called once per frame
 	private void Update() {
-		DefaultControl();
+
+        curPlayerState = player.GetComponent<PlayerAction>().state;
+
+        DefaultControl();
 		IsLockOnChange();
 		CheckLockonMode();
 		LockOn();
 		Interval();
-	}
+        PierceCamera();
+        CheckPierceState();
 
-	private void DefaultControl() {
-		if (coroutineCount > 0 || finished) {
+        prePlayerState = curPlayerState;
+    }
+
+    private void DefaultControl() {
+		if (coroutineCount > 0 || finished || isPierceMove) {
 			return;
 		}
 
@@ -82,7 +97,7 @@ public class CameraController : MonoBehaviour {
 
 		//回転計算
 		if (Mathf.Abs(hor) >= 0.1f ||                                           //カメラの水平操作がある時
-				player.GetComponent<PlayerAction>().state == PlayerState.Defence ) { //防御中
+               player.GetComponent<PlayerAction>().state == PlayerState.Defence ) { //防御中
 			if (!isInverted_LeftRight) {
 				//カメラの操作に任せる
 				transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
@@ -442,7 +457,49 @@ public class CameraController : MonoBehaviour {
 		transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
 	}
 
-	private void OnDrawGizmos() {
+    /// <summary>
+    /// 吸生カメラ
+    /// </summary>
+    private void PierceCamera()
+    {
+        if (isPierceMove) return;
+
+        //吸生状態
+        if (player.GetComponent<PlayerAction>().state == PlayerState.Pierce)
+        {
+            isPierceMove = true;
+            PositionToPlayerBack();//一回初期位置に戻す
+            Vector3 defaultPos = transform.position;
+            //カメラ経路を設定
+            Vector3[] tmpPos = new Vector3[] { defaultPos,
+                                                player.transform.position + new Vector3(0,1.5f,0)+player.transform.right*2f,
+                                                player.transform.position + new Vector3(0,1f,0)+player.transform.right*1.5f+player.transform.forward*2 };
+            //DOTweenでカメラを動かす
+            transform.DOLocalPath(tmpPos, 1.5f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
+        }
+    }
+
+    /// <summary>
+    /// 吸生状態チェック
+    /// </summary>
+    private void CheckPierceState()
+    {
+        //吸生カメラ中
+        if (isPierceMove)
+        {
+            //プレイヤーを注目
+            transform.LookAt(player.transform.position + new Vector3(0, 1, 0), Vector3.up);
+        }
+        //吸生状態終了時
+        if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce)
+        {
+            isPierceMove = false;
+            //位置をデフォに
+            PositionToPlayerBack();
+        }
+    }
+
+    private void OnDrawGizmos() {
 		Gizmos.color = Color.yellow;
 		Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
 
