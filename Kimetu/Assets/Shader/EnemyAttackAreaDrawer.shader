@@ -1,8 +1,9 @@
 ﻿Shader "Custom/EnemyAttackAreaDrawable" {
 	Properties {
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
-		_Color ("Color", Color) = (1,1,1,1)
+        _Color("Color", Color) = (1,1,1,1)
         _Alpha("Alpha",Range(0.0,1.0)) = 0.8
+        _AlphaBorder("AlphaBorder",Range(0.0,1.0)) = 0.2
 	}
 	SubShader {
 		Tags { "RenderType"="Transparent" }
@@ -23,6 +24,7 @@
 
 		fixed4 _Color;
         float _Alpha;
+        float _AlphaBorder;
 
 		void surf (Input IN, inout SurfaceOutput o) {            
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
@@ -31,6 +33,7 @@
             o.Albedo = _Color.rgb;
             //二次補間でアルファ値設定
             float t = _Color.a * _Color.a;
+            clip(t - _AlphaBorder);
             o.Alpha = t;
 		}
 		ENDCG
