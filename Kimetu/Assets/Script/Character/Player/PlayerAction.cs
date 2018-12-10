@@ -105,6 +105,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	private float slowElapsed;
 
 	void Start() {
+		if(playerCamera == null) {
+			this.playerCamera = Camera.main.GetComponent<CameraController>();
+		}
 		this.status = GetComponent<PlayerStatus>();
 		//this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
 		this.playerAnimation = GetComponent<PlayerAnimation>();

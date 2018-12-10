@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour {
 	private float inputDisableElapsed;
 	// Use this for initialization
 	void Start() {
+		if(cameraController == null) {
+			this.cameraController = Camera.main.GetComponent<CameraController>();
+		}
 		Assert.IsTrue(pauseManager != null);
 		this.action = GetComponent<PlayerAction>();
 		longPressDetector.OnLongPressingOverTime += OnKyuuseiButtonPushStart;
