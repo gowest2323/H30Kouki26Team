@@ -52,8 +52,11 @@ public class CameraController : MonoBehaviour {
 
     private PlayerState prePlayerState;// 前フレームのPlayerState
     private PlayerState curPlayerState;// 現フレームのPlayerState
-    List<MeshRenderer> hitsMeshRenderer = new List<MeshRenderer>();
+    private List<MeshRenderer> hitsMeshRenderer = new List<MeshRenderer>();//非表示メッシュレンダラー格納リスト
 
+    private bool isCounterMove = false;// はじきカメラ中か
+    private bool preIsSlow = false;// 前フレームのisSlowNow
+    private bool curIsSlow = false;// 現フレームのisSlowNow
 
     // Use this for initialization
     private void Start() {
@@ -74,6 +77,7 @@ public class CameraController : MonoBehaviour {
 	private void Update() {
 
         curPlayerState = player.GetComponent<PlayerAction>().state;
+        curIsSlow = Slow.Instance.isSlowNow;
 
         DefaultControl();
 		IsLockOnChange();
@@ -82,12 +86,15 @@ public class CameraController : MonoBehaviour {
 		Interval();
         PierceCamera();
         CheckPierceState();
+        CounterCamera();
+        CheckCounterSlow();
 
         prePlayerState = curPlayerState;
+        preIsSlow = curIsSlow;
     }
 
     private void DefaultControl() {
-		if (coroutineCount > 0 || finished || isPierceMove) {
+		if (coroutineCount > 0 || finished || isPierceMove || isCounterMove) {
 			return;
 		}
 
@@ -168,7 +175,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void LockOn() {
-		if (!isLockOn || nearObj == null) {
+		if (!isLockOn || nearObj == null || isCounterMove) {
 			StopLockOnStart();
 			this.finished = false;
 			return;
@@ -278,7 +285,7 @@ public class CameraController : MonoBehaviour {
 			else
 				nearObj = SearchTagWithDirection(gameObject, "Enemy");
 
-			if (nearObj == null) {
+			if (nearObj == null || isCounterMove) { //はじきしたらロックオン解除
 				isLockOn = false;
 				interval = false;
 			}
@@ -460,6 +467,47 @@ public class CameraController : MonoBehaviour {
         nowDistance = defaultDistance;
 		transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
 	}
+
+    /// <summary>
+    /// はじきカメラ
+    /// </summary>
+    private void CounterCamera() {
+        if (isCounterMove) return;
+
+        if (curIsSlow) {
+            isCounterMove = true;
+
+            Vector3 defaultPos = transform.position;
+            //カメラ経路を設定
+            Vector3[] tmpPos = new Vector3[] { defaultPos,
+                                                player.transform.position + new Vector3(0,1.5f,0)+player.transform.right*3f+(-player.transform.forward*1.5f) };
+            //DOTweenでカメラを動かす
+            transform.DOLocalPath(tmpPos, 3f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
+        }
+    }
+
+    /// <summary>
+    /// はじきのスローチェック
+    /// </summary>
+    private void CheckCounterSlow() {
+        if (isCounterMove) {
+            //プレイヤーを注目
+            transform.LookAt(player.transform.position + new Vector3(0, 1.5f, 0) + (player.transform.forward * 0.5f), Vector3.up);
+            NotDisplayStageBetweenWithPlayer();
+        }
+
+        if (preIsSlow && !curIsSlow) {
+            isCounterMove = false;
+            if (hitsMeshRenderer.Count != 0) {
+                foreach (var rh in hitsMeshRenderer) {
+                    rh.enabled = true;
+                }
+                hitsMeshRenderer.Clear();
+            }
+            //位置をデフォに
+            PositionToPlayerBack();
+        }
+    }
 
     /// <summary>
     /// 吸生カメラ
