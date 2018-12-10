@@ -52,6 +52,7 @@ public class CameraController : MonoBehaviour {
 
     private PlayerState prePlayerState;// 前フレームのPlayerState
     private PlayerState curPlayerState;// 現フレームのPlayerState
+    List<MeshRenderer> hitsMeshRenderer = new List<MeshRenderer>();
 
 
     // Use this for initialization
@@ -97,7 +98,7 @@ public class CameraController : MonoBehaviour {
 
 		//回転計算
 		if (Mathf.Abs(hor) >= 0.1f ||                                           //カメラの水平操作がある時
-               player.GetComponent<PlayerAction>().state == PlayerState.Defence ) { //防御中
+                player.GetComponent<PlayerAction>().state == PlayerState.Defence ) { //防御中
 			if (!isInverted_LeftRight) {
 				//カメラの操作に任せる
 				transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
@@ -460,13 +461,11 @@ public class CameraController : MonoBehaviour {
     /// <summary>
     /// 吸生カメラ
     /// </summary>
-    private void PierceCamera()
-    {
+    private void PierceCamera() {
         if (isPierceMove) return;
 
         //吸生状態
-        if (player.GetComponent<PlayerAction>().state == PlayerState.Pierce)
-        {
+        if (player.GetComponent<PlayerAction>().state == PlayerState.Pierce) {
             isPierceMove = true;
             PositionToPlayerBack();//一回初期位置に戻す
             Vector3 defaultPos = transform.position;
@@ -482,20 +481,58 @@ public class CameraController : MonoBehaviour {
     /// <summary>
     /// 吸生状態チェック
     /// </summary>
-    private void CheckPierceState()
-    {
+    private void CheckPierceState() {
         //吸生カメラ中
-        if (isPierceMove)
-        {
+        if (isPierceMove) {
             //プレイヤーを注目
             transform.LookAt(player.transform.position + new Vector3(0, 1, 0), Vector3.up);
+            NotDisplayStageBetweenWithPlayer();
         }
         //吸生状態終了時
-        if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce)
-        {
+        if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce) {
             isPierceMove = false;
+            if (hitsMeshRenderer.Count != 0) {
+                foreach (var rh in hitsMeshRenderer) {
+                    rh.enabled = true;
+                }
+                hitsMeshRenderer.Clear();
+            }
             //位置をデフォに
             PositionToPlayerBack();
+        }
+    }
+
+    /// <summary>
+    /// プレイヤーのY1のところからカメラまでの距離
+    /// </summary>
+    /// <returns></returns>
+    private float Distance_Player2Camera() {
+        return Vector3.Distance(new Vector3(player.transform.position.x, 1, player.transform.position.z),
+                                transform.position);
+    }
+
+    /// <summary>
+    /// プレイヤーとの間にステージがあったら表示しない（簡易めり込み対策）
+    /// </summary>
+    private void NotDisplayStageBetweenWithPlayer() {
+        Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Distance_Player2Camera() + 1, LayerMask.GetMask("Stage"))) {
+            MeshRenderer pMeshR = hit.transform.parent.parent.GetComponent<MeshRenderer>();
+            if (pMeshR.enabled) {
+                hitsMeshRenderer.Add(pMeshR);
+                pMeshR.enabled = false;
+            }
+        }
+        else {
+            if (hitsMeshRenderer.Count != 0) {
+                foreach (var rh in hitsMeshRenderer) {
+                    rh.enabled = true;
+                }
+                hitsMeshRenderer.Clear();
+            }
         }
     }
 
