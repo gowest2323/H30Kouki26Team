@@ -12,6 +12,8 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 	[SerializeField, Header("攻撃のアニメーションの名前(oni@〇〇)")]
 	private string attackAnimationName = "attack";
 	private System.IDisposable observer;
+	[SerializeField]
+	private EnemyAttackAreaDrawer areaDrawer;
 
 	protected override void Start() {
 		base.Start();
@@ -26,7 +28,8 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 			if (e) { AttackStart(); }
 			else { AttackEnd(); }
 		});
-	}
+        UnityEngine.Assertions.Assert.IsNotNull(areaDrawer, "Attack Area Drawer is null");
+    }
 
 	private void OnDestroy() {
 		//イベントの購読を終了
@@ -34,12 +37,14 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 	}
 
 	public override IEnumerator Attack() {
+		areaDrawer.DrawStart();
 		enemyAnimation.StartAttackAnimation(attackType);
 		yield return new WaitWhile(() => {
 			AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
 			return info.fullPathHash != Animator.StringToHash("Base Layer.oni@" + attackAnimationName);
 		});
-		yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));
+		yield return new WaitWhile(() => !enemyAnimation.IsEndAnimation(0.02f));        
+		areaDrawer.DrawEnd();
 	}
 
 	protected override void OnHit(Collider collider) {
