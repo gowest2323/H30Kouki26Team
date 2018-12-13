@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae656f36d76846ffa73e23f00d497f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  repeatCount: 1
+  repeatCount: 3
   generateWait: 0.5
   particlePrefab: {fileID: 1140243097376046, guid: ff194a72c7eab441c825db9c4e72153c,
     type: 2}

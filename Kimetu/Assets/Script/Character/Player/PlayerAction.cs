@@ -101,12 +101,17 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 	[SerializeField]
 	private float replSparkDestroySeconds = 2f;
+	[SerializeField]
+	private ReplEffectGenerator replEffectGenerator;
 
 	private float slowElapsed;
 
 	void Start() {
 		if(playerCamera == null) {
 			this.playerCamera = Camera.main.GetComponent<CameraController>();
+		}
+		if(replEffectGenerator == null) {
+			this.replEffectGenerator = GameObject.Find("ReplEffectGenerator").GetComponent<ReplEffectGenerator>();
 		}
 		this.status = GetComponent<PlayerStatus>();
 		//this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
@@ -550,6 +555,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			var effect = GameObject.Instantiate(replSparkPrefab);
 			effect.transform.position = Utilities.FindRec(transform, "katana:katana").transform.position;
 			GameObject.Destroy(effect, replSparkDestroySeconds);
+			//波紋を作成
+			replEffectGenerator.StartGenerate(transform.FindRec("katana:katana").transform.position);
 
 			//スロー中でない時のみ
 			if (!Slow.Instance.isSlowNow)
