@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4452476787721030}
   - component: {fileID: 20237868455254358}
   - component: {fileID: 124943830799656016}
-  - component: {fileID: 81421089844262524}
   - component: {fileID: 114180806575720740}
   - component: {fileID: 114078616438524752}
   m_Layer: 0
@@ -40,7 +39,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4871889630404902}
   - component: {fileID: 20388639149467856}
-  - component: {fileID: 81624074845085018}
   - component: {fileID: 114232390340611392}
   m_Layer: 0
   m_Name: EffectCamera
@@ -185,20 +183,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &81421089844262524
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1855043257229228}
-  m_Enabled: 1
---- !u!81 &81624074845085018
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1861439122673388}
-  m_Enabled: 1
 --- !u!114 &114078616438524752
 MonoBehaviour:
   m_ObjectHideFlags: 1
