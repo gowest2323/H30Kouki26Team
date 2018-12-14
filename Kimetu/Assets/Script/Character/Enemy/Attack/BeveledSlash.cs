@@ -13,7 +13,7 @@ public class BeveledSlash : EnemyAttack {
 	protected override void OnHit(Collider collider) {
 		if (TagNameManager.Equals(collider.tag, TagName.Player)) {
 			DamageSource damage = new DamageSource(collider.ClosestPoint(this.transform.position),
-												   power, holderEnemy);
+												   power, holderEnemyAI);
 			collider.GetComponent<PlayerAction>().OnHit(damage);
 		}
 	}

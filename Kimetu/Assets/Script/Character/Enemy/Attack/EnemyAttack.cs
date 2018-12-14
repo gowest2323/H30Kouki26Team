@@ -1,72 +1,116 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Collider))]
 public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
-	[SerializeField, Header("攻撃力")]
+	[SerializeField, Tooltip("攻撃力")]
 	protected int power;
-	[SerializeField]
-	protected EnemySearchableAreaBase attackableArea;
-	[SerializeField]
-	protected EnemyAI holderEnemy;
+	protected EnemyAI holderEnemyAI; //この攻撃方法の持ち主
+	[SerializeField, Header("攻撃をするかどうか判断する範囲")]
+	protected EnemySearchableAreaBase attackArea;
 	[SerializeField, Tooltip("攻撃範囲描画オブジェクト")]
-	protected EnemyAttackAreaDrawer areaDrawer;
+	protected EnemyAttackAreaDrawer attackAreaDrawer;
+	[SerializeField]
+	protected string attackStateName;
 	protected Collider attackCollider;
 	protected EnemyAnimation enemyAnimation;
-	/// <summary>
-	/// 攻撃が何回ヒットしたかを記録する。
-	/// 一度のアニメーションで意図せず多段ヒットすることがあるのでその防止のために用意しました。
-	/// #AttackStart で 0 にリセットされます。
-	/// </summary>
-	protected int hitCount;
-
-	/// <summary>
-	/// この攻撃が開始しているなら true.
-	/// このフラグは IsTriggerEnter のなかで使用します。
-	/// 攻撃手段が複数あり、かつそれぞれが当たり判定を共有している場合があります。
-	/// フラグを使用せずに IsTriggerEnter で必ずダメージを与えるように実装すると、
-	///
-	/// 例えば複数の攻撃手段を持っているボスが振り下ろしという攻撃のためにコライダーを有効化した時、
-	/// もう一つの攻撃手段であるなぎ払い(HorizontalAttack)も同様に IsTriggerEnter で攻撃を与えてしまいます。
-	/// このフラグは #AttackStart で trueに、 #AttackEnd でfalseになります。
-	/// </summary>
-	/// <value></value>
-	protected bool running { private set; get; }
-
+	protected bool isHit; //攻撃が当たったかどうか（多段ヒット無効のため）
+	protected bool isRunning; //現在この攻撃方法が開始されているか（別攻撃での判定を無効にするため）
+	protected bool cancelFlag;
 
 	protected virtual void Start() {
+		isHit = false;
+		holderEnemyAI = GetComponentInParent<EnemyAI>();
 		attackCollider = GetComponent<Collider>();
 		attackCollider.enabled = false;
 		enemyAnimation = GetComponentInParent<EnemyAnimation>();
-		UnityEngine.Assertions.Assert.IsNotNull(areaDrawer, "Attack Area Drawer is null");
+		Assert.IsNotNull(enemyAnimation, "EnemyAnimationが存在しません。");
+		Assert.IsNotNull(holderEnemyAI, "この攻撃方法の持ち主が存在しません。");
+		Assert.IsNotNull(attackArea, "EnemySearchAreaがありません。");
+		Assert.IsNotNull(attackAreaDrawer, "EnemyAttackAreaDrawerがありません。");
 	}
 
 	public abstract IEnumerator Attack();
 
 	public bool CanAttack(GameObject target) {
-		return attackableArea.IsPlayerInArea(target, false);
+		return attackArea.IsPlayerInArea(target, true);
 	}
 
-	public void OnTriggerEnter(Collider collider) {
-		if (running) {
-			OnHit(collider);
+	private void OnTriggerEnter(Collider other) {
+		if (isRunning && !isHit) {
+			OnHit(other);
 		}
 	}
 
-	/// <summary>
-	/// 他のオブジェクトと衝突すると呼ばれます。
-	/// </summary>
-	/// <param name="collider"></param>
-	protected abstract void OnHit(Collider collider);
+	protected virtual void OnHit(Collider collider) {
+		if (collider.tag == TagName.Player.String()) {
+			isHit = true;
+			DamageSource damage = new DamageSource(collider.ClosestPoint(this.transform.position),
+												   power, holderEnemyAI);
+			PlayerAction player = collider.GetComponent<PlayerAction>();
+			Assert.IsNotNull(player, "PlayerActionが取得できませんでした。");
+			player.OnHit(damage);
+		}
+	}
 
 	public void AttackStart() {
-		this.hitCount = 0;
-		this.running = true;
-		GetComponent<Collider>().enabled = true;
+		isRunning = true;
+		isHit = false;
+		attackCollider.enabled = true;
 	}
 
 	public void AttackEnd() {
-		this.running = false;
-		GetComponent<Collider>().enabled = false;
+		isRunning = false;
+		attackCollider.enabled = false;
+	}
+
+	public void Cancel() {
+		cancelFlag = true;
+	}
+
+	protected GameObject GetPlayer() {
+		GameObject player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+		Assert.IsNotNull(player, "プレイヤーが取得できませんでした。");
+		return player;
+	}
+
+	protected Transform GetTopTransform() {
+		Rigidbody topRigid = GetComponentInParent<Rigidbody>();
+		Assert.IsNotNull(topRigid, "Rigidbodyが見つかりませんでした。");
+		return topRigid.transform;
+	}
+
+	protected void DrawStartAttackArea() {
+		if (attackAreaDrawer != null) {
+			attackAreaDrawer.DrawStart();
+		}
+	}
+	protected void DrawEndAttackArea() {
+		if (attackAreaDrawer != null) {
+			attackAreaDrawer.DrawEnd();
+		}
+	}
+
+	protected IEnumerator WaitStartAttackAnimation() {
+		while (!enemyAnimation.IsPlayingAnimation("oni", attackStateName)) {
+			AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
+
+			if (cancelFlag) break;
+
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
+	}
+
+	protected IEnumerator WaitEndAttackAnimation() {
+		while (!enemyAnimation.IsEndAnimation(0.1f)) {
+			AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
+
+			if (cancelFlag) break;
+
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
 	}
 }

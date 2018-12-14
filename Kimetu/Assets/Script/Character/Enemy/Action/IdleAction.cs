@@ -2,48 +2,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-[System.Serializable]
-public class IdleAction : MonoBehaviour, IEnemyActionable {
-	[SerializeField]
-	private float waitTime;
-	private EnemyAnimation enemyAnimation;
-	[SerializeField]
-	private EnemySearchableAreaBase searchArea;
-	public bool isPlayerInArea { get; private set; }
-	private GameObject player;
-
-	private void Start() {
-		enemyAnimation = GetComponentInParent<EnemyAnimation>();
-		player = GameObject.FindGameObjectWithTag(TagName.Player.String());
-	}
-
+public class IdleAction : ActionBase {
 	/// <summary>
-	/// 待機行動
+	/// 待機する秒数
 	/// </summary>
-	/// <returns></returns>
-	public IEnumerator Action(UnityAction callBack) {
-		yield return Action(callBack, waitTime);
+	public float waitSecond { get; set; }
+
+	private void Awake() {
+		Debug.Log("idle start");
+		waitSecond = 1.0f;
 	}
 
-	public IEnumerator Action(UnityAction callBack, float waitTime, bool searchPlayer = false) {
-		isPlayerInArea = false;
+	protected override void Start() {
+		base.Start();
+		waitSecond = 1.0f;
+	}
+
+	public override IEnumerator Action() {
+		cancelFlag = false;
 		enemyAnimation.StopRunAnimation();
 		float time = 0.0f;
 
-		while (time < waitTime) {
-			if (searchPlayer && searchArea.IsPlayerInArea(player, true)) {
-				isPlayerInArea = true;
-				callBack.Invoke();
-				yield break;
-			}
+		while (time < waitSecond) {
+			if (cancelFlag) break;
 
-			float slowDeltaTime = Slow.Instance.DeltaTime();
-			time += slowDeltaTime;
-			yield return new WaitForSeconds(slowDeltaTime);
+			float slowDelta = Slow.Instance.DeltaTime();
+			time += slowDelta;
+			yield return new WaitForSeconds(slowDelta);
 		}
-
-		callBack.Invoke();
 	}
 }

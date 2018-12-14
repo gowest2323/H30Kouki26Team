@@ -21,9 +21,11 @@ public abstract class EnemySearchableAreaBase : MonoBehaviour {
 	/// <returns>当たったのがプレイヤーならtrue</returns>
 	protected virtual bool IsHitRayToPlayer(Vector3 fromPosition, Vector3 toTargetDir, GameObject target, float distance) {
 		RaycastHit hit;
+		int layerMask = LayerMask.GetMask(LayerName.PlayerDamageable.String());
+		Ray ray = new Ray(fromPosition, toTargetDir);
 
 		//何も当たらなければ終了
-		if (!Physics.Raycast(fromPosition, toTargetDir, out hit, distance)) {
+		if (!Physics.Raycast(ray, out hit, distance, layerMask)) {
 			return false;
 		}
 

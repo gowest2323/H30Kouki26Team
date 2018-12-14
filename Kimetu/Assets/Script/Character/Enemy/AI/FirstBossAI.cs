@@ -1,185 +1,137 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UniRx;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Assertions;
 
 public class FirstBossAI : EnemyAI, IEnemyInfoProvider {
-	[SerializeField, Tooltip("待機アクション")]
-	private IdleAction idle;
-	[SerializeField, Tooltip("振り下ろし")]
-	private AttackAction swingAttack;
-	[SerializeField, Tooltip("薙ぎ払い")]
-	private AttackAction nagiharaiAttack;
-	[SerializeField, Tooltip("プレイヤー接近アクション")]
-	private NearPlayerAction nearPlayer;
-	[SerializeField, Tooltip("ダメージアクション")]
-	private DamageAction damage;
-	[SerializeField, Tooltip("死亡アクション")]
-	private DeathAction death;
-	private EnemyStatus status;
-	private DamageMode damageMode;
 
+	[SerializeField]
+	private IdleAction idle;
+	[SerializeField]
+	private ChasePlayer chasePlayer;
+	[SerializeField]
+	private AttackAction attack;
+	[SerializeField]
+	private AttackAction attack2;
+	[SerializeField]
+	private DamageAction damage;
+	[SerializeField]
+	private DeathAction death;
 	public string informationText { private set; get; }
 
 	protected override void Start() {
 		base.Start();
-		status = GetComponent<EnemyStatus>();
-		currentActionCoroutine = Think();
-		canUseHeal = false;
+		death.deadEnd = DeadEnd;
 	}
 
-	public override void Countered() {
-		//行動を停止し、ダメージアクションに移行
-		StopAction();
-		isAction = true;
-		reserveStates.Clear();
-		currentActionCoroutine = StartCoroutine(damage.Action(ActionCallBack, DamagePattern.Countered));
-		currentState = EnemyState.Damage;
-		return;
-	}
-
-	public override void OnHit(DamageSource damageSource) {
-		//すでに死亡しているなら何もしない
-		//これがないと、死亡したエネミーに攻撃が当たったとき、
-		//エネミーのローテーションがおかしくなる(PassOutが実行されるため??)
-		if (status.IsDead()) { return; }
-
-		ApplyDamage(damageSource);
-		//現在の行動を停止
-		StopAction();
-
-		//死亡したら倒れるモーション
-		if (status.IsDead()) {
-			Death();
-		}
-		//まだ生きていたらダメージモーション
-		else {
-			ShowDamageEffect();
-			//ダメージ状態に移行
-			isAction = true;
-			reserveStates.Clear();
-			currentActionCoroutine = CoroutineManager.Instance.StartCoroutineEx(damage.Action(ActionCallBack));
-			currentState = EnemyState.Damage;
-		}
-	}
-
-	/// <summary>
-	/// 行動決定
-	/// </summary>
-	/// <returns></returns>
 	protected override Coroutine Think() {
-		isAction = true;
-
-		//死亡していたら死亡アクションに移行
-		if (status.IsDead()) {
-			currentState = EnemyState.Death;
-			return CoroutineManager.Instance.StartCoroutineEx(death.Action(DeadEnd));
-		}
-
-		//次の行動をとる(ない場合はNoneが返ってくる)
-		EnemyState nextReservedState = reserveStates.FirstOrDefault();
-
 		//行動予約がある
-		if (nextReservedState != EnemyState.None) {
+		if (reserveStates.Count > 0) {
+			EnemyState next = reserveStates[0];
 			reserveStates.RemoveAt(0);
+			return StartAction(next);
+		} else {
+			switch (currentState) {
+				case EnemyState.Idle:
+					return StartAction(EnemyState.MoveNear);
 
-			//接近行動が予約されている
-			if (nextReservedState == EnemyState.MoveNear) {
-				currentState = EnemyState.MoveNear;
-				return StartCoroutine(nearPlayer.Action(ActionCallBack));
+				case EnemyState.Attack:
+					idle.waitSecond = 0.5f;
+					NewReserve(EnemyState.MoveNear);
+					return StartAction(EnemyState.Idle);
+
+				case EnemyState.Damage:
+					idle.waitSecond = 0.5f;
+					NewReserve(EnemyState.MoveNear);
+					return StartAction(EnemyState.Idle);
+
+				case EnemyState.MoveNear:
+					if (chasePlayer.isNearPlayer) {
+						if (attack.CanAttack()) {
+							return StartAttackAction(attack);
+						} else {
+							return StartAttackAction(attack2);
+						}
+					}
+
+					break;
+
+				case EnemyState.Death:
+					return StartAction(EnemyState.Death);
+
+				default:
+					break;
 			}
 		}
 
-		switch (currentState) {
-			//待機の次はプレイヤーに接近
+		Debug.LogError("未設定の状態遷移が実行されようとしました。" + currentState);
+		return null;
+	}
+
+	private Coroutine StartAction(EnemyState nextState) {
+		this.currentState = nextState;
+
+		switch (nextState) {
 			case EnemyState.Idle:
-				currentState = EnemyState.MoveNear;
-				return CoroutineManager.Instance.StartCoroutineEx(nearPlayer.Action(ActionCallBack));
+				currentAction = idle;
+				return CoroutineManager.Instance.StartCoroutineEx(idle.Action());
 
-			//攻撃の次は待機
 			case EnemyState.Attack:
-				currentState = EnemyState.Idle;
-				return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack, 0.25f));
+				Debug.LogError("不正な形でAttackが実行されようとしました。");
+				currentAction = attack;
+				return CoroutineManager.Instance.StartCoroutineEx(attack.Action());
 
-			//ダメージを受けた後は待機後接近する。
 			case EnemyState.Damage:
-				currentState = EnemyState.Idle;
-				reserveStates.Add(EnemyState.MoveNear);
-				return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack, 0.5f));
+				currentAction = damage;
+				return CoroutineManager.Instance.StartCoroutineEx(damage.Action());
 
-			//接近した後は十分近づいていたら攻撃、もしくは待機
 			case EnemyState.MoveNear:
-				if (nearPlayer.isNearPlayer) {
-					currentState = EnemyState.Attack;
+				currentAction = chasePlayer;
+				return CoroutineManager.Instance.StartCoroutineEx(chasePlayer.Action());
 
-					//振り下ろしが当たる範囲なら振り下ろす
-					if (swingAttack.CanAttack(player)) {
-						return CoroutineManager.Instance.StartCoroutineEx(swingAttack.Action(ActionCallBack));
-					} else {
-						return CoroutineManager.Instance.StartCoroutineEx(nagiharaiAttack.Action(ActionCallBack));
-					}
-				} else {
-					currentState = EnemyState.Idle;
-					return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack));
-				}
+			case EnemyState.Death:
+				currentAction = death;
+				return CoroutineManager.Instance.StartCoroutineEx(death.Action());
 
 			default:
-				return CoroutineManager.Instance.StartCoroutineEx(idle.Action(ActionCallBack));
+				Debug.LogError("不正な行動の呼び出しがありました。 " + nextState);
+				return null;
 		}
 	}
 
-	private void Update() {
-		Action();
-		this.informationText = currentState.ToString();
+	private Coroutine StartAttackAction(AttackAction attack) {
+		currentState = EnemyState.Attack;
+		currentAction = attack;
+		return CoroutineManager.Instance.StartCoroutineEx(attack.Action());
+	}
 
-		if (currentState == EnemyState.MoveNear) {
-			informationText = nearPlayer.informationText;
+	public override void OnHit(DamageSource damageSource) {
+		//既に死亡していたら何もしない
+		if (status.IsDead()) {
+			return;
 		}
 
-		UpdateAura();
-	}
+		ApplyDamage(damageSource);
+		StopAction();
 
-	/// <summary>
-	/// 行動する
-	/// </summary>
-	private void Action() {
-		//行動中なら何もしない
-		if (isAction) return;
-
-		//行動していなければ行動を決定し実行
-		currentActionCoroutine = Think();
-	}
-
-	/// <summary>
-	/// 行動終了時に呼ばれる
-	/// </summary>
-	public void ActionCallBack() {
-		isAction = false;
-	}
-
-	/// <summary>
-	/// 死亡処理
-	/// </summary>
-	private void Death() {
-		currentActionCoroutine = Think();
-	}
-
-	/// <summary>
-	/// 死亡後に呼ばれる
-	/// </summary>
-	public void DeadEnd() {
-		canUseHeal = deathByRepl;
-
-		if (deathByRepl) {
-			ShowBeam();
+		if (status.IsDead()) {
+			NewReserve(EnemyState.Death, true);
 		} else {
-			Extinction();
+			ShowDamageEffect();
+			damage.damagePattern = DamagePattern.Normal;
+			NewReserve(EnemyState.Damage, true);
 		}
 	}
 
-	public override void UsedHeal() {
-		base.UsedHeal();
-		Destroy(this.gameObject);
+	/// <summary>
+	/// カウンターされた
+	/// </summary>
+	public override void Countered() {
+		StopAction();
+		damage.damagePattern = DamagePattern.Countered;
+		NewReserve(EnemyState.Damage, true);
 	}
 }

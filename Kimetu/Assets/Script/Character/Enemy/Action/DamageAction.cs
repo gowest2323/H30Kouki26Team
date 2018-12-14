@@ -2,43 +2,65 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public enum DamagePattern {
 	Normal,
 	Countered,
 }
+public class DamageAction : ActionBase {
+	public DamagePattern damagePattern { get; set; }
+	[SerializeField]
+	private string damageStateName = "hit";
+	[SerializeField]
+	private string replStateName = "repl";
 
-public class DamageAction : MonoBehaviour, IEnemyActionable {
-	private EnemyAnimation enemyAnimation;
-
-	private void Start() {
-		enemyAnimation = GetComponentInParent<EnemyAnimation>();
+	protected override void Start() {
+		base.Start();
+		damagePattern = DamagePattern.Normal;
 	}
 
-	public IEnumerator Action(UnityAction callBack, DamagePattern damage) {
-		Debug.Log("damage start");
+	public override IEnumerator Action() {
+		cancelFlag = false;
 
-		if (damage == DamagePattern.Normal) {
+		if (damagePattern == DamagePattern.Normal) {
 			if (Slow.Instance.isSlowNow) {
-
 				enemyAnimation.StartDamageAnimation();
-				yield return enemyAnimation.WaitAnimation("oni", "hit");
 			}
 
-
-		} else {
-
-			enemyAnimation.StartReplAnimation();
-			yield return enemyAnimation.WaitAnimation("oni", "repl");
+			yield return WaitStartAttackAnimation(damageStateName);
+			yield return WaitEndAttackAnimation();
 		}
 
-		yield return null;
-		callBack.Invoke();
-		Debug.Log("damage end");
+		//はじかれたときの処理
+		else {
+			enemyAnimation.StartReplAnimation();
+			yield return WaitStartAttackAnimation(replStateName);
+			yield return WaitEndAttackAnimation();
+		}
 	}
 
-	public IEnumerator Action(UnityAction callBack) {
-		yield return StartCoroutine(Action(callBack, DamagePattern.Normal));
+	/// <summary>
+	/// アニメーションの再生を待機する
+	/// </summary>
+	/// <param name="stateName"></param>
+	/// <returns></returns>
+	protected IEnumerator WaitStartAttackAnimation(string stateName) {
+		while (!enemyAnimation.IsPlayingAnimation("oni", stateName)) {
+			if (cancelFlag) break;
+
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
+	}
+
+	/// <summary>
+	/// アニメーションの終了を待機する
+	/// </summary>
+	/// <returns></returns>
+	protected IEnumerator WaitEndAttackAnimation() {
+		while (!enemyAnimation.IsEndAnimation(0.1f)) {
+			if (cancelFlag) break;
+
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
 	}
 }

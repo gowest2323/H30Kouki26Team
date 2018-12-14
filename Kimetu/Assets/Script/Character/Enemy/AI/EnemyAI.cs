@@ -4,27 +4,42 @@ using UnityEngine;
 
 public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected EnemyState currentState; //現在の状態
+	protected List<EnemyState> reserveStates; //行動予約
+	protected ActionBase currentAction;
 	protected Coroutine currentActionCoroutine; //現在の行動コルーチン
 	[SerializeField, Header("腰オブジェクトの名前")]
 	protected string waistObjectName = "mixamorig:Hips/mixamorig:Spine";
 	protected Transform waist; //腰オブジェクト
-	protected List<EnemyState> reserveStates; //行動予約
 	protected GameObject player;
-	private Status mStatus;
-	protected bool isAction;
+	protected Status status;
+	protected bool endActionFlag;
 
 	[SerializeField, Header("黒くなって消えるのにかかる時間")]
 	private float extinctionSeconds = 2.5f;
 
 	protected virtual void Start() {
+		endActionFlag = false;
 		waist = transform.Find(waistObjectName);
 		UnityEngine.Assertions.Assert.IsNotNull(waist, "waist not found");
 		player = GameObject.FindGameObjectWithTag(TagName.Player.String());
 		UnityEngine.Assertions.Assert.IsNotNull(player, "player not found");
 		reserveStates = new List<EnemyState>();
+		reserveStates.Add(EnemyState.Idle);
 		currentState = EnemyState.Idle;
 		this.auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
-		this.mStatus = GetComponent<Status>();
+		this.status = GetComponent<Status>();
+		CoroutineManager.Instance.StartCoroutineEx(Loop());
+	}
+
+	// Use this for initialization
+	protected virtual IEnumerator Loop() {
+		while (true) {
+			yield return Think();
+
+			if (endActionFlag) {
+				break;
+			}
+		}
 	}
 
 	/// <summary>
@@ -85,7 +100,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	/// オーラエフェクトを更新します。
 	/// </summary>
 	protected void UpdateAura() {
-		if (!mStatus.IsDead()) {
+		if (!status.IsDead()) {
 			EffectManager.Instance.EnemyAuraCreate(auraPlace);
 		}
 	}
@@ -159,10 +174,33 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	}
 
 	protected void StopAction() {
-		if (currentActionCoroutine != null) {
-			CoroutineManager.Instance.StopCoroutineEx(currentActionCoroutine);
+		currentAction.Cancel();
+	}
+
+	/// <summary>
+	/// 行動の予約をする
+	/// </summary>
+	/// <param name="state">予約するステート</param>
+	/// <param name="oldClear">古い予約をクリアするか</param>
+	protected void NewReserve(EnemyState state, bool oldClear = false) {
+		if (oldClear) {
+			reserveStates.Clear();
 		}
 
-		isAction = false;
+		reserveStates.Add(state);
+	}
+
+	/// <summary>
+	/// 死亡後に呼ばれる
+	/// </summary>
+	public void DeadEnd() {
+		canUseHeal = deathByRepl;
+		endActionFlag = true;
+
+		if (deathByRepl) {
+			ShowBeam();
+		} else {
+			Extinction();
+		}
 	}
 }

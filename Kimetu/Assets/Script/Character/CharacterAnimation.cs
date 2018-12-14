@@ -40,6 +40,11 @@ public abstract class CharacterAnimation : MonoBehaviour {
 		return animatorInfo.normalizedTime > 1.0f - epsilon;
 	}
 
+	public bool IsPlayingAnimation(string characterName, string animationName) {
+		AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+		return info.fullPathHash == Animator.StringToHash("Base Layer." + characterName + "@" + animationName);
+	}
+
 	/// <summary>
 	/// アニメーションを待機します。
 	/// </summary>
