@@ -34,7 +34,8 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 	public IObservable<bool> onEnd  { get { return end; }}
 	private Subject<bool> end;
 
-	private void Start() {
+	protected override void Awake() {
+		base.Awake();
 		this.start = new Subject<bool>();
 		this.end = new Subject<bool>();
 	}
