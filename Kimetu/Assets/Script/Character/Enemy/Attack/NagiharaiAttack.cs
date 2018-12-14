@@ -39,6 +39,7 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 		//攻撃範囲描画
 		DrawStartAttackArea();
 		enemyAnimation.StartAttackAnimation(EnemyAttackType.NagiharaiAttack);
+		yield return new WaitForSeconds(1.0f);
 		yield return WaitStartAttackAnimation();
 		StartCoroutine(Rotate());
 		//攻撃アニメーション終了まで待機

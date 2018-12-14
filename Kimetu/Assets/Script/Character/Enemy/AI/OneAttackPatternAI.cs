@@ -50,7 +50,7 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 					}
 
 				case EnemyState.Attack:
-					idle.waitSecond = 0.5f;
+					idle.waitSecond = 0.25f;
 					NewReserve(EnemyState.MoveNear);
 					return StartAction(EnemyState.Idle);
 
@@ -144,15 +144,20 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		}
 
 		ApplyDamage(damageSource);
-		StopAction();
 
 		if (status.IsDead()) {
+			StopAction();
 			NewReserve(EnemyState.Death, true);
 		} else {
 			ShowDamageEffect();
-			damage.damagePattern = DamagePattern.Normal;
+
+			//今の状態がこうげきを受けたことで停止するか
+			if (DamagedCancelAction(currentState)) {
+				StopAction();
+			}
 
 			if (Slow.Instance.isSlowNow) {
+				damage.damagePattern = DamagePattern.Normal;
 				NewReserve(EnemyState.Damage, true);
 			}
 		}
@@ -166,4 +171,6 @@ public class OneAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		damage.damagePattern = DamagePattern.Countered;
 		NewReserve(EnemyState.Damage, true);
 	}
+
+
 }

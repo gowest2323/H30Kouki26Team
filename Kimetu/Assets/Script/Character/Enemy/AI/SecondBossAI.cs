@@ -125,12 +125,17 @@ public class SecondBossAI : EnemyAI, IEnemyInfoProvider {
 		}
 
 		ApplyDamage(damageSource);
-		StopAction();
 
 		if (status.IsDead()) {
 			NewReserve(EnemyState.Death, true);
+			StopAction();
 		} else {
 			ShowDamageEffect();
+
+			//今の状態がこうげきを受けたことで停止するか
+			if (DamagedCancelAction(currentState)) {
+				StopAction();
+			}
 
 			if (Slow.Instance.isSlowNow) {
 				damage.damagePattern = DamagePattern.Normal;

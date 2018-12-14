@@ -38,6 +38,7 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 		//攻撃範囲描画
 		DrawStartAttackArea();
 		yield return Rotate();
+        yield return new WaitForSeconds(1.0f);
 		enemyAnimation.StartAttackAnimation(EnemyAttackType.Combo);
 		yield return WaitStartAttackAnimation();
 		//攻撃アニメーション終了まで待機

@@ -32,14 +32,14 @@ public class ChasePlayer : ActionBase {
 	public override IEnumerator Action() {
 		cancelFlag = false;
 		//NavMeshを動かす
-		agent.isStopped = false;
+		NavMeshStart();
 		isNearPlayer = false;
 		enemyAnimation.StartRunAnimation();
 
 		while (!IsEndChase()) {
 			if (cancelFlag) break;
 
-			agent.SetDestination(player.transform.position);
+			UpdateNavMesh(player.transform.position);
 
 			//プレイヤーの方向を向きたいが十分近づいているなら移動しないようにする
 			if (toRotate && IsPlayerInArea()) {
@@ -48,7 +48,7 @@ public class ChasePlayer : ActionBase {
 			}
 			//十分近づいていなければ移動するようにする
 			else if (!IsPlayerInArea()) {
-				agent.isStopped = false;
+				NavMeshStart();
 			}
 
 			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
@@ -65,9 +65,22 @@ public class ChasePlayer : ActionBase {
 
 	private void NavMeshStop() {
 		agent.velocity = Vector3.zero;
-		agent.SetDestination(transform.position);
+		agent.updatePosition = false;
+		agent.updateRotation = false;
+		//agent.SetDestination(transform.position);
 		agent.isStopped = true;
 	}
+
+	private void NavMeshStart() {
+		agent.updatePosition = true;
+		agent.updateRotation = true;
+		agent.isStopped = false;
+	}
+	private void UpdateNavMesh(Vector3 position) {
+		agent.destination = (position);
+		agent.isStopped = false;
+	}
+
 
 	private bool IsEndChase() {
 		//近づいていなかったらfalse
