@@ -82,7 +82,7 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 
         var obj = GameObject.Instantiate(auraEffect_Slow) as GameObject;
         obj.transform.position = enemy.transform.position;
-        //Destroy(obj, 0.1f);
+        Destroy(obj, 1f);
 
     }
 
