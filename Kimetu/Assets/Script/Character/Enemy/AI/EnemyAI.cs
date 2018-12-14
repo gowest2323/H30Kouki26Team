@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected EnemyState currentState; //現在の状態
@@ -13,8 +14,9 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected GameObject player;
 	protected Status status;
 	protected bool endActionFlag;
+    private System.IDisposable observer;
 
-	[SerializeField, Header("黒くなって消えるのにかかる時間")]
+    [SerializeField, Header("黒くなって消えるのにかかる時間")]
 	private float extinctionSeconds = 2.5f;
 
 	protected virtual void Start() {
@@ -29,7 +31,11 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		this.auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
 		this.status = GetComponent<Status>();
 		CoroutineManager.Instance.StartCoroutineEx(Loop());
-	}
+        this.observer = Slow.Instance.onStart.Subscribe((e) => {
+            //ここでエフェクトを作成
+            EffectManager.Instance.EnemySlowAuraCreate(auraPlace);
+        });
+    }
 
 	// Use this for initialization
 	protected virtual IEnumerator Loop() {
@@ -204,4 +210,13 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 			Extinction();
 		}
 	}
+
+    void OnDestroy()
+    {
+        observer.Dispose();
+    }  
+    void Update()
+    {
+        UpdateAura();
+    }
 }

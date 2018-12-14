@@ -11,6 +11,7 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 	public GameObject playerViolentMoveEffect;
 	public GameObject shieldEffect;
 	public GameObject auraEffect;
+    public GameObject auraEffect_Slow;
 	GameObject effect;
 	[SerializeField]
 	private float limitTime = 1.0f;
@@ -69,11 +70,23 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 	}
 	public void EnemyAuraCreate(GameObject enemy) {
 
+        if (Slow.Instance.isSlowNow) return;      
 		var obj = GameObject.Instantiate(auraEffect) as GameObject;
 		obj.transform.position = enemy.transform.position ;
 		Destroy(obj, 0.1f);
 
 	}
+
+    public void EnemySlowAuraCreate(GameObject enemy)
+    {
+
+        var obj = GameObject.Instantiate(auraEffect_Slow) as GameObject;
+        obj.transform.position = enemy.transform.position;
+        Destroy(obj, 0.1f);
+
+    }
+
+
 
 
 }
