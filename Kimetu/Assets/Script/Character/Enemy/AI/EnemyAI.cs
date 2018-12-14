@@ -34,6 +34,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	// Use this for initialization
 	protected virtual IEnumerator Loop() {
 		while (true) {
+			yield return null;
 			yield return Think();
 
 			if (endActionFlag) {
