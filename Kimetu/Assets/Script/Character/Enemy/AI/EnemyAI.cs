@@ -182,8 +182,9 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		var startPos = transform.position;
 
 		while (offset < seconds) {
-			yield return new WaitForSeconds(seconds / separate);
-			offset += (seconds / separate);
+			var t = Time.time;
+			yield return new WaitForEndOfFrame();
+			offset += (Time.time - t);
 			//沈める
 			var newPos = startPos;
 			newPos.y -= sinkHeight * (offset / seconds);
