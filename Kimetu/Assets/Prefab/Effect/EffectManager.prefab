@@ -64,4 +64,6 @@ MonoBehaviour:
   shieldEffect: {fileID: 1565601249010682, guid: 75184ed2e5c4a8647bacac58d2a3829e,
     type: 2}
   auraEffect: {fileID: 1646530348781452, guid: ea1b488157a45e44d9bb28a40f86a516, type: 2}
+  auraEffect_Slow: {fileID: 1646530348781452, guid: 14619360a518f224d9769c2708208210,
+    type: 2}
   limitTime: 1
