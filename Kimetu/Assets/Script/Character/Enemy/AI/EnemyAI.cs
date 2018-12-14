@@ -14,12 +14,12 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected GameObject player;
 	protected Status status;
 	protected bool endActionFlag;
-    private System.IDisposable observer;
+	private System.IDisposable observer;
 
-    [SerializeField, Header("黒くなって消えるのにかかる時間")]
+	[SerializeField, Header("黒くなって消えるのにかかる時間")]
 	private float extinctionSeconds = 2.5f;
 
-    [SerializeField, Header("沈んで消えるのにかかる時間")]
+	[SerializeField, Header("沈んで消えるのにかかる時間")]
 	private float sinkSeconds = 1.5f;
 
 	[SerializeField, Header("沈む高さ")]
@@ -37,17 +37,20 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		this.auraPlace = gameObject.transform.parent.FindRec("mixamorig:Neck");
 		this.status = GetComponent<Status>();
 		CoroutineManager.Instance.StartCoroutineEx(Loop());
-        this.observer = Slow.Instance.onStart.Subscribe((e) => {
-            //ここでエフェクトを作成
-            EffectManager.Instance.EnemySlowAuraCreate(auraPlace);
-        });
-    }
+		this.observer = Slow.Instance.onStart.Subscribe((e) => {
+			//ここでエフェクトを作成
+			EffectManager.Instance.EnemySlowAuraCreate(auraPlace);
+		});
+	}
 
 	// Use this for initialization
 	protected virtual IEnumerator Loop() {
+		yield return null;
+
 		while (true) {
-			yield return null;
+			float t = Time.time;
 			yield return Think();
+			Debug.Log(currentState + "行動時間: " + (Time.time - t));
 
 			if (endActionFlag) {
 				break;
@@ -177,7 +180,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		offset = 0f;
 		seconds = sinkSeconds;
 		var startPos = transform.position;
-		while(offset < seconds) {
+
+		while (offset < seconds) {
 			yield return new WaitForSeconds(seconds / separate);
 			offset += (seconds / separate);
 			//沈める
@@ -185,6 +189,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 			newPos.y -= sinkHeight * (offset / seconds);
 			transform.position = newPos;
 		}
+
 		GameObject.Destroy(particle);
 		GameObject.Destroy(gameObject);
 	}
@@ -229,12 +234,22 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		}
 	}
 
-    void OnDestroy()
-    {
-        observer.Dispose();
-    }  
-    void Update()
-    {
-        UpdateAura();
-    }
+	/// <summary>
+	/// ダメージを受けると行動がキャンセルされるか
+	/// </summary>
+	/// <param name="state"></param>
+	/// <returns></returns>
+	protected virtual bool DamagedCancelAction(EnemyState state) {
+		return state == EnemyState.Idle
+			   || state == EnemyState.MoveDefaultPosition
+			   || state == EnemyState.Search
+			   || state == EnemyState.MoveNear;
+	}
+
+	void OnDestroy() {
+		observer.Dispose();
+	}
+	void Update() {
+		UpdateAura();
+	}
 }

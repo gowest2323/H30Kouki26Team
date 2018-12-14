@@ -36,13 +36,13 @@ public class WimpChasePlayer : ActionBase {
 	public override IEnumerator Action() {
 		cancelFlag = false;
 		//NavMeshを動かす
-		agent.isStopped = false;
+		NavMeshStart();
 		isNearPlayer = false;
 		enemyAnimation.StartRunAnimation();
 		float time = 0.0f;
 
 		while (!cancelFlag) {
-			agent.SetDestination(player.transform.position);
+			UpdateNavMesh(player.transform.position);
 
 			if (IsEndChase()) break;
 
@@ -64,7 +64,7 @@ public class WimpChasePlayer : ActionBase {
 			}
 			//視界内にいて近づいていなければ移動する
 			else {
-				agent.isStopped = false;
+				NavMeshStart();
 			}
 
 			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
@@ -81,8 +81,21 @@ public class WimpChasePlayer : ActionBase {
 
 	private void NavMeshStop() {
 		agent.velocity = Vector3.zero;
-		agent.SetDestination(transform.position);
+		//agent.SetDestination(transform.position);
+		agent.updatePosition = false;
+		agent.updateRotation = false;
 		agent.isStopped = true;
+	}
+
+	private void NavMeshStart() {
+		agent.updatePosition = true;
+		agent.updateRotation = true;
+		agent.isStopped = false;
+	}
+
+	private void UpdateNavMesh(Vector3 position) {
+		agent.destination = (position);
+		agent.isStopped = false;
 	}
 
 	private bool IsEndChase() {

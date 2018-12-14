@@ -28,8 +28,10 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 		cancelFlag = false;
 		//攻撃範囲の描画
 		DrawStartAttackArea();
-		//攻撃アニメーション開始まで待機
 		enemyAnimation.StartAttackAnimation(attackType);
+		yield return new WaitForSeconds(1.0f);
+		//攻撃アニメーション開始まで待機
+		Debug.Log("攻撃アニメーション開始");
 		yield return WaitStartAttackAnimation();
 		//攻撃アニメーション終了まで待機
 		yield return WaitEndAttackAnimation();

@@ -156,6 +156,11 @@ public class TwoAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		} else {
 			ShowDamageEffect();
 
+			//今の状態がこうげきを受けたことで停止するか
+			if (DamagedCancelAction(currentState)) {
+				StopAction();
+			}
+
 			if (Slow.Instance.isSlowNow) {
 				damage.damagePattern = DamagePattern.Normal;
 				StopAction();

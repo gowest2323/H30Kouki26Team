@@ -115,14 +115,22 @@ public class FirstBossAI : EnemyAI, IEnemyInfoProvider {
 		}
 
 		ApplyDamage(damageSource);
-		StopAction();
 
 		if (status.IsDead()) {
+			StopAction();
 			NewReserve(EnemyState.Death, true);
 		} else {
 			ShowDamageEffect();
-			damage.damagePattern = DamagePattern.Normal;
-			NewReserve(EnemyState.Damage, true);
+
+			//今の状態が攻撃を受けたことで停止するか
+			if (DamagedCancelAction(currentState)) {
+				StopAction();
+			}
+
+			if (Slow.Instance.isSlowNow) {
+				damage.damagePattern = DamagePattern.Normal;
+				NewReserve(EnemyState.Damage, true);
+			}
 		}
 	}
 
