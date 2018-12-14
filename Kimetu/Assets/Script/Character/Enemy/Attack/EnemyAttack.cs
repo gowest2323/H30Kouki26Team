@@ -96,21 +96,26 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 
 	protected IEnumerator WaitStartAttackAnimation() {
 		while (!enemyAnimation.IsPlayingAnimation("oni", attackStateName)) {
-			AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
+			Debug.Log("攻撃アニメーション再生待機中");
 
 			if (cancelFlag) break;
 
 			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
 		}
+
+		Debug.Log("攻撃アニメーション再生待機終了");
+
 	}
 
 	protected IEnumerator WaitEndAttackAnimation() {
 		while (!enemyAnimation.IsEndAnimation(0.1f)) {
-			AnimatorStateInfo info = enemyAnimation.anim.GetCurrentAnimatorStateInfo(0);
-
 			if (cancelFlag) break;
 
+			Debug.Log("攻撃アニメーション終了待機中");
 			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
 		}
+
+		Debug.Log("攻撃アニメーション終了待機終了");
+
 	}
 }

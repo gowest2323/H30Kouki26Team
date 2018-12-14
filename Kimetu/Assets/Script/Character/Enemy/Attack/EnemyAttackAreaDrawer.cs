@@ -15,6 +15,8 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	private Material areaPrefabMaterial;
 	[SerializeField, Range(0.0f, 1.0f), Tooltip("最大アルファ値")]
 	private float maxMaterialAlpha;
+	[SerializeField, Header("攻撃時に範囲をその場所に残しておくか")]
+	private bool toReleaseParent = false;
 	private int materialAlphaPropertyID;
 	private Coroutine coroutine;
 
@@ -40,6 +42,10 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, floorLayerMask)) {
 			//床の上にそのまま置くと表示がちらつくので少し上に配置
 			drawAreaObject.transform.position = hit.point + Vector3.up * 0.03f;
+
+			if (toReleaseParent) {
+				drawAreaObject.transform.SetParent(null);
+			}
 		}
 
 		if (coroutine != null) {
@@ -100,6 +106,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 			yield return new WaitForSeconds(slowDelta);
 		}
 
+		drawAreaObject.transform.SetParent(this.transform);
 		drawAreaObject.SetActive(false);
 	}
 }
