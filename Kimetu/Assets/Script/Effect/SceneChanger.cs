@@ -144,7 +144,7 @@ public class SceneChanger : MonoBehaviour
     private IEnumerator StageName(SceneName scene)
     {
         Destroy(loadCanvas);
-        if (SceneNameManager.sceneUInames[scene] == null)
+        if (!SceneNameManager.sceneUInames.ContainsKey(scene))
         {
             yield return null;
         }
