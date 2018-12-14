@@ -882,14 +882,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		Ray ray = new Ray(transform.position + Vector3.up, -transform.forward);
 		RaycastHit hit;
 		float dis;
-		var col = GetComponent<Collider>();
+		//var col = GetComponent<Collider>();
 		//ノックバック後の位置
 		var endPos = startPos + (-transform.forward * knockbackMoveDistance);
 
 		while (offset < knockbackMoveTime) {
 			var t = Time.time;
 			yield return new WaitForEndOfFrame();
-			col.enabled = false;
+			//col.enabled = false;
 			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
 			offset += diff;
 			var percent = offset / knockbackMoveTime;
@@ -903,7 +903,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 				Debug.Log("ノックバック");
 
 				if (dis < limitRayDistance) {
-					col.enabled = true;
+					//col.enabled = true;
 
 					//ガードボタンまだ押しているなら
 					if (Input.GetButton(InputMap.Type.LButton.GetInputName())) {
@@ -919,7 +919,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 				}
 			}
 
-			col.enabled = true;
+			//col.enabled = true;
 			transform.position = Vector3.Lerp(startPos, endPos, percent);
 		}
 
