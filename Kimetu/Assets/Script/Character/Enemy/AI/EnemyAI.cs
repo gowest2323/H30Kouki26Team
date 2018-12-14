@@ -19,6 +19,12 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
     [SerializeField, Header("黒くなって消えるのにかかる時間")]
 	private float extinctionSeconds = 2.5f;
 
+    [SerializeField, Header("沈んで消えるのにかかる時間")]
+	private float sinkSeconds = 1.5f;
+
+	[SerializeField, Header("沈む高さ")]
+	private float sinkHeight = 2f;
+
 	protected virtual void Start() {
 		endActionFlag = false;
 		waist = transform.Find(waistObjectName);
@@ -167,6 +173,18 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 
 		mat.color = Color.black;
 		yield return new WaitForEndOfFrame();
+		//黒くして沈める
+		offset = 0f;
+		seconds = sinkSeconds;
+		var startPos = transform.position;
+		while(offset < seconds) {
+			yield return new WaitForSeconds(seconds / separate);
+			offset += (seconds / separate);
+			//沈める
+			var newPos = startPos;
+			newPos.y -= sinkHeight * (offset / seconds);
+			transform.position = newPos;
+		}
 		GameObject.Destroy(particle);
 		GameObject.Destroy(gameObject);
 	}
