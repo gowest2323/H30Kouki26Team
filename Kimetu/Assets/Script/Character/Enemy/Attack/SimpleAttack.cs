@@ -29,7 +29,7 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 		//攻撃範囲の描画
 		DrawStartAttackArea();
 		enemyAnimation.StartAttackAnimation(attackType);
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(GetForcedWaitTime());
 		//攻撃アニメーション開始まで待機
 		Debug.Log("攻撃アニメーション開始");
 		yield return WaitStartAttackAnimation();

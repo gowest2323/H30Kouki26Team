@@ -109,4 +109,12 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
 		}
 	}
+
+	/// <summary>
+	/// 強制的に待機する時間
+	/// </summary>
+	/// <returns></returns>
+	protected float GetForcedWaitTime() {
+		return 1.0f / Slow.Instance.GetCurrentOtherSpeed();
+	}
 }

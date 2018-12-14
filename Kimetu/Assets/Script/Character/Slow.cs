@@ -45,6 +45,10 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 		return Time.deltaTime * currentOtherSpeed;
 	}
 
+	public float GetCurrentOtherSpeed() {
+		return currentOtherSpeed;
+	}
+
 	public float PlayerDeltaTime() {
 		return Time.deltaTime * currentPlayerSpeed;
 	}
