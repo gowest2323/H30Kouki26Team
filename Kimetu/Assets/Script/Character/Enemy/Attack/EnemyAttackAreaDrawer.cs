@@ -19,8 +19,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	private Coroutine coroutine;
 
 	private void Start() {
-		drawAreaObject = Instantiate(drawAreaObject);
-		drawAreaObject.transform.SetParent(this.transform);
+		drawAreaObject = Instantiate(drawAreaObject, this.transform);
 		drawAreaObject.SetActive(false);
 		//床レイヤーマスク取得
 		floorLayerMask = LayerMask.GetMask(LayerName.Stage.String());

@@ -2,28 +2,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-[System.Serializable]
-public class SearchAction : MonoBehaviour, IEnemyActionable {
+public class SearchAction : ActionBase {
 	[SerializeField]
 	private EnemySearchableAreaBase searchArea;
+	public bool canSearch { get; private set; }
 	private GameObject player;
-	public bool canSearched { private set; get; }
-	private EnemyAnimation enemyAnimation;
 
-	private void Start() {
-		player = GameObject.FindGameObjectWithTag(TagName.Player.String());
-		enemyAnimation = GetComponentInParent<EnemyAnimation>();
+	// Use this for initialization
+	protected override void Start() {
+		base.Start();
+		canSearch = false;
+		player = GetPlayer();
 	}
 
-	/// <summary>
-	/// 索敵
-	/// </summary>
-	/// <returns>索敵範囲内にプレイヤーがいたらtrue</returns>
-	public IEnumerator Action(UnityAction callBack) {
-		yield return null;
-		canSearched = searchArea.IsPlayerInArea(player, true);
-		callBack.Invoke();
+	public override IEnumerator Action() {
+		cancelFlag = false;
+		canSearch = false;
+
+		while (!cancelFlag) {
+			if (searchArea.IsPlayerInArea(player, true)) {
+				canSearch = true;
+				break;
+			}
+
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
 	}
+
 }

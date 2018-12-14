@@ -2,19 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-[System.Serializable]
-public class AttackAction : MonoBehaviour, IEnemyActionable {
+public class AttackAction : ActionBase {
 	[SerializeField]
-	private EnemyAttack attack;
+	private EnemyAttack enemyAttack;
+	private GameObject player;
 
-	public IEnumerator Action(UnityAction callBack) {
-		yield return StartCoroutine(attack.Attack());
-		callBack.Invoke();
+	protected override void Start() {
+		base.Start();
+		player = GetPlayer();
 	}
 
-	public bool CanAttack(GameObject target) {
-		return attack.CanAttack(target);
+	public override IEnumerator Action() {
+		yield return enemyAttack.Attack();
+	}
+
+	public bool CanAttack() {
+		return enemyAttack.CanAttack(player);
+	}
+
+	public override void Cancel() {
+		enemyAttack.Cancel();
 	}
 }

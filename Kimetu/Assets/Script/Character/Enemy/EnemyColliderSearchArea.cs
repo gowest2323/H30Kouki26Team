@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 public class EnemyColliderSearchArea : EnemySearchableAreaBase {
 
@@ -8,7 +9,7 @@ public class EnemyColliderSearchArea : EnemySearchableAreaBase {
 	private Transform eyeTransform;
 	[SerializeField]
 	private Collider searchCollider;
-	private bool isPlayerInArea; //プレイヤーがBoxの中にいるか
+	private bool isPlayerInArea; //プレイヤーがColliderの範囲内にいるか
 
 	// Use this for initialization
 	void Start() {
@@ -25,7 +26,7 @@ public class EnemyColliderSearchArea : EnemySearchableAreaBase {
 		//範囲内にいなければ終了
 		if (!isPlayerInArea) return false;
 
-		if (!toRayCast) return true;
+		//if (!toRayCast) return true;
 
 		//自分からプレイヤーに向かってレイを飛ばす
 		Vector3 targetPosition = player.transform.position;

@@ -1,16 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
-/// <summary>
-/// 敵の単純な攻撃（コライダーのオンオフで表現できる）
-/// </summary>
 public class SimpleAttack : EnemyAttack, IAttackEventHandler {
-	[SerializeField, Header("攻撃の種類")]
+	[SerializeField, Tooltip("攻撃方法")]
 	private EnemyAttackType attackType;
-	[SerializeField, Header("攻撃のアニメーションの名前(oni@〇〇)")]
-	private string attackAnimationName = "attack";
 	private System.IDisposable observer;
 
 	protected override void Start() {
@@ -28,34 +24,16 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 		});
 	}
 
-	private void OnDestroy() {
-		//イベントの購読を終了
-		observer.Dispose();
-	}
-
 	public override IEnumerator Attack() {
-		if (areaDrawer != null) {
-			areaDrawer.DrawStart();
-		}
-
+		cancelFlag = false;
+		//攻撃範囲の描画
+		DrawStartAttackArea();
+		//攻撃アニメーション開始まで待機
 		enemyAnimation.StartAttackAnimation(attackType);
-		yield return enemyAnimation.WaitAnimation("oni", attackAnimationName);
-
-		if (areaDrawer != null) {
-			areaDrawer.DrawEnd();
-		}
-	}
-
-	protected override void OnHit(Collider collider) {
-		if (hitCount > 0) {
-			return;
-		}
-
-		if (TagNameManager.Equals(collider.tag, TagName.Player)) {
-			hitCount++;
-			DamageSource damage = new DamageSource(collider.ClosestPoint(this.transform.position),
-												   power, holderEnemy);
-			collider.GetComponent<PlayerAction>().OnHit(damage);
-		}
+		yield return WaitStartAttackAnimation();
+		//攻撃アニメーション終了まで待機
+		yield return WaitEndAttackAnimation();
+		//攻撃範囲描画終了
+		DrawEndAttackArea();
 	}
 }
