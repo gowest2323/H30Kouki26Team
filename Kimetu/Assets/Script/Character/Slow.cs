@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UniRx;
 
 /// <summary>
 /// 181012 何
@@ -27,6 +28,16 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 	private float currentOtherSpeed = 1;
 	public bool isSlowNow { get { return isSlow; }}
 
+	public IObservable<bool> onStart { get { return start; }}
+	private Subject<bool> start;
+
+	public IObservable<bool> onEnd  { get { return end; }}
+	private Subject<bool> end;
+
+	private void Start() {
+		this.start = new Subject<bool>();
+		this.end = new Subject<bool>();
+	}
 
 
 	public float DeltaTime() {
@@ -53,6 +64,7 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 	}
 
 	private IEnumerator SlowCoroutine(float waitSeconds, List<CharacterAnimation> slowAnimList) {
+		start.OnNext(true);
 		currentPlayerSpeed = slowSpeed;
 		currentOtherSpeed = slowSpeed;
 		colorChanger.SlowStart();
@@ -77,6 +89,7 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 		colorChanger.SlowEnd();
 		currentOtherSpeed = 1;
 		currentPlayerSpeed = 1;
+		end.OnNext(true);
 	}
 
 
