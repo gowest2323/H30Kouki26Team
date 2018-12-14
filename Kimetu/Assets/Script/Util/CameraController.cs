@@ -60,9 +60,7 @@ public class CameraController : MonoBehaviour {
 
     // Use this for initialization
     private void Start() {
-		if(player == null) {
-			this.player = GameObject.FindGameObjectWithTag(TagName.Player.String());
-		}
+        GetPlayerIfNull();
 		offset = transform.position - player.transform.position;
 		isLockOn = false;
 		interval = false;
@@ -458,6 +456,9 @@ public class CameraController : MonoBehaviour {
 
 	//カメラがプレイヤーの背後に戻す
 	public void PositionToPlayerBack() {
+        //1fボス部屋でプレイヤーを参照するよりさきに
+        //このメソッドが呼び出されることにより NullReferenceException が発生していたため
+        GetPlayerIfNull();
         //回転
         vRotation = Quaternion.Euler(20, 0, 0);                                     // 垂直回転(X軸を軸とする回転)は、20度見下ろす回転
         hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);// 水平回転(Y軸を軸とする回転)は、プレイヤーの向きに合わせ
@@ -597,4 +598,10 @@ public class CameraController : MonoBehaviour {
 			Gizmos.DrawLine(transform.position, hit.point);
 		}
 	}
+
+    private void GetPlayerIfNull() {
+        if (player == null) {
+            this.player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+        }
+    }
 }
