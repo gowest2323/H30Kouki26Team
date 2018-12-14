@@ -8,6 +8,7 @@ using UnityEngine;
 public enum EnemyAttackType {
 	SwingDown, //振り下ろし
 	NagiharaiAttack, //薙ぎ払い
+	Combo, //コンボ攻撃
 	Kiriage, //切り上げ
 	Beveled, //斜め切り
 	Strike, //叩きつけ
@@ -32,6 +33,7 @@ public class EnemyAttackTypeDictionary {
 		{EnemyAttackType.SwingDown, "Hurioroshi" },
 		{EnemyAttackType.NagiharaiAttack, "Nagiharai" },
 		{EnemyAttackType.Kiriage, "Kiriage" },
+		{EnemyAttackType.Combo, "Combo" },
 		{EnemyAttackType.Beveled, "Attack" },
 		{EnemyAttackType.Strike, "Attack" },
 		{EnemyAttackType.Tackle, "Attack" },
@@ -49,9 +51,10 @@ public class EnemyAttackTypeDictionary {
 	public static Dictionary<EnemyAttackType, System.Type> typeDictionary =
 	new Dictionary<EnemyAttackType, System.Type>() {
 		{EnemyAttackType.SwingDown, typeof(OniAttackHook) },
-		{EnemyAttackType.NagiharaiAttack, typeof(OniNagiHook) },
+		{EnemyAttackType.NagiharaiAttack, typeof(Oni360_mHook) },
 		{EnemyAttackType.TwiceSlash, typeof(OniComboHook) },
 		{EnemyAttackType.Kiriage, typeof(OniKiriageHook) },
+		{EnemyAttackType.Combo, typeof(OniComboHook) },
 		{EnemyAttackType.RotationSlash, typeof(OniKiriageHook) },
 		{EnemyAttackType.HurimawashiAruki, typeof(OniNagiHook) },
 	};

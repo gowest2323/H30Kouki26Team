@@ -8,10 +8,13 @@ public abstract class ActionBase : MonoBehaviour {
 	protected EnemyAnimation enemyAnimation;
 	protected bool cancelFlag;
 
-	protected virtual void Start() {
+	protected virtual void Awake() {
 		enemyAnimation = GetComponentInParent<EnemyAnimation>();
 		Assert.IsNotNull(enemyAnimation, "EnemyAnimationが取得できませんでした。");
 		cancelFlag = false;
+	}
+
+	protected virtual void Start() {
 	}
 
 	public abstract IEnumerator Action();

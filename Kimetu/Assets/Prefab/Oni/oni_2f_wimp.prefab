@@ -1175,7 +1175,7 @@ GameObject:
   - component: {fileID: 114890129508782670}
   - component: {fileID: 114916069802569150}
   - component: {fileID: 114229307193112278}
-  - component: {fileID: 114769539668996372}
+  - component: {fileID: 114230244498661094}
   - component: {fileID: 114567222654535372}
   m_Layer: 10
   m_Name: oni_2f_wimp
@@ -2778,6 +2778,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 067dbfe0f1454984496613dc218ba701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114230244498661094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3929dff75b372ae4996206393a9f5e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114236489258629522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2942,7 +2953,7 @@ MonoBehaviour:
   attackArea: {fileID: 114498440551359832}
   attackAreaDrawer: {fileID: 114930846339922868}
   attackStateName: kiriage
-  attackType: 2
+  attackType: 3
 --- !u!114 &114461636285472228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3112,17 +3123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1563a672f3f52674ba3950792d34af1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114769539668996372
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1700421138863714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3757f0070cd39ce45af7c8609dd1b760, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114807662432164196
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3271,6 +3271,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
+  toReleaseParent: 0
 --- !u!114 &114938758315398872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3325,6 +3326,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
+  toReleaseParent: 0
 --- !u!120 &120313961930579756
 LineRenderer:
   m_ObjectHideFlags: 1

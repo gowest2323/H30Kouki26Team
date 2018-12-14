@@ -9,11 +9,6 @@ public class IdleAction : ActionBase {
 	/// </summary>
 	public float waitSecond { get; set; }
 
-	private void Awake() {
-		Debug.Log("idle start");
-		waitSecond = 1.0f;
-	}
-
 	protected override void Start() {
 		base.Start();
 		waitSecond = 1.0f;

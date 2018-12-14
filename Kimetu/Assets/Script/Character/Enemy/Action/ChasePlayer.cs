@@ -31,7 +31,6 @@ public class ChasePlayer : ActionBase {
 
 	public override IEnumerator Action() {
 		cancelFlag = false;
-		Debug.Log("接近行動開始");
 		//NavMeshを動かす
 		agent.isStopped = false;
 		isNearPlayer = false;

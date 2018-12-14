@@ -41,15 +41,12 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 		enemyAnimation.StartAttackAnimation(EnemyAttackType.NagiharaiAttack);
 		yield return WaitStartAttackAnimation();
 		StartCoroutine(Rotate());
-		Debug.Log("攻撃アニメーション開始");
 		//攻撃アニメーション終了まで待機
 		yield return WaitEndAttackAnimation();
-		Debug.Log("攻撃アニメーション終了");
 		DrawEndAttackArea();
 	}
 
 	private IEnumerator Rotate() {
-		Debug.Log("回転開始");
 		float rotateTime = RotationTime();
 		float time = 0.0f;
 
@@ -67,7 +64,6 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 			yield return new WaitForSeconds(slowDelta);
 		}
 
-		Debug.Log("回転終了");
 		topTransform.rotation = after;
 	}
 
