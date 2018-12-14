@@ -149,15 +149,16 @@ public class TwoAttackPatternAI : EnemyAI, IEnemyInfoProvider {
 		}
 
 		ApplyDamage(damageSource);
-		StopAction();
 
 		if (status.IsDead()) {
+			StopAction();
 			NewReserve(EnemyState.Death, true);
 		} else {
 			ShowDamageEffect();
-			damage.damagePattern = DamagePattern.Normal;
 
 			if (Slow.Instance.isSlowNow) {
+				damage.damagePattern = DamagePattern.Normal;
+				StopAction();
 				NewReserve(EnemyState.Damage, true);
 			}
 		}

@@ -5,8 +5,6 @@ using UnityEngine;
 using UniRx;
 
 public class ComboAttack : EnemyAttack, IAttackEventHandler {
-	private Transform playerTransform;
-	private float attackTime;
 	private Animator anim;
 	private Transform topTransform;
 	[SerializeField]
@@ -15,7 +13,6 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 
 	protected override void Start() {
 		base.Start();
-		playerTransform = GetPlayer().transform;
 		topTransform = GetTopTransform();
 		anim = enemyAnimation.anim;
 		System.Type type = EnemyAttackTypeDictionary.typeDictionary[EnemyAttackType.Combo];
