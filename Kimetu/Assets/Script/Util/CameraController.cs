@@ -547,27 +547,32 @@ public class CameraController : MonoBehaviour {
             float defaultRightRange = 2;
             float defaultForwardRange = 2;
 
-            //はじきカメラ経路終点設定
+            //吸生カメラ経路終点設定
             Vector3 direction2EndPos = player.transform.right * (defaultRightRange * 0.75f) + player.transform.forward * defaultForwardRange;
+            Vector3 direction2EndPosREV = -player.transform.right * (defaultRightRange * 0.75f) + player.transform.forward * defaultForwardRange;
+
             Vector3 endPos = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPos;
+            Vector3 endPosREV = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPosREV;
+
             float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
             Ray pierceRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
             RaycastHit pierceHit;
             if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos))
             {
                 endPos = pierceHit.point;
+                if (pierceHit.distance <= 1f) endPos = endPosREV;
             }
 
-
+            //吸生カメラ経路中点設定
             Ray rightRay = new Ray(player.transform.position + new Vector3(0, 1, 0), player.transform.right);
             RaycastHit rightHit;
             float rightRange = defaultRightRange;
             if (Physics.Raycast(rightRay, out rightHit, defaultRightRange + 1))
             {
                 rightRange = rightHit.distance <= defaultRightRange ? rightHit.distance : defaultRightRange;
+                if (rightHit.distance <= 1f) rightRange = -defaultRightRange;
             }
 
-            Debug.Log("PR= " + rightRange);
             //カメラ経路を設定
             Vector3[] tmpPos = new Vector3[] { defaultPos,
                                                 player.transform.position + new Vector3(0, 1.5f, 0) + player.transform.right*rightRange,
@@ -644,20 +649,6 @@ public class CameraController : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, defaultDistance + 1, LayerMask.GetMask("Stage"))) {
 			Gizmos.DrawLine(transform.position, hit.point);
 		}
-
-        //はじきカメラ経路終点設定
-        Vector3 direction2EndPos = player.transform.right * (2 * 0.75f) + player.transform.forward * 2;
-        Vector3 endPos = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPos;
-        float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
-        Ray pierceRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
-        Gizmos.color = Color.blue;
-
-        RaycastHit pierceHit;
-        if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos))
-        {
-            Gizmos.DrawWireSphere(pierceHit.point, 0.5f);
-            Gizmos.DrawLine(player.transform.position, pierceHit.point);
-        }
     }
 
     private void GetPlayerIfNull() {
