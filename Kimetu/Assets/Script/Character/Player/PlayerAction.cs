@@ -53,8 +53,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	private Coroutine counterCoroutine; //カウンター用コルーチン
 	private bool canPierceAndHeal; //吸生できるか
 	private List<EnemyAI> nearCanPierceEnemyList; //十分近づいている吸生可能な敵リスト
-	[SerializeField, Header("吸生テキスト")]
-	private Text pierceText;
 	[SerializeField, Header("吸生での回復量")]
 	private int pierceHealHP;
 	[SerializeField]
@@ -815,7 +813,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 			nearCanPierceEnemyList.Add(enemy);
 			canPierceAndHeal = true;
-			pierceText.enabled = true;
 		}
 	}
 
@@ -830,7 +827,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			//もう吸生可能な敵が近くにいなければテキストを非表示に
 			if (nearCanPierceEnemyList.Count <= 0) {
 				canPierceAndHeal = false;
-				pierceText.enabled = false;
 			}
 		}
 	}
