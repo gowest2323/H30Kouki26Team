@@ -42,4 +42,26 @@ public abstract class ActionBase : MonoBehaviour {
 	public virtual void Cancel() {
 		cancelFlag = true;
 	}
+
+	/// <summary>
+	/// 強制的に待機する時間
+	/// 少し待機しないと連続して同じアニメーションが再生されたときにうまく待機してくれないため
+	/// </summary>
+	/// <returns></returns>
+	protected float GetForceWaitTime() {
+		return 0.1f / Slow.Instance.GetCurrentOtherSpeed();
+	}
+
+	/// <summary>
+	/// 強制的に待機する
+	/// </summary>
+	/// <returns></returns>
+	protected virtual IEnumerator WaitForce() {
+		float time = 0.0f;
+
+		while (!cancelFlag && time < GetForceWaitTime()) {
+			time += Slow.Instance.DeltaTime();
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
+	}
 }
