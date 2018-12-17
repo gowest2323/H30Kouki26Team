@@ -168,10 +168,10 @@ public class PlayerController : MonoBehaviour {
 		);
 
 		if (Input.GetButtonDown(InputMap.Type.LButton.GetInputName())) {
-			if (!cameraController.IsLockOn())
-				cameraController.PositionToPlayerBack();
-
+			//if (!cameraController.IsLockOn())
+			//	cameraController.PositionToPlayerBack();
 			action.GuardStart(dir);
+
 		} else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName())) {
 			action.GuardEnd();
 		}
