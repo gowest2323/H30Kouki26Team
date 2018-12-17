@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using System;
 
 /// <summary>
 /// 長押しの状態を視覚的に確認するUI。
@@ -16,9 +17,12 @@ public class LongPressUI : MonoBehaviour {
 
 	[SerializeField]
 	private LongPressDetector longPressDetector;
+	[SerializeField]
+	private LongPressUIServer server;
 
 	private bool near;
 	private bool triggered;
+	private string key;
 
 	// Use this for initialization
 	public virtual void Start () {
@@ -30,6 +34,9 @@ public class LongPressUI : MonoBehaviour {
 		}
 		if(longPressDetector==null) {
 			this.longPressDetector = FindLongPressDetector();
+		}
+		if(server == null) {
+			this.server = GetComponentInParent<LongPressUIServer>();
 		}
 		//長押しの状態に応じてスライダーの値を更新
 		root.gameObject.SetActive(false);
@@ -54,12 +61,13 @@ public class LongPressUI : MonoBehaviour {
 	private void Hide() {
 		root.gameObject.SetActive(false);
 		slider.value = 0;
+		this.key = server.Release(key);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(CanShowUI()) {
-			if(!triggered) {
+			if(!triggered && server.Hold(out key)) {
 				this.triggered = true;
 				Show();
 			}
