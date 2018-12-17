@@ -14,8 +14,6 @@ public class SecondBossAI : EnemyAI, IEnemyInfoProvider {
 	[SerializeField]
 	private AttackAction kiriage;
 	[SerializeField]
-	private AttackAction nagiharai;
-	[SerializeField]
 	private AttackAction combo;
 	[SerializeField]
 	private DamageAction damage;
@@ -54,13 +52,11 @@ public class SecondBossAI : EnemyAI, IEnemyInfoProvider {
 
 					//近づいていたら攻撃
 					if (chasePlayer.isNearPlayer) {
-						//優先順位はコンボ、切り上げ、なぎはらい
-						if (combo.CanAttack()) {
-							return StartAttackAction(combo);
-						} else if (kiriage.CanAttack()) {
+						//優先順位は切り上げ、コンボ
+						if (kiriage.CanAttack()) {
 							return StartAttackAction(kiriage);
 						} else {
-							return StartAttackAction(nagiharai);
+							return StartAttackAction(combo);
 						}
 					}
 					//近づいていなければ待機後にもとの場所に戻る
