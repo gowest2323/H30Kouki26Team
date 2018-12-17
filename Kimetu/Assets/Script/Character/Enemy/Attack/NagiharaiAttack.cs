@@ -79,6 +79,6 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 		float startTime = clip.events[0].time;
 		float endTime = clip.events[1].time;
 		float rotateTime = endTime - startTime;
-		return rotateTime / Slow.Instance.GetCurrentOtherSpeed();
+		return rotateTime;
 	}
 }
