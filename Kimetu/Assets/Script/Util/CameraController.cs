@@ -245,11 +245,9 @@ public class CameraController : MonoBehaviour {
 			else
 				transform.position += (Vector3.up * lockonCameraAngleY);
 
-			//回転をプレイヤーへ適用
-			var euler = transform.rotation.eulerAngles;
-			hRotation = Quaternion.Euler(0, euler.y, 0);
-			vRotation = Quaternion.Euler(euler.x, 0, 0);
-		}
+            //回転をプレイヤーへ適用
+            SetPlayerRotation();
+        }
 
 		yield return waitOne;
 		this.coroutineCount--;
@@ -470,6 +468,16 @@ public class CameraController : MonoBehaviour {
 	}
 
     /// <summary>
+    /// 回転をプレイヤーへ適用
+    /// </summary>
+    private void SetPlayerRotation()
+    {
+        var euler = transform.rotation.eulerAngles;
+        hRotation = Quaternion.Euler(0, euler.y, 0);
+        vRotation = Quaternion.Euler(euler.x, 0, 0);
+    }
+
+    /// <summary>
     /// はじきカメラ
     /// </summary>
     private void CounterCamera() {
@@ -495,6 +503,7 @@ public class CameraController : MonoBehaviour {
             //プレイヤーを注目
             transform.LookAt(player.transform.position + new Vector3(0, 1.5f, 0) + (player.transform.forward * 0.5f), Vector3.up);
             NotDisplayStageBetweenWithPlayer();
+            SetPlayerRotation();
         }
 
         if (preIsSlow && !curIsSlow) {
@@ -505,6 +514,7 @@ public class CameraController : MonoBehaviour {
                 }
                 hitsMeshRenderer.Clear();
             }
+            SetPlayerRotation();
         }
     }
 
