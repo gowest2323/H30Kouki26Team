@@ -283,7 +283,7 @@ public class CameraController : MonoBehaviour {
 			else
 				nearObj = SearchTagWithDirection(gameObject, "Enemy");
 
-			if (nearObj == null || isCounterMove) { //はじきしたらロックオン解除
+			if (nearObj == null) {
 				isLockOn = false;
 				interval = false;
 			}
@@ -505,8 +505,6 @@ public class CameraController : MonoBehaviour {
                 }
                 hitsMeshRenderer.Clear();
             }
-            //位置をデフォに
-            PositionToPlayerBack();
         }
     }
 
