@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(PlayerStatus))]
-public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider, ILongPressInformation {
+public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider  {
 	//回避中か
 	private bool isAvoid;
 	//攻撃中か
@@ -86,10 +86,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 
 	public CharacterAnimation characterAnimation { get { return playerAnimation; } }
-
-	//ILongPressInformation
-	public string longPressMessage { get { return "吸生"; } }
-	public bool canLongPress { get { return this.CanPierce(); } }
 
 	[SerializeField]
 	private GameObject deadUIPrefab;
@@ -439,7 +435,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// 吸生できるか
 	/// </summary>
 	/// <returns></returns>
-	private bool CanPierce() {
+	public bool CanPierce() {
 		if (!canPierceAndHeal) return false;
 
 		if (state == PlayerState.Avoid) return false;
