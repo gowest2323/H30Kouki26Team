@@ -2938,6 +2938,7 @@ MonoBehaviour:
   attackArea: {fileID: 114955773349231422}
   attackAreaDrawer: {fileID: 114992708366360328}
   attackStateName: nagi
+  animationClipName: oni@360_m
 --- !u!114 &114402014186418994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3176,6 +3177,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waistObjectName: mixamorig:Hips/mixamorig:Spine
   extinctionSeconds: 2.5
+  sinkSeconds: 1.5
+  sinkHeight: 2
   dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
     type: 2}
   idle: {fileID: 114063677901359288}
@@ -3434,7 +3437,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 446fd912ba4007e45bc34bf5e5b207d4, type: 2}
+  - {fileID: 2100000, guid: 53e18f6e0745045faa5ab08fd6fc8c96, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
