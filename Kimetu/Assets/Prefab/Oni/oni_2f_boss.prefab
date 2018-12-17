@@ -147,22 +147,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1085362680331216
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4161159059164296}
-  - component: {fileID: 114916481590415342}
-  m_Layer: 10
-  m_Name: ComboArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1100378609954624
 GameObject:
   m_ObjectHideFlags: 1
@@ -248,8 +232,8 @@ GameObject:
   - component: {fileID: 4784640340857628}
   - component: {fileID: 65614712503605010}
   - component: {fileID: 114421936594223720}
-  - component: {fileID: 114172498026294032}
   - component: {fileID: 114935253531410664}
+  - component: {fileID: 114123050364937650}
   m_Layer: 9
   m_Name: Club
   m_TagString: Untagged
@@ -575,22 +559,6 @@ GameObject:
   m_Layer: 10
   m_Name: oni_2f_boss
   m_TagString: Enemy
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1442067179492894
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4979123712055020}
-  - component: {fileID: 114748376462082986}
-  m_Layer: 10
-  m_Name: ComboCenter
-  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1268,7 +1236,6 @@ GameObject:
   - component: {fileID: 114854691567902532}
   - component: {fileID: 114879084934888058}
   - component: {fileID: 114806834608301344}
-  - component: {fileID: 114470270162979778}
   - component: {fileID: 114045830177836984}
   - component: {fileID: 114445343939566220}
   - component: {fileID: 114610320867506080}
@@ -1612,19 +1579,6 @@ Transform:
   m_Father: {fileID: 4704255341817706}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 68.33283, y: -12.773205, z: -13.363418}
---- !u!4 &4161159059164296
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1085362680331216}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.46000004}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4161655403158606
 Transform:
   m_ObjectHideFlags: 1
@@ -1664,7 +1618,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4183568561502762
 Transform:
@@ -1732,7 +1686,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 12
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4249181304911470
 Transform:
@@ -1806,7 +1760,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 11
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4290086020266564
 Transform:
@@ -1891,7 +1845,7 @@ Transform:
   - {fileID: 4706472281475084}
   - {fileID: 4014519776681432}
   m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 46.752815, y: 43.671345, z: 1.3324877}
 --- !u!4 &4335596521084982
 Transform:
@@ -2290,7 +2244,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 13
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4726317011787950
 Transform:
@@ -2454,7 +2408,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4892386130170364
 Transform:
@@ -2485,8 +2439,6 @@ Transform:
   - {fileID: 4024414185446478}
   - {fileID: 4003265325689200}
   - {fileID: 4787845350329142}
-  - {fileID: 4161159059164296}
-  - {fileID: 4979123712055020}
   - {fileID: 224647167175438924}
   - {fileID: 4866561948946530}
   - {fileID: 4331566181358342}
@@ -2539,19 +2491,6 @@ Transform:
   m_Father: {fileID: 4161655403158606}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 13.899041, y: 25.902273, z: -48.287815}
---- !u!4 &4979123712055020
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1442067179492894}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4983360397902302
 Transform:
   m_ObjectHideFlags: 1
@@ -2703,7 +2642,6 @@ MonoBehaviour:
   searchAreas:
   - {fileID: 114485498882178610}
   - {fileID: 114289691015383158}
-  - {fileID: 114916481590415342}
 --- !u!114 &114031540142577978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2731,7 +2669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4b983f364a67a4bae5d9c8660c3427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAttack: {fileID: 114935253531410664}
+  enemyAttack: {fileID: 114123050364937650}
 --- !u!114 &114078722835928724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2743,6 +2681,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92f1f9186b60ed4fb981cc0bb5bfd3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114123050364937650
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1148783382168114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a6721842e92224995e483d906b24a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  power: 15
+  attackArea: {fileID: 114289691015383158}
+  attackAreaDrawer: {fileID: 114844740445461760}
+  attackStateName: nagiharai
+  animationClipName: oni@360_m
 --- !u!114 &114127251133250708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2861,21 +2815,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114172498026294032
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1148783382168114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92a6721842e92224995e483d906b24a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  power: 15
-  attackArea: {fileID: 114289691015383158}
-  attackAreaDrawer: {fileID: 114844740445461760}
-  attackStateName: hurimawashiaruki
 --- !u!114 &114224918253843072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2963,7 +2902,7 @@ MonoBehaviour:
   attackArea: {fileID: 114485498882178610}
   attackAreaDrawer: {fileID: 114451842878210926}
   attackStateName: kiriage
-  attackType: 2
+  attackType: 3
 --- !u!114 &114445343939566220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2994,18 +2933,6 @@ MonoBehaviour:
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
   toReleaseParent: 0
---- !u!114 &114470270162979778
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1920210603373252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c4b983f364a67a4bae5d9c8660c3427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyAttack: {fileID: 114172498026294032}
 --- !u!114 &114485498882178610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3087,23 +3014,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3929dff75b372ae4996206393a9f5e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114748376462082986
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1442067179492894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5caf617b01b970549aae1f9c38b1abb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drawAreaObject: {fileID: 1769450337772158, guid: 08095c743e20c294c9ebb8cfd7e7a342,
-    type: 2}
-  fadeOutTime: 0.1
-  fadeInTime: 0.1
-  maxMaterialAlpha: 1
-  toReleaseParent: 1
 --- !u!114 &114759130131234514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3142,12 +3052,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waistObjectName: mixamorig:Hips/mixamorig:Spine
   extinctionSeconds: 2.5
+  sinkSeconds: 1.5
+  sinkHeight: 2
   dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
     type: 2}
   idle: {fileID: 114854691567902532}
   chasePlayer: {fileID: 114879084934888058}
   kiriage: {fileID: 114806834608301344}
-  nagiharai: {fileID: 114470270162979778}
   combo: {fileID: 114045830177836984}
   damage: {fileID: 114445343939566220}
   death: {fileID: 114610320867506080}
@@ -3167,7 +3078,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
-  toReleaseParent: 0
+  toReleaseParent: 1
 --- !u!114 &114854691567902532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3204,20 +3115,6 @@ MonoBehaviour:
   judgeArea: {fileID: 114015018082461138}
   toRotate: 0
   rotateSpeed: 0
---- !u!114 &114916481590415342
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1085362680331216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743ef324be5c3a8438d7a73139061b7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  searchableAngle: 360
-  searchRange: 1.5
-  gizmosColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &114935253531410664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3230,10 +3127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 15
-  attackArea: {fileID: 114916481590415342}
-  attackAreaDrawer: {fileID: 114748376462082986}
+  attackArea: {fileID: 114289691015383158}
+  attackAreaDrawer: {fileID: 114844740445461760}
   attackStateName: combo
-  rotateTime: 0.25
+  clip: {fileID: 7400000, guid: ea4e6a28306c74278bdc3409158384b9, type: 2}
 --- !u!114 &114952105342184308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8237,7 +8134,7 @@ RectTransform:
   - {fileID: 224856044989072624}
   - {fileID: 224308033933359260}
   m_Father: {fileID: 4924224352623166}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
