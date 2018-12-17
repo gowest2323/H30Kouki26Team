@@ -10,6 +10,8 @@ public class PlayerDeadMenuUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject player;
 
+	private bool triggered;
+
 	// Use this for initialization
 	void Start() {
 
@@ -17,12 +19,14 @@ public class PlayerDeadMenuUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (!Input.GetButton(InputMap.Type.AButton.GetInputName())) {
+		if (!Input.GetButton(InputMap.Type.AButton.GetInputName()) ||
+		    triggered) {
 			return;
 		}
 
 		var selected = menu.selected;
 		var fadeData = new FadeData(1f, 1f, Color.black);
+		this.triggered = true;
 
 		if (selected == 0) {
 			//最後のチェックポイントから
