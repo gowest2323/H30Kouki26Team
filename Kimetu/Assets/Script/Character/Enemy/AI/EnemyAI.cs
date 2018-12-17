@@ -25,6 +25,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	[SerializeField, Header("沈む高さ")]
 	private float sinkHeight = 2f;
 
+	private PauseManager pauseManager;
+
 	protected virtual void Start() {
 		endActionFlag = false;
 		waist = transform.Find(waistObjectName);
@@ -41,6 +43,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 			//ここでエフェクトを作成
 			EffectManager.Instance.EnemySlowAuraCreate(auraPlace);
 		});
+		this.pauseManager = PauseManager.GetInstance();
 	}
 
 	// Use this for initialization
@@ -251,6 +254,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		observer.Dispose();
 	}
 	void Update() {
-		UpdateAura();
+		if(!pauseManager.isPause) {
+			UpdateAura();
+		}
 	}
 }

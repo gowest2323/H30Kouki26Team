@@ -40,4 +40,8 @@ public class PauseManager : MonoBehaviour {
 			Pause();
 		}
 	}
+
+	public static PauseManager GetInstance() {
+		return GameObject.FindGameObjectWithTag(TagName.PauseManager.String()).GetComponent<PauseManager>();
+	}
 }
