@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - EnemyDeadArea
+  - PauseManager
   layers:
   - Default
   - TransparentFX

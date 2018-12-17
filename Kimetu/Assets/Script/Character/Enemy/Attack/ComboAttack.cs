@@ -5,14 +5,17 @@ using UnityEngine;
 using UniRx;
 
 public class ComboAttack : EnemyAttack, IAttackEventHandler {
+	[SerializeField]
+	private AnimationClip clip;
+	private Transform playerTransform;
+	private float attackTime;
 	private Animator anim;
 	private Transform topTransform;
-	[SerializeField]
-	private float rotateTime;
 	private System.IDisposable observer;
 
 	protected override void Start() {
 		base.Start();
+		playerTransform = GetPlayer().transform;
 		topTransform = GetTopTransform();
 		anim = enemyAnimation.anim;
 		System.Type type = EnemyAttackTypeDictionary.typeDictionary[EnemyAttackType.Combo];
@@ -37,9 +40,9 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 		cancelFlag = false;
 		//攻撃範囲描画
 		DrawStartAttackArea();
-		yield return Rotate();
-        yield return new WaitForSeconds(GetForcedWaitTime());
 		enemyAnimation.StartAttackAnimation(EnemyAttackType.Combo);
+		StartCoroutine(Rotate());
+		yield return WaitForce();
 		yield return WaitStartAttackAnimation();
 		//攻撃アニメーション終了まで待機
 		yield return WaitEndAttackAnimation();
@@ -47,18 +50,19 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 	}
 
 	private IEnumerator Rotate() {
+		float rotateTime = RotationTime();
 		float time = 0.0f;
 
 		Quaternion before = topTransform.rotation;
-
-		Vector3 temp = before.eulerAngles;
-		temp.y += 180.0f;
-		Quaternion after = Quaternion.Euler(temp);
+		Vector3 aim = playerTransform.position - topTransform.position;
+		Quaternion after = Quaternion.LookRotation(aim, Vector3.up);
 
 		while (time < rotateTime) {
 			float slowDelta = Slow.Instance.DeltaTime();
 			time += slowDelta;
 			float t = time / rotateTime;
+			//aim = playerTransform.position - topTransform.position;
+			//after = Quaternion.LookRotation(aim, Vector3.up);
 
 			Quaternion rotate = Quaternion.Lerp(before, after, t);
 			topTransform.rotation = rotate;
@@ -67,4 +71,19 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 
 		topTransform.rotation = after;
 	}
+
+	/// <summary>
+	/// 回転にかける時間を取得
+	/// </summary>
+	/// <returns></returns>
+	private float RotationTime() {
+		//AnimatorClipInfo info = anim.GetCurrentAnimatorClipInfo(0)[0];
+		//AnimationClip clip = info.clip;
+		float startTime = clip.events[0].time;
+		float endTime = clip.events[2].time;
+		float rotateTime = endTime - startTime;
+		Debug.Log(rotateTime);
+		return rotateTime;
+	}
+
 }

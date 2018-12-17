@@ -5,11 +5,14 @@ using UnityEngine;
 using UniRx;
 
 public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
+	[SerializeField]
+	private string animationClipName = "oni@360_m";
 	private Transform playerTransform;
 	private float attackTime;
 	private Animator anim;
 	private Transform topTransform;
 	private System.IDisposable observer;
+	private float rotateTime;
 
 	protected override void Start() {
 		base.Start();
@@ -27,6 +30,7 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 			if (e) { AttackStart(); }
 			else { AttackEnd(); }
 		});
+		rotateTime = RotationTime();
 	}
 
 	private void OnDestroy() {
@@ -39,7 +43,7 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 		//攻撃範囲描画
 		DrawStartAttackArea();
 		enemyAnimation.StartAttackAnimation(EnemyAttackType.NagiharaiAttack);
-		yield return new WaitForSeconds(GetForcedWaitTime());
+		yield return WaitForce();
 		yield return WaitStartAttackAnimation();
 		StartCoroutine(Rotate());
 		//攻撃アニメーション終了まで待機
@@ -48,9 +52,7 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 	}
 
 	private IEnumerator Rotate() {
-		float rotateTime = RotationTime();
 		float time = 0.0f;
-
 		Quaternion before = topTransform.rotation;
 		Vector3 aim = playerTransform.position - topTransform.position;
 		Quaternion after = Quaternion.LookRotation(aim, Vector3.up);
@@ -73,12 +75,10 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 	/// </summary>
 	/// <returns></returns>
 	private float RotationTime() {
-		AnimatorClipInfo info = anim.GetCurrentAnimatorClipInfo(0)[0];
-		AnimationClip clip = info.clip;
+		AnimationClip clip = FindAnimationClip(animationClipName);
 		float startTime = clip.events[0].time;
 		float endTime = clip.events[1].time;
 		float rotateTime = endTime - startTime;
 		return rotateTime;
 	}
-
 }

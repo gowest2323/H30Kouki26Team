@@ -67,8 +67,10 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 		attackCollider.enabled = false;
 	}
 
-	public void Cancel() {
+	public virtual void Cancel() {
 		cancelFlag = true;
+		isRunning = false;
+		attackCollider.enabled = false;
 	}
 
 	protected GameObject GetPlayer() {
@@ -115,6 +117,26 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 	/// </summary>
 	/// <returns></returns>
 	protected float GetForcedWaitTime() {
-		return 1.0f / Slow.Instance.GetCurrentOtherSpeed();
+		return 0.25f / Slow.Instance.GetCurrentOtherSpeed();
 	}
+
+	protected virtual IEnumerator WaitForce() {
+		float time = 0.0f;
+
+		while (!cancelFlag && time < GetForcedWaitTime()) {
+			time += Slow.Instance.DeltaTime();
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
+	}
+	public AnimationClip FindAnimationClip(string animationClipName) {
+		foreach (var clip in enemyAnimation.anim.runtimeAnimatorController.animationClips) {
+			if (clip.name == animationClipName) {
+				return clip;
+			}
+		}
+
+		Debug.LogError(animationClipName + "が存在しません");
+		return null;
+	}
+
 }

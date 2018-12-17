@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UniRx;
 
-public class ChangeStage : MonoBehaviour, ILongPressInformation {
+public class ChangeStage : MonoBehaviour {
 	private bool playerStay;
 	public GameObject canvas;
 	[SerializeField, Header("再生するタイムライン")]
@@ -15,10 +15,6 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
 
 	private GameObject player;
 	private PlayerState state;
-
-	//ILongPressInformation
-	public string longPressMessage { get { return "次のステージへ";}}
-	public bool canLongPress { get { return playerStay && IsPlayerAlive() && !toNextStage; }}
 
 	private bool toNextStage;
 
@@ -81,5 +77,9 @@ public class ChangeStage : MonoBehaviour, ILongPressInformation {
 
 	private bool IsPlayerAlive() {
 		return player.GetComponent<Status>().IsAlive();
+	}
+
+	public bool CanGotoNextStage() {
+		return playerStay && IsPlayerAlive() && !toNextStage;
 	}
 }

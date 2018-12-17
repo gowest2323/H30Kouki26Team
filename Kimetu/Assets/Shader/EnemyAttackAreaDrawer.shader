@@ -6,7 +6,10 @@
         _AlphaBorder("AlphaBorder",Range(0.0,1.0)) = 0.2
 	}
 	SubShader {
-		Tags { "RenderType"="Transparent" }
+		Tags {  
+            "RenderType"="Transparent"               
+            "Queue" = "Transparent"
+        }
 		LOD 200
 
 		CGPROGRAM

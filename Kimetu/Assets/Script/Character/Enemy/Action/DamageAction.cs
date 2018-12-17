@@ -25,16 +25,17 @@ public class DamageAction : ActionBase {
 		if (damagePattern == DamagePattern.Normal) {
 			if (Slow.Instance.isSlowNow) {
 				enemyAnimation.StartDamageAnimation();
+				yield return WaitForce();
+				yield return WaitStartAnimation(damageStateName);
+				yield return WaitEndAttackAnimation();
 			}
-
-			yield return WaitStartAttackAnimation(damageStateName);
-			yield return WaitEndAttackAnimation();
 		}
 
 		//はじかれたときの処理
 		else {
 			enemyAnimation.StartReplAnimation();
-			yield return WaitStartAttackAnimation(replStateName);
+			yield return WaitForce();
+			yield return WaitStartAnimation(replStateName);
 			yield return WaitEndAttackAnimation();
 		}
 	}
@@ -44,7 +45,7 @@ public class DamageAction : ActionBase {
 	/// </summary>
 	/// <param name="stateName"></param>
 	/// <returns></returns>
-	protected IEnumerator WaitStartAttackAnimation(string stateName) {
+	protected IEnumerator WaitStartAnimation(string stateName) {
 		while (!enemyAnimation.IsPlayingAnimation("oni", stateName)) {
 			if (cancelFlag) break;
 
