@@ -27,9 +27,7 @@ public class CheckPoint : MonoBehaviour {
 	public void OnTriggerEnter(Collider collider) {
 		//プレイヤーと当たったらStageManagerに通知
 		if (collider.tag == TagName.Player.String()) {
-			//Quadの表面はプレイヤーの前面から180度回転しているため回転した後の角度を渡す
 			Vector3 temp = transform.rotation.eulerAngles;
-			temp.y += 180.0f;
 			stageManager.Pass(transform.position, Quaternion.Euler(temp));
 		}
 	}
