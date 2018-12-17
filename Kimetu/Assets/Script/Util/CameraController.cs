@@ -486,10 +486,24 @@ public class CameraController : MonoBehaviour {
         if (curIsSlow) {
             isCounterMove = true;
 
+            //プレイヤーと壁の距離を取る
+            float defaultRightRange = 3;
+            float defaultBackRange = 1.5f;
+            //はじきカメラ経路終点設定
+            Vector3 direction2EndPos = (-player.transform.forward * defaultBackRange + player.transform.right * defaultRightRange);
+            Vector3 endPos = player.transform.position + new Vector3(0, 1.5f, 0) + direction2EndPos;
+            float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
+            Ray counterRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
+            RaycastHit counterHit;
+            if (Physics.Raycast(counterRay, out counterHit, distance2EndPos))
+            {
+                endPos = counterHit.point;
+            }
+
             Vector3 defaultPos = transform.position;
             //カメラ経路を設定
             Vector3[] tmpPos = new Vector3[] { defaultPos,
-                                                player.transform.position + new Vector3(0,1.5f,0)+player.transform.right*3f+(-player.transform.forward*1.5f) };
+                                                endPos };
             //DOTweenでカメラを動かす
             transform.DOLocalPath(tmpPos, 3f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
         }
@@ -502,7 +516,6 @@ public class CameraController : MonoBehaviour {
         if (isCounterMove) {
             //プレイヤーを注目
             transform.LookAt(player.transform.position + new Vector3(0, 1.5f, 0) + (player.transform.forward * 0.5f), Vector3.up);
-            NotDisplayStageBetweenWithPlayer();
             SetPlayerRotation();
         }
 
@@ -529,10 +542,36 @@ public class CameraController : MonoBehaviour {
             isPierceMove = true;
             PositionToPlayerBack();//一回初期位置に戻す
             Vector3 defaultPos = transform.position;
+
+            //プレイヤーと壁の距離を取る
+            float defaultRightRange = 2;
+            float defaultForwardRange = 2;
+
+            //はじきカメラ経路終点設定
+            Vector3 direction2EndPos = player.transform.right * (defaultRightRange * 0.75f) + player.transform.forward * defaultForwardRange;
+            Vector3 endPos = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPos;
+            float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
+            Ray pierceRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
+            RaycastHit pierceHit;
+            if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos))
+            {
+                endPos = pierceHit.point;
+            }
+
+
+            Ray rightRay = new Ray(player.transform.position + new Vector3(0, 1, 0), player.transform.right);
+            RaycastHit rightHit;
+            float rightRange = defaultRightRange;
+            if (Physics.Raycast(rightRay, out rightHit, defaultRightRange + 1))
+            {
+                rightRange = rightHit.distance <= defaultRightRange ? rightHit.distance : defaultRightRange;
+            }
+
+            Debug.Log("PR= " + rightRange);
             //カメラ経路を設定
             Vector3[] tmpPos = new Vector3[] { defaultPos,
-                                                player.transform.position + new Vector3(0,1.5f,0)+player.transform.right*2f,
-                                                player.transform.position + new Vector3(0,1f,0)+player.transform.right*1.5f+player.transform.forward*2 };
+                                                player.transform.position + new Vector3(0, 1.5f, 0) + player.transform.right*rightRange,
+                                                endPos };
             //DOTweenでカメラを動かす
             transform.DOLocalPath(tmpPos, 1.5f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
         }
@@ -546,7 +585,7 @@ public class CameraController : MonoBehaviour {
         if (isPierceMove) {
             //プレイヤーを注目
             transform.LookAt(player.transform.position + new Vector3(0, 1, 0), Vector3.up);
-            NotDisplayStageBetweenWithPlayer();
+            //NotDisplayStageBetweenWithPlayer();
         }
         //吸生状態終了時
         if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce) {
@@ -605,7 +644,21 @@ public class CameraController : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, defaultDistance + 1, LayerMask.GetMask("Stage"))) {
 			Gizmos.DrawLine(transform.position, hit.point);
 		}
-	}
+
+        //はじきカメラ経路終点設定
+        Vector3 direction2EndPos = player.transform.right * (2 * 0.75f) + player.transform.forward * 2;
+        Vector3 endPos = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPos;
+        float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
+        Ray pierceRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
+        Gizmos.color = Color.blue;
+
+        RaycastHit pierceHit;
+        if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos))
+        {
+            Gizmos.DrawWireSphere(pierceHit.point, 0.5f);
+            Gizmos.DrawLine(player.transform.position, pierceHit.point);
+        }
+    }
 
     private void GetPlayerIfNull() {
         if (player == null) {
