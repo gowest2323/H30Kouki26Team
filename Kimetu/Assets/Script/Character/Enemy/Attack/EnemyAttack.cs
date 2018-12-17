@@ -67,8 +67,10 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 		attackCollider.enabled = false;
 	}
 
-	public void Cancel() {
+	public virtual void Cancel() {
 		cancelFlag = true;
+		isRunning = false;
+		attackCollider.enabled = false;
 	}
 
 	protected GameObject GetPlayer() {
@@ -116,5 +118,14 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 	/// <returns></returns>
 	protected float GetForcedWaitTime() {
 		return 1.0f / Slow.Instance.GetCurrentOtherSpeed();
+	}
+
+	protected virtual IEnumerator WaitForce() {
+		float time = 0.0f;
+
+		while (!cancelFlag && time < GetForcedWaitTime()) {
+			time += Slow.Instance.DeltaTime();
+			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+		}
 	}
 }
