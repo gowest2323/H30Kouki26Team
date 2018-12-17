@@ -28,6 +28,8 @@ public class StageManager : MonoBehaviour {
 		//プレイヤーの座標を書き換える
 		GameObject player = GameObject.FindGameObjectWithTag(TagName.Player.String());
 		PlayerAction playerAction = player.GetComponent<PlayerAction>();
+		//再開地点の方向とプレイヤーの向きが180度違うので回転させる
+		restartRotation *= Quaternion.Euler(0, 180, 0);
 		playerAction.StartPositionRotation(restartPosition, restartRotation);
 		CameraController camera = GameObject.FindObjectOfType<CameraController>();
 		camera.PositionToPlayerBack();
