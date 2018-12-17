@@ -1374,6 +1374,48 @@ Transform:
   m_Father: {fileID: 1812785033}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1189483321
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1001 &1192823757
 Prefab:
   m_ObjectHideFlags: 0
@@ -1869,52 +1911,6 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbba83f14e4354781969e1bd2638409f, type: 2}
-  m_IsPrefabAsset: 0
---- !u!1001 &1387363124
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4056596785629720, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1613790273379318, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
-      propertyPath: m_Name
-      value: stage1 (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f9e457d165eb24a13b659c8330c0a657, type: 2}
   m_IsPrefabAsset: 0
 --- !u!4 &1496595463 stripped
 Transform:
