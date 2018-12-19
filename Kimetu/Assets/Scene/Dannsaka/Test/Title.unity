@@ -793,9 +793,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fade:
-    fadeInTime: 0
-    fadeOutTime: 0
-    fadeColor: {r: 0, g: 0, b: 0, a: 0}
+    fadeInTime: 1
+    fadeOutTime: 1
+    fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1421752977
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,7 +991,7 @@ GameObject:
   - component: {fileID: 1525050072}
   - component: {fileID: 1525050071}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: TitleUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

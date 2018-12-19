@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465785, g: 0.49641252, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,8 @@ GameObject:
   - component: {fileID: 117543741}
   - component: {fileID: 117543743}
   - component: {fileID: 117543742}
+  - component: {fileID: 117543745}
+  - component: {fileID: 117543744}
   m_Layer: 5
   m_Name: CameraInvert_LeftRight
   m_TagString: Untagged
@@ -188,6 +190,30 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 117543740}
   m_CullTransparentMesh: 0
+--- !u!114 &117543744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 117543740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23bc9c97abf874c39b502dbf89a07065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &117543745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 117543740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc956133ee2bd499c93eea87adb76817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  selectedColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &363556933
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,7 +801,7 @@ GameObject:
   - component: {fileID: 705621530}
   - component: {fileID: 705621529}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: OptionUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1112,9 +1138,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3bb1a2bba0d468e88118f66a5e12d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuItems:
-  - {fileID: 1805658195}
-  - {fileID: 117543742}
+  elements:
+  - {fileID: 1805658198}
+  - {fileID: 117543745}
+  orientation: 1
+  executeButton: 0
+  executeCommand: 0
 --- !u!114 &1710579697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1182,6 +1211,8 @@ GameObject:
   - component: {fileID: 1805658194}
   - component: {fileID: 1805658196}
   - component: {fileID: 1805658195}
+  - component: {fileID: 1805658198}
+  - component: {fileID: 1805658197}
   m_Layer: 5
   m_Name: CameraInver_UpDown
   m_TagString: Untagged
@@ -1247,6 +1278,30 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1805658193}
   m_CullTransparentMesh: 0
+--- !u!114 &1805658197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1805658193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23bc9c97abf874c39b502dbf89a07065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1805658198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1805658193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc956133ee2bd499c93eea87adb76817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  selectedColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1938597134
 GameObject:
   m_ObjectHideFlags: 0
