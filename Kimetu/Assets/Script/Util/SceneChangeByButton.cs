@@ -12,6 +12,8 @@ public class SceneChangeByButton : MonoBehaviour {
 	[SerializeField]
 	private SceneName sceneName;
 
+	private bool change;
+
 	// Use this for initialization
 	void Start () {
 
@@ -19,7 +21,9 @@ public class SceneChangeByButton : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if(change) { return; }
 		if (Input.GetButton(type.GetInputName())) {
+			this.change = true;
 			SceneChanger.Instance().Change(sceneName, new FadeData(1f, 1f, Color.black));
 		}
 	}
