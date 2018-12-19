@@ -33,6 +33,14 @@ public class MenuUI : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		InputUpdate();
+	}
+
+	/// <summary>
+	/// MenuUIの `Update` の実装を公開します。
+	/// Time.timeScale が 0 の環境ではこれを明示的に呼び出してください。
+	/// </summary>
+	public void InputUpdate() {
 		if(this.orientation == Orientation.Vertical) {
 			if (InputMap.Direction.Up.IsDetectedInput()) {
 				Select(this.selected - 1);
@@ -56,7 +64,7 @@ public class MenuUI : MonoBehaviour {
 
 	private void Select(int index) {
 		//押しっぱなしにするとすごいことになるので
-		if (Time.time - time < 0.2f) { return; }
+		if (Time.unscaledTime - time < 0.2f) { return; }
 		//インデックスが循環するように
 		if (index < 0) { index = elements.Length - 1; }
 		if (index >= elements.Length) { index = 0;}
@@ -67,6 +75,6 @@ public class MenuUI : MonoBehaviour {
 		//今回の選択によって更新
 		elements[index].OnFocus();
 		this.selected = index;
-		this.time = Time.time;
+		this.time = Time.unscaledTime;
 	}
 }
