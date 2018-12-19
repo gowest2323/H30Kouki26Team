@@ -545,10 +545,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			Debug.Log("counter succeed");
 			damageSource.attackCharacter.Countered();
 			GuardEnd();
-			//火花を作成
-			var effect = GameObject.Instantiate(replSparkPrefab);
-			effect.transform.position = Utilities.FindRec(transform, "katana:katana").transform.position;
-			GameObject.Destroy(effect, replSparkDestroySeconds);
 			//波紋を作成
 			replEffectGenerator.StartGenerate(transform.FindRec("katana:katana").transform.position);
 
