@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TitleController : MonoBehaviour {
+public class TitleUI : MonoBehaviour {
 	[SerializeField]
 	private MenuUI menu;
 
