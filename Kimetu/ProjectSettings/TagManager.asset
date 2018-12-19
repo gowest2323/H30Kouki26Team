@@ -22,7 +22,7 @@ TagManager:
   - PlayerWeapon
   - PlayerDamageable
   - Effect
-  - 
+  - EnemyDeadCollider
   - 
   - 
   - 
