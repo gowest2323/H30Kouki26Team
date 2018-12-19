@@ -9,7 +9,8 @@ public class ChangeScene : MonoBehaviour, IExecuteCommand {
 	[SerializeField]
 	private FadeData fade;
 
-	public void OnExecute() {
+	public CommandResult OnExecute() {
 		SceneChanger.Instance().Change(sceneName, fade);
+		return CommandResult.Terminate;
 	}
 }

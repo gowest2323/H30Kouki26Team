@@ -15,7 +15,8 @@ public class ResumeFromPauseCommand : MonoBehaviour, IExecuteCommand {
 		
 	}
 
-	public void OnExecute() {
+	public CommandResult OnExecute() {
 		pauseManager.Resume();
+		return CommandResult.Terminate;
 	}
 }

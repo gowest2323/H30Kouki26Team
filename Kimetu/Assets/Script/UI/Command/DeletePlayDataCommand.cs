@@ -14,7 +14,8 @@ public class DeletePlayDataCommand : MonoBehaviour, IExecuteCommand {
 		
 	}
 
-	public void OnExecute() {
+	public CommandResult OnExecute() {
 		StageDataPrefs.DeleteAll();
+		return CommandResult.Continue;
 	}
 }

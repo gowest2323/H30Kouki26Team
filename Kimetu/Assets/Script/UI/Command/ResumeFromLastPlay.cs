@@ -17,7 +17,8 @@ public class ResumeFromLastPlay : MonoBehaviour, IExecuteCommand {
 		
 	}
 
-	public void OnExecute() {
+	public CommandResult OnExecute() {
 		StageManager.Resume(fade);
+		return CommandResult.Terminate;
 	}
 }

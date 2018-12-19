@@ -23,6 +23,7 @@ public class MenuUI : MonoBehaviour {
 
 	public int selected { private set; get; }
 	private float time;
+	private bool freeze;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +42,9 @@ public class MenuUI : MonoBehaviour {
 	/// Time.timeScale が 0 の環境ではこれを明示的に呼び出してください。
 	/// </summary>
 	public void InputUpdate() {
+		if(freeze) {
+			return;
+		}
 		if(this.orientation == Orientation.Vertical) {
 			if (InputMap.Direction.Up.IsDetectedInput()) {
 				Select(this.selected - 1);
@@ -54,11 +58,19 @@ public class MenuUI : MonoBehaviour {
 				Select(this.selected + 1);
 			}
 		}
-		if(executeCommand &&
-		   Input.GetButton(executeButton.GetInputName()) &&
-		   selected != -1) {
-			var cmd = elements[selected].gameObject.GetComponent<IExecuteCommand>();
-			cmd.OnExecute();
+		ExecuteCommand();
+	}
+
+	private void ExecuteCommand() {
+		if(!executeCommand ||
+		   !Input.GetButton(executeButton.GetInputName()) ||
+		   selected == -1) {
+			   return;
+		}
+		var cmd = elements[selected].gameObject.GetComponent<IExecuteCommand>();
+		var result = cmd.OnExecute();
+		if(result == CommandResult.Terminate) {
+			this.freeze = true;
 		}
 	}
 

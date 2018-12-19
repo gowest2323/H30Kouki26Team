@@ -22,8 +22,8 @@ public class AndCommand : MonoBehaviour, IExecuteCommand {
 		
 	}
 
-	public void OnExecute() {
+	public CommandResult OnExecute() {
 		firstCmd.OnExecute();
-		secondCmd.OnExecute();
+		return secondCmd.OnExecute();
 	}
 }
