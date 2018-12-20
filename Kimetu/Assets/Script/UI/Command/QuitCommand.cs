@@ -14,8 +14,8 @@ public class QuitCommand : MonoBehaviour, IExecuteCommand {
 		
 	}
 
-	public CommandResult OnExecute() {
+	public IEnumerator OnExecute() {
 		Application.Quit();
-		return CommandResult.Terminate;
+		yield break;
 	}
 }

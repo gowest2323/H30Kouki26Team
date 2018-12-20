@@ -13,7 +13,7 @@ public class NullCommand : MonoBehaviour, IExecuteCommand {
 	void Update () {
 		
 	}
-	public CommandResult OnExecute() {
-		return CommandResult.Continue;
+	public IEnumerator OnExecute() {
+		yield break;
 	}
 }

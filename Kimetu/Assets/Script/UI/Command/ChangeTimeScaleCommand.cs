@@ -6,8 +6,8 @@ public class ChangeTimeScaleCommand : MonoBehaviour, IExecuteCommand {
 	[SerializeField]
 	private float timeScale = 1.0f;
 
-	public CommandResult OnExecute() {
+	public IEnumerator OnExecute() {
 		Time.timeScale = timeScale;
-		return CommandResult.Continue;
+		yield break;
 	}
 }

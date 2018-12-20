@@ -67,11 +67,13 @@ public class MenuUI : MonoBehaviour {
 		   selected == -1) {
 			   return;
 		}
-		var cmd = elements[selected].gameObject.GetComponent<IExecuteCommand>();
-		var result = cmd.OnExecute();
-		if(result == CommandResult.Terminate) {
-			this.freeze = true;
-		}
+		StartCoroutine(ExecuteWait(elements[selected].gameObject.GetComponent<IExecuteCommand>()));
+	}
+
+	private IEnumerator ExecuteWait(IExecuteCommand cmd) {
+		this.freeze = true;
+		yield return cmd.OnExecute();
+		this.freeze = false;
 	}
 
 	private void Select(int index) {
