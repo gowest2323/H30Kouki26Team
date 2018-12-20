@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour {
 	public bool isPause { private set; get; }
+	private CameraController cameraController;
 
 	private void Start() {
 		isPause = false;
+		this.cameraController = Camera.main.gameObject.GetComponent<CameraController>();
 	}
 
 	/// <summary>
@@ -27,6 +29,7 @@ public class PauseManager : MonoBehaviour {
 	/// </summary>
 	public void Resume() {
 		Time.timeScale = 1.0f;
+		cameraController.UpdateSetting();
 		CoroutineManager.Instance.StartAllCoroutineEx();
 		//ポーズシーンを削除
 		SceneManager.UnloadSceneAsync("Pause");

@@ -91,6 +91,17 @@ public class CameraController : MonoBehaviour {
         preIsSlow = curIsSlow;
     }
 
+	/// <summary>
+	/// カメラ設定を更新します。
+	/// ポーズ画面からもオプションへ飛べるようになったため
+	/// Start() で一度だけ反転の情報を取得する実装のままだと、
+	/// プレイ中にカメラ設定を更新できなくなってしまいます。
+	/// そこで、ポーズからプレイ画面に戻るたびに毎回このメソッドを呼び出します。
+	/// </summary>
+	public void UpdateSetting() {
+		GetIsInveted();
+	}
+
     private void DefaultControl() {
 		if (coroutineCount > 0 || finished || isPierceMove || isCounterMove) {
 			return;
