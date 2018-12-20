@@ -63,7 +63,7 @@ public class MenuUI : MonoBehaviour {
 
 	private void ExecuteCommand() {
 		if(!executeCommand ||
-		   !Input.GetButton(executeButton.GetInputName()) ||
+		   !Input.GetButtonDown(executeButton.GetInputName()) ||
 		   selected == -1) {
 			   return;
 		}
