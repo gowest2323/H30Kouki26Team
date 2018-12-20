@@ -23,9 +23,12 @@ public class BeamShot : MonoBehaviour {
 	[SerializeField]
 	private bool startOnAwake = false;
 	private bool beamActive;
+	private int defaultLayer;
 
 	// Use this for initialization
 	void Awake () {
+		this.defaultLayer = gameObject.layer;
+		gameObject.layer = LayerMask.NameToLayer(LayerName.NotRender.String());
 		beamParticle = GetComponent<ParticleSystem> ();
 		lineRenderer = GetComponent<LineRenderer> ();
 		beamParticle.Stop();
@@ -52,6 +55,7 @@ public class BeamShot : MonoBehaviour {
 	/// ビームを発射します。
 	/// </summary>
 	public void StartShot() {
+		gameObject.layer = defaultLayer;
 		this.beamActive = true;
 		beamParticle.Stop ();
 		beamParticle.Play ();
@@ -81,6 +85,7 @@ public class BeamShot : MonoBehaviour {
 		beamParticle.Stop ();
 		lineRenderer.enabled = false;
 		this.beamActive = false;
+		gameObject.layer = LayerMask.NameToLayer(LayerName.NotRender.String());
 	}
 
 	private Vector3 GetDirection() {

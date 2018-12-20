@@ -23,7 +23,7 @@ TagManager:
   - PlayerDamageable
   - Effect
   - EnemyDeadCollider
-  - 
+  - NotRender
   - 
   - 
   - 
