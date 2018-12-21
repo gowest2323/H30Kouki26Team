@@ -92,15 +92,15 @@ public class ThunderAttack : EnemyAttack {
 		topTransform.rotation = attackPosition.rotation;
 		//NavMeshの座標の更新
 		agent.Warp(topTransform.position);
-		enemyAnimation.StartAttackAnimation(EnemyAttackType.Thunder);
+		enemyAnimation.StartAttackAnimation(attackType);
 		//アニメーション終了まで待機
 		yield return WaitForce();
 
 		while (waitHurioroshi && !cancelFlag) {
+            Debug.Log("wait hurioroshi");
 			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
 		}
 
-		yield return new WaitWhile(() => waitHurioroshi);
 
 		for (int i = 0; i < thunders.Count; i++) {
 			thunders[i].gameObject.SetActive(true);
@@ -117,6 +117,7 @@ public class ThunderAttack : EnemyAttack {
 			float len = Mathf.Lerp(0, extendLength, t);
 			thunders.ForEach(thunder => thunder.UpdateThunder(len));
 			time += Slow.Instance.DeltaTime();
+            Debug.Log("thunder");
 			yield return null;
 		}
 
@@ -136,6 +137,8 @@ public class ThunderAttack : EnemyAttack {
 		isRunning = false;
 		waitHurioroshi = false;
 		attackCollider.enabled = false;
+        waitHurioroshi = false;
+        Debug.Log("attack end");
 	}
 
 	private void RotateThunder(Thunder thunder, float rotateY) {
