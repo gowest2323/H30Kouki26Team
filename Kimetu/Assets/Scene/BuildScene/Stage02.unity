@@ -2039,12 +2039,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 224174952753196498, guid: 5c9efcafc6f014a239bb6287c71d833e,
         type: 2}
-      propertyPath: m_AnchorMax.y
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224174952753196498, guid: 5c9efcafc6f014a239bb6287c71d833e,
         type: 2}
-      propertyPath: m_AnchorMax.x
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
