@@ -19,6 +19,7 @@ public enum EnemyAttackType {
 	RotationSlash, //回転斬り
 	TwiceSlash, //二度斬り
 	HurimawashiAruki, //振り回し歩き
+    SetsunaNagiharai, //刹那用薙ぎ払い
 }
 
 /// <summary>
@@ -57,5 +58,6 @@ public class EnemyAttackTypeDictionary {
 		{EnemyAttackType.Combo, typeof(OniComboHook) },
 		{EnemyAttackType.RotationSlash, typeof(OniKiriageHook) },
 		{EnemyAttackType.HurimawashiAruki, typeof(OniNagiHook) },
+        {EnemyAttackType.SetsunaNagiharai,typeof(OniNagiHook) }
 	};
 }
