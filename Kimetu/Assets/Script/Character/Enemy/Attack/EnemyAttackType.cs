@@ -13,13 +13,13 @@ public enum EnemyAttackType {
 	Beveled, //斜め切り
 	Strike, //叩きつけ
 	Tackle, //突進
-	Thunder, //雷撃
 	ZigzagSlash, //ジグザグ斬撃
 	AirSlash, //空中斬撃
 	RotationSlash, //回転斬り
 	TwiceSlash, //二度斬り
 	HurimawashiAruki, //振り回し歩き
     SetsunaNagiharai, //刹那用薙ぎ払い
+	Thunder, //雷撃
 }
 
 /// <summary>
@@ -43,6 +43,7 @@ public class EnemyAttackTypeDictionary {
 		{EnemyAttackType.RotationSlash, "RotationSlash" },
 		{EnemyAttackType.TwiceSlash, "TwiceSlash" },
 		{EnemyAttackType.HurimawashiAruki, "HurimawashiAruki" },
+        {EnemyAttackType.Thunder,"Thunder" },
 
 	};
 
@@ -58,6 +59,7 @@ public class EnemyAttackTypeDictionary {
 		{EnemyAttackType.Combo, typeof(OniComboHook) },
 		{EnemyAttackType.RotationSlash, typeof(OniKiriageHook) },
 		{EnemyAttackType.HurimawashiAruki, typeof(OniNagiHook) },
-        {EnemyAttackType.SetsunaNagiharai,typeof(OniNagiHook) }
-	};
+        {EnemyAttackType.SetsunaNagiharai,typeof(SetunaStand_torchHook) },
+        {EnemyAttackType.Thunder,typeof(SetunaGreat_swordHook) },
+    };
 }

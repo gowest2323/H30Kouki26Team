@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4488163443387270}
-  - component: {fileID: 114233216018598250}
+  - component: {fileID: 114072660507369846}
   m_Layer: 10
   m_Name: AttackAreaCenter
   m_TagString: Untagged
@@ -34,13 +34,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1135550709379626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19, y: 0.54, z: 1.721}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114233216018598250
+--- !u!114 &114072660507369846
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,11 +48,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1135550709379626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5caf617b01b970549aae1f9c38b1abb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 58637f6ef318d1444a3189f88958c70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawAreaObject: {fileID: 1769450337772158, guid: 08095c743e20c294c9ebb8cfd7e7a342,
+  drawAreaObject: {fileID: 1544358224253154, guid: b20c4c6161e0d2b44a22c5736a62c0ed,
     type: 2}
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 1
+  toReleaseParent: 1

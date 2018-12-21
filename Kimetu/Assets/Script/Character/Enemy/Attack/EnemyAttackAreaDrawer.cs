@@ -6,21 +6,21 @@ using UnityEngine.Assertions;
 
 public class EnemyAttackAreaDrawer : MonoBehaviour {
 	[SerializeField, Tooltip("表示するプレハブ")]
-	private GameObject drawAreaObject;
+	protected GameObject drawAreaObject;
 	[SerializeField, Tooltip("フェードアウトにかける時間")]
-	private float fadeOutTime = 0.1f;
+    protected float fadeOutTime = 0.1f;
 	[SerializeField, Tooltip("フェードインにかける時間")]
-	private float fadeInTime = 0.1f;
-	private int floorLayerMask; //床レイヤーのマスク
-	private Material areaPrefabMaterial;
+    protected float fadeInTime = 0.1f;
+    protected int floorLayerMask; //床レイヤーのマスク
+    protected Material areaPrefabMaterial;
 	[SerializeField, Range(0.0f, 1.0f), Tooltip("最大アルファ値")]
-	private float maxMaterialAlpha;
+    protected float maxMaterialAlpha;
 	[SerializeField, Header("攻撃時に範囲をその場所に残しておくか")]
-	private bool toReleaseParent = false;
-	private int materialAlphaPropertyID;
-	private Coroutine coroutine;
+    protected bool toReleaseParent = false;
+    protected int materialAlphaPropertyID;
+    protected Coroutine coroutine;
 
-	private void Start() {
+    protected virtual void Start() {
 		drawAreaObject = Instantiate(drawAreaObject, this.transform);
 		drawAreaObject.SetActive(false);
 		//床レイヤーマスク取得
@@ -34,7 +34,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	/// <summary>
 	/// 描画開始
 	/// </summary>
-	public void DrawStart() {
+	public virtual void DrawStart() {
 		//床にレイを飛ばして床の場所を取得
 		Ray ray = new Ray(transform.position, Vector3.down);
 		RaycastHit hit;
@@ -55,11 +55,11 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 		coroutine = CoroutineManager.Instance.StartCoroutineEx(DrawStartFade());
 	}
 
-	/// <summary>
-	/// 描画開始フェードイン
-	/// </summary>
-	/// <returns></returns>
-	private IEnumerator DrawStartFade() {
+    /// <summary>
+    /// 描画開始フェードイン
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator DrawStartFade() {
 		float time = 0.0f;
 		float alpha = 0.0f;
 		float slowDelta = 0.0f;
@@ -79,7 +79,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	/// <summary>
 	/// 描画終了
 	/// </summary>
-	public void DrawEnd() {
+	public virtual void DrawEnd() {
 		if (coroutine != null) {
 			CoroutineManager.Instance.StopCoroutineEx(coroutine);
 		}
@@ -87,11 +87,11 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 		coroutine = CoroutineManager.Instance.StartCoroutineEx(DrawEndFade());
 	}
 
-	/// <summary>
-	/// 描画終了フェードアウト
-	/// </summary>
-	/// <returns></returns>
-	private IEnumerator DrawEndFade() {
+    /// <summary>
+    /// 描画終了フェードアウト
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator DrawEndFade() {
 		float time = 0.0f;
 		float alpha = maxMaterialAlpha;
 		float slowDelta = 0.0f;

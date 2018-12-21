@@ -521,7 +521,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// </summary>
 	/// <param name="damageSource"></param>
 	public void OnHit(DamageSource damageSource) {
-		if (state == PlayerState.Defence) { //防御中
+        if (!damageSource.canCounter)
+        {
+            Debug.Log("player damaged");
+            Damage(damageSource);
+        }
+        if (state == PlayerState.Defence) { //防御中
 			status.DecreaseStamina(damageSource.damage);
 			//ノックバックされる
 			BeKnockedBack(damageSource);
