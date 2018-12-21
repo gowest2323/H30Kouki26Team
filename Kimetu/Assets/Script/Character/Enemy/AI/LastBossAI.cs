@@ -6,146 +6,162 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
 
-public class LastBossAI : EnemyAI, IEnemyInfoProvider {
-	[SerializeField]
-	private IdleAction idle;
-	[SerializeField]
-	private ChasePlayer chasePlayer;
-	[SerializeField]
-	private AttackAction combo;
-	[SerializeField]
-	private AttackAction nagiharai;
-	[SerializeField]
-	private DamageAction damage;
-	[SerializeField]
-	private DeathAction death;
+public class LastBossAI : EnemyAI, IEnemyInfoProvider
+{
+    [SerializeField]
+    private IdleAction idle;
+    [SerializeField]
+    private ChasePlayer chasePlayer;
+    [SerializeField]
+    private AttackAction combo;
+    [SerializeField]
+    private AttackAction nagiharai;
+    [SerializeField]
+    private AttackAction thunder;
+    [SerializeField]
+    private DamageAction damage;
+    [SerializeField]
+    private DeathAction death;
 
-	public string informationText { private set; get; }
+    public string informationText { private set; get; }
 
-	protected override void Start() {
-		base.Start();
-		death.deadEnd = DeadEnd;
-	}
+    protected override void Start()
+    {
+        base.Start();
+        death.deadEnd = DeadEnd;
+    }
 
-	protected override Coroutine Think() {
-		//行動予約がある
-		if (reserveStates.Count > 0) {
-			EnemyState next = reserveStates[0];
-			reserveStates.RemoveAt(0);
-			return StartAction(next);
-		} else {
-			switch (currentState) {
-				case EnemyState.Idle:
-					return StartAction(EnemyState.MoveNear);
+    protected override Coroutine Think()
+    {
+        //行動予約がある
+        if (reserveStates.Count > 0)
+        {
+            EnemyState next = reserveStates[0];
+            reserveStates.RemoveAt(0);
+            if (next == EnemyState.Attack)
+            {
+                return StartAttackAction(thunder);
+            }
+            return StartAction(next);
+        }
+        else
+        {
+            switch (currentState)
+            {
+                case EnemyState.Idle:
+                    NewReserve(EnemyState.Attack);
+                    return StartAction(EnemyState.Idle);
+                //return StartAction(EnemyState.MoveNear);
 
-				case EnemyState.Attack:
-					idle.waitSecond = 0.5f;
-					NewReserve(EnemyState.MoveNear);
-					return StartAction(EnemyState.Idle);
+                case EnemyState.Attack:
+                    idle.waitSecond = 0.5f;
+                    NewReserve(EnemyState.MoveNear);
+                    return StartAction(EnemyState.Idle);
 
-				case EnemyState.Damage:
-					idle.waitSecond = 0.5f;
-					NewReserve(EnemyState.MoveNear);
-					return StartAction(EnemyState.Idle);
+                case EnemyState.Damage:
+                    idle.waitSecond = 0.5f;
+                    NewReserve(EnemyState.MoveNear);
+                    return StartAction(EnemyState.Idle);
 
-				case EnemyState.MoveNear:
+                case EnemyState.MoveNear:
+                    return StartAttackAction(thunder);
+                ////優先順位に応じて攻撃
+                // if (combo.CanAttack()) {
+                //	return StartAttackAction(combo);
+                //} else {
+                //	return StartAttackAction(nagiharai);
+                //}
+                case EnemyState.Death:
+                    return StartAction(EnemyState.Death);
 
-					//近づいていたら攻撃
-					if (chasePlayer.isNearPlayer) {
-						//優先順位に応じて攻撃
-						 if (combo.CanAttack()) {
-							return StartAttackAction(combo);
-						} else {
-							return StartAttackAction(nagiharai);
-						}
-					}
-					//近づいていなければ待機後にもとの場所に戻る
-					else {
-						NewReserve(EnemyState.MoveDefaultPosition);
-						return StartAction(EnemyState.Idle);
-					}
+                default:
+                    break;
+            }
+        }
 
-				case EnemyState.Death:
-					return StartAction(EnemyState.Death);
+        Debug.LogError("未設定の状態遷移が実行されようとしました。" + currentState);
+        return null;
+    }
+    private Coroutine StartAction(EnemyState nextState)
+    {
+        this.currentState = nextState;
 
-				default:
-					break;
-			}
-		}
+        switch (nextState)
+        {
+            case EnemyState.Idle:
+                currentAction = idle;
+                return CoroutineManager.Instance.StartCoroutineEx(idle.Action());
 
-		Debug.LogError("未設定の状態遷移が実行されようとしました。" + currentState);
-		return null;
-	}
+            case EnemyState.Attack:
+                Debug.LogError("不正な形でAttackが実行されようとしました。");
+                currentAction = combo;
+                return CoroutineManager.Instance.StartCoroutineEx(combo.Action());
 
-	private Coroutine StartAction(EnemyState nextState) {
-		this.currentState = nextState;
+            case EnemyState.Damage:
+                currentAction = damage;
+                return CoroutineManager.Instance.StartCoroutineEx(damage.Action());
 
-		switch (nextState) {
-			case EnemyState.Idle:
-				currentAction = idle;
-				return CoroutineManager.Instance.StartCoroutineEx(idle.Action());
+            case EnemyState.MoveNear:
+                currentAction = chasePlayer;
+                return CoroutineManager.Instance.StartCoroutineEx(chasePlayer.Action());
 
-			case EnemyState.Attack:
-				Debug.LogError("不正な形でAttackが実行されようとしました。");
-				currentAction = combo;
-				return CoroutineManager.Instance.StartCoroutineEx(combo.Action());
+            case EnemyState.Death:
+                currentAction = death;
+                return CoroutineManager.Instance.StartCoroutineEx(death.Action());
 
-			case EnemyState.Damage:
-				currentAction = damage;
-				return CoroutineManager.Instance.StartCoroutineEx(damage.Action());
+            default:
+                Debug.LogError("不正な行動の呼び出しがありました。 " + nextState);
+                return null;
+        }
+    }
 
-			case EnemyState.MoveNear:
-				currentAction = chasePlayer;
-				return CoroutineManager.Instance.StartCoroutineEx(chasePlayer.Action());
+    private Coroutine StartAttackAction(AttackAction attack)
+    {
+        currentState = EnemyState.Attack;
+        currentAction = attack;
+        return CoroutineManager.Instance.StartCoroutineEx(attack.Action());
+    }
 
-			case EnemyState.Death:
-				currentAction = death;
-				return CoroutineManager.Instance.StartCoroutineEx(death.Action());
+    public override void OnHit(DamageSource damageSource)
+    {
+        //既に死亡していたら何もしない
+        if (status.IsDead())
+        {
+            return;
+        }
 
-			default:
-				Debug.LogError("不正な行動の呼び出しがありました。 " + nextState);
-				return null;
-		}
-	}
+        ApplyDamage(damageSource);
 
-	private Coroutine StartAttackAction(AttackAction attack) {
-		currentState = EnemyState.Attack;
-		currentAction = attack;
-		return CoroutineManager.Instance.StartCoroutineEx(attack.Action());
-	}
+        if (status.IsDead())
+        {
+            NewReserve(EnemyState.Death, true);
+            StopAction();
+        }
+        else
+        {
+            ShowDamageEffect();
 
-	public override void OnHit(DamageSource damageSource) {
-		//既に死亡していたら何もしない
-		if (status.IsDead()) {
-			return;
-		}
+            //今の状態がこうげきを受けたことで停止するか
+            if (DamagedCancelAction(currentState))
+            {
+                StopAction();
+            }
 
-		ApplyDamage(damageSource);
+            if (Slow.Instance.isSlowNow)
+            {
+                damage.damagePattern = DamagePattern.Normal;
+                NewReserve(EnemyState.Damage, true);
+            }
+        }
+    }
 
-		if (status.IsDead()) {
-			NewReserve(EnemyState.Death, true);
-			StopAction();
-		} else {
-			ShowDamageEffect();
-
-			//今の状態がこうげきを受けたことで停止するか
-			if (DamagedCancelAction(currentState)) {
-				StopAction();
-			}
-
-			if (Slow.Instance.isSlowNow) {
-				damage.damagePattern = DamagePattern.Normal;
-				NewReserve(EnemyState.Damage, true);
-			}
-		}
-	}
-
-	/// <summary>
-	/// カウンターされた
-	/// </summary>
-	public override void Countered() {
-		StopAction();
-		damage.damagePattern = DamagePattern.Countered;
-		NewReserve(EnemyState.Damage, true);
-	}
+    /// <summary>
+    /// カウンターされた
+    /// </summary>
+    public override void Countered()
+    {
+        StopAction();
+        damage.damagePattern = DamagePattern.Countered;
+        NewReserve(EnemyState.Damage, true);
+    }
 }

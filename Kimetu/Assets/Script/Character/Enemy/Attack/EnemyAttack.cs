@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-[RequireComponent(typeof(Collider))]
 public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 	[SerializeField, Tooltip("攻撃力")]
 	protected int power;
@@ -58,13 +57,13 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 		}
 	}
 
-	public void AttackStart() {
+	public virtual void AttackStart() {
 		isRunning = true;
 		isHit = false;
 		attackCollider.enabled = true;
 	}
 
-	public void AttackEnd() {
+	public virtual void AttackEnd() {
 		isRunning = false;
 		attackCollider.enabled = false;
 	}
