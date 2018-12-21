@@ -506,7 +506,7 @@ public class CameraController : MonoBehaviour {
             float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
             Ray counterRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
             RaycastHit counterHit;
-            if (Physics.Raycast(counterRay, out counterHit, distance2EndPos))
+            if (Physics.Raycast(counterRay, out counterHit, distance2EndPos, LayerMask.GetMask("Stage")))
             {
                 endPos = counterHit.point;
             }
@@ -568,7 +568,7 @@ public class CameraController : MonoBehaviour {
             float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
             Ray pierceRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
             RaycastHit pierceHit;
-            if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos))
+            if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos, LayerMask.GetMask("Stage")))
             {
                 endPos = pierceHit.point;
                 if (pierceHit.distance <= 1f) endPos = endPosREV;
@@ -578,7 +578,7 @@ public class CameraController : MonoBehaviour {
             Ray rightRay = new Ray(player.transform.position + new Vector3(0, 1, 0), player.transform.right);
             RaycastHit rightHit;
             float rightRange = defaultRightRange;
-            if (Physics.Raycast(rightRay, out rightHit, defaultRightRange + 1))
+            if (Physics.Raycast(rightRay, out rightHit, defaultRightRange + 1, LayerMask.GetMask("Stage")))
             {
                 rightRange = rightHit.distance <= defaultRightRange ? rightHit.distance : defaultRightRange;
                 if (rightHit.distance <= 1f) rightRange = -defaultRightRange;
@@ -601,7 +601,6 @@ public class CameraController : MonoBehaviour {
         if (isPierceMove) {
             //プレイヤーを注目
             transform.LookAt(player.transform.position + new Vector3(0, 1, 0), Vector3.up);
-            //NotDisplayStageBetweenWithPlayer();
         }
         //吸生状態終了時
         if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce) {
