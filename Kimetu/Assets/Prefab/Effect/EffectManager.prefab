@@ -66,4 +66,8 @@ MonoBehaviour:
   auraEffect: {fileID: 1646530348781452, guid: ea1b488157a45e44d9bb28a40f86a516, type: 2}
   auraEffect_Slow: {fileID: 1646530348781452, guid: 14619360a518f224d9769c2708208210,
     type: 2}
+  bossAuraEffect: {fileID: 1646530348781452, guid: ca9563021da984715820aa34e3966e3c,
+    type: 2}
+  bossAuraEffect_Slow: {fileID: 1646530348781452, guid: 6b798b0559d524341b5f3146bbf4c5a9,
+    type: 2}
   limitTime: 1

@@ -11,7 +11,9 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 	public GameObject playerViolentMoveEffect;
 	public GameObject shieldEffect;
 	public GameObject auraEffect;
-    public GameObject auraEffect_Slow;
+	public GameObject auraEffect_Slow;
+	public GameObject bossAuraEffect;
+	public GameObject bossAuraEffect_Slow;
 	GameObject effect;
 	[SerializeField]
 	private float limitTime = 1.0f;
@@ -66,23 +68,34 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 		Destroy(obj, 0.5f);
 
 	}
-	public void EnemyAuraCreate(GameObject enemy) {
+	public void EnemyAuraCreate(GameObject enemy, bool isBoss) {
 
-        if (Slow.Instance.isSlowNow) return;      
-		var obj = GameObject.Instantiate(auraEffect) as GameObject;
+		if (Slow.Instance.isSlowNow) return;
+
+		if (isBoss) {
+			effect = bossAuraEffect;
+		} else {
+			effect = auraEffect;
+		}
+
+		var obj = GameObject.Instantiate(effect) as GameObject;
 		obj.transform.position = enemy.transform.position ;
 		Destroy(obj, 0.1f);
 
 	}
 
-    public void EnemySlowAuraCreate(GameObject enemy)
-    {
+	public void EnemySlowAuraCreate(GameObject enemy, bool isBoss) {
+		if (isBoss) {
+			effect = bossAuraEffect_Slow;
+		} else {
+			effect = auraEffect_Slow;
+		}
 
-        var obj = GameObject.Instantiate(auraEffect_Slow, enemy.transform) as GameObject;
-        obj.transform.position = enemy.transform.position;
-        Destroy(obj, 2f);
+		var obj = GameObject.Instantiate(effect, enemy.transform) as GameObject;
+		obj.transform.position = enemy.transform.position;
+		Destroy(obj, 2f);
 
-    }
+	}
 
 
 

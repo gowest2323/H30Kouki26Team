@@ -40,8 +40,19 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		this.status = GetComponent<Status>();
 		CoroutineManager.Instance.StartCoroutineEx(Loop());
 		this.observer = Slow.Instance.onStart.Subscribe((e) => {
+
 			//ここでエフェクトを作成
-			EffectManager.Instance.EnemySlowAuraCreate(auraPlace);
+			var isBoss = GetComponent<BossMarker>() != null;
+			var status = GetComponent<Status>();
+
+			if (status.IsDead()) return;
+
+			if (isBoss && status.GetHP() == 1) {
+				EffectManager.Instance.EnemySlowAuraCreate(auraPlace, true);
+			} else {
+				EffectManager.Instance.EnemySlowAuraCreate(auraPlace, false);
+			}
+
 		});
 		this.pauseManager = PauseManager.GetInstance();
 	}
@@ -119,9 +130,18 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	/// オーラエフェクトを更新します。
 	/// </summary>
 	protected void UpdateAura() {
-		if (!status.IsDead()) {
-			EffectManager.Instance.EnemyAuraCreate(auraPlace);
+		var isBoss = GetComponent<BossMarker>() != null;
+		var status = GetComponent<Status>();
+
+		if (status.IsDead()) return;
+
+		if (isBoss && status.GetHP() == 1) {
+			EffectManager.Instance.EnemyAuraCreate(auraPlace, true);
+		} else {
+			EffectManager.Instance.EnemyAuraCreate(auraPlace, false);
 		}
+
+
 	}
 
 	/// <summary>
@@ -254,7 +274,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		observer.Dispose();
 	}
 	void Update() {
-		if(!pauseManager.isPause) {
+		if (!pauseManager.isPause) {
 			UpdateAura();
 		}
 	}
