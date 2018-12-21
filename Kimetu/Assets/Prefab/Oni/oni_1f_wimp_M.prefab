@@ -3019,6 +3019,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waistObjectName: mixamorig:Hips/mixamorig:Spine
   extinctionSeconds: 2.5
+  sinkSeconds: 1.5
+  sinkHeight: 2
   dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
     type: 2}
   idle: {fileID: 114162367748328834}
@@ -3044,6 +3046,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
+  toReleaseParent: 0
 --- !u!114 &114779129390503458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3088,6 +3091,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 1
+  toReleaseParent: 0
 --- !u!114 &114879217274506192
 MonoBehaviour:
   m_ObjectHideFlags: 1

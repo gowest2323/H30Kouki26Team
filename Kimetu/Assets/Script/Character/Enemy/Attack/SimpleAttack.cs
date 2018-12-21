@@ -5,8 +5,6 @@ using UnityEngine;
 using UniRx;
 
 public class SimpleAttack : EnemyAttack, IAttackEventHandler {
-	[SerializeField, Tooltip("攻撃方法")]
-	private EnemyAttackType attackType;
 	private System.IDisposable observer;
 
 	protected override void Start() {
