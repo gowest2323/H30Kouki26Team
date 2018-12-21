@@ -61,6 +61,7 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 		isRunning = true;
 		isHit = false;
 		attackCollider.enabled = true;
+        Debug.Log("attack start");
 	}
 
 	public virtual void AttackEnd() {
