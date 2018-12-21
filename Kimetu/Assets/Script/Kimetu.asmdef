@@ -3,7 +3,8 @@
     "references": [
         "NavMeshComponents",
         "UniRx",
-        "UniRx.Async"
+        "UniRx.Async",
+        "iTween"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
