@@ -132,8 +132,8 @@ public class PlayerController : MonoBehaviour {
 
 	private void Attack() {
 		if (isKyuusei) return;
-
-		if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName()) && !changeStage.toNextStage) {
+        //ボタンが押されている && (次のステージへ行くためのアレがない || アレに触れていない)
+		if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName()) && (changeStage == null || !changeStage.toNextStage)) {
 			action.Attack();
 		}
 	}
