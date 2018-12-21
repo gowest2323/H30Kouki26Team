@@ -12,9 +12,11 @@ public class LastBossAI : EnemyAI, IEnemyInfoProvider {
 	[SerializeField]
 	private ChasePlayer chasePlayer;
 	[SerializeField]
-	private AttackAction combo;
+	private AttackAction attack1;
 	[SerializeField]
-	private AttackAction nagiharai;
+	private AttackAction attack2;
+	[SerializeField]
+	private AttackAction attack3;
 	[SerializeField]
 	private DamageAction damage;
 	[SerializeField]
@@ -53,10 +55,12 @@ public class LastBossAI : EnemyAI, IEnemyInfoProvider {
 					//近づいていたら攻撃
 					if (chasePlayer.isNearPlayer) {
 						//優先順位に応じて攻撃
-						 if (combo.CanAttack()) {
-							return StartAttackAction(combo);
+						if (attack3.CanAttack()) {
+							return StartAttackAction(attack3);
+						} else if (attack1.CanAttack()) {
+							return StartAttackAction(attack1);
 						} else {
-							return StartAttackAction(nagiharai);
+							return StartAttackAction(attack2);
 						}
 					}
 					//近づいていなければ待機後にもとの場所に戻る
@@ -87,8 +91,8 @@ public class LastBossAI : EnemyAI, IEnemyInfoProvider {
 
 			case EnemyState.Attack:
 				Debug.LogError("不正な形でAttackが実行されようとしました。");
-				currentAction = combo;
-				return CoroutineManager.Instance.StartCoroutineEx(combo.Action());
+				currentAction = attack1;
+				return CoroutineManager.Instance.StartCoroutineEx(attack1.Action());
 
 			case EnemyState.Damage:
 				currentAction = damage;

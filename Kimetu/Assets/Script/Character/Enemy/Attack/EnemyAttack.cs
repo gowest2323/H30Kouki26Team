@@ -15,8 +15,6 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 	protected EnemyAttackAreaDrawer attackAreaDrawer;
 	[SerializeField]
 	protected string attackStateName;
-    [SerializeField]
-    protected EnemyAttackType attackType;
 	protected Collider attackCollider;
 	protected EnemyAnimation enemyAnimation;
 	protected bool isHit; //攻撃が当たったかどうか（多段ヒット無効のため）

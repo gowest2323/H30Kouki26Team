@@ -18,7 +18,7 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 		playerTransform = GetPlayer().transform;
 		topTransform = GetTopTransform();
 		anim = enemyAnimation.anim;
-		System.Type type = EnemyAttackTypeDictionary.typeDictionary[attackType];
+		System.Type type = EnemyAttackTypeDictionary.typeDictionary[EnemyAttackType.Combo];
 		var attackHook = GetComponentInParent(type) as IEventHook;
 
 		if (attackHook == null) {
@@ -61,6 +61,9 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 			float slowDelta = Slow.Instance.DeltaTime();
 			time += slowDelta;
 			float t = time / rotateTime;
+			//aim = playerTransform.position - topTransform.position;
+			//after = Quaternion.LookRotation(aim, Vector3.up);
+
 			Quaternion rotate = Quaternion.Lerp(before, after, t);
 			topTransform.rotation = rotate;
 			yield return new WaitForSeconds(slowDelta);
@@ -74,6 +77,8 @@ public class ComboAttack : EnemyAttack, IAttackEventHandler {
 	/// </summary>
 	/// <returns></returns>
 	private float RotationTime() {
+		//AnimatorClipInfo info = anim.GetCurrentAnimatorClipInfo(0)[0];
+		//AnimationClip clip = info.clip;
 		float startTime = clip.events[0].time;
 		float endTime = clip.events[2].time;
 		float rotateTime = endTime - startTime;

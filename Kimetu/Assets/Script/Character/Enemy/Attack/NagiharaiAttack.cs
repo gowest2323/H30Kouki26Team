@@ -19,7 +19,7 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 		playerTransform = GetPlayer().transform;
 		topTransform = GetTopTransform();
 		anim = enemyAnimation.anim;
-		System.Type type = EnemyAttackTypeDictionary.typeDictionary[attackType];
+		System.Type type = EnemyAttackTypeDictionary.typeDictionary[EnemyAttackType.NagiharaiAttack];
 		var attackHook = GetComponentInParent(type) as IEventHook;
 
 		if (attackHook == null) {
