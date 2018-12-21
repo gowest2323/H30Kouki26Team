@@ -106,9 +106,10 @@ public class PlayerController : MonoBehaviour {
 		}
 
         if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) {
-            if (isAvoid) Avoid();
+            if (isAvoid && !pauseManager.isReturnFromPause) Avoid();
             pressButton = 0;
             isAvoid = false;
+            pauseManager.isReturnFromPause = false;
         }
 	}
 
