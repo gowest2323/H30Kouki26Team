@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour {
 	public bool isPause { private set; get; }
+    public bool isReturnFromPause { set; get; }
 	private CameraController cameraController;
 
 	private void Start() {
@@ -18,6 +19,7 @@ public class PauseManager : MonoBehaviour {
 	/// </summary>
 	public void Pause() {
 		isPause = true;
+        isReturnFromPause = false;
 		CoroutineManager.Instance.StopAllCoroutineEx(false);
 		Time.timeScale = 0.0f;
 		//ポーズシーンを追加読み込み
@@ -33,6 +35,7 @@ public class PauseManager : MonoBehaviour {
 		CoroutineManager.Instance.StartAllCoroutineEx();
 		//ポーズシーンを削除
 		SceneManager.UnloadSceneAsync("Pause");
+        isReturnFromPause = true;
 		isPause = false;
 	}
 

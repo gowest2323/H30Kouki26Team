@@ -8,13 +8,13 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField, Header("吸生コマンドを実行するのにボタンを長押しする時間")]
 	private float pierceButtonPushTime;
 
-	[SerializeField, Header("回避コマンドを実行するのにボタンを長押しする時間")]
-	private int holdShort = 5;
-	[SerializeField, Header("ダッシュ状態になるのにボタンを長押しする時間")]
-	private int holdLong = 15;
+	[SerializeField, Header("回避実行必要ボタン長押し秒数")]
+	private float holdShort = 0.01f;
+	[SerializeField, Header("ダッシュ実行必要ボタン長押し秒数")]
+	private float holdLong = 0.5f;
 	[SerializeField]
 	private CameraController cameraController;
-	private int pressButton;
+	private float pressButton;
 	[SerializeField]
 	private LongPressDetector longPressDetector;
 	private bool isKyuusei;
@@ -29,8 +29,11 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private float inputDisableSeconds = 0.5f;
 	private float inputDisableElapsed;
-	// Use this for initialization
-	void Start() {
+
+    private bool isAvoid = false;//回避か
+
+    // Use this for initialization
+    void Start() {
 		if(cameraController == null) {
 			this.cameraController = Camera.main.GetComponent<CameraController>();
 		}
@@ -89,19 +92,25 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void DashOrAvoid() {
-		pressButton += (Input.GetButton(InputMap.Type.AButton.GetInputName())) ? 1 : 0;
+		pressButton += (Input.GetButton(InputMap.Type.AButton.GetInputName())) ? Time.deltaTime : 0;
 
 		if (Input.GetButton(InputMap.Type.AButton.GetInputName())) {
 			if (holdLong <= pressButton) {
-				Dash();
-				//Debug.Log("長押し");
-			} else if (holdShort <= pressButton) {
-				Avoid();
+                isAvoid = false;
+                Dash();
+                //Debug.Log("長押し");
+            } else if (holdShort <= pressButton) {
+                isAvoid = true;
 				//Debug.Log("押し");
 			}
 		}
 
-		if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) pressButton = 0;
+        if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) {
+            if (isAvoid && !pauseManager.isReturnFromPause) Avoid();
+            pressButton = 0;
+            isAvoid = false;
+            pauseManager.isReturnFromPause = false;
+        }
 	}
 
 	private void Move() {
@@ -155,9 +164,7 @@ public class PlayerController : MonoBehaviour {
 			Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
 		);
 
-		if (Input.GetButton(InputMap.Type.AButton.GetInputName())) {
-			action.Avoid(dir);
-		}
+        action.Avoid(dir);
 	}
 
 	private void Guard() {
