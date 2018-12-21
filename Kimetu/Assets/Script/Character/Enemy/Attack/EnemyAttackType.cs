@@ -44,6 +44,7 @@ public class EnemyAttackTypeDictionary {
 		{EnemyAttackType.TwiceSlash, "TwiceSlash" },
 		{EnemyAttackType.HurimawashiAruki, "HurimawashiAruki" },
         {EnemyAttackType.Thunder,"Thunder" },
+        {EnemyAttackType.SetsunaNagiharai,"Nagiharai" },
 
 	};
 

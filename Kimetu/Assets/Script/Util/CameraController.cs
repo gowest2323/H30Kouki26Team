@@ -186,7 +186,7 @@ public class CameraController : MonoBehaviour {
 	private void LockOn() {
 		if (!isLockOn || nearObj == null || isCounterMove || isPierceMove) {
 			
-		}) {
+		} {
 			StopLockOnStart();
 			this.finished = false;
 			return;
