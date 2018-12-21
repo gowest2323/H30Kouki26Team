@@ -22,7 +22,7 @@ EditorBuildSettings:
     guid: 9389a42acc76e4de5b57f87227f887e9
   - enabled: 1
     path: Assets/Scene/BuildScene/Stage02.unity
-    guid: d02d3544f9f6e48a7a480de592d74613
+    guid: 4a6657df8d0da46c4ad9a6378bfa5cda
   - enabled: 1
     path: Assets/Scene/BuildScene/Stage02_Boss.unity
     guid: aac654be2033b4135af5612c51a882cf
@@ -44,7 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/BuildScene/Option.unity
     guid: 67561b98922dd4416a16fd71597c9fcd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scene/BuildScene/PlayerDead.unity
     guid: 5af8411240cd7e348917f2b616af6e41
   m_configObjects: {}

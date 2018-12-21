@@ -352,6 +352,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1262427429545872
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4364948482467424}
+  - component: {fileID: 65992056416189258}
+  m_Layer: 14
+  m_Name: EnemyDeadCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1288440245302984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1487,7 +1503,8 @@ Transform:
   m_LocalRotation: {x: -6.938894e-18, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.18794982, z: 0.102071196}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4364948482467424}
   m_Father: {fileID: 4977620340579180}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -7.9513863e-16, y: 0, z: 0}
@@ -1762,6 +1779,19 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4531577205511216}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4364948482467424
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1262427429545872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4122890698326782}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4366216547989690
@@ -2637,6 +2667,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.51, y: 1.45, z: 0.38}
   m_Center: {x: 0.06, y: 0.78, z: 0.15}
+--- !u!65 &65992056416189258
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1262427429545872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.6, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95311357042752384
 Animator:
   serializedVersion: 3
@@ -2782,6 +2824,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
+  toReleaseParent: 0
 --- !u!114 &114179312486077054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2918,6 +2961,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waistObjectName: mixamorig:Hips/mixamorig:Spine
   extinctionSeconds: 2.5
+  sinkSeconds: 1.5
+  sinkHeight: 2
   dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
     type: 2}
   idle: {fileID: 114848123572368084}
@@ -3016,6 +3061,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
+  toReleaseParent: 0
 --- !u!114 &114620861668622584
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3086,6 +3132,7 @@ MonoBehaviour:
   attackArea: {fileID: 114201379355036284}
   attackAreaDrawer: {fileID: 114134662997515152}
   attackStateName: nagi
+  animationClipName: oni@360_m
 --- !u!114 &114811449258926222
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -23,9 +23,7 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 	}
 
 	public void PlayerDamageEffectCreate(GameObject target) {
-		var obj = GameObject.Instantiate(playerDamageEffect) as GameObject;
-		obj.transform.position = target.transform.position + new Vector3(0, 1, 0);
-		Destroy(obj, 1f);
+		//今までのダメージエフェクトの代わりにプレイヤーのモデルを赤くする処理を入れる
 	}
 
 	public void EnemyDamageEffectCreate(GameObject target, bool isShield) {

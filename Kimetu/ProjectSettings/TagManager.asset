@@ -22,8 +22,8 @@ TagManager:
   - PlayerWeapon
   - PlayerDamageable
   - Effect
-  - 
-  - 
+  - EnemyDeadCollider
+  - NotRender
   - 
   - 
   - 
