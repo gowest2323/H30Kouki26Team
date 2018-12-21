@@ -982,21 +982,6 @@ Prefab:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1669517514}
-    - target: {fileID: 114052291224128242, guid: fbd5f037b21dc4afcad27236b354a59e,
-        type: 2}
-      propertyPath: holdLong
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114052291224128242, guid: fbd5f037b21dc4afcad27236b354a59e,
-        type: 2}
-      propertyPath: pierceButtonPushTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114052291224128242, guid: fbd5f037b21dc4afcad27236b354a59e,
-        type: 2}
-      propertyPath: holdShort
-      value: 0.01
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbd5f037b21dc4afcad27236b354a59e, type: 2}
   m_IsPrefabAsset: 0
