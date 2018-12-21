@@ -1014,4 +1014,29 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		float distance = Vector2.Distance(enemyPositionXZ, myPositionXZ);
 		return distance;
 	}
+
+	//
+	//アニメーション関連
+	//
+
+	public void OnPlayAttack1Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_01.String());
+	}
+
+	public void OnPlayAttack2Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_02.String());
+	}
+
+	public void OnPlayAttack3Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_03.String());
+	}
+
+	public void OnPlayAttack4Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_04.String());
+	}
+
 }

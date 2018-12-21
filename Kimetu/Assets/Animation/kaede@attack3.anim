@@ -40404,7 +40404,7 @@ AnimationClip:
   m_GenerateMotionCurves: 0
   m_Events:
   - time: 0
-    functionName: DecreaseAttackStamina
+    functionName: OnPlayAttack3Animation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
