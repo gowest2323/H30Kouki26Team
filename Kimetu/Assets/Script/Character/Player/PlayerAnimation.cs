@@ -141,6 +141,8 @@ public class PlayerAnimation : CharacterAnimation {
 	}
 
 	public void PlayKyuseiSE() {
+
+		AudioManager.Instance.PlayEnemySE(AudioName.oni_aa_kyusei_06.String());
 		var effect = GameObject.Instantiate(healEffectPrefab);
 		AudioManager.Instance.PlayPlayerSE(AudioName.kyusei.String());
 		effect.transform.position = transform.position;

@@ -398,7 +398,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		state = PlayerState.Pierce;
 		var audioNames = new AudioName[] {AudioName.kaede_hun_kyusei_10, AudioName.kaede_kurae_kyusei_11};
 		AudioManager.Instance.PlayPlayerSE(audioNames[Random.Range(0, audioNames.Length)].String());
-		AudioManager.Instance.PlayEnemySE(AudioName.oni_aa_kyusei_06.String());
 		EnemyAI nearEnemy = MostNearEnemy();
 		var isBoss = nearEnemy.GetComponent<BossMarker>() != null;
 		//敵のほうを向くまで待機
