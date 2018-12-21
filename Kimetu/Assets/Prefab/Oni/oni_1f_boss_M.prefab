@@ -2834,6 +2834,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waistObjectName: mixamorig:Hips/mixamorig:Spine
   extinctionSeconds: 2.5
+  sinkSeconds: 1.5
+  sinkHeight: 2
   dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
     type: 2}
   idle: {fileID: 114306873635490086}
@@ -2984,6 +2986,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
+  toReleaseParent: 0
 --- !u!114 &114622792159207344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3106,6 +3109,7 @@ MonoBehaviour:
   fadeOutTime: 0.1
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
+  toReleaseParent: 0
 --- !u!114 &114751490095056884
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3121,6 +3125,8 @@ MonoBehaviour:
   attackArea: {fileID: 114265822976109952}
   attackAreaDrawer: {fileID: 114727853163525446}
   attackStateName: nagi
+  attackType: 1
+  animationClipName: oni@360_m
 --- !u!114 &114773973633746168
 MonoBehaviour:
   m_ObjectHideFlags: 1
