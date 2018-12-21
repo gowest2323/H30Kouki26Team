@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
 	private float inputDisableElapsed;
 
     private bool isAvoid = false;//回避か
+    private ChangeStage changeStage;
 
     // Use this for initialization
     void Start() {
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour {
 		longPressDetector.OnLongPressEnd += OnKyuuseiButtonPushEnd;
 		isKyuusei = false;
 		status = GetComponent<PlayerStatus>();
+        changeStage = FindObjectOfType<ChangeStage>();
 	}
 
 	private void OnKyuuseiButtonPushStart(float elapsed) {
@@ -131,7 +133,7 @@ public class PlayerController : MonoBehaviour {
 	private void Attack() {
 		if (isKyuusei) return;
 
-		if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName())) {
+		if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName()) && !changeStage.toNextStage) {
 			action.Attack();
 		}
 	}

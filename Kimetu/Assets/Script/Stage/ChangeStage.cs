@@ -16,7 +16,7 @@ public class ChangeStage : MonoBehaviour {
 	private GameObject player;
 	private PlayerState state;
 
-	private bool toNextStage;
+	public bool toNextStage { private set; get; }
 
 	// Use this for initialization
 	void Start () {
