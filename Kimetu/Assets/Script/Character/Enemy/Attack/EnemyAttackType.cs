@@ -65,6 +65,6 @@ public class EnemyAttackTypeDictionary
         {EnemyAttackType.HurimawashiAruki, typeof(OniNagiHook) },
         {EnemyAttackType.SetsunaNagiharai,typeof(Setuna2attackHook) },
         {EnemyAttackType.SetunaCombo,typeof(Setuna3attackHook) },
-        {EnemyAttackType.Thunder,typeof(SetunaGreat_swordHook) },
+        {EnemyAttackType.Thunder,typeof(SetunaKaminari_fixHook) },
     };
 }
