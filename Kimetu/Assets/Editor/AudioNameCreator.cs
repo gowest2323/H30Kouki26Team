@@ -47,7 +47,9 @@ public static class AudioNameCreator {
 			AudioClip clip = e as AudioClip;
 			return string.Format("{0}", clip.name);
 		}));
-		nameList.AddRange(Resources.LoadAll("Audio/SE").ToList().Select((e) => {
+		nameList.AddRange(Resources.LoadAll("Audio/SE")
+			.Where((e) => !e.name.Contains("readme"))
+			.ToList().Select((e) => {
 			AudioClip clip = e as AudioClip;
 			return string.Format("{0}", clip.name);
 		}));

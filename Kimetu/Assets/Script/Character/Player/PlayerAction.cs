@@ -396,6 +396,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// <returns></returns>
 	private IEnumerator PierceAndHeakCoroutine() {
 		state = PlayerState.Pierce;
+		var audioNames = new AudioName[] {AudioName.kaede_hun_kyusei_10, AudioName.kaede_kurae_kyusei_11};
+		AudioManager.Instance.PlayPlayerSE(audioNames[Random.Range(0, audioNames.Length)].String());
+		AudioManager.Instance.PlayEnemySE(AudioName.oni_aa_kyusei_06.String());
 		EnemyAI nearEnemy = MostNearEnemy();
 		var isBoss = nearEnemy.GetComponent<BossMarker>() != null;
 		//敵のほうを向くまで待機
@@ -522,6 +525,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// <param name="damageSource"></param>
 	public void OnHit(DamageSource damageSource) {
 		if (state == PlayerState.Defence) { //防御中
+			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ku_guard_05.String());
 			status.DecreaseStamina(damageSource.damage);
 			//ノックバックされる
 			BeKnockedBack(damageSource);
@@ -541,6 +545,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//カウンター発生時間内ならカウンター発生
 		if (counterDeltaTime < counterTime) {
+			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_hajiki_09.String());
 			AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
 			Debug.Log("counter succeed");
 			damageSource.attackCharacter.Countered();
@@ -588,12 +593,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//死亡したら倒れるモーション
 		if (status.IsDead()) {
+			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_aa_die_12.String());
 			StartCoroutine(DieAnimation());
 			Instantiate(deadUIPrefab);
 			//Time.timeScale = 0.0f;
 		}
 		//まだ生きていたらダメージモーション
 		else {
+			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_uu_damage_06.String());
 			PlayVibration.Instance.StartVibration(0.5f);
 			EffectManager.Instance.PlayerDamageEffectCreate(this.gameObject);
 			playerAnimation.StartDamageAnimation();
@@ -654,6 +661,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		if (isGuard) GuardEnd();
 
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ya_08.String());
 		state = PlayerState.Avoid;
 		AudioManager.Instance.PlayPlayerSE(AudioName.kaihi.String());
 
@@ -1014,4 +1022,29 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		float distance = Vector2.Distance(enemyPositionXZ, myPositionXZ);
 		return distance;
 	}
+
+	//
+	//アニメーション関連
+	//
+
+	public void OnPlayAttack1Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_01.String());
+	}
+
+	public void OnPlayAttack2Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_02.String());
+	}
+
+	public void OnPlayAttack3Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_03.String());
+	}
+
+	public void OnPlayAttack4Animation() {
+		DecreaseAttackStamina();
+		AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_attack_04.String());
+	}
+
 }

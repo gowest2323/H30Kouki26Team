@@ -120,6 +120,11 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		} else {
 			status.Damage(damageSource.damage, DamageMode.Kill);
 		}
+		if(!status.IsDead()) {
+			AudioManager.Instance.PlayEnemySE(AudioName.oni_uu_damage_04.String());
+		} else {
+			AudioManager.Instance.PlayEnemySE(AudioName.oni_aa_taore_05.String());
+		}
 
 		if (Slow.Instance.isSlowNow && status.IsDead()) {
 			this.deathByRepl = true;

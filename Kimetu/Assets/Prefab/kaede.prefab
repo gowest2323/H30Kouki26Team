@@ -3105,8 +3105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pierceButtonPushTime: 1
-  holdShort: 1
-  holdLong: 15
+  holdShort: 0.01
+  holdLong: 0.5
   cameraController: {fileID: 0}
   longPressDetector: {fileID: 114059307054834580}
   staminaHealTime: 0.05
@@ -3146,7 +3146,6 @@ MonoBehaviour:
   limitRayDistance: 1.1
   weapon: {fileID: 0}
   counterTime: 0.5
-  pierceText: {fileID: 0}
   pierceHealHP: 100
   stageManager: {fileID: 0}
   decreaseStaminaPerSecond: 0.3
@@ -3166,6 +3165,7 @@ MonoBehaviour:
   replSparkPrefab: {fileID: 1482060605271598, guid: b6c901731bb104d9abe92fba444d0726,
     type: 2}
   replSparkDestroySeconds: 2
+  replEffectGenerator: {fileID: 0}
 --- !u!114 &114311990288785806
 MonoBehaviour:
   m_ObjectHideFlags: 1
