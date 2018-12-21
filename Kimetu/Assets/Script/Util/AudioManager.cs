@@ -41,16 +41,32 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 		_bgmDic = new Dictionary<string, AudioClip>();
 		_seDic = new Dictionary<string, AudioClip>();
 
-		object[] bgmList = Resources.LoadAll("Audio/BGM");
-		object[] seList = Resources.LoadAll("Audio/SE");
 
+		LoadBGMDirectory("Audio/BGM");
+		LoadSEDirectory("Audio/SE");
+	}
 
-		foreach (AudioClip bgm in bgmList) {
-			_bgmDic[bgm.name] = bgm;
+	private void LoadBGMDirectory(string dir) {
+		object[] objList = Resources.LoadAll(dir);
+		foreach (object obj in objList) {
+			if(obj is AudioClip) {
+				var se = obj as AudioClip;
+				_bgmDic[se.name] = se;
+			} else {
+				Debug.Log("skip: " + obj.ToString());
+			}
 		}
+	}
 
-		foreach (AudioClip se in seList) {
-			_seDic[se.name] = se;
+	private void LoadSEDirectory(string dir) {
+		object[] objList = Resources.LoadAll(dir);
+		foreach (object obj in objList) {
+			if(obj is AudioClip) {
+				var se = obj as AudioClip;
+				_seDic[se.name] = se;
+			} else {
+				Debug.Log("skip: " + obj.ToString());
+			}
 		}
 	}
 
