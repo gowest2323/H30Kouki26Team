@@ -39,7 +39,6 @@ public class MenuUI : MonoBehaviour {
 
 	/// <summary>
 	/// MenuUIの `Update` の実装を公開します。
-	/// Time.timeScale が 0 の環境ではこれを明示的に呼び出してください。
 	/// </summary>
 	public void InputUpdate() {
 		if(freeze) {
