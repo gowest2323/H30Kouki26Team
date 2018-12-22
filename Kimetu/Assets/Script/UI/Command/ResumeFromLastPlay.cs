@@ -19,6 +19,8 @@ public class ResumeFromLastPlay : MonoBehaviour, IExecuteCommand {
 
 	public IEnumerator OnExecute() {
 		StageManager.Resume(fade);
-		yield return new WaitForSeconds(fade.fadeInTime + fade.fadeOutTime + 1);
+		while(true) {
+			yield return null;
+		}
 	}
 }
