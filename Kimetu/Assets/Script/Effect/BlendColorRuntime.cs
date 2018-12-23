@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// `BlendColor`シェーダーの色を実行時に変更するためのスクリプト。
+/// </summary>
 public class BlendColorRuntime : MonoBehaviour {
 	private List<Material> targetMaterials;
 	private int colorID, alphaID;
@@ -14,6 +17,8 @@ public class BlendColorRuntime : MonoBehaviour {
 
 	[SerializeField]
 	private float debugAlpha = 0f;
+
+	private bool animationNow;
 
 
 	// Use this for initialization
@@ -53,5 +58,31 @@ public class BlendColorRuntime : MonoBehaviour {
 		foreach(var mat in targetMaterials) {
 			mat.SetFloat(alphaID, a);
 		}
+	}
+
+	public void StartAnimation(Color color, float minAlpha, float maxAlpha, float seconds) {
+		if(animationNow) {
+			return;
+		}
+		StartCoroutine(AnimationUpdate(color, minAlpha, maxAlpha, seconds));
+	}
+
+	private IEnumerator AnimationUpdate(Color color, float minAlpha, float maxAlpha, float seconds) {
+		this.animationNow = true;
+		SetColor(color);
+		SetAlpha(minAlpha);
+		var delta = seconds / 100f;
+		var offset = 0f;
+		while(offset < seconds) {
+			yield return new WaitForSeconds(delta);
+			offset += delta;
+			var parcent = offset / seconds;
+			var alpha = minAlpha + ((maxAlpha - minAlpha) * parcent);
+			SetAlpha(alpha);
+		}
+		SetAlpha(maxAlpha);
+		yield return null;
+		SetAlpha(0);
+		this.animationNow = false;
 	}
 }
