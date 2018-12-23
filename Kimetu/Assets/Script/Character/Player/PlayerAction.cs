@@ -97,6 +97,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	private float replSparkDestroySeconds = 2f;
 	[SerializeField]
 	private ReplEffectGenerator replEffectGenerator;
+	[SerializeField, Range(0, 1)]
+	private float damageColorAlpha = 0.5f;
+	[SerializeField]
+	private float damageEffectSeconds = 0.5f;
 
 	private float slowElapsed;
 
@@ -611,7 +615,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		else {
 			//ダメージエフェクト
 			var blendColor = GetComponent<BlendColorRuntime>();
-			blendColor.StartAnimation(Color.red, 0f, 0.5f, 0.5f);
+			blendColor.StartAnimation(Color.red, 0f, damageColorAlpha, damageEffectSeconds);
 			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_uu_damage_06.String());
 			PlayVibration.Instance.StartVibration(0.5f);
 			EffectManager.Instance.PlayerDamageEffectCreate(this.gameObject);

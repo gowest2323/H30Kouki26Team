@@ -15,7 +15,7 @@ public class BlendColorRuntime : MonoBehaviour {
 	[SerializeField]
 	private Color debugColor = Color.red;
 
-	[SerializeField]
+	[SerializeField, Range(0, 1)]
 	private float debugAlpha = 0f;
 
 	private bool animationNow;
