@@ -8,7 +8,7 @@
 		//ダメージエフェクトとして使う場合赤
 		_BlendColor ("BlendColor", Color) = (1,1,1,1)
 		//この変数で透明度を設定します。
-		_BlendAlpha ("BlendAlpha", Range(0,1)) = 0.5
+		_BlendAlpha ("BlendAlpha", Range(0,1)) = 0
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
