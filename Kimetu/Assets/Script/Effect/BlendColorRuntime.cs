@@ -71,14 +71,15 @@ public class BlendColorRuntime : MonoBehaviour {
 		this.animationNow = true;
 		SetColor(color);
 		SetAlpha(minAlpha);
-		var delta = seconds / 100f;
 		var offset = 0f;
 		while(offset < seconds) {
-			yield return new WaitForSeconds(delta);
-			offset += delta;
+			var t = Time.time;
+			yield return new WaitForEndOfFrame();
+			offset += (Time.time - t);
 			var parcent = offset / seconds;
 			var alpha = minAlpha + ((maxAlpha - minAlpha) * parcent);
 			SetAlpha(alpha);
+		Debug.Log("offset:" + offset);
 		}
 		SetAlpha(maxAlpha);
 		yield return null;

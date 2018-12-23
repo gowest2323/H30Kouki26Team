@@ -609,6 +609,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		}
 		//まだ生きていたらダメージモーション
 		else {
+			//ダメージエフェクト
+			var blendColor = GetComponent<BlendColorRuntime>();
+			blendColor.StartAnimation(Color.red, 0f, 0.5f, 0.5f);
 			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_uu_damage_06.String());
 			PlayVibration.Instance.StartVibration(0.5f);
 			EffectManager.Instance.PlayerDamageEffectCreate(this.gameObject);
