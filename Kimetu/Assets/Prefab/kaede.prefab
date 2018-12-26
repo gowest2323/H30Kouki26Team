@@ -852,6 +852,7 @@ GameObject:
   - component: {fileID: 114059307054834580}
   - component: {fileID: 114808445058434460}
   - component: {fileID: 114584521352636428}
+  - component: {fileID: 114678481050493624}
   m_Layer: 12
   m_Name: kaede
   m_TagString: Player
@@ -3167,6 +3168,8 @@ MonoBehaviour:
     type: 2}
   replSparkDestroySeconds: 2
   replEffectGenerator: {fileID: 0}
+  damageColorAlpha: 0.5
+  damageEffectSeconds: 0.5
 --- !u!114 &114311990288785806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3207,6 +3210,20 @@ MonoBehaviour:
   debugMode: 0
   debugColor: {r: 1, g: 0, b: 0, a: 1}
   debugAlpha: 0
+--- !u!114 &114678481050493624
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1605809767795630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a27417cad6de471d99efb63b8c77e56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSeconds: 0.5
+  turnSeconds: 0.2
+  moveDistanceLimit: 0.5
 --- !u!114 &114731963327466154
 MonoBehaviour:
   m_ObjectHideFlags: 1
