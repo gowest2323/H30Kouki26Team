@@ -78,6 +78,10 @@ public class LongPressUI : MonoBehaviour {
 		}
 	}
 
+	protected LongPressDetector GetLongPressDetector() {
+		return this.longPressDetector;
+	}
+
 	protected virtual LongPressDetector FindLongPressDetector() {
 		return null;
 	}
