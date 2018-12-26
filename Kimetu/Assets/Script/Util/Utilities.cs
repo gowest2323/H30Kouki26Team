@@ -22,4 +22,28 @@ public static class Utilities {
         }
         return null;
 	}
+
+    /// <summary>
+    /// Y方向を無視して距離を計算します。
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static float DistanceXZ(GameObject a, GameObject b) {
+        return DistanceXZ(a.transform.position, b.transform.position);
+    }
+
+    /// <summary>
+    /// Y方向を無視して距離を計算します。
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static float DistanceXZ(Vector3 a, Vector3 b) {
+        var ignoreY = new Vector3(1, 0, 1);
+        return Vector3.Distance(
+            Vector3.Scale(a, ignoreY),
+            Vector3.Scale(b, ignoreY)
+        );
+    }
 }
