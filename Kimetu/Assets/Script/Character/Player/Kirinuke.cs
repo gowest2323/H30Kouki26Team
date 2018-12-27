@@ -14,12 +14,17 @@ public class Kirinuke : MonoBehaviour {
 	[SerializeField, Header("回りこむ角度"), Range(0f, 360f)]
 	private float turnDegree = 100f;
 
+	[SerializeField]
+	private PlayerAnimation playerAnimation;
+
 	public bool isRunning { private set; get; }
 	public GameObject target { private set; get; }
 
 	// Use this for initialization
 	void Start () {
-		
+		if(playerAnimation == null) {
+			this.playerAnimation = GetComponent<PlayerAnimation>();
+		}
 	}
 	
 	// Update is called once per frame
@@ -55,9 +60,11 @@ public class Kirinuke : MonoBehaviour {
 		this.isRunning = true;
 		GameObject enemy;
 		if(FindNearEnemy(out enemy)) {
+			playerAnimation.StartKirinukeAnimation();
 			this.target = enemy;
 			yield return MoveToEnemy();
 			yield return TurnToEnemyBack();
+			playerAnimation.StopKirinukeAnimation();
 			this.isRunning = false;
 		} else {
 			this.isRunning = false;
