@@ -12,8 +12,9 @@ public class KirinukeUI : LongPressUI {
 		var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
 		this.kirinuke = player.GetComponent<Kirinuke>();
 		GetLongPressDetector().OnLongPressTrigger += (e) => {
-			Debug.Log("Trigger");
-			kirinuke.StartKirinuke();
+			if(Slow.Instance.isSlowNow) {
+				kirinuke.StartKirinuke();
+			}
 		};
 	}
 
@@ -22,6 +23,6 @@ public class KirinukeUI : LongPressUI {
 	}
 
 	protected override bool CanShowUI() {
-		return !kirinuke.isRunning;
+		return (!kirinuke.isRunning && Slow.Instance.isSlowNow);
 	}
 }

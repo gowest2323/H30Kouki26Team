@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Kirinuke : MonoBehaviour {
-	[SerializeField]
+	[SerializeField, Header("近くのにかかる時間")]
 	private float moveSeconds = 0.5f;
-	[SerializeField]
-	private float turnSeconds = 0.2f;
+	[SerializeField, Header("回りこむのにかかる時間")]
+	private float turnSeconds = 1f;
 
 	[SerializeField, Header("敵の向こう側へ行く時、どれだけ距離を空けるか")]
-	private float moveDistanceLimit = 0.5f;
+	private float moveDistanceLimit = 2f;
+
+	[SerializeField, Header("回りこむ角度"), Range(0f, 360f)]
+	private float turnDegree = 100f;
+
 	public bool isRunning { private set; get; }
 	public GameObject target { private set; get; }
 
@@ -63,6 +67,9 @@ public class Kirinuke : MonoBehaviour {
 	private IEnumerator MoveToEnemy() {
 		var dir = (target.transform.position - transform.position).normalized;
 		var dist = Utilities.DistanceXZ(target.transform.position, transform.position) - moveDistanceLimit;
+		if(dist < 0) {
+			yield break;
+		}
 		var start = transform.position;
 		var end = start + (dir * dist);
 		var offset = 0f;
@@ -82,22 +89,26 @@ public class Kirinuke : MonoBehaviour {
 	}
 
 	private IEnumerator TurnToEnemyBack() {
+		//円の中心をプレイヤーとする
 		var center = target.transform.position;
-		//var dirx = Mathf.Cos(Mathf.Deg2Rad * 45f);
-		//var dirz = Mathf.Cos(Mathf.Deg2Rad * 45f);
-		//var dirv = new Vector3(dirx, 0, dirz);
+		//自分からプレイヤーへの線が難度であるかをここで取得する
+		var dirToCenter =center- transform.position;
+		var radian = Mathf.Atan2(dirToCenter.z, dirToCenter.x) + (180f * Mathf.Deg2Rad);
+		//一定時間で補完する
 		var start = transform.position;
-		var end = start + (transform.forward * 1.5f);
 		var offset = 0f;
 		while(offset < turnSeconds) {
 			var t = Time.time;
-			yield return new WaitForEndOfFrame();
+			yield return null;
 			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
 			offset += diff;
-			var parcent = offset / turnSeconds;
+			//最初にいた時点での角度 + 移動する角度
+			var parcent = Mathf.Clamp01(offset / turnSeconds);
+			var dirx = Mathf.Cos(radian + ((turnDegree * parcent) * Mathf.Deg2Rad));
+			var dirz = Mathf.Sin(radian + ((turnDegree * parcent) * Mathf.Deg2Rad));
+			var dirv = new Vector3(dirx, 0, dirz);
 			transform.LookAt(target.transform.position);
-			transform.position = Vector3.Slerp(start, end, parcent);
+			transform.position = center + (dirv * moveDistanceLimit);
 		}
-		transform.position = end;
 	}
 }

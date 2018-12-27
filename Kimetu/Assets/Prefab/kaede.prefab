@@ -3222,8 +3222,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSeconds: 0.5
-  turnSeconds: 0.2
-  moveDistanceLimit: 0.5
+  turnSeconds: 1
+  moveDistanceLimit: 2
+  turnDegree: 100
 --- !u!114 &114731963327466154
 MonoBehaviour:
   m_ObjectHideFlags: 1
