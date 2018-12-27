@@ -20,13 +20,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	[SerializeField]
 	private float avoidMoveDistanceV = 2.0f;//回避距離
 	[SerializeField]
-	private float knockbackMoveTime;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
+	private float knockbackMoveTime = 0.3f;//ノックバック秒数(ノックバックアニメーション移動部分の時間)
 	[SerializeField]
 	private float knockbackMoveDistance = 2.0f;
 	[SerializeField]
 	private float rayDistance = 10.0f;
 	[SerializeField]
-	private float limitRayDistance = 2.0f;
+	private float limitRayDistance = 1.1f;
 
 	[SerializeField, Header("持っている武器")]
 	private Weapon weapon;
