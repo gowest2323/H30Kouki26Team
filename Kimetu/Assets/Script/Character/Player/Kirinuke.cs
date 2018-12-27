@@ -38,20 +38,9 @@ public class Kirinuke : MonoBehaviour {
 	}
 
 	private bool FindNearEnemy(out GameObject outObj) {
-		outObj = null;
-		var enemies = GameObject.FindGameObjectsWithTag(TagName.Enemy.String());
-		if(enemies.Length == 0) {
-			return false;
-		}
-		var distance = Mathf.Infinity;
-		foreach(var enemy in enemies) {
-			var temp = Utilities.DistanceXZ(transform.position, enemy.transform.position);
-			if(temp < distance) {
-				distance = temp;
-				outObj = enemy;
-			}
-		}
-		return distance < Mathf.Infinity;
+		var ret = Utilities.SearchMostNearEnemyInTheRange(transform.position, 5.0f, false);
+		outObj = ret;
+		return ret != null;
 	}
 
 	private IEnumerator KirinukeUpdate() {
