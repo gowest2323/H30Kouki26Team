@@ -967,35 +967,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// <param name="throughWall">壁を貫通するか</param>
 	/// <returns>敵が存在しなければnullを返す</returns>
 	private GameObject SearchMostNearEnemyInTheRange(float maxDistance, bool throughWall) {
-		//敵リストを取得
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag(TagName.Enemy.String());
-
-		//敵がいなければnullを返す
-		if (enemies.Length == 0) return null;
-
-		GameObject result = null;
-		float closestDistance = 0.0f; //一番近い敵との距離
-
-		foreach (var enemy in enemies) {
-			//敵が死亡していたら次のループへ
-			EnemyStatus enemyStatus = enemy.GetComponent<EnemyStatus>();
-
-			if (enemyStatus == null || enemyStatus.IsDead()) continue;
-
-			//自分と敵のXZ座標で距離を判定
-			float distance = DistancePlayerEnemyXZ(enemy);
-
-			//範囲外なら次のループへ
-			if (distance > maxDistance) continue;
-
-			//現在の近い敵との距離より近ければ更新
-			if (closestDistance < distance) {
-				closestDistance = distance;
-				result = enemy;
-			}
-		}
-
-		return result;
+		return Utilities.SearchMostNearEnemyInTheRange(transform.position, maxDistance, throughWall);
 	}
 
 	/// <summary>
