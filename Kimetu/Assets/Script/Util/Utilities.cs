@@ -85,4 +85,20 @@ public static class Utilities {
 
 		return result;
     }
+
+	/// <summary>
+	/// ヒエラルキーの全てのオブジェクトからTを取得して返します。
+	/// </summary>
+	/// <returns>The components from all object.</returns>
+	/// <typeparam name="T">The 1st type parameter.</typeparam>
+	public static List<T> GetComponentsFromAllObject<T>() where T : Component {
+		var ret = new List<T>();
+		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))) {
+			if (!obj.activeInHierarchy) continue;
+			var comp = obj.GetComponent<T>();
+			if (comp == null) continue;
+			ret.Add(comp);
+		}
+		return ret;
+	}
 }

@@ -561,19 +561,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	}
 
 	private List<CharacterAnimation> CollectAllCharacterAnimation() {
-		var ret = new List<CharacterAnimation>();
-
-		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))) {
-			if (!obj.activeInHierarchy) continue;
-
-			var animation = obj.GetComponent<CharacterAnimation>();
-
-			if (animation == null) continue;
-
-			ret.Add(animation);
-		}
-
-		return ret;
+		return Utilities.GetComponentsFromAllObject<CharacterAnimation>();
 	}
 
 	/// <summary>
