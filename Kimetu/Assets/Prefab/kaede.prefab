@@ -3114,6 +3114,7 @@ MonoBehaviour:
   staminaHealTime: 0.05
   pauseManager: {fileID: 0}
   inputDisableSeconds: 0.5
+  kirinuke: {fileID: 0}
 --- !u!114 &114059307054834580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3222,9 +3223,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSeconds: 0.5
-  turnSeconds: 1
-  moveDistanceLimit: 2
-  turnDegree: 100
+  adjustDegree: 20
+  distanceToEnemy: 1.5
+  playerAnimation: {fileID: 0}
 --- !u!114 &114731963327466154
 MonoBehaviour:
   m_ObjectHideFlags: 1
