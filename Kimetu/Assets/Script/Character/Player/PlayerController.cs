@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour {
 	private float inputDisableSeconds = 0.5f;
 	private float inputDisableElapsed;
 
+	[SerializeField]
+	private Kirinuke kirinuke;
+
     private bool isAvoid = false;//回避か
     private ChangeStage changeStage;
 
@@ -37,6 +40,9 @@ public class PlayerController : MonoBehaviour {
     void Start() {
 		if(cameraController == null) {
 			this.cameraController = Camera.main.GetComponent<CameraController>();
+		}
+		if(kirinuke == null) {
+			this.kirinuke = GetComponent<Kirinuke>();
 		}
 		Assert.IsTrue(pauseManager != null);
 		this.action = GetComponent<PlayerAction>();
@@ -59,6 +65,9 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		if(kirinuke.isRunning) {
+			return;
+		}
 		if (inputDisableElapsed < inputDisableSeconds) {
 			inputDisableElapsed += Time.deltaTime;
 			return;
