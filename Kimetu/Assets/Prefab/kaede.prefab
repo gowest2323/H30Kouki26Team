@@ -853,6 +853,7 @@ GameObject:
   - component: {fileID: 114808445058434460}
   - component: {fileID: 114584521352636428}
   - component: {fileID: 114678481050493624}
+  - component: {fileID: 114993753119092528}
   m_Layer: 12
   m_Name: kaede
   m_TagString: Player
@@ -3153,8 +3154,6 @@ MonoBehaviour:
   stageManager: {fileID: 0}
   decreaseStaminaPerSecond: 0.3
   decreaseDashStamina: 1
-  decreaseSlowSeconds: 0.3
-  decreaseSlowStamina: 1
   decreaseAttackStamina: 10
   decreaseAvoidStamina: 10
   playerCamera: {fileID: 0}
@@ -3253,6 +3252,19 @@ MonoBehaviour:
   playerAnimation: {fileID: 0}
   weapon: {fileID: 0}
   phaseMax: 4
+--- !u!114 &114993753119092528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1605809767795630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2fd6d3969aa4b51a7898b0eebef3d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  decreaseSlowSeconds: 0.3
+  decreaseSlowStamina: 1
 --- !u!137 &137660646161012282
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
