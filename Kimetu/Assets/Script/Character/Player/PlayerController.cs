@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private Kirinuke kirinuke;
 
+	[SerializeField]
+	private Rengeki rengeki;
+
     private bool isAvoid = false;//回避か
     private ChangeStage changeStage;
 
@@ -43,6 +46,9 @@ public class PlayerController : MonoBehaviour {
 		}
 		if(kirinuke == null) {
 			this.kirinuke = GetComponent<Kirinuke>();
+		}
+		if (rengeki == null) {
+			this.rengeki = GetComponent<Rengeki>();
 		}
 		Assert.IsTrue(pauseManager != null);
 		this.action = GetComponent<PlayerAction>();
@@ -65,7 +71,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if(kirinuke.isRunning) {
+		if(kirinuke.isRunning || rengeki.turnNow) {
 			return;
 		}
 		if (inputDisableElapsed < inputDisableSeconds) {
