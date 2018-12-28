@@ -52,7 +52,7 @@ public class Rengeki : MonoBehaviour {
 	private static readonly float STEP = 0.98f;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		if(playerAnimation == null) {
 			this.playerAnimation = GetComponent<PlayerAnimation>();
 		}
