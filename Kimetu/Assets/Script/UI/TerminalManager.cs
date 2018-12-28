@@ -16,6 +16,22 @@ public class TerminalManager : MonoBehaviour {
 		TerminalRegistry.instance.Register("echo", (args) => {
 			Debug.Log(args[0]);
 		});
+		TerminalRegistry.instance.Register("enemy-damage", (args) => {
+			Debug.Log("enemy-damage");
+			if(args.Length == 0 || args[0] == "near") {
+				var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+				var enemy = Utilities.SearchMostNearEnemyInTheRange(player.transform.position, 100.0f, false);
+				if (enemy != null) {
+					var status = enemy.GetComponent<Status>();
+					status.__SetHP(1);
+				}
+			} else if(args[0] == "all") {
+				foreach(var enemy in GameObject.FindGameObjectsWithTag(TagName.Enemy.String())) {
+					var status = enemy.GetComponent<Status>();
+					status.__SetHP(1);
+				}
+			}
+		});
 #endif
 	}
 	

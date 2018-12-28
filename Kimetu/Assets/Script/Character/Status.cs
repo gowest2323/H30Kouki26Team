@@ -98,4 +98,15 @@ public class Status : MonoBehaviour {
 	public virtual void Reset() {
 		this.hp = maxHP;
 	}
+#if UNITY_EDITOR
+	//デバッグ用に公開されているメソッド
+
+	public void __SetHP(int value) {
+		this.hp = value;
+	}
+
+	public float __GetMaxHP() {
+		return maxHP;
+	}
+#endif
 }
