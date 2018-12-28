@@ -92,7 +92,6 @@ public class PlayerAttackSequence : MonoBehaviour {
 		//playerAnimation.StartAttackAnimation();
 		StartAnimation();
 		//status.DecreaseStamina(decreaseAttackStamina);
-		AudioManager.Instance.PlayPlayerSE(AudioName.kougeki_1.String());
 		yield return WaitFinish();
 		//state = PlayerState.Idle;
 	}
