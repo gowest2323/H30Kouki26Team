@@ -4,6 +4,10 @@ using UnityEngine;
 using UniRx;
 using UnityEngine.Assertions;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class RengekiPushEvent {
 	public int pushMaxCount { private set; get; }
 	public int pushCurrentCount { private set; get; }
@@ -25,6 +29,10 @@ public class Rengeki : MonoBehaviour {
 	[SerializeField, Header("エネミーに対してどれだけ回りこむか"), Range(0,360)]
 	private float turnDegree = 100f;
 
+
+	[SerializeField]
+	private PlayerAnimation playerAnimation;
+
 	public bool turnNow { private set; get; }
 
 	private bool triggered;
@@ -37,8 +45,17 @@ public class Rengeki : MonoBehaviour {
 	private System.IDisposable startObserver;
 	private System.IDisposable endObserver;
 
+	//アニメーションにかかる時間
+	//0.5 -> 1.5
+	//0.98 -> 2.7
+	//
+	private static readonly float STEP = 0.98f;
+
 	// Use this for initialization
 	void Start () {
+		if(playerAnimation == null) {
+			this.playerAnimation = GetComponent<PlayerAnimation>();
+		}
 		this.push = new Subject<RengekiPushEvent>();
 		this.startObserver = Slow.Instance.onStart.Subscribe(OnSlowStart);
 		this.endObserver = Slow.Instance.onEnd.Subscribe(OnSlowStart);
@@ -74,6 +91,14 @@ public class Rengeki : MonoBehaviour {
 
 	private IEnumerator TurnToEnemyBack() {
 		this.turnNow = true;
+		var beforeSpeed = playerAnimation.speed;
+		//アニメーションの長さと実際に回転にかける速度が違いすぎる場合には
+		//アニメーションの速度の方で補正をかける
+		var animDiff = Mathf.Abs(STEP) - Mathf.Abs(turnSeconds);
+		if(animDiff > 0.1) {
+			playerAnimation.speed = STEP * (turnSeconds / STEP);
+		}
+		playerAnimation.StartRengekiAnimation();
 		//円の中心をプレイヤーとする
 		var center = target.transform.position;
 		var distance = Utilities.DistanceXZ(center, transform.position);
@@ -96,7 +121,10 @@ public class Rengeki : MonoBehaviour {
 			transform.LookAt(target.transform.position);
 			transform.position = center + (dirv * distance);
 		}
+		playerAnimation.CancelRengekiAnimation();
+		playerAnimation.speed = Slow.Instance.GetPlayerSpeed();
 		this.turnNow = false;
+		Debug.Log("end turn");
 	}
 
 
@@ -108,3 +136,17 @@ public class Rengeki : MonoBehaviour {
 
 	}
 }
+#if UNITY_EDITOR
+[CustomEditor(typeof(Rengeki))]
+public class RengekiEditor : Editor {
+	private Rengeki self;
+
+	private void OnEnable() {
+		this.self = target as Rengeki;
+	}
+	public override void OnInspectorGUI() {
+		base.OnInspectorGUI();
+		EditorGUILayout.HelpBox("`TurnSeconds`はスロー中はこの三倍になります", MessageType.Info);
+	}
+}
+#endif

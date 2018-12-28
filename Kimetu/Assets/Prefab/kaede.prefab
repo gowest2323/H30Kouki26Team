@@ -854,6 +854,7 @@ GameObject:
   - component: {fileID: 114584521352636428}
   - component: {fileID: 114678481050493624}
   - component: {fileID: 114993753119092528}
+  - component: {fileID: 114416860381328496}
   m_Layer: 12
   m_Name: kaede
   m_TagString: Player
@@ -3116,6 +3117,7 @@ MonoBehaviour:
   pauseManager: {fileID: 0}
   inputDisableSeconds: 0.5
   kirinuke: {fileID: 0}
+  rengeki: {fileID: 0}
 --- !u!114 &114059307054834580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3183,6 +3185,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healEffectPrefab: {fileID: 1752285523633858, guid: d3032da73b4cd44ffbb0d3981b77793e,
     type: 2}
+--- !u!114 &114416860381328496
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1605809767795630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a1fa5c9e87740e79c6d5faacef152f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushMaxCount: 20
+  turnSeconds: 0.15
+  turnDegree: 100
+  playerAnimation: {fileID: 0}
 --- !u!114 &114516274821518502
 MonoBehaviour:
   m_ObjectHideFlags: 1

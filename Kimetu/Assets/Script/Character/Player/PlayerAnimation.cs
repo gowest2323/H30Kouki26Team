@@ -148,6 +148,14 @@ public class PlayerAnimation : CharacterAnimation {
 		animator.SetBool("Kirinuke", false);
 	}
 
+	public void StartRengekiAnimation() {
+		animator.SetBool("Rengeki", true);
+	}
+
+	public void CancelRengekiAnimation() {
+		animator.SetBool("Rengeki", false);
+	}
+
 	public void PlayKyuseiSE() {
 
 		AudioManager.Instance.PlayEnemySE(AudioName.oni_aa_kyusei_06.String());
