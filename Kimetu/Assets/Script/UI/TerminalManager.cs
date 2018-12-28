@@ -32,6 +32,17 @@ public class TerminalManager : MonoBehaviour {
 				}
 			}
 		});
+		TerminalRegistry.instance.Register("warp", (args) => {
+			var cp = Utilities.FindAny(
+				"StageChangeArea01",
+				"StageChangeArea02",
+				"StageChangeArea03"
+			);
+			if(cp != null) {
+				var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+				player.transform.position = cp.transform.position;
+			}
+		});
 #endif
 	}
 	

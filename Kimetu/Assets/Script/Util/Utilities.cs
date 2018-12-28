@@ -128,4 +128,17 @@ public static class Utilities {
 	public static bool IsHitToStage(Vector3 origin, Vector3 dir, float distance = 1f) {
 		return IsHitToAny(origin, dir, distance, LayerMask.GetMask(LayerName.Stage.String()));
 	}
+
+	/// <summary>
+	/// 指定の名前で順番に検索して見つかったならそれを返します。
+	/// </summary>
+	/// <returns>The any.</returns>
+	/// <param name="names">Names.</param>
+	public static GameObject FindAny(params string[] names) {
+		foreach(var name in names) {
+			var obj = GameObject.Find(name);
+			if (obj != null) return obj;
+		}
+		return null;
+	}
 }
