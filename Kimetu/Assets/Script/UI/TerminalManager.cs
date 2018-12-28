@@ -10,6 +10,12 @@ public class TerminalManager : MonoBehaviour {
 	void Start () {
 #if UNITY_EDITOR
 		GameObject.Instantiate(terminalPrefab);
+		TerminalRegistry.instance.Register("hello", (args) => {
+			Debug.Log("hello");
+		});
+		TerminalRegistry.instance.Register("echo", (args) => {
+			Debug.Log(args[0]);
+		});
 #endif
 	}
 	

@@ -65,7 +65,8 @@ public class TerminalUI : MonoBehaviour {
 		InputKey(KeyCode.Alpha9, "9");
 		InputKey(KeyCode.Space, " ");
 		//バックスペース押しっぱなしで消せるように
-		if(Input.GetKey(KeyCode.Backspace) && deleteAccept) {
+		if(editor.text.Length > 0 &&
+		   Input.GetKey(KeyCode.Backspace) && deleteAccept) {
 			editor.text = editor.text.Substring(0, editor.text.Length - 1);
 			this.deleteAccept = false;
 			this.deleteElapsed = 0;
@@ -74,6 +75,23 @@ public class TerminalUI : MonoBehaviour {
 			this.deleteElapsed += Time.deltaTime;
 			this.deleteAccept = deleteElapsed >= deleteWait;
 		}
+		ExecuteCommand();
+	}
+
+	private void ExecuteCommand() {
+		if(!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter)) {
+			return;
+		}
+		//エンターでコマンドを実行
+		var words = editor.text.Split(' ');
+		if (words.Length == 1) {
+			TerminalRegistry.instance.Invoke(words[0], new string[] { });
+		} else {
+			var args = new string[words.Length - 1];
+			System.Array.Copy(words, 1, args, 0, args.Length);
+			TerminalRegistry.instance.Invoke(words[0], args);
+		}
+		editor.text = "";
 	}
 
 	private void InputKeyArray(KeyCode start, KeyCode end, System.Func<KeyCode,string> outKeyString) {
