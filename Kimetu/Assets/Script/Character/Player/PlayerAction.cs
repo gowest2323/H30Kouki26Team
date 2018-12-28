@@ -239,14 +239,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	}
 
 	private bool IsNearOfWall() {
-		var pos = transform.position;
-		RaycastHit hit;
-
-		if (Physics.Raycast(pos + Vector3.up, transform.forward, out hit, 1, LayerMask.GetMask(LayerName.Stage.String()))) {
-			return true;
-		}
-
-		return false;
+		return Utilities.IsHitToStage(transform.position + Vector3.up, transform.forward);
 	}
 
 	/// <summary>

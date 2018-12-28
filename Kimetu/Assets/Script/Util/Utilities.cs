@@ -101,4 +101,31 @@ public static class Utilities {
 		}
 		return ret;
 	}
+
+	/// <summary>
+	/// 指定の位置、距離、方向、レイヤーで何かつぶつかるなら true.
+	/// </summary>
+	/// <returns><c>true</c>, if hit to any was ised, <c>false</c> otherwise.</returns>
+	/// <param name="origin">Origin.</param>
+	/// <param name="dir">Dir.</param>
+	/// <param name="distance">Distance.</param>
+	/// <param name="mask">Mask.</param>
+	public static bool IsHitToAny(Vector3 origin, Vector3 dir, float distance = 1f, int mask = 0) {
+		RaycastHit hit;
+		if (Physics.Raycast(origin, dir, out hit, distance, mask)) {
+			return true;
+		}
+		return false;
+	}
+
+	/// <summary>
+	/// 指定の位置、方向、距離でステージとぶつかるなら true.
+	/// </summary>
+	/// <returns><c>true</c>, if hit to stage was ised, <c>false</c> otherwise.</returns>
+	/// <param name="origin">Origin.</param>
+	/// <param name="dir">Dir.</param>
+	/// <param name="distance">Distance.</param>
+	public static bool IsHitToStage(Vector3 origin, Vector3 dir, float distance = 1f) {
+		return IsHitToAny(origin, dir, distance, LayerMask.GetMask(LayerName.Stage.String()));
+	}
 }
