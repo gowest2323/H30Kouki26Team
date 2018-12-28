@@ -63,6 +63,10 @@ public class TerminalUI : MonoBehaviour {
 		InputKey(KeyCode.Alpha7, "7");
 		InputKey(KeyCode.Alpha8, "8");
 		InputKey(KeyCode.Alpha9, "9");
+		InputKey(KeyCode.Plus, "+");
+		InputKey(KeyCode.Minus, "-");
+		InputKey(KeyCode.Asterisk, "*");
+		InputKey(KeyCode.Slash, "/");
 		InputKey(KeyCode.Space, " ");
 		//バックスペース押しっぱなしで消せるように
 		if(editor.text.Length > 0 &&
