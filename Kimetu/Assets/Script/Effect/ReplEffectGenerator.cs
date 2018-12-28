@@ -24,12 +24,7 @@ public class ReplEffectGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		#if UNITY_EDITOR
-		if(Input.GetKeyDown(KeyCode.E)) {
-			var player = GameObject.FindGameObjectWithTag("Player");
-			StartGenerate(player.transform.position + new Vector3(0, 2, 0));
-		}
-		#endif
+
 	}
 
 	/// <summary>
