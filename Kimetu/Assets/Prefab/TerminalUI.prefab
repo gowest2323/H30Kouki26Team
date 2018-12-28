@@ -143,6 +143,7 @@ MonoBehaviour:
   root: {fileID: 114069178674807652}
   header: {fileID: 114659236937661714}
   editor: {fileID: 114747412718751812}
+  deleteWait: 0.1
 --- !u!114 &114659236937661714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -202,7 +203,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 2
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
