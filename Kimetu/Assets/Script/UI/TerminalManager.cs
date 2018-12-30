@@ -48,6 +48,12 @@ public class TerminalManager : MonoBehaviour {
 				}
 			}
 		});
+		TerminalRegistry.instance.Register("player-heal", (args) => {
+			var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+			var status = player.GetComponent<PlayerStatus>();
+			status.__SetHP(status.__GetMaxHP());
+			status.__SetStamina(status.__GetMaxStamina());
+		});
 		TerminalRegistry.instance.Register("warp", (args) => {
 			var cp = Utilities.FindAny(
 				"StageChangeArea01",

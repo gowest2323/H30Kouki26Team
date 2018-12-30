@@ -70,4 +70,13 @@ public class PlayerStatus : Status {
 		base.Reset();
 		this.stamina = maxStamina;
 	}
+#if UNITY_EDITOR
+	public void __SetStamina(float value) {
+		this.stamina = value;
+	}
+
+	public float __GetMaxStamina() {
+		return maxStamina;
+	}
+#endif
 }
