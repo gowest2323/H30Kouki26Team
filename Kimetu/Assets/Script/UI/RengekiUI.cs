@@ -48,6 +48,7 @@ public class RengekiUI : MonoBehaviour {
 
 	private void OnSlowStart(bool b) {
 		root.SetActive(true);
+		pushSlider.value = 0f;
 	}
 
 	private void OnSlowEnd(bool b) {

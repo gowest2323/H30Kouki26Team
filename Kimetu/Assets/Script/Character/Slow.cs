@@ -27,6 +27,7 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 	private float currentPlayerSpeed = 1;
 	private float currentOtherSpeed = 1;
 	public bool isSlowNow { get { return isSlow; }}
+	public float elapsed { private set; get; }
 
 	public IObservable<bool> onStart { get { return start; }}
 	private Subject<bool> start;
@@ -80,8 +81,13 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 			Debug.Log("slow " + anim.gameObject.name);
 			anim.speed = slowSpeed;
 		}
-
-		yield return new WaitForSeconds(waitSeconds);
+		//一フレームづつ待機
+		this.elapsed = 0f;
+		while(elapsed < waitSeconds) {
+			var t = Time.time;
+			yield return null;
+			this.elapsed = Mathf.Min(waitSeconds, elapsed + (Time.time - t));
+		}
 
 		//アニメーションリストの再生速度をデフォ値に
 		foreach (var anim in slowAnimList) {

@@ -149,11 +149,7 @@ public class PlayerAnimation : CharacterAnimation {
 	}
 
 	public void StartRengekiAnimation() {
-		animator.SetBool("Rengeki", true);
-	}
-
-	public void CancelRengekiAnimation() {
-		animator.SetBool("Rengeki", false);
+		animator.SetTrigger("Rengeki");
 	}
 
 	public void PlayKyuseiSE() {

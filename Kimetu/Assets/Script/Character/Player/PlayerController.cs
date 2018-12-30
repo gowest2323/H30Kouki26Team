@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if(kirinuke.isRunning || rengeki.turnNow) {
+		if(kirinuke.isRunning || rengeki.turnNow || rengeki.actionNow) {
 			return;
 		}
 		if (inputDisableElapsed < inputDisableSeconds) {
