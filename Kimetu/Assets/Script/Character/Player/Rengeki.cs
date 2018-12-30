@@ -188,6 +188,10 @@ public class Rengeki : MonoBehaviour {
 		Debug.Log("speed:" + playerAnimation.speed);
 		this.actionNow = true;
 		for(int i=0; i<4; i++) {
+			//ダメージを受けたら中断
+			if(playerAction.state == PlayerState.Damage) {
+				break;
+			}
 			playerAnimation.StartAttackAnimation(i);
 			yield return new WaitForSeconds(ATTACK_LENGTH * (1 / Slow.Instance.GetPlayerSpeed()));
 		}
