@@ -32,6 +32,22 @@ public class TerminalManager : MonoBehaviour {
 				}
 			}
 		});
+		TerminalRegistry.instance.Register("enemy-heal", (args) => {
+			Debug.Log("enemy-heal");
+			if (args.Length == 0 || args[0] == "near") {
+				var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+				var enemy = Utilities.SearchMostNearEnemyInTheRange(player.transform.position, 100.0f, false);
+				if (enemy != null) {
+					var status = enemy.GetComponent<Status>();
+					status.__SetHP(status.__GetMaxHP());
+				}
+			} else if (args[0] == "all") {
+				foreach (var enemy in GameObject.FindGameObjectsWithTag(TagName.Enemy.String())) {
+					var status = enemy.GetComponent<Status>();
+					status.__SetHP(status.__GetMaxHP());
+				}
+			}
+		});
 		TerminalRegistry.instance.Register("warp", (args) => {
 			var cp = Utilities.FindAny(
 				"StageChangeArea01",

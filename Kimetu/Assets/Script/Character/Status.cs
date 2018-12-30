@@ -105,7 +105,7 @@ public class Status : MonoBehaviour {
 		this.hp = value;
 	}
 
-	public float __GetMaxHP() {
+	public int __GetMaxHP() {
 		return maxHP;
 	}
 #endif
