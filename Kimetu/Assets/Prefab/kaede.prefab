@@ -3197,8 +3197,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushMaxCount: 20
+  moveSeconds: 0.15
+  distanceLimit: 1.5
   turnSeconds: 0.15
   turnDegree: 100
+  attackSequence: {fileID: 0}
+  playerAction: {fileID: 0}
   playerAnimation: {fileID: 0}
 --- !u!114 &114516274821518502
 MonoBehaviour:

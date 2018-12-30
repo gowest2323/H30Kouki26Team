@@ -23,6 +23,12 @@ public class Rengeki : MonoBehaviour {
 	[SerializeField, Header("何回押したら開始するか")]
 	private int pushMaxCount = 20;
 
+	[SerializeField, Header("進むのにかかる秒数")]
+	private float moveSeconds = 0.1f;
+
+	[SerializeField, Header("エネミーとプレイヤーの距離")]
+	private float distanceLimit = 1f;
+
 	[SerializeField, Header("回りこむのにかかる秒数")]
 	private float turnSeconds = 0.8f;
 
@@ -38,6 +44,7 @@ public class Rengeki : MonoBehaviour {
 	[SerializeField]
 	private PlayerAnimation playerAnimation;
 
+	public bool moveNow { private set; get; }
 	public bool turnNow { private set; get; }
 	public bool actionNow { private set; get; }
 
@@ -98,8 +105,33 @@ public class Rengeki : MonoBehaviour {
 	}
 
 	private IEnumerator RengekiUpdate() {
+		yield return MoveToEnemy();
 		yield return TurnToEnemyBack();
 		yield return AutoAction();
+	}
+
+	private IEnumerator MoveToEnemy() {
+		var distance = Utilities.DistanceXZ(transform.position, target.transform.position);
+		Debug.Log("distance:" + distance);
+		if(distance < distanceLimit) {
+			yield break;
+		}
+		this.moveNow = true;
+		var moveDistance = (distanceLimit - distance);
+		var dirToEnemy = (transform.position - target.transform.position).normalized;
+		var offset = 0f;
+		var start = transform.position;
+		var end = start + (dirToEnemy * moveDistance);
+		while(offset < moveSeconds) {
+			var t = Time.time;
+			yield return null;
+			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
+			offset += diff;
+			var parcent = Mathf.Clamp01(offset / moveSeconds);
+			transform.position = start + (dirToEnemy * (moveDistance * parcent));
+		}
+		transform.position = end;
+		this.moveNow = false;
 	}
 
 	private IEnumerator TurnToEnemyBack() {
@@ -183,7 +215,7 @@ public class RengekiEditor : Editor {
 	}
 	public override void OnInspectorGUI() {
 		base.OnInspectorGUI();
-		EditorGUILayout.HelpBox("`TurnSeconds`はスロー中はこの三倍になります", MessageType.Info);
+		EditorGUILayout.HelpBox("`TurnSeconds`, `MoveSeconds`はスロー中はこの三倍になります", MessageType.Info);
 	}
 }
 #endif
