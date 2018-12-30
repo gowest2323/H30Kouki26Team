@@ -141,7 +141,8 @@ public class Rengeki : MonoBehaviour {
 		//アニメーションの速度の方で補正をかける
 		var animDiff = Mathf.Abs(STEP_LENGTH) - Mathf.Abs(turnSeconds);
 		if(animDiff > 0.1) {
-			playerAnimation.speed = STEP_LENGTH * (turnSeconds / STEP_LENGTH);
+			playerAnimation.speed = STEP_LENGTH / turnSeconds;
+			//playerAnimation.speed = STEP_LENGTH * (turnSeconds / STEP_LENGTH);
 		}
 		playerAnimation.StartRengekiAnimation();
 		//円の中心をプレイヤーとする
@@ -182,9 +183,10 @@ public class Rengeki : MonoBehaviour {
 		var actionOne = actionTime / 4f;
 		var animDiff = Mathf.Abs(ATTACK_LENGTH) - Mathf.Abs(actionOne);
 		if((ATTACK_LENGTH > actionOne) && animDiff > 0.1f) {
-			playerAnimation.speed = ATTACK_LENGTH * (actionOne / ATTACK_LENGTH);
+			playerAnimation.speed = ATTACK_LENGTH / actionOne;
 		}
 		Debug.Log("actionTime:" + actionTime);
+		Debug.Log("actionOne:" + actionOne);
 		Debug.Log("speed:" + playerAnimation.speed);
 		this.actionNow = true;
 		for(int i=0; i<4; i++) {
@@ -193,9 +195,12 @@ public class Rengeki : MonoBehaviour {
 				break;
 			}
 			playerAnimation.StartAttackAnimation(i);
-			yield return new WaitForSeconds(ATTACK_LENGTH * (1 / Slow.Instance.GetPlayerSpeed()));
+			yield return new WaitForSeconds(actionOne);
+			//yield return playerAnimation.WaitAnimation("kaede", "attack" + (i + 1));
+			//yield return new WaitForSeconds(ATTACK_LENGTH * (1 / Slow.Instance.GetPlayerSpeed()));
 		}
 		//yield return playerAnimation.WaitAnimation("kaede", "attack4_idle");
+		yield return new WaitForSeconds(actionOne);
 		playerAnimation.speed = Slow.Instance.GetPlayerSpeed();
 		playerAction.Avoid(Vector3.zero);
 		this.actionNow = false;
