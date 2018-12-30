@@ -277,21 +277,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			StopCoroutine(counterCoroutine);
 			playerAnimation.StopGuardAnimation();
 		}
-
 		//攻撃可能なら攻撃開始
 		if (attackSequence.Attack() == AttackResult.OK) {
 			state = PlayerState.Attack;
-
-			//スロー時は近い敵に近づく
-			if (Slow.Instance.isSlowNow) {
-				GameObject enemy = SearchMostNearEnemyInTheRange(5.0f, false);
-
-				if (enemy == null) return;
-
-				StartCoroutine(ApproachEnemy(enemy, walkSpeed * 0.5f, 0.1f, 2.0f));
-			}
 		}
-
 		//StartCoroutine(StartAttack());
 	}
 
@@ -931,35 +920,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// <returns>敵が存在しなければnullを返す</returns>
 	private GameObject SearchMostNearEnemyInTheRange(float maxDistance, bool throughWall) {
 		return Utilities.SearchMostNearEnemyInTheRange(transform.position, maxDistance, throughWall);
-	}
-
-	/// <summary>
-	/// 敵に接近する
-	/// </summary>
-	/// <param name="enemy">敵オブジェクト</param>
-	/// <param name="speed">移動速度</param>
-	/// <param name="time">接近する時間</param>
-	/// <param name="minDistance">これ以上近づかない距離(XZ距離)</param>
-	/// <returns></returns>
-	private IEnumerator ApproachEnemy(GameObject enemy, float speed, float time, float minDistance) {
-		for (float t = 0; t < time; t += Slow.Instance.PlayerDeltaTime()) {
-			//敵のほうを向く
-			transform.LookAt(enemy.transform);
-
-			//距離が近づきすぎている場合近づかない
-			if (DistancePlayerEnemyXZ(enemy) < minDistance) {
-				yield return new WaitForSeconds(Slow.Instance.PlayerDeltaTime());
-				continue;
-			}
-
-			//移動方向
-			Vector3 direction = enemy.transform.position - transform.position;
-			direction.Normalize();
-			//高さは変えない
-			direction.y = 0;
-			transform.Translate(direction * speed * Slow.Instance.PlayerDeltaTime());
-			yield return new WaitForSeconds(Slow.Instance.PlayerDeltaTime());
-		}
 	}
 
 	/// <summary>
