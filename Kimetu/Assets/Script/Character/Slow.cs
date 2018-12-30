@@ -112,6 +112,7 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 		slowAnimationList.RemoveAll(anim => anim == animation);
 	}
 
-
-
+	public float GetWaitSeconds() {
+		return slowTime;
+	}
 }
