@@ -23,14 +23,8 @@ public class Rengeki : MonoBehaviour {
 	[SerializeField, Header("何回押したら開始するか")]
 	private int pushMaxCount = 20;
 
-	[SerializeField, Header("進むのにかかる秒数")]
-	private float moveSeconds = 0.1f;
-
 	[SerializeField, Header("エネミーとプレイヤーの距離")]
 	private float distanceLimit = 1f;
-
-	[SerializeField, Header("回りこむのにかかる秒数")]
-	private float turnSeconds = 0.8f;
 
 	[SerializeField, Header("エネミーに対してどれだけ回りこむか"), Range(0,360)]
 	private float turnDegree = 100f;
@@ -48,6 +42,7 @@ public class Rengeki : MonoBehaviour {
 	public bool turnNow { private set; get; }
 	public bool actionNow { private set; get; }
 
+	private float slowRemine;
 	private bool triggered;
 	private int pushCurrentCount;
 	private GameObject target;
@@ -95,7 +90,10 @@ public class Rengeki : MonoBehaviour {
 			Assert.IsTrue(target != null);
 			Assert.IsTrue(!turnNow);
 			Assert.IsTrue(!actionNow);
-			StartCoroutine(RengekiUpdate());
+			this.slowRemine = Slow.Instance.GetWaitSeconds() - Slow.Instance.elapsed;
+			if (slowRemine > 0 && target != null) {
+				StartCoroutine(RengekiUpdate());
+			}
 		}
 	}
 
@@ -122,6 +120,7 @@ public class Rengeki : MonoBehaviour {
 		var offset = 0f;
 		var start = transform.position;
 		var end = start + (dirToEnemy * moveDistance);
+		var moveSeconds = (slowRemine / 10f);
 		while(offset < moveSeconds) {
 			var t = Time.time;
 			yield return null;
@@ -137,6 +136,7 @@ public class Rengeki : MonoBehaviour {
 	private IEnumerator TurnToEnemyBack() {
 		this.turnNow = true;
 		var beforeSpeed = playerAnimation.speed;
+		var turnSeconds = (slowRemine / 10f);
 		//アニメーションの長さと実際に回転にかける速度が違いすぎる場合には
 		//アニメーションの速度の方で補正をかける
 		var animDiff = Mathf.Abs(STEP_LENGTH) - Mathf.Abs(turnSeconds);
