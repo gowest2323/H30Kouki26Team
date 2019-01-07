@@ -71,6 +71,11 @@ public class Kirinuke : MonoBehaviour {
 			offset += diff;
 			var parcent = offset / moveSeconds;
 			transform.position = start + (dir * dist * parcent);
+			//前方にレイを撃って壁に当たったなら移動を終了する
+			RaycastHit hit;
+			if(Physics.Raycast(transform.position + Vector3.up, dir, out hit, 1f, LayerMask.GetMask(LayerName.Stage.String()))) {
+				break;
+			}
 			var currDistance = Utilities.DistanceXZ(transform.position, target.transform.position);
 		}
 		transform.position = end;
