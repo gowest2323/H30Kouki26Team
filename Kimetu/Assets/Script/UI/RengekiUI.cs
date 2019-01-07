@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
+//今はもう使われていません
+//代わりにSkillUIを使用します。
 
 public class RengekiUI : MonoBehaviour {
 	[SerializeField]

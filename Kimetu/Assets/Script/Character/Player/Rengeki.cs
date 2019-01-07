@@ -41,6 +41,9 @@ public class Rengeki : MonoBehaviour {
 	[SerializeField]
 	private Kirinuke kirinuke;
 
+	[SerializeField]
+	private Sword sword;
+
 	public bool moveNow { private set; get; }
 	public bool turnNow { private set; get; }
 	public bool actionNow { private set; get; }
@@ -79,6 +82,9 @@ public class Rengeki : MonoBehaviour {
 		}
 		if(kirinuke == null) {
 			this.kirinuke = GetComponent<Kirinuke>();
+		}
+		if(sword == null) {
+			this.sword = GetComponentInChildren<Sword>();
 		}
 		this.push = new Subject<RengekiPushEvent>();
 		this.start = new Subject<bool>();
@@ -219,8 +225,10 @@ public class Rengeki : MonoBehaviour {
 			if(playerAction.state == PlayerState.Damage) {
 				break;
 			}
+			sword.AttackStart();
 			playerAnimation.StartAttackAnimation(i);
 			yield return new WaitForSeconds(actionOne);
+			sword.AttackEnd();
 			//yield return playerAnimation.WaitAnimation("kaede", "attack" + (i + 1));
 			//yield return new WaitForSeconds(ATTACK_LENGTH * (1 / Slow.Instance.GetPlayerSpeed()));
 		}

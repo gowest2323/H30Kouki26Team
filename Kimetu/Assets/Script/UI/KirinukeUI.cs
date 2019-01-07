@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+//今はもう使われていません
+//代わりにSkillUIを使用します。
 
 public class KirinukeUI : LongPressUI {
 	[SerializeField]
