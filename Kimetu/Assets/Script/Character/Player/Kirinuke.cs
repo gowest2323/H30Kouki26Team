@@ -64,6 +64,7 @@ public class Kirinuke : MonoBehaviour {
 		var start = transform.position;
 		var end = start + (dir * dist);
 		var offset = 0f;
+		var hitToWall = false;
 		while(offset < moveSeconds) {
 			var t = Time.time;
 			yield return new WaitForEndOfFrame();
@@ -74,10 +75,13 @@ public class Kirinuke : MonoBehaviour {
 			//前方にレイを撃って壁に当たったなら移動を終了する
 			RaycastHit hit;
 			if(Physics.Raycast(transform.position + Vector3.up, dir, out hit, 1f, LayerMask.GetMask(LayerName.Stage.String()))) {
+				hitToWall = true;
 				break;
 			}
 			var currDistance = Utilities.DistanceXZ(transform.position, target.transform.position);
 		}
-		transform.position = end;
+		if (!hitToWall) {
+			transform.position = end;
+		}
 	}
 }
