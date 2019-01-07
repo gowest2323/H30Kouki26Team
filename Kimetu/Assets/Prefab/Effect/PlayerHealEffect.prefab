@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1752285523633858}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -15.94, y: 1.7295356, z: -17.42}
+  m_LocalPosition: {x: -23.476048, y: 4.2533255, z: -23.461145}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -53,7 +53,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 204fffe112fd87e4591aa5a7e80f3aa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target_p: {fileID: 0}
 --- !u!198 &198590515022728012
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -186,7 +185,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 4
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -624,7 +623,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1442,7 +1441,7 @@ ParticleSystem:
     sprites:
     - sprite: {fileID: 0}
   VelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -1923,7 +1922,7 @@ ParticleSystem:
     radial:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: -2
       minScalar: 0
       maxCurve:
         serializedVersion: 2
