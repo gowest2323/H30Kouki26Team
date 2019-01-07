@@ -28,7 +28,7 @@ public class ThunderAttack : EnemyAttack {
 	private ParticleSystem misdirectionParticle;
 	private ParticleSystem[] misdirections;
 	[SerializeField]
-	private new Collider attackCollider;
+	private Collider hurioroshiAttackCollider;
 	private EnemyThunderAttackAreaDrawer thunderAttackAreaDrawer;
 
 	protected override void Start() {
@@ -130,13 +130,13 @@ public class ThunderAttack : EnemyAttack {
 	public override void AttackStart() {
 		isRunning = true;
 		isHit = false;
-		attackCollider.enabled = true;
+		hurioroshiAttackCollider.enabled = true;
 	}
 
 	public override void AttackEnd() {
 		isRunning = false;
 		waitHurioroshi = false;
-		attackCollider.enabled = false;
+		hurioroshiAttackCollider.enabled = false;
         waitHurioroshi = false;
         Debug.Log("attack end");
 	}
@@ -160,6 +160,6 @@ public class ThunderAttack : EnemyAttack {
 	public override void Cancel() {
 		cancelFlag = true;
 		isRunning = false;
-		attackCollider.enabled = false;
+		hurioroshiAttackCollider.enabled = false;
 	}
 }
