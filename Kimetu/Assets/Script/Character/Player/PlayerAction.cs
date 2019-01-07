@@ -934,6 +934,16 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		return distance;
 	}
 
+	/// <summary>
+	/// Rengekiの終了時に呼ばれます。
+	/// Rengekiの最中にダメージを受けてしまうとDamage状態が終了しないため動けなくなるバグを修正するものです。
+	/// </summary>
+	public void FinishRengeki() {
+		if(this.state == PlayerState.Damage) {
+			this.state = PlayerState.Idle;
+		}
+	}
+
 	//
 	//アニメーション関連
 	//

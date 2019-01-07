@@ -219,10 +219,12 @@ public class Rengeki : MonoBehaviour {
 		Debug.Log("actionTime:" + actionTime);
 		Debug.Log("actionOne:" + actionOne);
 		Debug.Log("speed:" + playerAnimation.speed);
+		var breakByDamage = false;
 		this.actionNow = true;
 		for(int i=0; i<4; i++) {
 			//ダメージを受けたら中断
 			if(playerAction.state == PlayerState.Damage) {
+				breakByDamage = true;
 				break;
 			}
 			sword.AttackStart();
@@ -235,7 +237,11 @@ public class Rengeki : MonoBehaviour {
 		//yield return playerAnimation.WaitAnimation("kaede", "attack4_idle");
 		yield return new WaitForSeconds(actionOne);
 		playerAnimation.speed = Slow.Instance.GetPlayerSpeed();
-		playerAction.Avoid(Vector3.zero);
+		if(breakByDamage) {
+			playerAction.FinishRengeki();
+		} else {
+			playerAction.Avoid(Vector3.zero);
+		}
 		this.actionNow = false;
 	}
 
