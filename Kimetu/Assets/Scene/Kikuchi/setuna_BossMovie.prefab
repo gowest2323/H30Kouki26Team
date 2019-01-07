@@ -853,7 +853,7 @@ GameObject:
   - component: {fileID: 114901589150035122}
   - component: {fileID: 114931968176371528}
   m_Layer: 10
-  m_Name: setuna_fixed
+  m_Name: setuna_BossMovie
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3434,7 +3434,7 @@ MonoBehaviour:
   extendLength: 10
   misdirectionParticle: {fileID: 198543183008782782, guid: d22ab7bf43307924d99448ce4bc75122,
     type: 2}
-  attackCollider: {fileID: 65173530127741010}
+  hurioroshiAttackCollider: {fileID: 0}
 --- !u!114 &114989391869150388
 MonoBehaviour:
   m_ObjectHideFlags: 1
