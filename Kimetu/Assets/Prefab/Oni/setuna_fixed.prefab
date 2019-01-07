@@ -3199,7 +3199,7 @@ MonoBehaviour:
   extendLength: 10
   misdirectionParticle: {fileID: 198543183008782782, guid: d22ab7bf43307924d99448ce4bc75122,
     type: 2}
-  attackCollider: {fileID: 65937595562927194}
+  hurioroshiAttackCollider: {fileID: 65937595562927194}
 --- !u!114 &114600577359525430
 MonoBehaviour:
   m_ObjectHideFlags: 1
