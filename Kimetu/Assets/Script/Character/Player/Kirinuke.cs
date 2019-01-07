@@ -15,6 +15,9 @@ public class Kirinuke : MonoBehaviour {
 	[SerializeField]
 	private PlayerAnimation playerAnimation;
 
+	[SerializeField]
+	private Sword sword;
+
 	public bool isRunning { private set; get; }
 	public GameObject target { private set; get; }
 
@@ -22,6 +25,9 @@ public class Kirinuke : MonoBehaviour {
 	void Start () {
 		if(playerAnimation == null) {
 			this.playerAnimation = GetComponent<PlayerAnimation>();
+		}
+		if(sword == null) {
+			this.sword = GetComponentInChildren<Sword>();
 		}
 	}
 	
@@ -48,9 +54,11 @@ public class Kirinuke : MonoBehaviour {
 		GameObject enemy;
 		if(FindNearEnemy(out enemy)) {
 			playerAnimation.StartKirinukeAnimation();
+			sword.AttackStart();
 			this.target = enemy;
 			yield return MoveToEnemy();
 			//yield return TurnToEnemyBack();
+			sword.AttackEnd();
 			playerAnimation.StopKirinukeAnimation();
 			this.isRunning = false;
 		} else {
