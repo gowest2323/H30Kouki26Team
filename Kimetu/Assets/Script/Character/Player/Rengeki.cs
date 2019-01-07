@@ -166,6 +166,11 @@ public class Rengeki : MonoBehaviour {
 			var dirv = new Vector3(dirx, 0, dirz);
 			transform.LookAt(target.transform.position);
 			transform.position = center + (dirv * distance);
+			//壁に当たったら終了する
+			RaycastHit hit;
+			if(Physics.Raycast(transform.position + Vector3.up, dirv, out hit, 1f, LayerMask.GetMask(LayerName.Stage.String()))) {
+				break;
+			}
 		}
 		playerAnimation.speed = Slow.Instance.GetPlayerSpeed();
 		this.turnNow = false;
