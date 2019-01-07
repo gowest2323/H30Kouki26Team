@@ -460,7 +460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   defaultSprite: {fileID: 0}
-  selectedSprite: {fileID: 21300000, guid: c3363e5058b2d477ba8ac6b89514cca8, type: 3}
+  selectedSprite: {fileID: 21300000, guid: ef00e265413a24baf9668ddbfe6d165c, type: 3}
 --- !u!114 &525301789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +599,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 96e8fc040e19b456ba3fab7cde8f9d67, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ea3859d721a8749aa92999767357d744, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -627,7 +627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   defaultSprite: {fileID: 0}
-  selectedSprite: {fileID: 21300000, guid: 2532e49bbbbcb4b4db5cce16ee3d8417, type: 3}
+  selectedSprite: {fileID: 21300000, guid: 6fcbb8266b2e04dd28141b6ff7ae86e8, type: 3}
 --- !u!114 &773035051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,7 +728,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   defaultSprite: {fileID: 0}
-  selectedSprite: {fileID: 21300000, guid: 4f3e4dee226f1414d8c401817bbb8909, type: 3}
+  selectedSprite: {fileID: 21300000, guid: 2bc9524d823c049f99de9313852caa00, type: 3}
 --- !u!114 &1025864196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   defaultSprite: {fileID: 0}
-  selectedSprite: {fileID: 21300000, guid: 04fbfa4aa4dca4d9a9d540fc7e6f4f0b, type: 3}
+  selectedSprite: {fileID: 21300000, guid: b6c4d635b58c14ad48dd0d1f12846a2f, type: 3}
 --- !u!114 &1239472641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1042,7 +1042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   defaultSprite: {fileID: 0}
-  selectedSprite: {fileID: 21300000, guid: 06217850f75904c2da8385122a4c7dd8, type: 3}
+  selectedSprite: {fileID: 21300000, guid: e530217ff879d4cf0948391ea579d71b, type: 3}
 --- !u!114 &1451509422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1398,7 +1398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   defaultSprite: {fileID: 0}
-  selectedSprite: {fileID: 21300000, guid: c7cb14432002c4729967783d75f415e3, type: 3}
+  selectedSprite: {fileID: 21300000, guid: d76729a95718d413f9487be55fe7ca81, type: 3}
 --- !u!114 &2058717598
 MonoBehaviour:
   m_ObjectHideFlags: 0
