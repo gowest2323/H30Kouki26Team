@@ -16,6 +16,7 @@ public enum SceneName {
 	Control,
 	Credit,
 	Option,
+    OpeningMovie,
 	//PlayerDead,
 }
 
@@ -33,6 +34,7 @@ public static class SceneNameManager {
 		{SceneName.Control, "Control"},
 		{SceneName.Credit, "Credit"},
 		{SceneName.Option, "Option"},
+        {SceneName.OpeningMovie,"OpeningMovie" },
 		//{SceneName.PlayerDead,"PlayerDead"},
 	};
 
