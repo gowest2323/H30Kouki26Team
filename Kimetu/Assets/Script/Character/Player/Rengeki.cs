@@ -53,6 +53,12 @@ public class Rengeki : MonoBehaviour {
 	public IObservable<RengekiPushEvent> onPush { get { return push; } }
 	private Subject<RengekiPushEvent> push;
 
+	public IObservable<bool> onStart {  get { return start; } }
+	private Subject<bool> start;
+
+	public IObservable<bool> onEnd { get { return end; } }
+	private Subject<bool> end;
+
 	private System.IDisposable startObserver;
 	private System.IDisposable endObserver;
 
@@ -75,6 +81,8 @@ public class Rengeki : MonoBehaviour {
 			this.kirinuke = GetComponent<Kirinuke>();
 		}
 		this.push = new Subject<RengekiPushEvent>();
+		this.start = new Subject<bool>();
+		this.end = new Subject<bool>();
 		this.startObserver = Slow.Instance.onStart.Subscribe(OnSlowStart);
 		this.endObserver = Slow.Instance.onEnd.Subscribe(OnSlowStart);
 	}
@@ -113,9 +121,11 @@ public class Rengeki : MonoBehaviour {
 	}
 
 	private IEnumerator RengekiUpdate() {
+		start.OnNext(true);
 		yield return MoveToEnemy();
 		yield return TurnToEnemyBack();
 		yield return AutoAction();
+		end.OnNext(true);
 	}
 
 	private IEnumerator MoveToEnemy() {

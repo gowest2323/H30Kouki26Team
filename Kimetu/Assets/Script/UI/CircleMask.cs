@@ -41,6 +41,9 @@ public class CircleMask : MonoBehaviour {
 
 	public void SetParcent(float p) {
 		p = 1f - Mathf.Clamp01(p);
+		if(foreImage == null) {
+			this.foreImage = fore.GetComponent<RectTransform>();
+		}
 		var curPos = foreImage.anchoredPosition;
 		var newPos = curPos;
 		newPos.y = (height * p * -1);
