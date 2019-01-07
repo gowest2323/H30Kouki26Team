@@ -2738,6 +2738,7 @@ MonoBehaviour:
   attackArea: {fileID: 114289691015383158}
   attackAreaDrawer: {fileID: 114844740445461760}
   attackStateName: nagiharai
+  attackType: 1
   animationClipName: oni@360_m
 --- !u!114 &114127251133250708
 MonoBehaviour:
@@ -3172,6 +3173,7 @@ MonoBehaviour:
   attackArea: {fileID: 114289691015383158}
   attackAreaDrawer: {fileID: 114844740445461760}
   attackStateName: combo
+  attackType: 2
   clip: {fileID: 7400000, guid: ea4e6a28306c74278bdc3409158384b9, type: 2}
 --- !u!114 &114952105342184308
 MonoBehaviour:
