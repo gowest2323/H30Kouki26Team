@@ -4,15 +4,32 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class KirinukeUI : LongPressUI {
+	[SerializeField]
 	private Kirinuke kirinuke;
+
+	[SerializeField]
+	private Rengeki rengeki;
 
 	// Use this for initialization
 	public override void Start () {
 		base.Start();
 		var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
-		this.kirinuke = player.GetComponent<Kirinuke>();
+		if(kirinuke == null) {
+			this.kirinuke = player.GetComponent<Kirinuke>();
+		}
+		if(rengeki == null) {
+			this.rengeki = player.GetComponent<Rengeki>();
+		}
 		GetLongPressDetector().OnLongPressTrigger += (e) => {
-			if(Slow.Instance.isSlowNow) {
+			//スロー中に長押しが完了
+			//切り抜け中ではない
+			//回り込み中ではない
+			//攻撃中ではない
+			//ならば切り抜けを実行する
+			if(Slow.Instance.isSlowNow && 
+			  !kirinuke.isRunning &&
+			  !rengeki.moveNow &&
+			  !rengeki.actionNow) {
 				kirinuke.StartKirinuke();
 			}
 		};
