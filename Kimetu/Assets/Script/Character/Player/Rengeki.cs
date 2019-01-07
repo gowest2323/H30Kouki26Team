@@ -38,6 +38,9 @@ public class Rengeki : MonoBehaviour {
 	[SerializeField]
 	private PlayerAnimation playerAnimation;
 
+	[SerializeField]
+	private Kirinuke kirinuke;
+
 	public bool moveNow { private set; get; }
 	public bool turnNow { private set; get; }
 	public bool actionNow { private set; get; }
@@ -68,6 +71,9 @@ public class Rengeki : MonoBehaviour {
 		if (playerAction == null) {
 			this.playerAction = GetComponent<PlayerAction>();
 		}
+		if(kirinuke == null) {
+			this.kirinuke = GetComponent<Kirinuke>();
+		}
 		this.push = new Subject<RengekiPushEvent>();
 		this.startObserver = Slow.Instance.onStart.Subscribe(OnSlowStart);
 		this.endObserver = Slow.Instance.onEnd.Subscribe(OnSlowStart);
@@ -81,6 +87,10 @@ public class Rengeki : MonoBehaviour {
 		//押してない || もう発動中
 		if(!Input.GetButtonDown(InputMap.Type.XButton.GetInputName()) ||
 			pushCurrentCount >= pushMaxCount) {
+			return;
+		}
+		//切り抜けが開始しているなら
+		if(kirinuke.isRunning) {
 			return;
 		}
 		pushCurrentCount++;
