@@ -123,11 +123,22 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		if(!status.IsDead()) {
 			AudioManager.Instance.PlayEnemySE(AudioName.oni_uu_damage_04.String());
 		} else {
+			HideHPUI();
 			AudioManager.Instance.PlayEnemySE(AudioName.oni_aa_taore_05.String());
 		}
 
 		if (Slow.Instance.isSlowNow && status.IsDead()) {
 			this.deathByRepl = true;
+		}
+	}
+
+	private void HideHPUI() {
+		//HP表示用のバーを非表示に
+		var top = GetComponentInParent<Rigidbody>().gameObject;
+		if(top == null) { return; }
+		var canvas = top.transform.FindRec("Canvas");
+		if (canvas != null) {
+			canvas.gameObject.SetActive(false);
 		}
 	}
 
