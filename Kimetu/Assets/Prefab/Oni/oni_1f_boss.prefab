@@ -2528,7 +2528,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1697299072828504}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
@@ -2547,7 +2547,7 @@ Transform:
   - {fileID: 4786757440841288}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &4999781314420486
 Transform:
   m_ObjectHideFlags: 1
@@ -3132,6 +3132,7 @@ MonoBehaviour:
   attackArea: {fileID: 114201379355036284}
   attackAreaDrawer: {fileID: 114134662997515152}
   attackStateName: nagi
+  attackType: 0
   animationClipName: oni@360_m
 --- !u!114 &114811449258926222
 MonoBehaviour:
