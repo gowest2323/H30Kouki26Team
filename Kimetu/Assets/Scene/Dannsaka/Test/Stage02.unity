@@ -1286,6 +1286,26 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: -14.572998
       objectReference: {fileID: 0}
+    - target: {fileID: 224195208012614034, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224195208012614034, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224151078289245142, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224151078289245142, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00ff67abe06844339abcfe64dcbc1b13, type: 2}
   m_IsPrefabAsset: 0
@@ -1525,6 +1545,11 @@ Prefab:
         type: 2}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114758414278446914, guid: a2e180e9c5eac42bebbafbcff064c0dd,
+        type: 2}
+      propertyPath: nextSceneName
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2e180e9c5eac42bebbafbcff064c0dd, type: 2}

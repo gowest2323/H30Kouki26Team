@@ -1123,6 +1123,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 114758414278446914, guid: ecfe570c84d9f1b44b8a1db454a8a501,
+        type: 2}
+      propertyPath: nextSceneName
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecfe570c84d9f1b44b8a1db454a8a501, type: 2}
   m_IsPrefabAsset: 0
@@ -2473,6 +2478,26 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: -14.572998
+      objectReference: {fileID: 0}
+    - target: {fileID: 224195208012614034, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224195208012614034, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224151078289245142, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224151078289245142, guid: 00ff67abe06844339abcfe64dcbc1b13,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00ff67abe06844339abcfe64dcbc1b13, type: 2}
