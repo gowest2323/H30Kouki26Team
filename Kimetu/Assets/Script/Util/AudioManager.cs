@@ -70,6 +70,24 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 		}
 	}
 
+	/// <summary>
+	/// パスから対応するSEを返します。
+	/// </summary>
+	/// <returns>The se.</returns>
+	/// <param name="path">Path.</param>
+	public AudioClip GetSE(string path) {
+		return _seDic[path];
+	}
+
+	/// <summary>
+	/// パスから対応するBGMを返します。
+	/// </summary>
+	/// <returns>The bgm.</returns>
+	/// <param name="path">Path.</param>
+	public AudioClip GetBGM(string path) {
+		return _bgmDic[path];
+	}
+
 	private void Start() {
 		AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
 		AttachPlayerSESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
