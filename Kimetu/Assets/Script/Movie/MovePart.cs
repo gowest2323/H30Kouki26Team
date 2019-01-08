@@ -11,6 +11,8 @@ public class MovePart : MoviePart {
 	private float distance = 2.2f;
 	[SerializeField]
 	private float seconds = 5f;
+	[SerializeField]
+	private MoviePart asyncNestMovie;
 
 	public override IEnumerator MovieUpdate() {
 		var dir = forward.transform.forward;
@@ -27,7 +29,11 @@ public class MovePart : MoviePart {
 			var t = Time.time;
 			yield return null;
 			offset += (Time.time - t);
-			for(int i=0; i<targets.Length; i++) {
+			if(!AudioManager.Instance.IsPlayingPlayerSE()) {
+				AudioManager.Instance.PlayPlayerSE(AudioName.Walk_Short.String());
+			}
+
+			for (int i=0; i<targets.Length; i++) {
 				var start = startPosList[i];
 				var end = endPosList[i];
 				targets[i].transform.position = Vector3.Lerp(start, end, offset / seconds);
