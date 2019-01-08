@@ -10,6 +10,12 @@ public class SetunaMovie : MonoBehaviour {
 	[SerializeField]
 	private MoviePart[] parts;
 
+	[SerializeField]
+	private SceneName scene;
+
+	[SerializeField]
+	private FadeData fadedata;
+
 	// Use this for initialization
 	void Start () {
 		StartCoroutine(MovieUpdate());
@@ -27,5 +33,7 @@ public class SetunaMovie : MonoBehaviour {
 			}
 			yield return part.MovieUpdate();
 		}
+		yield return new WaitForSeconds(1f);
+		SceneChanger.Instance().Change(scene, fadedata);
 	}
 }
