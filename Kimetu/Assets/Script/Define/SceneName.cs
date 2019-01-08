@@ -5,7 +5,6 @@ using System.Linq;
 /// </summary>
 public enum SceneName
 {
-,
 Title,
 Stage01,
 Stage01_Boss,
@@ -24,7 +23,6 @@ public static class SceneNameManager
 {
     public static Dictionary<SceneName, string> scenenames = new Dictionary<SceneName, string> 
 {
-    {SceneName.,""},
     {SceneName.Title,"Title"},
     {SceneName.Stage01,"Stage01"},
     {SceneName.Stage01_Boss,"Stage01_Boss"},
@@ -39,7 +37,17 @@ public static class SceneNameManager
     {SceneName.OpeningMovie,"OpeningMovie"},
     {SceneName.SetunaMovie,"SetunaMovie"},
 };
-    public static bool Equals(SceneName scenename, string name)
+
+	public static Dictionary<SceneName, string> sceneUInames = new Dictionary<SceneName, string> {
+		{SceneName.Stage01, "一階"},
+		{SceneName.Stage01_Boss, "一階　ボス"},
+		{SceneName.Stage02, "二階"},
+		{SceneName.Stage02_Boss, "二階　ボス"},
+		{SceneName.Stage03, "三階"},
+		{SceneName.Stage03_Boss, "三階　ボス"},
+	};
+
+	public static bool Equals(SceneName scenename, string name)
     {
         return scenenames[scenename] == name;
     }
