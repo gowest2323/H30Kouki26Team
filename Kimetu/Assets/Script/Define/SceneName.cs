@@ -17,7 +17,7 @@ Control,
 Credit,
 Option,
 OpeningMovie,
-SetunaMovie,
+LastBossMovie,
 }
 public static class SceneNameManager
 {
@@ -35,7 +35,7 @@ public static class SceneNameManager
     {SceneName.Credit,"Credit"},
     {SceneName.Option,"Option"},
     {SceneName.OpeningMovie,"OpeningMovie"},
-    {SceneName.SetunaMovie,"SetunaMovie"},
+    {SceneName.LastBossMovie,"LastBossMovie"},
 };
 
 	public static Dictionary<SceneName, string> sceneUInames = new Dictionary<SceneName, string> {
