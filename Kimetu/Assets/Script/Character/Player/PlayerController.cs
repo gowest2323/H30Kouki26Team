@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour {
 		if(kirinuke.isRunning || rengeki.turnNow || rengeki.actionNow || rengeki.moveNow) {
 			return;
 		}
+		if(SceneChanger.Instance().isChanging) {
+			return;
+		}
 		if (inputDisableElapsed < inputDisableSeconds) {
 			inputDisableElapsed += Time.deltaTime;
 			return;

@@ -491,6 +491,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// </summary>
 	/// <param name="damageSource"></param>
 	public void OnHit(DamageSource damageSource) {
+		if(SceneChanger.Instance().isChanging) {
+			return;
+		}
 		/*
 		//回避中に攻撃が当たってしまうのでとりあえずコメントアウト
         if (!damageSource.canCounter)
@@ -501,7 +504,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			return;
         }
 		//*/
-        if (state == PlayerState.Defence) { //防御中
+		if (state == PlayerState.Defence) { //防御中
 			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ku_guard_05.String());
 			status.DecreaseStamina(damageSource.damage);
 			//ノックバックされる
