@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Kirinuke : MonoBehaviour {
-	[SerializeField]
-	private int power = 10;
+	[SerializeField, Header("攻撃力")]
+	private int power = 20;
+
+	[SerializeField, Header("敵の方にむくのにかかる時間")]
+	private float rotateSeconds = 0.25f;
 
 	[SerializeField, Header("近付くのにかかる時間")]
 	private float moveSeconds = 0.5f;
@@ -56,12 +59,12 @@ public class Kirinuke : MonoBehaviour {
 		this.isRunning = true;
 		GameObject enemy;
 		if(FindNearEnemy(out enemy)) {
+			this.target = enemy;
+			yield return Back();
 			sword.ChangePower(power);
 			playerAnimation.StartKirinukeAnimation();
 			sword.AttackStart();
-			this.target = enemy;
 			yield return MoveToEnemy();
-			//yield return TurnToEnemyBack();
 			sword.AttackEnd();
 			playerAnimation.StopKirinukeAnimation();
 			sword.ResetPower();
@@ -71,8 +74,38 @@ public class Kirinuke : MonoBehaviour {
 		}
 	}
 
+	private IEnumerator Back() {
+		var targetPos = target.transform.position;
+		var selfPos = transform.position;
+		var dir = (targetPos - selfPos);
+		var distance = Utilities.DistanceXZ(targetPos, selfPos);
+		var LIMIT_DISTANCE = 2.5f;
+		//一定時間で敵の方をむく
+		var moveDistance = LIMIT_DISTANCE - distance;
+		var offset = 0f;
+		var startPos = transform.position;
+		var endPos = startPos + (-dir * moveDistance);
+		var startRot = transform.rotation;
+		var endRot = Quaternion.LookRotation(dir);
+		if(Quaternion.Angle(startRot, endRot) < 1f) {
+			yield break;
+		}
+		while (offset < rotateSeconds) {
+			var t = Time.time;
+			yield return new WaitForEndOfFrame();
+			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
+			offset += diff;
+			var parc = (offset / rotateSeconds);
+			transform.rotation = Quaternion.Slerp(startRot, endRot, parc);
+			if(distance < LIMIT_DISTANCE) {
+				//transform.position = Vector3.Lerp(startPos, endPos, parc);
+			}
+		}
+		transform.position = endPos;
+	}
+
 	private IEnumerator MoveToEnemy() {
-		var dir = Quaternion.Euler(0, adjustDegree, 0) * (target.transform.position - transform.position).normalized;
+		var dir = Quaternion.Euler(0, -adjustDegree, 0) * (target.transform.position - transform.position).normalized;
 		var dist = Utilities.DistanceXZ(target.transform.position, transform.position) + distanceToEnemy;
 		var start = transform.position;
 		var end = start + (dir * dist);
