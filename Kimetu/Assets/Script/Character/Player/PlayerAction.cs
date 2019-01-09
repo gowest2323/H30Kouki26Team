@@ -525,14 +525,17 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//カウンター発生時間内ならカウンター発生
 		if (counterDeltaTime < counterTime) {
-			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_hajiki_09.String());
-			AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
-			Debug.Log("counter succeed");
-			damageSource.attackCharacter.Countered();
+			//スロー中でない時のみ音の再生やカウンター、エフェクトなど実行
+			//弾き時に二回音が再生されるのを修正
+			if(!Slow.Instance.isSlowNow) {
+				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_hajiki_09.String());
+				AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
+				Debug.Log("counter succeed");
+				damageSource.attackCharacter.Countered();
+				//波紋を作成
+				replEffectGenerator.StartGenerate(transform.FindRec("katana:katana").transform.position);
+			}
 			GuardEnd();
-			//波紋を作成
-			replEffectGenerator.StartGenerate(transform.FindRec("katana:katana").transform.position);
-
 			//スロー中でない時のみ
 			if (!Slow.Instance.isSlowNow)
 				Slow.Instance.SlowStart(CollectAllCharacterAnimation());
