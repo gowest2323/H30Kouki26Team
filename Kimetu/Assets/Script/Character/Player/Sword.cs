@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class Sword : Weapon {
 	private int attackNum; //現在の攻撃回数
+	private int defaultPower;
 	private PlayerAnimation playerAnimation; //プレイヤーのアニメーション管理
 	private Dictionary<GameObject, int> countDict;
 
 	protected override void Start() {
 		base.Start();
+		this.defaultPower = power;
 		this.countDict = new Dictionary<GameObject, int>();
 	}
 
@@ -55,5 +57,20 @@ public class Sword : Weapon {
 			//相手に当たったと通知
 			other.gameObject.GetComponent<IDamageable>().OnHit(damage);
 		}
+	}
+
+	/// <summary>
+	/// 攻撃力を変更します。
+	/// </summary>
+	/// <param name="power">Power.</param>
+	public void ChangePower(int power) {
+		this.power = power;
+	}
+
+	/// <summary>
+	/// 攻撃力をデフォルトに戻します。
+	/// </summary>
+	public void ResetPower() {
+		this.power = defaultPower;
 	}
 }

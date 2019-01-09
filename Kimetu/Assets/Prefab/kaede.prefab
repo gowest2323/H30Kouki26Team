@@ -3242,7 +3242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a27417cad6de471d99efb63b8c77e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSeconds: 0.5
+  power: 30
+  moveSeconds: 0.25
   adjustDegree: 20
   distanceToEnemy: 1.5
   playerAnimation: {fileID: 0}

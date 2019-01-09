@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Kirinuke : MonoBehaviour {
+	[SerializeField]
+	private int power = 10;
+
 	[SerializeField, Header("近付くのにかかる時間")]
 	private float moveSeconds = 0.5f;
 
@@ -53,6 +56,7 @@ public class Kirinuke : MonoBehaviour {
 		this.isRunning = true;
 		GameObject enemy;
 		if(FindNearEnemy(out enemy)) {
+			sword.ChangePower(power);
 			playerAnimation.StartKirinukeAnimation();
 			sword.AttackStart();
 			this.target = enemy;
@@ -60,6 +64,7 @@ public class Kirinuke : MonoBehaviour {
 			//yield return TurnToEnemyBack();
 			sword.AttackEnd();
 			playerAnimation.StopKirinukeAnimation();
+			sword.ResetPower();
 			this.isRunning = false;
 		} else {
 			this.isRunning = false;
