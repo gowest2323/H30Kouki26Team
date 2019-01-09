@@ -101,7 +101,7 @@ public class Kirinuke : MonoBehaviour {
 				//transform.position = Vector3.Lerp(startPos, endPos, parc);
 			}
 		}
-		transform.position = endPos;
+		//transform.position = endPos;
 	}
 
 	private IEnumerator MoveToEnemy() {
