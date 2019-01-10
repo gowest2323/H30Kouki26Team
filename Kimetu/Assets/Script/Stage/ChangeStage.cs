@@ -7,7 +7,7 @@ using UniRx;
 
 public class ChangeStage : MonoBehaviour {
 	private bool playerStay;
-	public GameObject canvas;
+//	public GameObject canvas;
 	[SerializeField, Header("再生するタイムライン")]
 	private PlayableDirector playableDirector;
 	[SerializeField]
@@ -23,11 +23,11 @@ public class ChangeStage : MonoBehaviour {
 		this.player = GameObject.FindGameObjectWithTag("Player");
 		playerStay = false;
 		this.toNextStage = false;
-		canvas.gameObject.SetActive(false);
+		//canvas.gameObject.SetActive(false);
 		GetComponent<LongPressDetector>();
 		GetComponent<LongPressDetector>().OnLongPressTrigger += (e) => {
 			Debug.Log("stay " + playerStay);
-			this.canvas.gameObject.SetActive(false);
+			//this.canvas.gameObject.SetActive(false);
 			this.toNextStage = true;
 
 			if (playerStay == true) {
@@ -72,7 +72,7 @@ public class ChangeStage : MonoBehaviour {
 
 	private void ActivateCanvas(bool active) {
 		playerStay = active;
-		canvas.gameObject.SetActive(active);
+		//canvas.gameObject.SetActive(active);
 	}
 
 	private bool IsPlayerAlive() {
