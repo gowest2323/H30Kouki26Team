@@ -115,7 +115,7 @@ public class Rengeki : MonoBehaviour {
 			Assert.IsTrue(!turnNow);
 			Assert.IsTrue(!actionNow);
 			this.slowRemine = Slow.Instance.GetWaitSeconds() - Slow.Instance.elapsed;
-			if (slowRemine > 0 && target != null) {
+			if (slowRemine > 0.5f && target != null) {
 				StartCoroutine(RengekiUpdate());
 			}
 		}
