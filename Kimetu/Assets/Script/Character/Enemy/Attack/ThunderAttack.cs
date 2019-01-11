@@ -5,8 +5,9 @@ using UnityEngine.UI;
 using UniRx;
 using UnityEngine.Assertions;
 using UnityEngine.AI;
+using System;
 
-public class ThunderAttack : EnemyAttack {
+public class ThunderAttack : EnemyAttack, IAttackEventHandler, IColliderHitReciever {
 	[SerializeField]
 	private GameObject thunderPrefab;
 	[SerializeField]
@@ -30,6 +31,8 @@ public class ThunderAttack : EnemyAttack {
 	[SerializeField]
 	private Collider hurioroshiAttackCollider;
 	private EnemyThunderAttackAreaDrawer thunderAttackAreaDrawer;
+	[SerializeField, Header("コライダーの衝突送信機")]
+	private TriggerHitSender colliderHitSender;
 
 	protected override void Start() {
 		topTransform = GetTopTransform();
@@ -63,7 +66,7 @@ public class ThunderAttack : EnemyAttack {
 		}
 
 		misdirections = new ParticleSystem[2];
-
+		colliderHitSender.reciever = this;
 		misdirections[0] = Instantiate(misdirectionParticle) as ParticleSystem;
 		misdirections[1] = Instantiate(misdirectionParticle) as ParticleSystem;
 		thunderAttackAreaDrawer = attackAreaDrawer as EnemyThunderAttackAreaDrawer;
@@ -71,6 +74,7 @@ public class ThunderAttack : EnemyAttack {
 	}
 
 	public override IEnumerator Attack() {
+		//雷攻撃の準備
 		waitHurioroshi = true;
 		float rotate = 180.0f / (thunders.Count + 1);
 		float[] directions = new float[thunders.Count];
@@ -90,6 +94,7 @@ public class ThunderAttack : EnemyAttack {
 		misdirections[1].Stop();
 		topTransform.position = attackPosition.position;
 		topTransform.rotation = attackPosition.rotation;
+		//振り下ろし攻撃の発生
 		//NavMeshの座標の更新
 		agent.Warp(topTransform.position);
 		enemyAnimation.StartAttackAnimation(attackType);
@@ -97,7 +102,7 @@ public class ThunderAttack : EnemyAttack {
 		yield return WaitForce();
 
 		while (waitHurioroshi && !cancelFlag) {
-            Debug.Log("wait hurioroshi");
+			Debug.Log("wait hurioroshi");
 			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
 		}
 
@@ -117,7 +122,7 @@ public class ThunderAttack : EnemyAttack {
 			float len = Mathf.Lerp(0, extendLength, t);
 			thunders.ForEach(thunder => thunder.UpdateThunder(len));
 			time += Slow.Instance.DeltaTime();
-            Debug.Log("thunder");
+			Debug.Log("thunder");
 			yield return null;
 		}
 
@@ -125,9 +130,11 @@ public class ThunderAttack : EnemyAttack {
 		thunders.ForEach(t => t.gameObject.SetActive(false));
 		//雷攻撃終了
 		enemyAnimation.anim.SetTrigger("ThunderEnd");
+		cancelFlag = false;
 	}
 
 	public override void AttackStart() {
+		Debug.Log("thunder start");
 		isRunning = true;
 		isHit = false;
 		hurioroshiAttackCollider.enabled = true;
@@ -137,8 +144,7 @@ public class ThunderAttack : EnemyAttack {
 		isRunning = false;
 		waitHurioroshi = false;
 		hurioroshiAttackCollider.enabled = false;
-        waitHurioroshi = false;
-        Debug.Log("attack end");
+		Debug.Log("thunder attack end");
 	}
 
 	private void RotateThunder(Thunder thunder, float rotateY) {
@@ -150,6 +156,8 @@ public class ThunderAttack : EnemyAttack {
 	protected override void OnHit(Collider collider) {
 		if (isHit) return;
 
+		Debug.Log("thunder hurioroshi hit");
+
 		if (TagNameManager.Equals(collider.tag, TagName.Player)) {
 			DamageSource damage = new DamageSource(collider.ClosestPoint(this.transform.position),
 												   power, holderEnemyAI);
@@ -158,8 +166,20 @@ public class ThunderAttack : EnemyAttack {
 	}
 
 	public override void Cancel() {
+		Debug.Log("cancel thunder");
 		cancelFlag = true;
 		isRunning = false;
 		hurioroshiAttackCollider.enabled = false;
+	}
+
+	public void RecieveOnTriggerEnter(Collider other) {
+		Debug.Log("recieve hit ");
+
+		if (isRunning && !isHit) {
+			OnHit(other);
+		}
+	}
+
+	public void RecieveOnTriggerExit(Collider other) {
 	}
 }

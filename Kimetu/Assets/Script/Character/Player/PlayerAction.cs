@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(PlayerStatus))]
-public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider  {
+public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvider {
 	//回避中か
 	private bool isAvoid;
 	//攻撃中か
@@ -101,12 +101,14 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 
 	void Start() {
-		if(playerCamera == null) {
+		if (playerCamera == null) {
 			this.playerCamera = Camera.main.GetComponent<CameraController>();
 		}
-		if(replEffectGenerator == null) {
+
+		if (replEffectGenerator == null) {
 			this.replEffectGenerator = GameObject.Find("ReplEffectGenerator").GetComponent<ReplEffectGenerator>();
 		}
+
 		this.status = GetComponent<PlayerStatus>();
 		//this.playerAnimation = new PlayerAnimation(GetComponent<Animator>());
 		this.playerAnimation = GetComponent<PlayerAnimation>();
@@ -277,10 +279,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			StopCoroutine(counterCoroutine);
 			playerAnimation.StopGuardAnimation();
 		}
+
 		//攻撃可能なら攻撃開始
 		if (attackSequence.Attack() == AttackResult.OK) {
 			state = PlayerState.Attack;
 		}
+
 		//StartCoroutine(StartAttack());
 	}
 
@@ -321,7 +325,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			return;
 		}
 
-		if (Mathf.Abs(dir.z) > 0) { //前後移動
+		if (Mathf.Abs(dir.z) > 0) {
+			//前後移動
 			playerAnimation.StartGuardWalkAnimation();
 			playerAnimation.SetGuardSpeed(1);   //左歩き
 			return;
@@ -364,7 +369,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// <returns></returns>
 	private IEnumerator PierceAndHeakCoroutine() {
 		state = PlayerState.Pierce;
-		var audioNames = new AudioName[] {AudioName.kaede_hun_kyusei_10, AudioName.kaede_kurae_kyusei_11};
+		var audioNames = new AudioName[] { AudioName.kaede_hun_kyusei_10, AudioName.kaede_kurae_kyusei_11 };
 		AudioManager.Instance.PlayPlayerSE(audioNames[Random.Range(0, audioNames.Length)].String());
 		EnemyAI nearEnemy = MostNearEnemy();
 		var isBoss = nearEnemy.GetComponent<BossMarker>() != null;
@@ -491,24 +496,31 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// </summary>
 	/// <param name="damageSource"></param>
 	public void OnHit(DamageSource damageSource) {
-		if(SceneChanger.Instance().isChanging) {
+		if (SceneChanger.Instance().isChanging) {
 			return;
 		}
+
 		/*
 		//回避中に攻撃が当たってしまうのでとりあえずコメントアウト
-        if (!damageSource.canCounter)
-        {
-            //Debug.Log("player damaged");
-            Damage(damageSource);
+		if (!damageSource.canCounter)
+		{
+		    //Debug.Log("player damaged");
+		    Damage(damageSource);
 			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ku_guard_05.String());
 			return;
-        }
+		}
 		//*/
-		if (state == PlayerState.Defence) { //防御中
-			AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ku_guard_05.String());
-			status.DecreaseStamina(damageSource.damage);
-			//ノックバックされる
-			BeKnockedBack(damageSource);
+		if (state == PlayerState.Defence) {
+			//防御中
+			if (damageSource.attackCharacter is Thunder) {
+				Debug.Log("player damaged");
+				Damage(damageSource);
+			} else {
+				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ku_guard_05.String());
+				status.DecreaseStamina(damageSource.damage);
+				//ノックバックされる
+				BeKnockedBack(damageSource);
+			}
 		} else if (state == PlayerState.Avoid) {
 
 		} else if (state == PlayerState.Counter) {
@@ -527,7 +539,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		if (counterDeltaTime < counterTime) {
 			//スロー中でない時のみ音の再生やカウンター、エフェクトなど実行
 			//弾き時に二回音が再生されるのを修正
-			if(!Slow.Instance.isSlowNow) {
+			if (!Slow.Instance.isSlowNow) {
 				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_hajiki_09.String());
 				AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
 				Debug.Log("counter succeed");
@@ -535,7 +547,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 				//波紋を作成
 				replEffectGenerator.StartGenerate(transform.FindRec("katana:katana").transform.position);
 			}
+
 			GuardEnd();
+
 			//スロー中でない時のみ
 			if (!Slow.Instance.isSlowNow)
 				Slow.Instance.SlowStart(CollectAllCharacterAnimation());
@@ -720,7 +734,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			}
 		}
 		//後ろ
-		else { // if(Vector3.Dot(-transform.forward, dir) >= 0.4f) //Vector3.Dot(transform.forward, dir) <= -0.4f
+		else {
+			// if(Vector3.Dot(-transform.forward, dir) >= 0.4f) //Vector3.Dot(transform.forward, dir) <= -0.4f
 			//後ろ回避アニメーション
 			playerAnimation.StartBackAvoidAnimation();
 			yield return DirectionAvoid(playerCamera.hRotation * dir.normalized, avoidMoveTimeV, avoidMoveDistanceV);
@@ -880,7 +895,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 						//防御中に切り替える
 						state = PlayerState.Defence;
 						this.isGuard = true;
-					} else { //押してなかったら
+					} else {
+						//押してなかったら
 						//防御解除->通常状態
 						GuardEnd();
 					}
@@ -900,7 +916,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			//防御中に切り替える
 			state = PlayerState.Defence;
 			this.isGuard = true;
-		} else { //押してなかったら
+		} else {
+			//押してなかったら
 			//防御解除->通常状態
 			GuardEnd();
 		}
@@ -945,7 +962,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	/// Rengekiの最中にダメージを受けてしまうとDamage状態が終了しないため動けなくなるバグを修正するものです。
 	/// </summary>
 	public void FinishRengeki() {
-		if(this.state == PlayerState.Damage) {
+		if (this.state == PlayerState.Damage) {
 			this.state = PlayerState.Idle;
 		}
 	}
