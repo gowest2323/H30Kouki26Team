@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
+using UnityEngine.UI;
 
 public class SkillUI : MonoBehaviour {
 	[SerializeField]
 	private GameObject root;
 	[SerializeField]
-	private CircleMask kirinukeMask;
-
+	private Image kirinukeImage;
 	[SerializeField]
-	private CircleMask rengekiMask;
+	private Image rengekiImage;
 
 	[SerializeField]
 	private Kirinuke kirinuke;
@@ -41,7 +41,8 @@ public class SkillUI : MonoBehaviour {
 			this.rengeki = player.GetComponent<Rengeki>();
 		}
 		rengeki.onPush.Subscribe((e) => {
-			rengekiMask.SetParcent(e.parcent);
+			rengekiImage.fillAmount = e.parcent;
+			//rengekiMask.SetParcent(e.parcent);
 		});
 		rengeki.onEnd.Subscribe(OnRengekiEnd);
 		//kirinukeの長押し判定
@@ -77,11 +78,13 @@ public class SkillUI : MonoBehaviour {
 
 
 	public void SetKirinukeMask(float p) {
-		kirinukeMask.SetParcent(p);
+		//kirinukeMask.SetParcent(p);
+		kirinukeImage.fillAmount = p;
 	}
 
 	public void SetRengekiMask(float p) {
-		rengekiMask.SetParcent(p);
+		//rengekiMask.SetParcent(p);
+		rengekiImage.fillAmount = p;
 	}
 
 	private void OnDestroy() {
