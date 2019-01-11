@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Utilities {
+	/// <summary>
+	/// selfがnullならnullを返します。
+	/// </summary>
+	/// <returns>The component or null.</returns>
+	/// <param name="self">Self.</param>
+	/// <typeparam name="T">The 1st type parameter.</typeparam>
 	public static T GetComponentOrNull<T>(this GameObject self) where T : Component {
 		if(self == null) {
 			return null;
