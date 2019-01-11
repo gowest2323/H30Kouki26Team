@@ -27,10 +27,10 @@ public class LongPressUI : MonoBehaviour {
 	// Use this for initialization
 	public virtual void Start () {
 		if(root == null) {
-			this.root = transform.FindRec("LBack").GetComponent<Image>();
+			this.root = transform.FindRec("LBack").GetComponentOrNull<Image>();
 		}
 		if(slider == null) {
-			this.slider = transform.FindRec("LSlider").GetComponent<Slider>();
+			this.slider = transform.FindRec("LSlider").GetComponentOrNull<Slider>();
 		}
 		if(longPressDetector==null) {
 			this.longPressDetector = FindLongPressDetector();
@@ -41,10 +41,10 @@ public class LongPressUI : MonoBehaviour {
 		//長押しの状態に応じてスライダーの値を更新
 		root.gameObject.SetActive(false);
 		longPressDetector.OnLongPressBegin += () => {
-			slider.value = 0;
+			UpdateProgress(0f);
 		};
 		longPressDetector.OnLongPressing += (e) => {
-			slider.value = longPressDetector.progress;
+			UpdateProgress(longPressDetector.progress);
 		};
 		longPressDetector.OnLongPressEnd += () => {
 			if(longPressDetector.progress < 1) {
@@ -60,7 +60,7 @@ public class LongPressUI : MonoBehaviour {
 
 	private void Hide() {
 		root.gameObject.SetActive(false);
-		slider.value = 0;
+		UpdateProgress(0f);
 		this.key = server.Release(key);
 	}
 	
@@ -76,6 +76,10 @@ public class LongPressUI : MonoBehaviour {
 			longPressDetector.Cancel();
 			Hide();
 		}
+	}
+
+	protected virtual void UpdateProgress(float value) {
+		slider.value = value;
 	}
 
 	protected LongPressDetector GetLongPressDetector() {

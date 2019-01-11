@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Utilities {
+	public static T GetComponentOrNull<T>(this GameObject self) where T : Component {
+		if(self == null) {
+			return null;
+		}
+		return self.GetComponent<T>();
+	}
+
 	/// <summary>
 	/// nameと同じ名前のオブジェクトを再帰的に検索します。
 	/// </summary>
