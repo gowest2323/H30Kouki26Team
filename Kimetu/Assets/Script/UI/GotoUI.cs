@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GotoUI : LongPressUI {
 	[SerializeField]
 	private ChangeStage changeStage;
+
+	[SerializeField]
+	private Image fillImage;
 
 	private string sceneName;
 
@@ -19,6 +23,11 @@ public class GotoUI : LongPressUI {
 		if(changeStage == null) {
 			this.changeStage = FindStageComponent<ChangeStage>();
 		}
+	}
+
+	protected override void UpdateProgress(float value) {
+		//base.UpdateProgress(value);
+		fillImage.fillAmount = value;
 	}
 
 	protected override LongPressDetector FindLongPressDetector() {
