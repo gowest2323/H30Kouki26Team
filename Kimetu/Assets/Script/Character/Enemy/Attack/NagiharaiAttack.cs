@@ -39,7 +39,6 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 	}
 
 	public override IEnumerator Attack() {
-		cancelFlag = false;
 		//攻撃範囲描画
 		DrawStartAttackArea();
 		enemyAnimation.StartAttackAnimation(EnemyAttackType.NagiharaiAttack);
@@ -49,6 +48,7 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 		//攻撃アニメーション終了まで待機
 		yield return WaitEndAttackAnimation();
 		DrawEndAttackArea();
+		cancelFlag = false;
 	}
 
 	private IEnumerator Rotate() {

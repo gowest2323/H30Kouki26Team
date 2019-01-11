@@ -23,7 +23,6 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 	}
 
 	public override IEnumerator Attack() {
-		cancelFlag = false;
 		//攻撃範囲の描画
 		DrawStartAttackArea();
 		enemyAnimation.StartAttackAnimation(attackType);
@@ -35,5 +34,6 @@ public class SimpleAttack : EnemyAttack, IAttackEventHandler {
 		yield return WaitEndAttackAnimation();
 		//攻撃範囲描画終了
 		DrawEndAttackArea();
+		cancelFlag = false;
 	}
 }
