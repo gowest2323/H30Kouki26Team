@@ -21,6 +21,11 @@ public class CheckPoint : MonoBehaviour {
 		if (!Debug.isDebugBuild) {
 			MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
 			meshRenderer.enabled = false;
+			//中のぼうも見えないように
+			var stickMesh = transform.Find("RotateStick").gameObject.GetComponentOrNull<MeshRenderer>();
+			if(stickMesh != null) {
+				stickMesh.enabled = false;
+			}
 		}
 	}
 
