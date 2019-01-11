@@ -12,6 +12,7 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	protected string waistObjectName = "mixamorig:Hips/mixamorig:Spine";
 	protected Transform waist; //腰オブジェクト
 	protected GameObject player;
+	protected PlayerStatus playerStatus;
 	protected Status status;
 	protected bool endActionFlag;
 	private System.IDisposable observer;
@@ -33,6 +34,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		UnityEngine.Assertions.Assert.IsNotNull(waist, "waist not found");
 		player = GameObject.FindGameObjectWithTag(TagName.Player.String());
 		UnityEngine.Assertions.Assert.IsNotNull(player, "player not found");
+		playerStatus = player.GetComponent<PlayerStatus>();
+		UnityEngine.Assertions.Assert.IsNotNull(playerStatus, "PlayerStatus can not get");
 		reserveStates = new List<EnemyState>();
 		reserveStates.Add(EnemyState.Idle);
 		currentState = EnemyState.Idle;
@@ -67,6 +70,13 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 			Debug.Log(currentState + "行動時間: " + (Time.time - t));
 
 			if (endActionFlag) {
+				break;
+			}
+
+			//プレイヤーが死亡していたら待機状態になって行動終了
+			if (IsPlayerDead()) {
+				NewReserve(EnemyState.Idle, true);
+				yield return Think();
 				break;
 			}
 		}
@@ -120,7 +130,8 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		} else {
 			status.Damage(damageSource.damage, DamageMode.Kill);
 		}
-		if(!status.IsDead()) {
+
+		if (!status.IsDead()) {
 			AudioManager.Instance.PlayEnemySE(AudioName.oni_uu_damage_04.String());
 		} else {
 			HideHPUI();
@@ -135,8 +146,11 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 	private void HideHPUI() {
 		//HP表示用のバーを非表示に
 		var top = GetComponentInParent<Rigidbody>().gameObject;
-		if(top == null) { return; }
+
+		if (top == null) { return; }
+
 		var canvas = top.transform.FindRec("Canvas");
+
 		if (canvas != null) {
 			canvas.gameObject.SetActive(false);
 		}
@@ -293,5 +307,13 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		if (!pauseManager.isPause) {
 			UpdateAura();
 		}
+	}
+
+	/// <summary>
+	/// プレイヤーが死亡しているか
+	/// </summary>
+	/// <returns></returns>
+	protected bool IsPlayerDead() {
+		return playerStatus.IsDead();
 	}
 }
