@@ -24,7 +24,7 @@ TagManager:
   - Effect
   - EnemyDeadCollider
   - NotRender
-  - 
+  - IgnoreNavMesh
   - 
   - 
   - 
