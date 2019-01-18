@@ -298,9 +298,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//ダメージ中はガードしない
 		if (state == PlayerState.Damage) return;
+        //吸生中ならガードしないしない
+        if (state == PlayerState.Pierce) return;
 
-		//スタミナが０ならガードできない
-		if (status.GetStamina() == 0) return;
+        //スタミナが０ならガードできない
+        if (status.GetStamina() == 0) return;
 
 		AudioManager.Instance.PlayPlayerSE(AudioName.bougyokamae.String());
 		this.isGuard = true;
@@ -630,8 +632,10 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		if (status.IsDead()) return;
 
 		if (state == PlayerState.Damage) return;
+        //吸生中なら回避しないしない
+        if (state == PlayerState.Pierce) return;
 
-		if (this.state == PlayerState.Avoid) {
+        if (this.state == PlayerState.Avoid) {
 			return;
 		}
 
