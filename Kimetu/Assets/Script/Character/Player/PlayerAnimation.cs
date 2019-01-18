@@ -64,6 +64,7 @@ public class PlayerAnimation : CharacterAnimation {
 				throw new System.ArgumentException();
 		}
 	}
+
 	public void CancelAttackAnimation() {
 		CancelAttackAnimation(0);
 		CancelAttackAnimation(1);
@@ -123,6 +124,11 @@ public class PlayerAnimation : CharacterAnimation {
 
 	public void StartRightAvoidAnimation() {
 		animator.SetTrigger("RightAvoid");
+	}
+
+	public void CancelAvoidAnimation() {
+		animator.ResetTrigger("LeftAvoid");
+		animator.ResetTrigger("BackAvoid");
 	}
 
 	public void StartLeftAvoidAnimation() {

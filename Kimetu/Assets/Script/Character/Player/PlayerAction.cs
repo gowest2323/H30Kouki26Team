@@ -689,7 +689,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			yield return new WaitForSeconds(timeForChangeState);
 
 			isAvoid = false;
-			state = PlayerState.Idle;
+			GuardStartIfPressedLButton();
+			//state = PlayerState.Idle;
 			yield break;
 		}
 
@@ -705,7 +706,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			yield return new WaitForSeconds(timeForChangeState);
 
 			isAvoid = false;
-			state = PlayerState.Idle;
+			GuardStartIfPressedLButton();
+			//state = PlayerState.Idle;
 			yield break;
 		}
 
@@ -750,8 +752,19 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		yield return new WaitForSeconds(timeForChangeState);
 
 		isAvoid = false;
-		state = PlayerState.Idle;
+		GuardStartIfPressedLButton();
+		//state = PlayerState.Idle;
 		yield break;
+	}
+
+	private void GuardStartIfPressedLButton() {
+		this.state = PlayerState.Idle;
+		if(Input.GetButton(InputMap.Type.LButton.GetInputName())) {
+			this.state = PlayerState.Defence;
+			this.isGuard = true;
+			playerAnimation.CancelAvoidAnimation();
+			playerAnimation.StartGuardAnimation();
+		}
 	}
 
 	private IEnumerator DirectionAvoid(Vector3 dir, float avoidMoveTime, float avoidMoveDistance) {
