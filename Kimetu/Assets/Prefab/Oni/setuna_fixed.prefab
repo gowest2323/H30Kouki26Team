@@ -2925,7 +2925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc280b1943db674b9f05d7ecca22793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  parameter: {fileID: 11400000, guid: 4950871ce0a9c1144ba4b4d0776d983b, type: 2}
   attackArea: {fileID: 114414214977258918}
   attackAreaDrawer: {fileID: 114541665475627082}
   attackStateName: combo
@@ -3222,7 +3222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a6721842e92224995e483d906b24a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  parameter: {fileID: 11400000, guid: 4950871ce0a9c1144ba4b4d0776d983b, type: 2}
   attackArea: {fileID: 114642692091818264}
   attackAreaDrawer: {fileID: 114579229133071594}
   attackStateName: nagiharai
@@ -3323,7 +3323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19bfdfd2e431c15459f0c513174efda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 10
+  parameter: {fileID: 11400000, guid: 4950871ce0a9c1144ba4b4d0776d983b, type: 2}
   attackArea: {fileID: 0}
   attackAreaDrawer: {fileID: 114574488837839660}
   attackStateName: great_sword
@@ -3373,7 +3373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb468fd546cd88f4ab6ec4ef565c0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parameter: {fileID: 11400000, guid: 95e3528c3894b2a44ad7823e3c5c290e, type: 2}
+  parameter: {fileID: 11400000, guid: 4950871ce0a9c1144ba4b4d0776d983b, type: 2}
 --- !u!114 &114642692091818264
 MonoBehaviour:
   m_ObjectHideFlags: 1

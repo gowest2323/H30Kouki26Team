@@ -13,3 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHP: 100
   _maxStamina: 100
+  _normalAttackPower: 9
+  _kirinukePower: 20

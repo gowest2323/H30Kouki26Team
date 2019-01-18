@@ -9,8 +9,9 @@ public abstract class Weapon : MonoBehaviour {
 	[SerializeField, Header("この武器を扱っているIDamageableを実装しているオブジェクト")]
 	protected GameObject holderObject;
 	protected IDamageable holderObjectDamagable;
-	[SerializeField, Header("攻撃力")]
 	protected int power;
+	[SerializeField]
+	protected StatusScriptableObject parameter;
 	protected Collider weaponCollider; //武器のあたり判定
 
 	protected virtual void Start() {

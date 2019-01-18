@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Kirinuke : MonoBehaviour {
-	[SerializeField, Header("攻撃力")]
-	private int power = 20;
+	[SerializeField]
+	private PlayerScriptableObject parameter;
+	private int power;
 
 	[SerializeField, Header("敵の方にむくのにかかる時間")]
 	private float rotateSeconds = 0.25f;
@@ -29,23 +30,28 @@ public class Kirinuke : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(playerAnimation == null) {
+		UnityEngine.Assertions.Assert.IsNotNull(parameter, "Player用のパラメータが設定されていません。");
+		power = parameter.kirinukePower;
+
+		if (playerAnimation == null) {
 			this.playerAnimation = GetComponent<PlayerAnimation>();
 		}
-		if(sword == null) {
+
+		if (sword == null) {
 			this.sword = GetComponentInChildren<Sword>();
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	public void StartKirinuke() {
-		if(isRunning) {
+		if (isRunning) {
 			return;
 		}
+
 		StartCoroutine(KirinukeUpdate());
 	}
 
@@ -58,7 +64,8 @@ public class Kirinuke : MonoBehaviour {
 	private IEnumerator KirinukeUpdate() {
 		this.isRunning = true;
 		GameObject enemy;
-		if(FindNearEnemy(out enemy)) {
+
+		if (FindNearEnemy(out enemy)) {
 			this.target = enemy;
 			yield return Back();
 			sword.ChangePower(power);
@@ -87,9 +94,11 @@ public class Kirinuke : MonoBehaviour {
 		var endPos = startPos + (-dir * moveDistance);
 		var startRot = transform.rotation;
 		var endRot = Quaternion.LookRotation(dir);
-		if(Quaternion.Angle(startRot, endRot) < 1f) {
+
+		if (Quaternion.Angle(startRot, endRot) < 1f) {
 			yield break;
 		}
+
 		while (offset < rotateSeconds) {
 			var t = Time.time;
 			yield return new WaitForEndOfFrame();
@@ -97,10 +106,12 @@ public class Kirinuke : MonoBehaviour {
 			offset += diff;
 			var parc = (offset / rotateSeconds);
 			transform.rotation = Quaternion.Slerp(startRot, endRot, parc);
-			if(distance < LIMIT_DISTANCE) {
+
+			if (distance < LIMIT_DISTANCE) {
 				//transform.position = Vector3.Lerp(startPos, endPos, parc);
 			}
 		}
+
 		//transform.position = endPos;
 	}
 
@@ -111,7 +122,8 @@ public class Kirinuke : MonoBehaviour {
 		var end = start + (dir * dist);
 		var offset = 0f;
 		var hitToWall = false;
-		while(offset < moveSeconds) {
+
+		while (offset < moveSeconds) {
 			var t = Time.time;
 			yield return new WaitForEndOfFrame();
 			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
@@ -120,12 +132,15 @@ public class Kirinuke : MonoBehaviour {
 			transform.position = start + (dir * dist * parcent);
 			//前方にレイを撃って壁に当たったなら移動を終了する
 			RaycastHit hit;
-			if(Physics.Raycast(transform.position + Vector3.up, dir, out hit, 1f, LayerMask.GetMask(LayerName.Stage.String()))) {
+
+			if (Physics.Raycast(transform.position + Vector3.up, dir, out hit, 1f, LayerMask.GetMask(LayerName.Stage.String()))) {
 				hitToWall = true;
 				break;
 			}
+
 			var currDistance = Utilities.DistanceXZ(transform.position, target.transform.position);
 		}
+
 		if (!hitToWall) {
 			transform.position = end;
 		}

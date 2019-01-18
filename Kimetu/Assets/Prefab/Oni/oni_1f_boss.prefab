@@ -3129,11 +3129,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a6721842e92224995e483d906b24a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 10
+  parameter: {fileID: 11400000, guid: bdaa7ee04af5c1d468187a0d9c06a9d7, type: 2}
   attackArea: {fileID: 114201379355036284}
   attackAreaDrawer: {fileID: 114134662997515152}
   attackStateName: nagi
-  attackType: 0
+  attackType: 1
   animationClipName: oni@360_m
 --- !u!114 &114811449258926222
 MonoBehaviour:
@@ -3146,7 +3146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb468fd546cd88f4ab6ec4ef565c0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parameter: {fileID: 11400000, guid: bb9c99eaae9a78f4dadf0ff12e96f8aa, type: 2}
+  parameter: {fileID: 11400000, guid: bdaa7ee04af5c1d468187a0d9c06a9d7, type: 2}
 --- !u!114 &114848123572368084
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3232,7 +3232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f458bb8ea42254d4883a783a2f583cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  parameter: {fileID: 11400000, guid: bdaa7ee04af5c1d468187a0d9c06a9d7, type: 2}
   attackArea: {fileID: 114322513480540776}
   attackAreaDrawer: {fileID: 114614610424198892}
   attackStateName: hurioroshi

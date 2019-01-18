@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerStatus : Status {
 	private float stamina;
-    private float maxStamina;
+	private float maxStamina;
 
 	public override void Start() {
 		base.Start();
-        PlayerScriptableObject playerParameter = parameter as PlayerScriptableObject;
-        UnityEngine.Assertions.Assert.IsNotNull(playerParameter, "Player用のパラメータが設定されていません。") ;
-        this.stamina = maxStamina = playerParameter.maxStamina;
+		PlayerScriptableObject playerParameter = parameter as PlayerScriptableObject;
+		UnityEngine.Assertions.Assert.IsNotNull(playerParameter, "Player用のパラメータが設定されていません。") ;
+		this.stamina = maxStamina = playerParameter.maxStamina;
 	}
 
 	public void OnHit() {
@@ -70,7 +70,7 @@ public class PlayerStatus : Status {
 		base.Reset();
 		this.stamina = maxStamina;
 	}
-#if UNITY_EDITOR
+	#if UNITY_EDITOR
 	public void __SetStamina(float value) {
 		this.stamina = value;
 	}
@@ -78,5 +78,5 @@ public class PlayerStatus : Status {
 	public float __GetMaxStamina() {
 		return maxStamina;
 	}
-#endif
+	#endif
 }

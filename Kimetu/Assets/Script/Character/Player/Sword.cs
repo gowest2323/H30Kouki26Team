@@ -11,8 +11,10 @@ public class Sword : Weapon {
 
 	protected override void Start() {
 		base.Start();
-		this.defaultPower = power;
+		PlayerScriptableObject player = parameter as PlayerScriptableObject;
+		UnityEngine.Assertions.Assert.IsNotNull(player, "Player用のパラメータが割り当てられていません。");
 		this.countDict = new Dictionary<GameObject, int>();
+		this.defaultPower = power = player.normalAttackPower;
 	}
 
 	/// <summary>
@@ -49,6 +51,7 @@ public class Sword : Weapon {
 			} else if (countDict[other.gameObject] >= 1) {
 				return;
 			}
+
 			AudioManager.Instance.PlayPlayerSE(AudioName.CutHit.String());
 
 			//衝突したときの最近点を衝突点とする
