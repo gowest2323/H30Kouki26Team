@@ -184,13 +184,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			return;
 		}
 
-		playerAnimation.StartWalkAnimation();
 		var pos = transform.position;
 		transform.position += playerCamera.hRotation * dir * speed * Slow.Instance.PlayerDeltaTime();
 		EffectManager.Instance.PlayerMoveEffectCreate(gameObject, false);
 
 		if (!isGuard) {
 			if (changeRotation || isAvoid) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+			playerAnimation.StartWalkAnimation();
 		} else {
 			SetGuardMoveDirection(dir);
 		}
