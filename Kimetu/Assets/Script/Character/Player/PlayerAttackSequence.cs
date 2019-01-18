@@ -91,6 +91,7 @@ public class PlayerAttackSequence : MonoBehaviour {
 		weapon.AttackStart();
 		//playerAnimation.StartAttackAnimation();
 		StartAnimation();
+        yield return new WaitWhile(() => !playerAnimation.IsPlayingAnimation("kaede", "attack" + attackStack));
 		//status.DecreaseStamina(decreaseAttackStamina);
 		yield return WaitFinish();
 		//state = PlayerState.Idle;
