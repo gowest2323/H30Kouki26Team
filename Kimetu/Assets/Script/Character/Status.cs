@@ -31,26 +31,28 @@ public class Status : MonoBehaviour {
 	}
 	private Subject<int> mOnDie;
 
+    [SerializeField]
+    protected StatusScriptableObject parameter;
 	protected int hp;
-
-	[SerializeField]
 	protected int maxHP;
+
 	public virtual void Awake() {
+        UnityEngine.Assertions.Assert.IsNotNull(parameter, this.gameObject.name + "パラメータが設定されていません。");
+        this.hp = maxHP = parameter.maxHP;
 		//ここで初期化しないと動かない場合がある
-		this.hp = maxHP;
 		this.mOnDamage = new Subject<int>();
 		this.mOnDie = new Subject<int>();
 	}
 
 	public virtual void Start() {
-		this.hp = maxHP;
-	}
+        this.hp = maxHP = parameter.maxHP;
+    }
 
-	/// <summary>
-	/// 残りHPを返します。
-	/// </summary>
-	/// <returns></returns>
-	public int GetHP() {
+    /// <summary>
+    /// 残りHPを返します。
+    /// </summary>
+    /// <returns></returns>
+    public int GetHP() {
 		return hp;
 	}
 

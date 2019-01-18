@@ -2993,6 +2993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a6cfbf0dd8e1d439a47f857e952790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
 --- !u!114 &114421943342751704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3145,7 +3146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb468fd546cd88f4ab6ec4ef565c0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 150
+  parameter: {fileID: 11400000, guid: bb9c99eaae9a78f4dadf0ff12e96f8aa, type: 2}
 --- !u!114 &114848123572368084
 MonoBehaviour:
   m_ObjectHideFlags: 1

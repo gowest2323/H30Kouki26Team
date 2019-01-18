@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerStatus : Status {
 	private float stamina;
-
-	[SerializeField]
-	private float maxStamina = 100f;
+    private float maxStamina;
 
 	public override void Start() {
 		base.Start();
-		this.stamina = maxStamina;
+        PlayerScriptableObject playerParameter = parameter as PlayerScriptableObject;
+        UnityEngine.Assertions.Assert.IsNotNull(playerParameter, "Player用のパラメータが設定されていません。") ;
+        this.stamina = maxStamina = playerParameter.maxStamina;
 	}
 
 	public void OnHit() {
