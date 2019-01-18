@@ -37,6 +37,8 @@ public class ReturnDefaultPosition : ActionBase {
 		cancelFlag = false;
 		enemyAnimation.StartRunAnimation();
 		agent.isStopped = false;
+		agent.updatePosition = true;
+		agent.updateRotation = true;
 		agent.SetDestination(defaultPosition);
 		//パスの計算が終わるまで待機
 		yield return new WaitWhile(() => agent.pathPending);
@@ -71,6 +73,8 @@ public class ReturnDefaultPosition : ActionBase {
 	private void StopNavMeshAgent() {
 		agent.isStopped = true;
 		agent.velocity = Vector3.zero;
+		agent.updatePosition = false;
+		agent.updateRotation = false;
 	}
 
 	private bool ForcedTermination() {
