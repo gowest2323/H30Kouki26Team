@@ -5,8 +5,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
-	[SerializeField, Tooltip("攻撃力")]
 	protected int power;
+	[SerializeField]
+	protected EnemyStatusScriptableObject parameter;
 	protected EnemyAI holderEnemyAI; //この攻撃方法の持ち主
 	[SerializeField, Header("攻撃をするかどうか判断する範囲")]
 	protected EnemySearchableAreaBase attackArea;
@@ -14,8 +15,8 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 	protected EnemyAttackAreaDrawer attackAreaDrawer;
 	[SerializeField]
 	protected string attackStateName;
-    [SerializeField]
-    protected EnemyAttackType attackType;
+	[SerializeField]
+	protected EnemyAttackType attackType;
 	protected Collider attackCollider;
 	protected EnemyAnimation enemyAnimation;
 	protected bool isHit; //攻撃が当たったかどうか（多段ヒット無効のため）
@@ -28,6 +29,10 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 		attackCollider = GetComponent<Collider>();
 		attackCollider.enabled = false;
 		enemyAnimation = GetComponentInParent<EnemyAnimation>();
+
+		Assert.IsNotNull(parameter, this.gameObject.name + "にパラメータが設定されていません。");
+		power = parameter.GetPower(attackType);
+
 		Assert.IsNotNull(enemyAnimation, "EnemyAnimationが存在しません。");
 		Assert.IsNotNull(holderEnemyAI, "この攻撃方法の持ち主が存在しません。");
 		Assert.IsNotNull(attackArea, "EnemySearchAreaがありません。");
@@ -61,7 +66,7 @@ public abstract class EnemyAttack : MonoBehaviour, IAttackEventHandler {
 		isRunning = true;
 		isHit = false;
 		attackCollider.enabled = true;
-        Debug.Log("attack start");
+		Debug.Log("attack start");
 	}
 
 	public virtual void AttackEnd() {

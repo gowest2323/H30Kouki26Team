@@ -31,28 +31,28 @@ public class Status : MonoBehaviour {
 	}
 	private Subject<int> mOnDie;
 
-    [SerializeField]
-    protected StatusScriptableObject parameter;
+	[SerializeField]
+	protected StatusScriptableObject parameter;
 	protected int hp;
 	protected int maxHP;
 
 	public virtual void Awake() {
-        UnityEngine.Assertions.Assert.IsNotNull(parameter, this.gameObject.name + "パラメータが設定されていません。");
-        this.hp = maxHP = parameter.maxHP;
+		UnityEngine.Assertions.Assert.IsNotNull(parameter, this.gameObject.name + "パラメータが設定されていません。");
+		this.hp = maxHP = parameter.maxHP;
 		//ここで初期化しないと動かない場合がある
 		this.mOnDamage = new Subject<int>();
 		this.mOnDie = new Subject<int>();
 	}
 
 	public virtual void Start() {
-        this.hp = maxHP = parameter.maxHP;
-    }
+		this.hp = maxHP = parameter.maxHP;
+	}
 
-    /// <summary>
-    /// 残りHPを返します。
-    /// </summary>
-    /// <returns></returns>
-    public int GetHP() {
+	/// <summary>
+	/// 残りHPを返します。
+	/// </summary>
+	/// <returns></returns>
+	public int GetHP() {
 		return hp;
 	}
 
@@ -77,7 +77,7 @@ public class Status : MonoBehaviour {
 		}
 
 		if (mode == DamageMode.NotKill && this.hp <= 0) {
-            
+
 			this.hp = 1;
 		}
 
@@ -100,7 +100,7 @@ public class Status : MonoBehaviour {
 	public virtual void Reset() {
 		this.hp = maxHP;
 	}
-#if UNITY_EDITOR
+	#if UNITY_EDITOR
 	//デバッグ用に公開されているメソッド
 
 	public void __SetHP(int value) {
@@ -110,5 +110,5 @@ public class Status : MonoBehaviour {
 	public int __GetMaxHP() {
 		return maxHP;
 	}
-#endif
+	#endif
 }

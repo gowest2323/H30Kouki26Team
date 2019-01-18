@@ -3134,7 +3134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb468fd546cd88f4ab6ec4ef565c0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parameter: {fileID: 11400000, guid: 464e65491a203844f9bbad94c53c7d6a, type: 2}
+  parameter: {fileID: 11400000, guid: 0aeb5ce1a0a8ddd4b9f6b21fe4fb0565, type: 2}
 --- !u!114 &114669856160754732
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3146,7 +3146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f458bb8ea42254d4883a783a2f583cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  parameter: {fileID: 11400000, guid: 0aeb5ce1a0a8ddd4b9f6b21fe4fb0565, type: 2}
   attackArea: {fileID: 114131631444205972}
   attackAreaDrawer: {fileID: 114914220210432634}
   attackStateName: hurioroshi

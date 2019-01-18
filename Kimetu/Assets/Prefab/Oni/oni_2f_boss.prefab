@@ -2734,7 +2734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a6721842e92224995e483d906b24a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  parameter: {fileID: 11400000, guid: ec8ad903d3c5e9d4fba6c98cae65e16c, type: 2}
   attackArea: {fileID: 114289691015383158}
   attackAreaDrawer: {fileID: 114844740445461760}
   attackStateName: nagiharai
@@ -2941,7 +2941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f458bb8ea42254d4883a783a2f583cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  parameter: {fileID: 11400000, guid: ec8ad903d3c5e9d4fba6c98cae65e16c, type: 2}
   attackArea: {fileID: 114485498882178610}
   attackAreaDrawer: {fileID: 114451842878210926}
   attackStateName: kiriage
@@ -3011,6 +3011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a6cfbf0dd8e1d439a47f857e952790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
 --- !u!114 &114597013315382196
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3045,7 +3046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb468fd546cd88f4ab6ec4ef565c0916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 200
+  parameter: {fileID: 11400000, guid: ec8ad903d3c5e9d4fba6c98cae65e16c, type: 2}
 --- !u!114 &114698994218698756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3169,7 +3170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc280b1943db674b9f05d7ecca22793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 15
+  parameter: {fileID: 11400000, guid: ec8ad903d3c5e9d4fba6c98cae65e16c, type: 2}
   attackArea: {fileID: 114289691015383158}
   attackAreaDrawer: {fileID: 114844740445461760}
   attackStateName: combo

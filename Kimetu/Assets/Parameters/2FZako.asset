@@ -8,7 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc8829b6d52475f439696ace7eb5d1e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e6df1a52f3553245835a91a889e9141, type: 3}
   m_Name: 2FZako
   m_EditorClassIdentifier: 
   _maxHP: 90
+  _kiriagePower: 15
+  _nagiharaiPower: 15
