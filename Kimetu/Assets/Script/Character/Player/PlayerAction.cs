@@ -281,6 +281,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		}
 
 		//攻撃可能なら攻撃開始
+		playerAnimation.StopWalkAnimation();
 		if (attackSequence.Attack() == AttackResult.OK) {
 			state = PlayerState.Attack;
 		}
