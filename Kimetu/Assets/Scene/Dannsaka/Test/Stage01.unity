@@ -983,16 +983,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114087020175875802, guid: fbd5f037b21dc4afcad27236b354a59e,
-        type: 2}
-      propertyPath: stageManager
-      value: 
-      objectReference: {fileID: 1496595464}
-    - target: {fileID: 114087020175875802, guid: fbd5f037b21dc4afcad27236b354a59e,
-        type: 2}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 1669517514}
     - target: {fileID: 114052291224128242, guid: fbd5f037b21dc4afcad27236b354a59e,
         type: 2}
       propertyPath: cameraController
@@ -1003,6 +993,16 @@ Prefab:
       propertyPath: pauseManager
       value: 
       objectReference: {fileID: 741960197}
+    - target: {fileID: 114087020175875802, guid: fbd5f037b21dc4afcad27236b354a59e,
+        type: 2}
+      propertyPath: stageManager
+      value: 
+      objectReference: {fileID: 1496595464}
+    - target: {fileID: 114087020175875802, guid: fbd5f037b21dc4afcad27236b354a59e,
+        type: 2}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1669517514}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbd5f037b21dc4afcad27236b354a59e, type: 2}
   m_IsPrefabAsset: 0
