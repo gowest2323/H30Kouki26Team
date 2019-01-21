@@ -3269,11 +3269,7 @@ MonoBehaviour:
   thunder: {fileID: 114912001990214912}
   damage: {fileID: 114102202126859144}
   death: {fileID: 114031714608649366}
-  thunderHPBorders:
-  - hp: 200
-    done: 0
-  - hp: 2
-    done: 0
+  parameter: {fileID: 11400000, guid: 4950871ce0a9c1144ba4b4d0776d983b, type: 2}
 --- !u!114 &114574488837839660
 MonoBehaviour:
   m_ObjectHideFlags: 1

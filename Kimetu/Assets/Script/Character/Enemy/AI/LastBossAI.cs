@@ -24,19 +24,25 @@ public class LastBossAI : EnemyAI, IEnemyInfoProvider {
 
 	public string informationText { private set; get; }
 
-	[Serializable]
 	private class ThunderHPBorder {
-		[SerializeField]
-		public int hp;
-		[HideInInspector]
-		public bool done;
+		public int hp { get; set; }
+		public bool done { get; set; }
+		public ThunderHPBorder(int hp) {
+			this.hp = hp;
+			done = false;
+		}
 	}
-	[SerializeField]
 	private List<ThunderHPBorder> thunderHPBorders;
+	[SerializeField]
+	private SetsunaScriptableObject parameter;
 
 	protected override void Start() {
 		base.Start();
 		death.deadEnd = DeadEnd;
+		Assert.IsNotNull(parameter, "刹那用のパラメータが設定されていません。");
+		List<int> thunderAttackHP = parameter.thunderAttackHP;
+		thunderHPBorders = new List<ThunderHPBorder>(thunderAttackHP.Count);
+		thunderAttackHP.ForEach(c => thunderHPBorders.Add(new ThunderHPBorder(c)));
 	}
 
 	protected override Coroutine Think() {
