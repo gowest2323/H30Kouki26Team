@@ -65,6 +65,9 @@ public class TerminalManager : MonoBehaviour {
 				player.transform.position = cp.transform.position;
 			}
 		});
+		TerminalRegistry.instance.Register("movie-boss", (args) => {
+			SceneChanger.Instance().Change(SceneName.LastBossMovie, new FadeData(1, 1, Color.black));
+		});
 #endif
 	}
 	
