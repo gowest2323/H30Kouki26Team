@@ -9,6 +9,9 @@ public class PageUI : MonoBehaviour {
 	[SerializeField]
 	private int startPage = 0;
 
+	[SerializeField]
+	private bool circleSelect = false;
+
 	private int selected;
 
 	// Use this for initialization
@@ -26,9 +29,13 @@ public class PageUI : MonoBehaviour {
 	}
 
 	public void Select(int pageIndex) {
-		if (pageIndex < 0) pageIndex = 0;
-
-		if (pageIndex >= pages.Length) pageIndex = pages.Length - 1;
+		if(circleSelect) {
+			if (pageIndex < 0) pageIndex = pages.Length - 1;
+			if (pageIndex >= pages.Length) pageIndex = 0;
+		} else {
+			if (pageIndex < 0) pageIndex = 0;
+			if (pageIndex >= pages.Length) pageIndex = pages.Length - 1;
+		}
 
 		foreach (var page in pages) {
 			page.SetActive(false);
