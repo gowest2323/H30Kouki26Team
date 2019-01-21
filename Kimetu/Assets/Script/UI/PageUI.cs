@@ -13,9 +13,11 @@ public class PageUI : MonoBehaviour {
 	private bool circleSelect = false;
 
 	private int selected;
+	private float lasttime;
 
 	// Use this for initialization
 	void Start () {
+		this.lasttime = -2;
 		Select(startPage);
 	}
 
@@ -29,7 +31,11 @@ public class PageUI : MonoBehaviour {
 	}
 
 	public void Select(int pageIndex) {
-		if(circleSelect) {
+		if((Time.unscaledTime - lasttime) < 0.2f) {
+			return;
+		}
+		this.lasttime = Time.unscaledTime;
+		if (circleSelect) {
 			if (pageIndex < 0) pageIndex = pages.Length - 1;
 			if (pageIndex >= pages.Length) pageIndex = 0;
 		} else {
