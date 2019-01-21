@@ -11,6 +11,9 @@ public class SetsunaScriptableObject : EnemyStatusScriptableObject {
 	private int _nagiharaiPower;
 	[SerializeField]
 	private int _thunderPower;
+    [SerializeField,Header("HPがこの数値以下になったら雷攻撃をする")]
+    private List<int> _thunderAttackHP;
+    public List<int> thunderAttackHP { get { return _thunderAttackHP; } }
 
 	public override int GetPower(EnemyAttackType type) {
 		if (type == EnemyAttackType.SetunaCombo) {
