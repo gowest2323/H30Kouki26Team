@@ -1400,7 +1400,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1062867434905680}
-  m_LocalRotation: {x: 0.52611434, y: 0.46227866, z: -0.42948604, w: 0.5701262}
+  m_LocalRotation: {x: 0.52611434, y: 0.4622787, z: -0.42948604, w: 0.57012624}
   m_LocalPosition: {x: -0.20252037, y: -1.2270106e-16, z: -1.3877787e-19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1981,7 +1981,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605809767795630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -66.678, y: 0, z: -6.37}
+  m_LocalPosition: {x: -232, y: 5, z: 10.9}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4670702012720468}
@@ -3036,7 +3036,7 @@ BoxCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605809767795630}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e34b8a93b69089e4795043ca88a287da, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -3160,7 +3160,7 @@ MonoBehaviour:
   decreaseAvoidStamina: 10
   playerCamera: {fileID: 0}
   movie: {fileID: 320608072144413650, guid: bda39496a5dccb84fb6f333c0db5e442, type: 2}
-  nextSceneName: 4
+  nextSceneName: 0
   walkSpeed: 5
   dashSpeed: 8
   attackSequence: {fileID: 0}
