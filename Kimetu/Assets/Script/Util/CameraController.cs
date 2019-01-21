@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour {
 
     private PlayerState prePlayerState;// 前フレームのPlayerState
     private PlayerState curPlayerState;// 現フレームのPlayerState
-    private List<MeshRenderer> hitsMeshRenderer = new List<MeshRenderer>();//非表示メッシュレンダラー格納リスト
+    //private List<MeshRenderer> hitsMeshRenderer = new List<MeshRenderer>();//非表示メッシュレンダラー格納リスト
 
     private bool isCounterMove = false;// はじきカメラ中か
     private bool preIsSlow = false;// 前フレームのisSlowNow
@@ -292,11 +292,12 @@ public class CameraController : MonoBehaviour {
 			else
 				nearObj = SearchTagWithDirection(gameObject, "Enemy");
 
-			if (nearObj == null) {
+			if (nearObj == null || 
+                (nearObj != null && nearObj.GetComponent<EnemyStatus>().IsDead()) ) { /*二重ターゲット死亡チェック*/
 				isLockOn = false;
 				interval = false;
 			}
-		}
+        }
 	}
 
 	private void Interval() {
@@ -532,12 +533,12 @@ public class CameraController : MonoBehaviour {
 
         if (preIsSlow && !curIsSlow) {
             isCounterMove = false;
-            if (hitsMeshRenderer.Count != 0) {
-                foreach (var rh in hitsMeshRenderer) {
-                    rh.enabled = true;
-                }
-                hitsMeshRenderer.Clear();
-            }
+            //if (hitsMeshRenderer.Count != 0) {
+            //    foreach (var rh in hitsMeshRenderer) {
+            //        rh.enabled = true;
+            //    }
+            //    hitsMeshRenderer.Clear();
+            //}
             SetPlayerRotation();
         }
     }
@@ -605,12 +606,12 @@ public class CameraController : MonoBehaviour {
         //吸生状態終了時
         if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce) {
             isPierceMove = false;
-            if (hitsMeshRenderer.Count != 0) {
-                foreach (var rh in hitsMeshRenderer) {
-                    rh.enabled = true;
-                }
-                hitsMeshRenderer.Clear();
-            }
+            //if (hitsMeshRenderer.Count != 0) {
+            //    foreach (var rh in hitsMeshRenderer) {
+            //        rh.enabled = true;
+            //    }
+            //    hitsMeshRenderer.Clear();
+            //}
             //位置をデフォに
             PositionToPlayerBack();
         }
@@ -628,7 +629,7 @@ public class CameraController : MonoBehaviour {
     /// <summary>
     /// プレイヤーとの間にステージがあったら表示しない（簡易めり込み対策）
     /// </summary>
-    private void NotDisplayStageBetweenWithPlayer() {
+    /*private void NotDisplayStageBetweenWithPlayer() {
         Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
 
         RaycastHit hit;
@@ -648,7 +649,7 @@ public class CameraController : MonoBehaviour {
                 hitsMeshRenderer.Clear();
             }
         }
-    }
+    }*/
 
     private void OnDrawGizmos() {
 		Gizmos.color = Color.yellow;
