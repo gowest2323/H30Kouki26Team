@@ -1637,6 +1637,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1214665817}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1225013083
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -2.8524
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.036
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 1.164
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062341952699218, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ca9e02d7ce68a4a6584c7624310e0da4, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!4 &1252898810 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4351614600894732, guid: 6cf112cb046df47e8be8b49535e8814b,
