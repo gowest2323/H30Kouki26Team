@@ -123,14 +123,29 @@ public class PlayerController : MonoBehaviour {
                 isAvoid = true;
 				//Debug.Log("押し");
 			}
+		} else {
+#if UNITY_EDITOR
+			if(Input.GetKeyDown(KeyCode.Space)) {
+				isAvoid = true;
+			}
+#endif
 		}
 
-        if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) {
+		if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) {
             if (isAvoid && !pauseManager.isReturnFromPause) Avoid();
             pressButton = 0;
             isAvoid = false;
             pauseManager.isReturnFromPause = false;
-        }
+        } else {
+#if UNITY_EDITOR
+			if (Input.GetKeyUp(KeyCode.Space)) {
+				if (isAvoid && !pauseManager.isReturnFromPause) Avoid();
+				pressButton = 0;
+				isAvoid = false;
+				pauseManager.isReturnFromPause = false;
+			}
+#endif
+		}
 	}
 
 	private void Move() {
@@ -226,5 +241,15 @@ public class PlayerController : MonoBehaviour {
 		} else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName())) {
 			action.GuardEnd();
 		}
+#if UNITY_EDITOR
+		if (Input.GetKeyDown(KeyCode.LeftShift)) {
+			//if (!cameraController.IsLockOn())
+			//	cameraController.PositionToPlayerBack();
+			action.GuardStart(dir);
+
+		} else if (Input.GetKeyUp(KeyCode.LeftShift)) {
+			action.GuardEnd();
+		}
+#endif
 	}
 }
