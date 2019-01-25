@@ -111,7 +111,18 @@ public class CameraController : MonoBehaviour {
 		//Debug.Log("DefaultControl");
 		float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
 		float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
-
+#if UNITY_EDITOR
+		if (Input.GetKey(KeyCode.UpArrow)) {
+			ver = 1;
+		} else if (Input.GetKey(KeyCode.DownArrow)) {
+			ver = -1;
+		}
+		if (Input.GetKey(KeyCode.LeftArrow)) {
+			hor = -1;
+		} else if (Input.GetKey(KeyCode.RightArrow)) {
+			hor = 1;
+		}
+#endif
 		// カメラの回転(transform.rotation)の更新
 		// 垂直回転してから水平回転する合成回転とします
 
