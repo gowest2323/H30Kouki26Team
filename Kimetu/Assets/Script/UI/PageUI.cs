@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PageUI : MonoBehaviour {
 	[SerializeField]
@@ -15,10 +16,17 @@ public class PageUI : MonoBehaviour {
 	private int selected;
 	private float lasttime;
 
-	// Use this for initialization
-	void Start () {
+    [SerializeField]
+    private bool isShowPageNum = false;
+
+    [SerializeField]
+    private Text pageNumText;
+
+    // Use this for initialization
+    void Start () {
 		this.lasttime = -2;
 		Select(startPage);
+        ShowPageNum(startPage);
 	}
 
 	// Update is called once per frame
@@ -28,6 +36,7 @@ public class PageUI : MonoBehaviour {
 		} else if (InputMap.Direction.Right.IsDetectedInput()) {
 			Select(selected + 1);
 		}
+        ShowPageNum(selected);
 	}
 
 	public void Select(int pageIndex) {
@@ -50,4 +59,9 @@ public class PageUI : MonoBehaviour {
 		pages[pageIndex].SetActive(true);
 		this.selected = pageIndex;
 	}
+
+    private void ShowPageNum(int index)
+    {
+        if (isShowPageNum) pageNumText.text = (index + 1).ToString();
+    }
 }
