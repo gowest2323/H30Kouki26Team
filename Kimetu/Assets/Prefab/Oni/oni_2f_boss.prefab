@@ -556,6 +556,7 @@ GameObject:
   - component: {fileID: 114148249384344514}
   - component: {fileID: 114698994218698756}
   - component: {fileID: 114825521037347744}
+  - component: {fileID: 114075032432577694}
   m_Layer: 10
   m_Name: oni_2f_boss
   m_TagString: Enemy
@@ -2712,6 +2713,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAttack: {fileID: 114123050364937650}
+--- !u!114 &114075032432577694
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419309862329462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf499c8cfa64b94b878924136efa377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  auraParticle: {fileID: 198783446794598632, guid: ea1b488157a45e44d9bb28a40f86a516,
+    type: 2}
+  auraPositionName: mixamorig:Neck
+  auraBossDyingState: {fileID: 198783446794598632, guid: ca9563021da984715820aa34e3966e3c,
+    type: 2}
 --- !u!114 &114078722835928724
 MonoBehaviour:
   m_ObjectHideFlags: 1

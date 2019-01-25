@@ -1391,6 +1391,7 @@ GameObject:
   - component: {fileID: 114319598345358154}
   - component: {fileID: 114065078103047516}
   - component: {fileID: 114602685734525244}
+  - component: {fileID: 114986111067835860}
   m_Layer: 10
   m_Name: setuna_fixed
   m_TagString: Enemy
@@ -3584,6 +3585,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0176745054386d1409251b7070ece122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114986111067835860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1976575520602688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf499c8cfa64b94b878924136efa377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  auraParticle: {fileID: 198783446794598632, guid: ea1b488157a45e44d9bb28a40f86a516,
+    type: 2}
+  auraPositionName: mixamorig:Neck
+  auraBossDyingState: {fileID: 198783446794598632, guid: ca9563021da984715820aa34e3966e3c,
+    type: 2}
 --- !u!120 &120489014218435328
 LineRenderer:
   m_ObjectHideFlags: 1
