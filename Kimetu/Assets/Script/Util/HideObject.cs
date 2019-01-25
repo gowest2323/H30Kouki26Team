@@ -61,7 +61,7 @@ public class HideObject : MonoBehaviour {
 	/// <returns>The max ray hit distance.</returns>
 	private float GetMaxRayHitDistance() {
 		var dist = -1f;
-		for(float f=0; f<360; f+=20f) {
+		for(float f=0; f<=360; f+=20f) {
 			var r = Mathf.Deg2Rad * f;
 			var vx = Mathf.Cos(r);
 			var vz = Mathf.Sin(r);
@@ -70,7 +70,7 @@ public class HideObject : MonoBehaviour {
 			if (dist < hitDist) {
 				dist = hitDist;
 			}
-			Debug.Log("ray " + f);
+			//Debug.Log("ray " + f);
 		}
 		if(dist < limitDistance) {
 			dist = limitDistance;
@@ -95,9 +95,9 @@ public class HideObject : MonoBehaviour {
 		if(stageObjectList.Count > 0) { return; }
 		//Stageレイヤーのオブジェクトを収集
 		this.stageObjectList = Utilities.GetComponentsFromAllObject<MeshRenderer>();
-		Debug.Log("stage objects a:" + stageObjectList.Count);
+		//Debug.Log("stage objects a:" + stageObjectList.Count);
 		stageObjectList.RemoveAll((e) => e.gameObject.tag == TagName.Player.String());
 		stageObjectList.RemoveAll((e) => !(mask.value == (mask.value | (1 << e.gameObject.layer))));
-		Debug.Log("stage objects b:" + stageObjectList.Count);
+		//Debug.Log("stage objects b:" + stageObjectList.Count);
 	}
 }
