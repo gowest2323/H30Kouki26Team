@@ -193,4 +193,46 @@ public static class InputMap {
 		return GetHorizontalDirection() == dir ||
 			   GetVerticalDirection() == dir;
 	}
+
+	/// <summary>
+	/// エディターから実行しているならキー入力の結果を返す。
+	/// それ以外の場合では false
+	/// </summary>
+	/// <returns><c>true</c>, if key down debug was gotten, <c>false</c> otherwise.</returns>
+	/// <param name="code">Code.</param>
+	public static bool GetKeyDownDebug(KeyCode code) {
+#if UNITY_EDITOR
+		return Input.GetKeyDown(code);
+#else
+		return false;
+#endif
+	}
+
+	/// <summary>
+	/// エディターから実行しているならキー入力の結果を返す。
+	/// それ以外の場合では false
+	/// </summary>
+	/// <returns><c>true</c>, if key up debug was gotten, <c>false</c> otherwise.</returns>
+	/// <param name="code">Code.</param>
+	public static bool GetKeyUpDebug(KeyCode code) {
+#if UNITY_EDITOR
+		return Input.GetKeyUp(code);
+#else
+		return false;
+#endif
+	}
+
+	/// <summary>
+	/// エディターから実行しているならキー入力の結果を返す。
+	/// それ以外の場合では false
+	/// </summary>
+	/// <returns><c>true</c>, if key debug was gotten, <c>false</c> otherwise.</returns>
+	/// <param name="code">Code.</param>
+	public static bool GetKeyDebug(KeyCode code) {
+#if UNITY_EDITOR
+		return Input.GetKey(code);
+#else
+		return false;
+#endif
+	}
 }
