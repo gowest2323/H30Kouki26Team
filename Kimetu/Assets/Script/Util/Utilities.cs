@@ -116,6 +116,22 @@ public static class Utilities {
 	}
 
 	/// <summary>
+	/// 指定のレイヤーのオブジェクトを全て取得します。
+	/// </summary>
+	/// <returns>The objects in layer.</returns>
+	/// <param name="layer">Layer.</param>
+	public static List<GameObject> GetObjectsInLayer(int layer) {
+		var ret = new List<GameObject>();
+		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))) {
+			if (!obj.activeInHierarchy) continue;
+			if (obj.layer == layer) {
+				ret.Add(obj);
+			}
+		}
+		return ret;
+	}
+
+	/// <summary>
 	/// 指定の位置、距離、方向、レイヤーで何かつぶつかるなら true.
 	/// </summary>
 	/// <returns><c>true</c>, if hit to any was ised, <c>false</c> otherwise.</returns>
