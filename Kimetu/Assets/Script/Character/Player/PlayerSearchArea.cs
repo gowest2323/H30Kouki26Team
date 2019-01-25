@@ -10,7 +10,15 @@ public class PlayerSearchArea : MonoBehaviour {
 	[SerializeField]
 	private PlayerAction player;
 
-	private void OnTriggerStay(Collider other) {
+    private void Start()
+    {
+        if(player == null)
+        {
+            player = GetComponentInParent<PlayerAction>();
+        }
+    }
+
+    private void OnTriggerStay(Collider other) {
 		TagName otherTag = TagNameManager.GetKeyByValue(other.tag);
 
 		if (otherTag == TagName.EnemyDeadArea) {
