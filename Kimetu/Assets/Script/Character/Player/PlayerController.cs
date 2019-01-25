@@ -145,9 +145,16 @@ public class PlayerController : MonoBehaviour {
 			Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
 		);
 #if UNITY_EDITOR
-		if(Input.GetKey(KeyCode.W)) {
+		dir = GetKeyboardDirection(dir);
+#endif
+		action.Move(dir, !cameraController.IsLockOn());
+		cameraController.playerDir = dir;
+	}
+
+	private Vector3 GetKeyboardDirection(Vector3 dir) {
+		if (Input.GetKey(KeyCode.W)) {
 			dir.z = 1;
-		} else if(Input.GetKey(KeyCode.S)) {
+		} else if (Input.GetKey(KeyCode.S)) {
 			dir.z = -1;
 		}
 		if (Input.GetKey(KeyCode.A)) {
@@ -156,9 +163,7 @@ public class PlayerController : MonoBehaviour {
 			dir.x = 1;
 		}
 		dir = dir.normalized;
-#endif
-		action.Move(dir, !cameraController.IsLockOn());
-		cameraController.playerDir = dir;
+		return dir;
 	}
 
 	private void Attack() {
