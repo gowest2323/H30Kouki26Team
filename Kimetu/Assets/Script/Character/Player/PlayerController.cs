@@ -166,6 +166,12 @@ public class PlayerController : MonoBehaviour {
         //ボタンが押されている && (次のステージへ行くためのアレがない || アレに触れていない)
 		if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName()) && (changeStage == null || !changeStage.toNextStage)) {
 			action.Attack();
+		} else {
+#if UNITY_EDITOR
+			if (Input.GetKeyDown(KeyCode.Z) && (changeStage == null || !changeStage.toNextStage)) {
+				action.Attack();
+			}
+#endif
 		}
 	}
 
