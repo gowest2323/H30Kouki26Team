@@ -14,6 +14,12 @@ public class SceneChanger : MonoBehaviour
     private GameObject loadCanvas;
     private GameObject stageNameCanvas;
 
+	[SerializeField]
+	private float waitBeforeLoadingSeconds = 1.0f;
+
+	[SerializeField, Range(0f, 1f)]
+	private float waitBeforeLoadingAmount = 0.7f;
+
     [RuntimeInitializeOnLoadMethod()]
     public static SceneChanger Instance()
     {
@@ -112,23 +118,33 @@ public class SceneChanger : MonoBehaviour
         loadCanvas = Instantiate((GameObject)Resources.Load("Prefab/LoadCanvas"));
         yield return new WaitForSeconds(0.5f);
 
-        AsyncOperation async = SceneManager.LoadSceneAsync(scene.String());
-        async.allowSceneActivation = false;// シーン遷移をしない
-
         Image loadImage = loadCanvas.GetComponentInChildren<Image>();
         Text loadText = loadCanvas.GetComponentInChildren<Text>();
-
-        //　読み込みが終わるまで進捗状況を値に反映させる
-        while (async.progress < 0.9f)
+		//読み込んでる感を出す
+		var elapsed = 0f;
+		while(elapsed < waitBeforeLoadingSeconds) {
+			var t = Time.time;
+			yield return null;
+			elapsed += (Time.time - t);
+			var par = Mathf.Clamp01(elapsed / waitBeforeLoadingSeconds);
+			loadText.text = (par * waitBeforeLoadingAmount * 100).ToString("F0") + "%";
+		}
+		loadText.text = (waitBeforeLoadingAmount * 100).ToString("F0") + "%";
+		//実際の読み込みで進むパーセンテージの計算
+		var remine = (1f - waitBeforeLoadingAmount);
+		UnityEngine.Assertions.Assert.IsTrue(remine > 0);
+		//非同期読み込みを開始
+		AsyncOperation async = SceneManager.LoadSceneAsync(scene.String());
+		async.allowSceneActivation = false;// シーン遷移をしない
+		while (async.progress < 0.9f)
         {
-            //ロード進展
-            //サークル回転はアニメーションで
+			//ロード進展
+			//サークル回転はアニメーションで
 
-            loadText.text = (async.progress * 100).ToString("F0") + "%";
+			loadText.text = ((waitBeforeLoadingAmount + (remine * async.progress)) * 100).ToString("F0") + "%";
             yield return new WaitForEndOfFrame();
-        }
-
-        loadText.text = "100%";
+		}
+		loadText.text = "100%";
         yield return new WaitForSeconds(0.5f);
 
         //ステージ名表示
