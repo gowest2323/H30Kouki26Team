@@ -69,7 +69,6 @@ public class EffectManager : SingletonMonoBehaviour<EffectManager> {
 
 	}
 	public void EnemyAuraCreate(GameObject enemy, bool isBoss) {
-
 		if (Slow.Instance.isSlowNow) return;
 
 		if (isBoss) {

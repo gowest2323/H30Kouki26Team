@@ -996,6 +996,7 @@ GameObject:
   - component: {fileID: 114629274128940998}
   - component: {fileID: 114406759096353852}
   - component: {fileID: 114856853109221216}
+  - component: {fileID: 114229685693639780}
   m_Layer: 10
   m_Name: oni_1f_boss
   m_TagString: Enemy
@@ -2885,6 +2886,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4aa8f36cc565194da3867466eee42ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114229685693639780
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1697299072828504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf499c8cfa64b94b878924136efa377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  auraParticle: {fileID: 198783446794598632, guid: ea1b488157a45e44d9bb28a40f86a516,
+    type: 2}
+  auraPositionName: mixamorig:Neck
+  auraBossDyingState: {fileID: 198783446794598632, guid: ca9563021da984715820aa34e3966e3c,
+    type: 2}
 --- !u!114 &114233109519702206
 MonoBehaviour:
   m_ObjectHideFlags: 1

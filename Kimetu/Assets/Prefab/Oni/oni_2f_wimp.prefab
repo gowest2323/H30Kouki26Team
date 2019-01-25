@@ -1177,6 +1177,7 @@ GameObject:
   - component: {fileID: 114229307193112278}
   - component: {fileID: 114230244498661094}
   - component: {fileID: 114567222654535372}
+  - component: {fileID: 114128638416380278}
   m_Layer: 10
   m_Name: oni_2f_wimp
   m_TagString: Enemy
@@ -2793,6 +2794,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3c1417fe11ef8f42b0df07f5bac78ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114128638416380278
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7268138c63313f46b8d00e800ed589b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  auraParticle: {fileID: 198783446794598632, guid: ea1b488157a45e44d9bb28a40f86a516,
+    type: 2}
+  auraPositionName: mixamorig:Neck
 --- !u!114 &114195432356520868
 MonoBehaviour:
   m_ObjectHideFlags: 1
