@@ -109,9 +109,10 @@ public class PlayerAttackSequence : MonoBehaviour {
 
 	private IEnumerator WaitFinish() {
 		var start = Time.time;
+		var wait = new WaitForEndOfFrame();
 
 		while (!playerAnimation.IsEndAnimation(0.2f)) {
-			yield return new WaitForEndOfFrame();
+			yield return wait;
 
 			//ここで逐一ステートを確認する
 			//防御中なら中断する
