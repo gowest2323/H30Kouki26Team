@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4042921443897004}
   - component: {fileID: 114895227920477910}
+  - component: {fileID: 114324509848741710}
   m_Layer: 0
   m_Name: TerminalManager
   m_TagString: Untagged
@@ -40,6 +41,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114324509848741710
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1670759489406116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edf11e085c7bd4db2954aa6e214843ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1005808848170906, guid: ae5991de767354763828d15a71fa4423, type: 2}
 --- !u!114 &114895227920477910
 MonoBehaviour:
   m_ObjectHideFlags: 1
