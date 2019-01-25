@@ -51,9 +51,9 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 			if (status.IsDead()) return;
 
 			if (isBoss && status.GetHP() == 1) {
-				EffectManager.Instance.EnemySlowAuraCreate(auraPlace, true);
+				//EffectManager.Instance.EnemySlowAuraCreate(auraPlace, true);
 			} else {
-				EffectManager.Instance.EnemySlowAuraCreate(auraPlace, false);
+				//EffectManager.Instance.EnemySlowAuraCreate(auraPlace, false);
 			}
 
 		});
@@ -166,9 +166,9 @@ public abstract class EnemyAI : MonoBehaviour, IDamageable {
 		if (status.IsDead()) return;
 
 		if (isBoss && status.GetHP() == 1) {
-			EffectManager.Instance.EnemyAuraCreate(auraPlace, true);
+			//EffectManager.Instance.EnemyAuraCreate(auraPlace, true);
 		} else {
-			EffectManager.Instance.EnemyAuraCreate(auraPlace, false);
+			//EffectManager.Instance.EnemyAuraCreate(auraPlace, false);
 		}
 
 

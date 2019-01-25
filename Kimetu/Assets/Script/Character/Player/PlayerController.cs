@@ -144,8 +144,26 @@ public class PlayerController : MonoBehaviour {
 			0,
 			Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
 		);
+#if UNITY_EDITOR
+		dir = GetKeyboardDirection(dir);
+#endif
 		action.Move(dir, !cameraController.IsLockOn());
 		cameraController.playerDir = dir;
+	}
+
+	private Vector3 GetKeyboardDirection(Vector3 dir) {
+		if (Input.GetKey(KeyCode.W)) {
+			dir.z = 1;
+		} else if (Input.GetKey(KeyCode.S)) {
+			dir.z = -1;
+		}
+		if (Input.GetKey(KeyCode.A)) {
+			dir.x = -1;
+		} else if (Input.GetKey(KeyCode.D)) {
+			dir.x = 1;
+		}
+		dir = dir.normalized;
+		return dir;
 	}
 
 	private void Attack() {
@@ -153,6 +171,12 @@ public class PlayerController : MonoBehaviour {
         //ボタンが押されている && (次のステージへ行くためのアレがない || アレに触れていない)
 		if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName()) && (changeStage == null || !changeStage.toNextStage)) {
 			action.Attack();
+		} else {
+#if UNITY_EDITOR
+			if (Input.GetKeyDown(KeyCode.Z) && (changeStage == null || !changeStage.toNextStage)) {
+				action.Attack();
+			}
+#endif
 		}
 	}
 

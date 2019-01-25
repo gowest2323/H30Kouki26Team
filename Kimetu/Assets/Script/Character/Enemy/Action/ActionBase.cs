@@ -61,7 +61,7 @@ public abstract class ActionBase : MonoBehaviour {
 
 		while (!cancelFlag && time < GetForceWaitTime()) {
 			time += Slow.Instance.DeltaTime();
-			yield return new WaitForSeconds(Slow.Instance.DeltaTime());
+			yield return null;
 		}
 	}
 }

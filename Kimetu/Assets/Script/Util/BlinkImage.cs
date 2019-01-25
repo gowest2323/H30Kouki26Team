@@ -21,8 +21,9 @@ public class BlinkImage : MonoBehaviour {
 	}
 
 	private IEnumerator Blink() {
-		while(true) {
-			yield return new WaitForSeconds(blinkRate);
+		var wait = new WaitForSeconds(blinkRate);
+		while (true) {
+			yield return wait;
 			image.gameObject.SetActive(!image.gameObject.activeSelf);
 		}
 	}
