@@ -2076,48 +2076,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4658353769318702, guid: 66e25527d1aa9ea439a59e4ae4a121c6,
     type: 2}
   m_PrefabInternal: {fileID: 1429770329}
---- !u!1001 &1479106548
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -245.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1.42
-      objectReference: {fileID: 0}
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 5.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4737688773557284, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a4773f741887c4daa9db46abdbf0f392, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!4 &1496595463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4177164150201806, guid: 1acbdab08c12f422ca5431cffaa3877f,
