@@ -774,7 +774,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	private IEnumerator DirectionAvoid(Vector3 dir, float avoidMoveTime, float avoidMoveDistance) {
 
 		LayerMask mask = LayerMask.GetMask("Stage");
-		Ray ray = new Ray(transform.position + new Vector3(0, 1, 0), dir.normalized);
 		RaycastHit hit;
 		var offset = 0f;
 		var start = transform.position;
@@ -788,12 +787,13 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			var percent = offset / avoidMoveTime;
 			EffectManager.Instance.PlayerMoveEffectCreate(gameObject, true);
 
+			Ray ray = new Ray(transform.position + new Vector3(0, 1, 0), dir.normalized);
 			if (Physics.Raycast(ray, out hit, rayDistance, mask)) {
 				Debug.Log("stageに当たった");
 				var otherPos = hit.collider.transform.position + Vector3.up;
 				var selfPos = transform.position;
 				otherPos.y = selfPos.y;
-				dis = Vector3.Distance(otherPos, selfPos);
+				dis = Vector3.Distance(hit.point, ray.origin);
 				//                Debug.Log(dis);
 
 				if (dis <= limitRayDistance) {
