@@ -42,7 +42,9 @@ public class PauseManager : MonoBehaviour {
 	private void Update() {
 		if (isPause) return;
 
-		if (Input.GetButtonDown(InputMap.GetInputName(InputMap.Type.StartButton))) {
+		if (Input.GetButtonDown(InputMap.GetInputName(InputMap.Type.StartButton)) &&
+            !Fade.Instance().isFading &&
+            !SceneChanger.Instance().isChanging) {
 			Pause();
 		}
 	}
