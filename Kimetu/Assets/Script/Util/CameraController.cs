@@ -58,6 +58,8 @@ public class CameraController : MonoBehaviour {
     private bool preIsSlow = false;// 前フレームのisSlowNow
     private bool curIsSlow = false;// 現フレームのisSlowNow
 
+    private PlayerStatus playerStatus;
+
     // Use this for initialization
     private void Start() {
         GetPlayerIfNull();
@@ -66,6 +68,7 @@ public class CameraController : MonoBehaviour {
 		interval = false;
 		GetIsInveted();
 		intervalTime = 0;
+        playerStatus = player.GetComponent<PlayerStatus>();
 
         // 回転・位置の初期化
         PositionToPlayerBack();
@@ -73,6 +76,13 @@ public class CameraController : MonoBehaviour {
 
 	// Update is called once per frame
 	private void Update() {
+        //死亡したらカメラ操作を切る
+        if (playerStatus.IsDead())
+        {
+            isLockOn = false;
+            interval = false;
+            return;
+        }
 
         curPlayerState = player.GetComponent<PlayerAction>().state;
         curIsSlow = Slow.Instance.isSlowNow;
