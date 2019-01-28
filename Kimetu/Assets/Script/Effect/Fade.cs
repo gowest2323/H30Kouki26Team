@@ -26,6 +26,8 @@ public class Fade : MonoBehaviour {
 	private Image image; //イメージオブジェクト
 
 	private static Fade instance; //インスタンス
+    public bool isFading { private set; get; }  //フェード中か
+
 
 	[RuntimeInitializeOnLoadMethod()]
 	public static Fade Instance() {
@@ -64,7 +66,9 @@ public class Fade : MonoBehaviour {
 		//フェードの初期設定
 		Image image = go.AddComponent<Image>();
 		image.color = new Color(0, 0, 0, 0);
-	}
+        // フェード状態
+        instance.isFading = false;
+    }
 
 	/// <summary>
 	/// シーン変更時に呼ばれる
@@ -88,33 +92,37 @@ public class Fade : MonoBehaviour {
 		image.color = new Color(0, 0, 0, 0);
 
 		float time = 0.0f;
+        isFading = true;
 
-		while (time < second) {
+        while (time < second) {
 			image.color = startColor * (1.0f - time / second);
 			time += Time.deltaTime;
-			yield return null;
+            yield return null;
 		}
-	}
+        yield return isFading = false;
+    }
 
-	/// <summary>
-	/// フェードアウトするコルーチン
-	/// </summary>
-	/// <param name="second">かける秒数</param>
-	/// <param name="endColor">フェード終了時の色</param>
-	/// <returns></returns>
-	public IEnumerator FadeOutCoroutine(float second, Color endColor) {
+    /// <summary>
+    /// フェードアウトするコルーチン
+    /// </summary>
+    /// <param name="second">かける秒数</param>
+    /// <param name="endColor">フェード終了時の色</param>
+    /// <returns></returns>
+    public IEnumerator FadeOutCoroutine(float second, Color endColor) {
 		if (image == null) {
 			image = GetComponent<Image>();
 		}
 
 		float time = 0.0f;
+        isFading = true;
 
-		while (time < second) {
-			image.color = endColor * (time / second);
-			time += Time.deltaTime;
-			yield return null;
-		}
-	}
+        while (time < second){
+            image.color = endColor * (time / second);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        yield return isFading = false;
+    }
 
 	/// <summary>
 	/// フェードイン
