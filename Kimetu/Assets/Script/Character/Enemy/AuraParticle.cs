@@ -9,6 +9,8 @@ public class AuraParticle : MonoBehaviour
     protected ParticleSystem auraParticle;
     [SerializeField]
     protected string auraPositionName = "mixamorig:Neck";
+    [SerializeField]
+    protected GameObject auraPos;
     protected EnemyStatus enemyStatus;
 
     protected virtual void Start()
@@ -23,7 +25,8 @@ public class AuraParticle : MonoBehaviour
     private void SetAura()
     {
         //オーラ発生場所を探してその場所に生成
-        Transform auraPosition = transform.FindRec(auraPositionName).transform;
+        // Transform auraPosition = transform.FindRec(auraPositionName).transform;
+        Transform auraPosition = auraPos.transform;
         auraParticle = GameObject.Instantiate(auraParticle, auraPosition);
         auraParticle.Play();
     }

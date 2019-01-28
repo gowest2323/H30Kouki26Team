@@ -1317,12 +1317,13 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 224174952753196498, guid: 0d86df82e62f5471b8bf3f8b37be8950,
         type: 2}
-      propertyPath: m_AnchorMax.y
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4788020716342986, guid: 0d86df82e62f5471b8bf3f8b37be8950, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+    - target: {fileID: 224174952753196498, guid: 0d86df82e62f5471b8bf3f8b37be8950,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224174952753196498, guid: 0d86df82e62f5471b8bf3f8b37be8950,
         type: 2}
