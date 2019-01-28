@@ -20,8 +20,12 @@ public class BossAura : AuraParticle
         if (isSwitchParticle) return;
         if (enemyStatus.GetHP() == 1)
         {
-            Destroy(auraParticle);
+			//Destroy(auraParticle);
+			//GameObject.Destroy
+			auraParticle.Stop();
+			Destroy(auraParticle.gameObject, 5f);
             auraParticle = GameObject.Instantiate(auraBossDyingState, transform.FindRec(auraPositionName).transform);
+			//auraParticle.Play();
             isSwitchParticle = true;
         }
     }
