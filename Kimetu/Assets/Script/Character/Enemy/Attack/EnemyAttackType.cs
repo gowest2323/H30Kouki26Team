@@ -22,6 +22,7 @@ public enum EnemyAttackType {
 	SetunaCombo,
 	Thunder, //雷撃
 	KioniHurioroshi, //黄鬼用振り下ろし
+	KioniSwingDown,
 }
 
 /// <summary>
@@ -48,7 +49,8 @@ public class EnemyAttackTypeDictionary {
 		{EnemyAttackType.Thunder, "Thunder" },
 		{EnemyAttackType.SetsunaNagiharai, "Nagiharai" },
 		{EnemyAttackType.SetunaCombo, "Combo"},
-		{EnemyAttackType.KioniHurioroshi, "Attack2" }
+		{EnemyAttackType.KioniHurioroshi, "Attack2" },
+		{EnemyAttackType.KioniSwingDown, "Hurioroshi" }
 	};
 
 	/// <summary>
@@ -67,5 +69,6 @@ public class EnemyAttackTypeDictionary {
 		{EnemyAttackType.SetunaCombo, typeof(Setuna3attackHook) },
 		{EnemyAttackType.Thunder, typeof(SetunaKaminari_fixHook) },
 		{EnemyAttackType.KioniHurioroshi, typeof(KioniAtkHook) },
+		{EnemyAttackType.KioniSwingDown, typeof(KioniHuriorosiHook) },
 	};
 }
