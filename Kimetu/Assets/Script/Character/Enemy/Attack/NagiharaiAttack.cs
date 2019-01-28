@@ -41,7 +41,7 @@ public class NagiharaiAttack : EnemyAttack, IAttackEventHandler {
 	public override IEnumerator Attack() {
 		//攻撃範囲描画
 		DrawStartAttackArea();
-		enemyAnimation.StartAttackAnimation(EnemyAttackType.NagiharaiAttack);
+		enemyAnimation.StartAttackAnimation(attackType);
 		yield return WaitForce();
 		yield return WaitStartAttackAnimation();
 		StartCoroutine(Rotate());
