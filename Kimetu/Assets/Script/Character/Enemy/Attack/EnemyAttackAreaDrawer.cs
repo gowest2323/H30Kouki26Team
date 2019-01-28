@@ -19,8 +19,10 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 	protected bool toReleaseParent = false;
 	protected int materialAlphaPropertyID;
 	protected Coroutine coroutine;
+	public Vector3 putOffset { get; set; }
 
 	protected virtual void Start() {
+		putOffset = Vector3.zero;
 		drawAreaObject = Instantiate(drawAreaObject, this.transform);
 		drawAreaObject.SetActive(false);
 		//床レイヤーマスク取得
@@ -41,7 +43,7 @@ public class EnemyAttackAreaDrawer : MonoBehaviour {
 
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, floorLayerMask)) {
 			//床の上にそのまま置くと表示がちらつくので少し上に配置
-			drawAreaObject.transform.position = hit.point + Vector3.up * 0.03f;
+			drawAreaObject.transform.position = hit.point + putOffset + Vector3.up * 0.03f;
 
 			if (toReleaseParent) {
 				drawAreaObject.transform.SetParent(null);

@@ -8,7 +8,13 @@ using UnityEngine;
 public class Zako3F : EnemyStatusScriptableObject {
 	[SerializeField]
 	private int _hurioroshiPower;
+	[SerializeField]
+	private int _kioniHurioroshiPower;
 	public override int GetPower(EnemyAttackType type) {
-		return _hurioroshiPower;
+		if (type == EnemyAttackType.KioniHurioroshi) {
+			return _kioniHurioroshiPower;
+		} else {
+			return _hurioroshiPower;
+		}
 	}
 }
