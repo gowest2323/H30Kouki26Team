@@ -40,6 +40,12 @@ public class ChangeStage : MonoBehaviour {
 				SceneChanger.Instance().Change(nextSceneName, new FadeData(1, 1, Color.black));
 			}
 		};
+
+		player.GetComponent<Status>().onDamage.Subscribe((e) => {
+			//ここにダメージ受けた時の処理
+			GetComponent<LongPressDetector>().Cancel();
+			//ActivateCanvas(false);
+		});
 	}
 
 	// Update is called once per frame
@@ -51,11 +57,6 @@ public class ChangeStage : MonoBehaviour {
 		//if (player.GetComponent<PlayerAction>().state == PlayerState.Damage) {
 		//}
 
-		player.GetComponent<Status>().onDamage.Subscribe((e) => {
-			//ここにダメージ受けた時の処理
-			GetComponent<LongPressDetector>().Cancel();
-			//ActivateCanvas(false);
-		});
 	}
 
 	public void OnTriggerEnter(Collider other) {

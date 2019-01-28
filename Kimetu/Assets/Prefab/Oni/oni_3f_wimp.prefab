@@ -1142,14 +1142,14 @@ GameObject:
   - component: {fileID: 65364922492477348}
   - component: {fileID: 114200416064946534}
   - component: {fileID: 114347377856159378}
-  - component: {fileID: 114120511229164584}
-  - component: {fileID: 114567631109354824}
-  - component: {fileID: 114933768454290628}
   - component: {fileID: 114821891086230502}
   - component: {fileID: 114754991644121570}
   - component: {fileID: 114763623692204730}
   - component: {fileID: 114929746663587848}
   - component: {fileID: 114253789666665130}
+  - component: {fileID: 114500685913731022}
+  - component: {fileID: 114753870324477680}
+  - component: {fileID: 114909881088171798}
   m_Layer: 10
   m_Name: oni_3f_wimp
   m_TagString: Enemy
@@ -3008,17 +3008,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAttack: {fileID: 114221862246088092}
---- !u!114 &114120511229164584
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1700421138863714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3c1417fe11ef8f42b0df07f5bac78ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114163588642598188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3257,6 +3246,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
+--- !u!114 &114500685913731022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f2465bee0474a418d820a66fdef7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114504836097957404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3373,17 +3373,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathStateName: dead
---- !u!114 &114567631109354824
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1700421138863714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb2d9963aa2b2847b2fb958701a1d83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114606335470331022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3451,6 +3440,17 @@ MonoBehaviour:
   fadeInTime: 0.1
   maxMaterialAlpha: 0.8
   toReleaseParent: 0
+--- !u!114 &114753870324477680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6beef43519344ee902a6a09335d522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114754991644121570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3502,6 +3502,17 @@ MonoBehaviour:
   searchAreas:
   - {fileID: 114059140665317788}
   - {fileID: 114308658900368698}
+--- !u!114 &114909881088171798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b02bb14c6df6143e4bc05bd3636b1e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114929746663587848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3511,17 +3522,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffb2d35c072022a4fb1f3a8aff5037de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114933768454290628
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1700421138863714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e92f1f9186b60ed4fb981cc0bb5bfd3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!120 &120167271379208286
