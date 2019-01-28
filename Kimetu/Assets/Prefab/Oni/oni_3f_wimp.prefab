@@ -1142,7 +1142,6 @@ GameObject:
   - component: {fileID: 65364922492477348}
   - component: {fileID: 114200416064946534}
   - component: {fileID: 114347377856159378}
-  - component: {fileID: 114120511229164584}
   - component: {fileID: 114821891086230502}
   - component: {fileID: 114754991644121570}
   - component: {fileID: 114763623692204730}
@@ -1150,6 +1149,7 @@ GameObject:
   - component: {fileID: 114253789666665130}
   - component: {fileID: 114500685913731022}
   - component: {fileID: 114753870324477680}
+  - component: {fileID: 114909881088171798}
   m_Layer: 10
   m_Name: oni_3f_wimp
   m_TagString: Enemy
@@ -3008,17 +3008,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAttack: {fileID: 114221862246088092}
---- !u!114 &114120511229164584
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1700421138863714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3c1417fe11ef8f42b0df07f5bac78ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114163588642598188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3513,6 +3502,17 @@ MonoBehaviour:
   searchAreas:
   - {fileID: 114059140665317788}
   - {fileID: 114308658900368698}
+--- !u!114 &114909881088171798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b02bb14c6df6143e4bc05bd3636b1e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114929746663587848
 MonoBehaviour:
   m_ObjectHideFlags: 1
