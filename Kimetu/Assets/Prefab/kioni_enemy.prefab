@@ -2893,7 +2893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a467ac740040e41b6b67d200301e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eyeTransform: {fileID: 0}
+  eyeTransform: {fileID: 4318188133162726}
   searchCollider: {fileID: 65583818032299256}
 --- !u!114 &114096226384388224
 MonoBehaviour:
@@ -2932,8 +2932,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parameter: {fileID: 11400000, guid: 1a462ca606f263949956ebf962834f6a, type: 2}
-  attackArea: {fileID: 0}
-  attackAreaDrawer: {fileID: 0}
+  attackArea: {fileID: 114062709406455890}
+  attackAreaDrawer: {fileID: 114601230626535398}
   attackStateName: hurioroshi
   attackType: 0
 --- !u!114 &114142922720538134
@@ -3082,7 +3082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4b983f364a67a4bae5d9c8660c3427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAttack: {fileID: 0}
+  enemyAttack: {fileID: 114127117864289800}
 --- !u!114 &114513155727321168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3116,7 +3116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4b983f364a67a4bae5d9c8660c3427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAttack: {fileID: 0}
+  enemyAttack: {fileID: 114127117864289800}
 --- !u!114 &114568968841989162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3246,14 +3246,14 @@ MonoBehaviour:
   sinkHeight: 2
   dieEffectPrefab: {fileID: 1752285523633858, guid: 4a07d90f81cf649ed9723fe7495e10f1,
     type: 2}
-  idle: {fileID: 0}
-  search: {fileID: 0}
-  chasePlayer: {fileID: 0}
-  priorityAttack: {fileID: 0}
-  secondaryAttack: {fileID: 0}
-  damage: {fileID: 0}
-  death: {fileID: 0}
-  returnDefaultPositioin: {fileID: 0}
+  idle: {fileID: 114513155727321168}
+  search: {fileID: 114748480645076218}
+  chasePlayer: {fileID: 114142922720538134}
+  priorityAttack: {fileID: 114562743434260512}
+  secondaryAttack: {fileID: 114562743434260512}
+  damage: {fileID: 114758197425584112}
+  death: {fileID: 114786075174079530}
+  returnDefaultPositioin: {fileID: 114426503590466790}
 --- !u!114 &114758197425584112
 MonoBehaviour:
   m_ObjectHideFlags: 1
