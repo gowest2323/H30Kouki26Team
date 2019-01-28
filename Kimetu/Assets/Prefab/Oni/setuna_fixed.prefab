@@ -3544,10 +3544,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf499c8cfa64b94b878924136efa377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  auraParticle: {fileID: 198783446794598632, guid: ea1b488157a45e44d9bb28a40f86a516,
+  auraParticle: {fileID: 198543237082346008, guid: eeec7e7232df6fb489b25a1998acbdea,
     type: 2}
   auraPositionName: mixamorig:Neck
-  auraBossDyingState: {fileID: 198783446794598632, guid: ca9563021da984715820aa34e3966e3c,
+  auraBossDyingState: {fileID: 198787831253509596, guid: 15aed15ab8fe149818cfd0d5fef32975,
     type: 2}
 --- !u!120 &120489014218435328
 LineRenderer:

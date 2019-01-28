@@ -63,11 +63,11 @@ MonoBehaviour:
     type: 2}
   shieldEffect: {fileID: 1565601249010682, guid: 75184ed2e5c4a8647bacac58d2a3829e,
     type: 2}
-  auraEffect: {fileID: 1646530348781452, guid: ea1b488157a45e44d9bb28a40f86a516, type: 2}
-  auraEffect_Slow: {fileID: 1646530348781452, guid: 14619360a518f224d9769c2708208210,
+  auraEffect: {fileID: 1500337668372222, guid: eeec7e7232df6fb489b25a1998acbdea, type: 2}
+  auraEffect_Slow: {fileID: 1500337668372222, guid: 81a204d97c2e97648a3730e8caa5657f,
     type: 2}
-  bossAuraEffect: {fileID: 1646530348781452, guid: ca9563021da984715820aa34e3966e3c,
+  bossAuraEffect: {fileID: 1744336094111714, guid: 15aed15ab8fe149818cfd0d5fef32975,
     type: 2}
-  bossAuraEffect_Slow: {fileID: 1646530348781452, guid: 6b798b0559d524341b5f3146bbf4c5a9,
+  bossAuraEffect_Slow: {fileID: 1744336094111714, guid: aadd255fac1c8ba4fb69664e309c569f,
     type: 2}
   limitTime: 1
