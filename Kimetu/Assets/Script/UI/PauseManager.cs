@@ -8,10 +8,12 @@ public class PauseManager : MonoBehaviour {
 	public bool isPause { private set; get; }
     public bool isReturnFromPause { set; get; }
 	private CameraController cameraController;
+    private PlayerStatus playerStatus;
 
 	private void Start() {
 		isPause = false;
 		this.cameraController = Camera.main.gameObject.GetComponent<CameraController>();
+        this.playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
 	}
 
 	/// <summary>
@@ -44,7 +46,8 @@ public class PauseManager : MonoBehaviour {
 
 		if (Input.GetButtonDown(InputMap.GetInputName(InputMap.Type.StartButton)) &&
             !Fade.Instance().isFading &&
-            !SceneChanger.Instance().isChanging) {
+            !SceneChanger.Instance().isChanging &&
+            !playerStatus.IsDead()) {
 			Pause();
 		}
 	}
