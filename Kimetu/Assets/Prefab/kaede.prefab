@@ -2017,7 +2017,7 @@ Transform:
   m_GameObject: {fileID: 1866984520886906}
   m_LocalRotation: {x: 0.000000014901161, y: -0.00000010430813, z: -0.000000029802322,
     w: 1}
-  m_LocalPosition: {x: 0.001, y: -0.009, z: -0.331}
+  m_LocalPosition: {x: 0.006, y: -0.011, z: -0.349}
   m_LocalScale: {x: 1.0000013, y: 1.0000015, z: 1.0000014}
   m_Children: []
   m_Father: {fileID: 4978441310561146}
@@ -2249,7 +2249,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1605809767795630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -138.699, y: 0, z: -12.68}
+  m_LocalPosition: {x: 9.456, y: 0, z: -2.16}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4670702012720468}
@@ -3289,7 +3289,7 @@ MonoBehaviour:
   MaxFrame: 12
   Granularity: 60
   Fps: 60
-  MyColor: {r: 0.7058824, g: 0.46600214, b: 0.8301887, a: 1}
+  MyColor: {r: 0.56737274, g: 0.7720241, b: 0.9622642, a: 1}
   MyMaterial: {fileID: 2100000, guid: 75f756109f216ad409ff1a5ea7dd7b2c, type: 2}
 --- !u!114 &114416860381328496
 MonoBehaviour:
