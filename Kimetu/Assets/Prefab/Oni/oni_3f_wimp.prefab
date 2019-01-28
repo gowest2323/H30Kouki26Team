@@ -2370,8 +2370,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1700421138863714}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 16, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4191524631400024}
@@ -3473,9 +3473,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7268138c63313f46b8d00e800ed589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  auraParticle: {fileID: 198543237082346008, guid: eeec7e7232df6fb489b25a1998acbdea,
+  auraParticle: {fileID: 198226482281999614, guid: fd90b02b6b423394b90897514c15b0a4,
     type: 2}
   auraPositionName: mixamorig:Neck
+  auraPos: {fileID: 1700421138863714}
 --- !u!114 &114821891086230502
 MonoBehaviour:
   m_ObjectHideFlags: 1
