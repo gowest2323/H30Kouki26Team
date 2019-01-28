@@ -13,3 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHP: 90
   _hurioroshiPower: 15
+  _kioniHurioroshiPower: 15
