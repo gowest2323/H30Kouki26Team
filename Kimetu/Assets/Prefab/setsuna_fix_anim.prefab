@@ -971,6 +971,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4805887217355174}
+  - component: {fileID: 114637874256503872}
   m_Layer: 9
   m_Name: "\x05EnemyClubEffectArea"
   m_TagString: Untagged
@@ -1420,7 +1421,7 @@ Transform:
   m_GameObject: {fileID: 1792259437502914}
   m_LocalRotation: {x: -0.00000014901158, y: -0.0000000036168926, z: 0.00000021500625,
     w: 1}
-  m_LocalPosition: {x: -0.327, y: 0.299, z: -0.228}
+  m_LocalPosition: {x: -0.3804, y: 0.3007, z: -0.2651}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4805887217355174}
@@ -2154,7 +2155,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1697540687635370}
   m_LocalRotation: {x: -0.00000008940694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.328, y: 0.022, z: 0.065}
+  m_LocalPosition: {x: -0.2846, y: -0.0154, z: 0.1684}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4805887217355174}
@@ -3241,6 +3242,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ed6739c4e516544b5809d7db609282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114637874256503872
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1665068056559970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c2c9828fec98747a1b0680f47bed80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseWith2D: 0
+  SortingLayerName: 
+  SortingOrder: 0
+  PointStart: {fileID: 4696893534307518}
+  PointEnd: {fileID: 4007829311003342}
+  MaxFrame: 14
+  Granularity: 60
+  Fps: 60
+  MyColor: {r: 0.6794996, g: 0, b: 1, a: 1}
+  MyMaterial: {fileID: 2100000, guid: 75f756109f216ad409ff1a5ea7dd7b2c, type: 2}
 --- !u!114 &114675370916508866
 MonoBehaviour:
   m_ObjectHideFlags: 1
