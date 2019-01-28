@@ -1143,13 +1143,13 @@ GameObject:
   - component: {fileID: 114200416064946534}
   - component: {fileID: 114347377856159378}
   - component: {fileID: 114120511229164584}
-  - component: {fileID: 114650850640000746}
   - component: {fileID: 114567631109354824}
   - component: {fileID: 114933768454290628}
   - component: {fileID: 114821891086230502}
   - component: {fileID: 114754991644121570}
   - component: {fileID: 114763623692204730}
   - component: {fileID: 114929746663587848}
+  - component: {fileID: 114253789666665130}
   m_Layer: 10
   m_Name: oni_3f_wimp
   m_TagString: Enemy
@@ -2370,8 +2370,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1700421138863714}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 16, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4191524631400024}
@@ -3125,6 +3125,17 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114253789666665130
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700421138863714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd536314c9f644b0acee19bf611dd7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114308658900368698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3394,17 +3405,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d49819f10d3475c49af4c5f3f63a86ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114650850640000746
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1700421138863714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fc73acf983866f48817552430cda72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114655536159964250
