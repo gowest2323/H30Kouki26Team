@@ -2848,6 +2848,7 @@ MonoBehaviour:
   auraParticle: {fileID: 198543237082346008, guid: eeec7e7232df6fb489b25a1998acbdea,
     type: 2}
   auraPositionName: mixamorig:Neck
+  auraPos: {fileID: 1697299072828504}
   auraBossDyingState: {fileID: 198787831253509596, guid: 15aed15ab8fe149818cfd0d5fef32975,
     type: 2}
 --- !u!114 &114233109519702206

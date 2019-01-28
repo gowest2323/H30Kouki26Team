@@ -2788,9 +2788,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7268138c63313f46b8d00e800ed589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  auraParticle: {fileID: 198543237082346008, guid: eeec7e7232df6fb489b25a1998acbdea,
+  auraParticle: {fileID: 198226482281999614, guid: dca55b51bdbb9454ca9cf5d9902d3111,
     type: 2}
   auraPositionName: mixamorig:Neck
+  auraPos: {fileID: 1700421138863714}
 --- !u!114 &114195432356520868
 MonoBehaviour:
   m_ObjectHideFlags: 1
