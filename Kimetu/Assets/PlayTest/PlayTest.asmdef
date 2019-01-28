@@ -1,0 +1,13 @@
+{
+    "name": "PlayTest",
+    "references": [
+        "Kimetu",
+        "NavMeshComponents"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

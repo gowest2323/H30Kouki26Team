@@ -1,0 +1,13 @@
+{
+    "name": "Kimetu",
+    "references": [
+        "NavMeshComponents",
+        "UniRx",
+        "UniRx.Async",
+        "iTween"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

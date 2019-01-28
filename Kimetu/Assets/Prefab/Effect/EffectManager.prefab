@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1938279733895686}
+  m_IsPrefabAsset: 1
+--- !u!1 &1938279733895686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4627335559620530}
+  - component: {fileID: 114390242650729624}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4627335559620530
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1938279733895686}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114390242650729624
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1938279733895686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a3dd124ab72dcd49affc4e9bd0e4c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerDamageEffect: {fileID: 1142879947323016, guid: 16f3162719ea396459e8504e2a9ce72c,
+    type: 2}
+  enemyDamageEffect: {fileID: 1565601249010682, guid: 8f41792c564a55d488fac94508e55e25,
+    type: 2}
+  playerMoveEffect: {fileID: 1565601249010682, guid: 719f62d8e027e2d48a1f4a58deb54002,
+    type: 2}
+  enemyMoveEffect: {fileID: 1565601249010682, guid: 286a472b2b988f440a9c2caa32083695,
+    type: 2}
+  playerViolentMoveEffect: {fileID: 1565601249010682, guid: 61466ca6d2cf7d9449d6d78a4f804f04,
+    type: 2}
+  shieldEffect: {fileID: 1565601249010682, guid: 75184ed2e5c4a8647bacac58d2a3829e,
+    type: 2}
+  auraEffect: {fileID: 1500337668372222, guid: eeec7e7232df6fb489b25a1998acbdea, type: 2}
+  auraEffect_Slow: {fileID: 1500337668372222, guid: 81a204d97c2e97648a3730e8caa5657f,
+    type: 2}
+  bossAuraEffect: {fileID: 1744336094111714, guid: 15aed15ab8fe149818cfd0d5fef32975,
+    type: 2}
+  bossAuraEffect_Slow: {fileID: 1744336094111714, guid: aadd255fac1c8ba4fb69664e309c569f,
+    type: 2}
+  limitTime: 1

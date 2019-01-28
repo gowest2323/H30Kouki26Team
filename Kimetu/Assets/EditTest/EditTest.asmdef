@@ -1,0 +1,15 @@
+{
+    "name": "EditTest",
+    "references": [
+        "Kimetu",
+        "NavMeshComponents"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
