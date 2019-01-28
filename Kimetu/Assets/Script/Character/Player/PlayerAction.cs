@@ -376,6 +376,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		AudioManager.Instance.PlayPlayerSE(audioNames[Random.Range(0, audioNames.Length)].String());
 		EnemyAI nearEnemy = MostNearEnemy();
 		var isBoss = nearEnemy.GetComponent<BossMarker>() != null;
+		playerAnimation.StopWalkAnimation();
 		//敵のほうを向くまで待機
 		yield return StartCoroutine(RotateToTarget(nearEnemy.waistPosition, 5.0f));
 		status.Heal(pierceHealHP);
