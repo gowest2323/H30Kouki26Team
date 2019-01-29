@@ -91,17 +91,22 @@ public class CheckAssetDependences : EditorWindow {
 		GUILayout.Label("This is the system of checking for using of the assets.", EditorStyles.label);
 		var mode = (SearchMode)EditorGUILayout.EnumPopup(new GUIContent("Search Mode"), searchMode, GUILayout.Width(300), GUILayout.Height(20));
 		EditorGUILayout.Space();
+
 		if (mode != searchMode) {
 			InitModes();
 		}
+
 		searchMode = mode;
+
 		switch (searchMode) {
 			case SearchMode.Input:
 				ShowInputMode();
 				break;
+
 			case SearchMode.Refer:
 				ShowReferMode();
 				break;
+
 			case SearchMode.InFile:
 				ShowInFolderMode();
 				break;
@@ -110,14 +115,16 @@ public class CheckAssetDependences : EditorWindow {
 		if (resultStr.Count > 0) {
 			GUILayout.Label("Result", EditorStyles.boldLabel);
 			resultScroll = EditorGUILayout.BeginScrollView(resultScroll,
-				false,
-				true,
-				GUILayout.Width(position.width),
-				GUILayout.Height(position.height * 0.3f));
+						   false,
+						   true,
+						   GUILayout.Width(position.width),
+						   GUILayout.Height(position.height * 0.3f));
+
 			//参照検索結果表示領域
 			foreach (var result in resultStr) {
 				EditorGUILayout.SelectableLabel(result, EditorStyles.label, GUILayout.Height(20));
 			}
+
 			EditorGUILayout.EndScrollView();
 		}
 	}
@@ -137,9 +144,11 @@ public class CheckAssetDependences : EditorWindow {
 		}
 		public void Show() {
 			var _st = EditorGUILayout.ToggleLeft(text, st, GUILayout.Width(100));
+
 			if (_st != st) {
 				isChanged = true;
 			}
+
 			st = _st;
 		}
 	}
@@ -156,18 +165,22 @@ public class CheckAssetDependences : EditorWindow {
 		//検索タイプフィルタ
 		bool refinder = false;
 		var hasFilter = EditorGUILayout.ToggleLeft("Filter", hasFilterTypes.target, EditorStyles.boldLabel);
+
 		if (hasFilter != hasFilterTypes.target) {
 			refinder = true;
 		}
+
 		hasFilterTypes.target = hasFilter;
 
 		if (EditorGUILayout.BeginFadeGroup(hasFilterTypes.faded)) {
 			GUILayout.Label("Find Types:", EditorStyles.largeLabel);
 
 			EditorGUILayout.BeginHorizontal();
+
 			foreach (var toggle in filterToggles) {
 				toggle.Show();
 			}
+
 			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.EndFadeGroup();
 		}
@@ -175,20 +188,21 @@ public class CheckAssetDependences : EditorWindow {
 		//検索結果表示領域
 		GUILayout.Label("Found Assets", EditorStyles.boldLabel);
 		foundScroll = EditorGUILayout.BeginScrollView(foundScroll,
-			false,
-			true,
-			GUILayout.Width(position.width),
-			GUILayout.Height(position.height * 0.3f));
+					  false,
+					  true,
+					  GUILayout.Width(position.width),
+					  GUILayout.Height(position.height * 0.3f));
 
 		if (prebFindName.Equals(findName)
-			&& !refinder
-			&& !FilterToggle.isChanged) {
+				&& !refinder
+				&& !FilterToggle.isChanged) {
 			foreach (var label in pathLabels) {
 				label.ShowButton();
 			}
 		} else {
 			CreatePathLabel(findName);
 		}
+
 		EditorGUILayout.EndScrollView();
 		FilterToggle.isChanged = false;
 	}
@@ -199,13 +213,17 @@ public class CheckAssetDependences : EditorWindow {
 		switch (type) {
 			case AssetType.Texture:
 				return "texture2D";
+
 			case AssetType.Material:
 				return "material";
+
 			case AssetType.Prefab:
 				return "prefab";
+
 			case AssetType.Script:
 				return "script";
 		}
+
 		return "";
 	}
 
@@ -230,6 +248,7 @@ public class CheckAssetDependences : EditorWindow {
 		} else {
 			FindAndCreateLabel(name);
 		}
+
 		prebFindName = name;
 	}
 
@@ -267,9 +286,11 @@ public class CheckAssetDependences : EditorWindow {
 	//名前検索してPathLabelButton作成
 	void FindAndCreateLabel(string name, string type = "") {
 		string filter = name;
+
 		if (type != "") {
 			filter += " t:" + type;
 		}
+
 		string[] guids = AssetDatabase.FindAssets(filter);
 
 		if (guids != null && guids.Length > 0) {
@@ -291,6 +312,7 @@ public class CheckAssetDependences : EditorWindow {
 				label.SetActive(false);
 			}
 		}
+
 		pathLabel.SetActive(true);
 		foundScroll = Vector2.zero;
 		CheckUsing(pathLabel.path, pathLabel.guid);
@@ -301,16 +323,18 @@ public class CheckAssetDependences : EditorWindow {
 	void ShowReferMode() {
 		GUILayout.Label("Put the any object you want to search", EditorStyles.label);
 		var obj = EditorGUILayout.ObjectField(referObj, typeof(Object), true);
+
 		if (obj != null && !obj.Equals(referObj)) { //セットされた型のチェック
 			var objType = obj.GetType();
-			if (objType.Equals(typeof(Texture2D))
-				|| objType.Equals(typeof(Texture))
-				|| objType.Equals(typeof(RenderTexture))
-				|| objType.Equals(typeof(Material))
-				|| objType.Equals(typeof(GameObject))
-				|| objType.Equals(typeof(MonoScript))
 
-			) {
+			if (objType.Equals(typeof(Texture2D))
+					|| objType.Equals(typeof(Texture))
+					|| objType.Equals(typeof(RenderTexture))
+					|| objType.Equals(typeof(Material))
+					|| objType.Equals(typeof(GameObject))
+					|| objType.Equals(typeof(MonoScript))
+
+			   ) {
 				string path = AssetDatabase.GetAssetPath(obj);
 				string guid = AssetDatabase.AssetPathToGUID(path);
 				CheckUsing(path, guid);
@@ -323,6 +347,7 @@ public class CheckAssetDependences : EditorWindow {
 
 
 		}
+
 		referObj = obj;
 	}
 
@@ -338,6 +363,7 @@ public class CheckAssetDependences : EditorWindow {
 					return true;        //同一アセットを複数参照していることはないと思うので、ここで打ち止め
 				}
 			}
+
 			return false;
 		}
 	}
@@ -347,6 +373,7 @@ public class CheckAssetDependences : EditorWindow {
 	void CollectTartgetAssets() {
 		TargetAssets.Clear();
 		string[] targetGuids = AssetDatabase.FindAssets("t:scene t:prefab t:material");
+
 		foreach (var targetGuid in targetGuids) {
 			//guidから参照しているアセットを取り出す
 			var targetPath = AssetDatabase.GUIDToAssetPath(targetGuid);
@@ -357,6 +384,7 @@ public class CheckAssetDependences : EditorWindow {
 			asset.assetsPathes = assetsPathes;
 			TargetAssets.Add(targetGuid, asset);
 		}
+
 		needCollection = false;
 	}
 
@@ -364,12 +392,14 @@ public class CheckAssetDependences : EditorWindow {
 	void CheckUsing(string path, string guid) {
 		resultScroll = Vector2.zero;
 		resultStr.Clear();
+
 		if (needCollection) {
 			CollectTartgetAssets();
 		}
+
 		foreach (var asset in TargetAssets.Values) {
 			if (!asset.guid.Equals(guid) //検索対象自身なら処理しない
-				&& asset.isUsingTheAsset(path)) {
+					&& asset.isUsingTheAsset(path)) {
 				resultStr.Add(asset.path);
 			}
 		}
@@ -388,36 +418,44 @@ public class CheckAssetDependences : EditorWindow {
 		GUILayout.Label("It might take a time, so I recommend taking coffee break :)", EditorStyles.label);
 
 		var obj = EditorGUILayout.ObjectField(folder, typeof(Object), true);
+
 		if (obj != null && !obj.Equals(folder)) {
 			resultScroll = Vector2.zero;
 			searchedScroll = Vector2.zero;
 			resultStr.Clear();
 			searchedPathStr.Clear();
+
 			if (needCollection) {
 				CollectTartgetAssets();
 			}
 
 			var path = AssetDatabase.GetAssetOrScenePath(obj);
+
 			if (System.IO.Directory.Exists(path)) {    //フォルダかどうかチェック
 				string[] folderGuids = AssetDatabase.FindAssets("t:prefab t:material t:texture t:script", new string[] { path });
+
 				foreach (var guid in folderGuids) {
 					var folderPath = AssetDatabase.GUIDToAssetPath(guid);
 					searchedPathStr.Add(folderPath);
 					bool unused = true;
+
 					foreach (var asset in TargetAssets.Values) {
 						if (asset.guid.Equals(guid)) { //検索対象自身なら処理しない
 							continue;
 						}
+
 						if (asset.isUsingTheAsset(folderPath)) {   //何かに使用されていれば検索終了
 							unused = false;
 							break;
 						}
 					}
+
 					if (unused) {
 						//使われていないんじゃあ。。。
 						resultStr.Add(folderPath);
 					}
 				}
+
 				if (resultStr.Count < 1) {
 					resultStr.Add("NONE");
 				}
@@ -425,18 +463,21 @@ public class CheckAssetDependences : EditorWindow {
 				resultStr.Add("It is invalid object."); //設定されたのがフォルダではない
 			}
 		}
+
 		folder = obj;
 
 		//検索対象表示領域
 		GUILayout.Label("Searched Path", EditorStyles.boldLabel);
 		searchedScroll = EditorGUILayout.BeginScrollView(searchedScroll,
-			false,
-			true,
-			GUILayout.Width(position.width),
-			GUILayout.Height(position.height * 0.3f));
+						 false,
+						 true,
+						 GUILayout.Width(position.width),
+						 GUILayout.Height(position.height * 0.3f));
+
 		foreach (var searchedPath in searchedPathStr) {
 			GUILayout.Label(searchedPath, EditorStyles.label);
 		}
+
 		EditorGUILayout.EndScrollView();
 
 	}

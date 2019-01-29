@@ -9,9 +9,10 @@ public class TerminalRegistry {
 	/// <value>The instance.</value>
 	public static TerminalRegistry instance {
 		get {
-			if(mInstance == null) {
+			if (mInstance == null) {
 				mInstance = new TerminalRegistry();
 			}
+
 			return mInstance;
 		}
 	}
@@ -47,12 +48,14 @@ public class TerminalRegistry {
 	/// <param name="name">Name.</param>
 	/// <param name="args">Arguments.</param>
 	public bool Invoke(string name, string[] args) {
-#if UNITY_EDITOR
-		if(commandDict.ContainsKey(name)) {
+		#if UNITY_EDITOR
+
+		if (commandDict.ContainsKey(name)) {
 			commandDict[name](args);
 			return true;
 		}
-#endif
+
+		#endif
 		return false;
 	}
 }

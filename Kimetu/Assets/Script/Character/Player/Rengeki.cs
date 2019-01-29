@@ -26,7 +26,7 @@ public class Rengeki : MonoBehaviour {
 	[SerializeField, Header("エネミーとプレイヤーの距離")]
 	private float distanceLimit = 1f;
 
-	[SerializeField, Header("エネミーに対してどれだけ回りこむか"), Range(0,360)]
+	[SerializeField, Header("エネミーに対してどれだけ回りこむか"), Range(0, 360)]
 	private float turnDegree = 100f;
 
 	[SerializeField]
@@ -71,50 +71,60 @@ public class Rengeki : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		if(playerAnimation == null) {
+		if (playerAnimation == null) {
 			this.playerAnimation = GetComponent<PlayerAnimation>();
 		}
-		if(attackSequence == null) {
+
+		if (attackSequence == null) {
 			this.attackSequence = GetComponent<PlayerAttackSequence>();
 		}
+
 		if (playerAction == null) {
 			this.playerAction = GetComponent<PlayerAction>();
 		}
-		if(kirinuke == null) {
+
+		if (kirinuke == null) {
 			this.kirinuke = GetComponent<Kirinuke>();
 		}
-		if(sword == null) {
+
+		if (sword == null) {
 			this.sword = GetComponentInChildren<Sword>();
 		}
+
 		this.push = new Subject<RengekiPushEvent>();
 		this.start = new Subject<bool>();
 		this.end = new Subject<bool>();
 		this.startObserver = Slow.Instance.onStart.Subscribe(OnSlowStart);
 		this.endObserver = Slow.Instance.onEnd.Subscribe(OnSlowStart);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if(!Slow.Instance.isSlowNow) {
+		if (!Slow.Instance.isSlowNow) {
 			return;
 		}
+
 		//押してない || もう発動中
-		if(!Input.GetButtonDown(InputMap.Type.XButton.GetInputName()) ||
-			pushCurrentCount >= pushMaxCount) {
+		if (!Input.GetButtonDown(InputMap.Type.XButton.GetInputName()) ||
+				pushCurrentCount >= pushMaxCount) {
 			return;
 		}
+
 		//切り抜けが開始しているなら
-		if(kirinuke.isRunning) {
+		if (kirinuke.isRunning) {
 			return;
 		}
+
 		pushCurrentCount++;
 		push.OnNext(new RengekiPushEvent(pushMaxCount, pushCurrentCount));
-		if(pushCurrentCount >= pushMaxCount) {
+
+		if (pushCurrentCount >= pushMaxCount) {
 			this.target = Utilities.SearchMostNearEnemyInTheRange(transform.position, 5.0f, false);
 			Assert.IsTrue(target != null);
 			Assert.IsTrue(!turnNow);
 			Assert.IsTrue(!actionNow);
 			this.slowRemine = Slow.Instance.GetWaitSeconds() - Slow.Instance.elapsed;
+
 			if (slowRemine > 0.5f && target != null) {
 				StartCoroutine(RengekiUpdate());
 			}
@@ -137,9 +147,11 @@ public class Rengeki : MonoBehaviour {
 	private IEnumerator MoveToEnemy() {
 		var distance = Utilities.DistanceXZ(transform.position, target.transform.position);
 		Debug.Log("distance:" + distance);
-		if(distance < distanceLimit) {
+
+		if (distance < distanceLimit) {
 			yield break;
 		}
+
 		this.moveNow = true;
 		var moveDistance = (distanceLimit - distance);
 		var dirToEnemy = (transform.position - target.transform.position).normalized;
@@ -147,7 +159,8 @@ public class Rengeki : MonoBehaviour {
 		var start = transform.position;
 		var end = start + (dirToEnemy * moveDistance);
 		var moveSeconds = (slowRemine / 10f);
-		while(offset < moveSeconds) {
+
+		while (offset < moveSeconds) {
 			var t = Time.time;
 			yield return null;
 			var diff = (Time.time - t) * Slow.Instance.GetPlayerSpeed();
@@ -155,6 +168,7 @@ public class Rengeki : MonoBehaviour {
 			var parcent = Mathf.Clamp01(offset / moveSeconds);
 			transform.position = start + (dirToEnemy * (moveDistance * parcent));
 		}
+
 		transform.position = end;
 		this.moveNow = false;
 	}
@@ -166,10 +180,12 @@ public class Rengeki : MonoBehaviour {
 		//アニメーションの長さと実際に回転にかける速度が違いすぎる場合には
 		//アニメーションの速度の方で補正をかける
 		var animDiff = Mathf.Abs(STEP_LENGTH) - Mathf.Abs(turnSeconds);
-		if(animDiff > 0.1) {
+
+		if (animDiff > 0.1) {
 			playerAnimation.speed = STEP_LENGTH / turnSeconds;
 			//playerAnimation.speed = STEP_LENGTH * (turnSeconds / STEP_LENGTH);
 		}
+
 		playerAnimation.StartRengekiAnimation();
 		//円の中心をプレイヤーとする
 		var center = target.transform.position;
@@ -180,6 +196,7 @@ public class Rengeki : MonoBehaviour {
 		//一定時間で補完する
 		var start = transform.position;
 		var offset = 0f;
+
 		while (offset < turnSeconds) {
 			var t = Time.time;
 			yield return null;
@@ -194,10 +211,12 @@ public class Rengeki : MonoBehaviour {
 			transform.position = center + (dirv * distance);
 			//壁に当たったら終了する
 			RaycastHit hit;
-			if(Physics.Raycast(transform.position + Vector3.up, dirv, out hit, 1f, LayerMask.GetMask(LayerName.Stage.String()))) {
+
+			if (Physics.Raycast(transform.position + Vector3.up, dirv, out hit, 1f, LayerMask.GetMask(LayerName.Stage.String()))) {
 				break;
 			}
 		}
+
 		playerAnimation.speed = Slow.Instance.GetPlayerSpeed();
 		this.turnNow = false;
 		Debug.Log("end turn");
@@ -206,27 +225,33 @@ public class Rengeki : MonoBehaviour {
 	private IEnumerator AutoAction() {
 		//アクションに使える残りの時間
 		var actionTime = Slow.Instance.GetWaitSeconds() - Slow.Instance.elapsed;
-		if(actionTime < 0) {
+
+		if (actionTime < 0) {
 			playerAction.Avoid(Vector3.zero);
 			yield break;
 		}
+
 		//残り時間 / 4 = アクション一回あたりの時間
 		var actionOne = actionTime / 4f;
 		var animDiff = Mathf.Abs(ATTACK_LENGTH) - Mathf.Abs(actionOne);
-		if((ATTACK_LENGTH > actionOne) && animDiff > 0.1f) {
+
+		if ((ATTACK_LENGTH > actionOne) && animDiff > 0.1f) {
 			playerAnimation.speed = ATTACK_LENGTH / actionOne;
 		}
+
 		Debug.Log("actionTime:" + actionTime);
 		Debug.Log("actionOne:" + actionOne);
 		Debug.Log("speed:" + playerAnimation.speed);
 		var breakByDamage = false;
 		this.actionNow = true;
-		for(int i=0; i<4; i++) {
+
+		for (int i = 0; i < 4; i++) {
 			//ダメージを受けたら中断
-			if(playerAction.state == PlayerState.Damage) {
+			if (playerAction.state == PlayerState.Damage) {
 				breakByDamage = true;
 				break;
 			}
+
 			sword.AttackStart();
 			playerAnimation.StartAttackAnimation(i);
 			yield return new WaitForSeconds(actionOne);
@@ -234,14 +259,17 @@ public class Rengeki : MonoBehaviour {
 			//yield return playerAnimation.WaitAnimation("kaede", "attack" + (i + 1));
 			//yield return new WaitForSeconds(ATTACK_LENGTH * (1 / Slow.Instance.GetPlayerSpeed()));
 		}
+
 		//yield return playerAnimation.WaitAnimation("kaede", "attack4_idle");
 		yield return new WaitForSeconds(actionOne);
 		playerAnimation.speed = Slow.Instance.GetPlayerSpeed();
-		if(breakByDamage) {
+
+		if (breakByDamage) {
 			playerAction.FinishRengeki();
 		} else {
 			playerAction.Avoid(Vector3.zero);
 		}
+
 		this.actionNow = false;
 	}
 

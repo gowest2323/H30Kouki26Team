@@ -48,8 +48,9 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 
 	private void LoadBGMDirectory(string dir) {
 		object[] objList = Resources.LoadAll(dir);
+
 		foreach (object obj in objList) {
-			if(obj is AudioClip) {
+			if (obj is AudioClip) {
 				var se = obj as AudioClip;
 				_bgmDic[se.name] = se;
 			} else {
@@ -60,8 +61,9 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 
 	private void LoadSEDirectory(string dir) {
 		object[] objList = Resources.LoadAll(dir);
+
 		foreach (object obj in objList) {
-			if(obj is AudioClip) {
+			if (obj is AudioClip) {
 				var se = obj as AudioClip;
 				_seDic[se.name] = se;
 			} else {
@@ -89,10 +91,10 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 	}
 
 	private void Start() {
-	//	AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
+		//	AttachBGMSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFULT);
 		AttachPlayerSESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
 		AttachEnemySESource.volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFULT);
-    }
+	}
 
 	//SE
 
@@ -172,12 +174,11 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 			// FadeOutBGM(fadeSpeedRate);
 		}
 
-    }
+	}
 
-    public void StopBGM()
-    {
-        AttachBGMSource.Stop();
-    }
+	public void StopBGM() {
+		AttachBGMSource.Stop();
+	}
 
 	/// <summary>
 	/// 現在流れている曲をフェードアウトさせる
@@ -205,8 +206,8 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 
 			if (!string.IsNullOrEmpty(_nextBGMName)) {
 				PlayBGM(_nextBGMName);
-                Debug.Log(_nextBGMName);
-            }
+				Debug.Log(_nextBGMName);
+			}
 		}
 	}
 

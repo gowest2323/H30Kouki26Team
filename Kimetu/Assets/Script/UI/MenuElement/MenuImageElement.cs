@@ -16,12 +16,15 @@ public class MenuImageElement : MenuElement {
 	// Use this for initialization
 	protected override void Awake () {
 		base.Awake();
-		if(this.image == null) {
+
+		if (this.image == null) {
 			this.image = GetComponent<Image>();
 		}
-		if(this.defaultSprite == null) {
+
+		if (this.defaultSprite == null) {
 			this.defaultSprite = image.sprite;
 		}
+
 		image.sprite = defaultSprite;
 	}
 

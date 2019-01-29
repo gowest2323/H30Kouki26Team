@@ -10,9 +10,10 @@ public class ParallelPart : MoviePart {
 	private MoviePart[] asyncParts;
 
 	public override IEnumerator MovieUpdate() {
-		foreach(var part in asyncParts) {
+		foreach (var part in asyncParts) {
 			StartCoroutine(part.MovieUpdate());
 		}
+
 		yield return primary.MovieUpdate();
 	}
 

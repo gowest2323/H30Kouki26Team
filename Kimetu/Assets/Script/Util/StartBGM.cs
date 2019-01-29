@@ -8,16 +8,16 @@ public class StartBGM : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        AudioManager.Instance.PlayBGM(name.String());
+		AudioManager.Instance.PlayBGM(name.String());
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	void OnDestroy() {
-		if(AudioManager.Instance != null) {
+		if (AudioManager.Instance != null) {
 			AudioManager.Instance.StopBGM();
 		}
 	}

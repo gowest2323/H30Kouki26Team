@@ -91,16 +91,20 @@ public class PlayerAttackSequence : MonoBehaviour {
 		weapon.AttackStart();
 		//playerAnimation.StartAttackAnimation();
 		StartAnimation();
-		while(true) {
+
+		while (true) {
 			yield return null;
+
 			if (playerAnimation.IsPlayingAnimation("kaede", "attack" + attackStack)) {
 				break;
 			}
-			if(playerAction.state == PlayerState.Damage) {
+
+			if (playerAction.state == PlayerState.Damage) {
 				Finish(false);
 				yield break;
 			}
 		}
+
 		//yield return new WaitWhile(() => !playerAnimation.IsPlayingAnimation("kaede", "attack" + attackStack));
 		//status.DecreaseStamina(decreaseAttackStamina);
 		yield return WaitFinish();

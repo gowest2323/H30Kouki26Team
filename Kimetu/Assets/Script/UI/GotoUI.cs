@@ -15,12 +15,14 @@ public class GotoUI : LongPressUI {
 
 	public override void Start() {
 		this.sceneName = SceneManager.GetActiveScene().name;
-		if(sceneName.Contains("Boss")) {
+
+		if (sceneName.Contains("Boss")) {
 			Destroy(gameObject);
 		} else {
 			base.Start();
 		}
-		if(changeStage == null) {
+
+		if (changeStage == null) {
 			this.changeStage = FindStageComponent<ChangeStage>();
 		}
 	}
@@ -35,23 +37,26 @@ public class GotoUI : LongPressUI {
 	}
 
 	protected override bool CanShowUI() {
-		if(name.Contains("Boss")) {
+		if (name.Contains("Boss")) {
 			return false;
 		}
+
 		return changeStage.CanGotoNextStage();
 	}
 
 	private T FindStageComponent<T>() where T : MonoBehaviour {
 		var list = new GameObject[] {
-				GameObject.Find("StageChangeArea01"),
-				GameObject.Find("StageChangeArea02"),
-				GameObject.Find("StageChangeArea03"),
+			GameObject.Find("StageChangeArea01"),
+			GameObject.Find("StageChangeArea02"),
+			GameObject.Find("StageChangeArea03"),
 		};
-		foreach(var e in list) {
-			if(e != null) {
+
+		foreach (var e in list) {
+			if (e != null) {
 				return e.GetComponent<T>();
 			}
 		}
+
 		return null;
 	}
 }

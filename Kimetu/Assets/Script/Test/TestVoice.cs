@@ -19,16 +19,16 @@ public class TestVoice : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	public void PlayVoice() {
-		if(playVoiceAtAnimation) {
+		if (playVoiceAtAnimation) {
 			AudioManager.Instance.PlayPlayerSE(AudioName.oni_oaa_preAttack_03.String());
 		}
 	}

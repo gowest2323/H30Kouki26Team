@@ -15,9 +15,11 @@ public class MenuTextElement : MenuElement {
 	// Use this for initialization
 	protected override void Awake () {
 		base.Awake();
-		if(this.text == null) {
+
+		if (this.text == null) {
 			this.text = GetComponent<Text>();
 		}
+
 		this.defaultColor = text.color;
 	}
 

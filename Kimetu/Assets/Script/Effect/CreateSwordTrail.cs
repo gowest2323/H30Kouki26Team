@@ -30,7 +30,7 @@ public class CreateSwordTrail : MonoBehaviour {
 
 	void LateUpdate () {
 		//エネミーが消えたら消えるように
-		if(startPosition == null || endPosition == null) {
+		if (startPosition == null || endPosition == null) {
 			GameObject.Destroy(gameObject);
 			return;
 		}

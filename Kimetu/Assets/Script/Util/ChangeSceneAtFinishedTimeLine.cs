@@ -27,7 +27,7 @@ public class ChangeSceneAtFinishedTimeLine : MonoBehaviour {
 			}
 		};
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	}

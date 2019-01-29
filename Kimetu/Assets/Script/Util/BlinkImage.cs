@@ -14,14 +14,15 @@ public class BlinkImage : MonoBehaviour {
 	void Start () {
 		StartCoroutine(Blink());
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	private IEnumerator Blink() {
 		var wait = new WaitForSeconds(blinkRate);
+
 		while (true) {
 			yield return wait;
 			image.gameObject.SetActive(!image.gameObject.activeSelf);

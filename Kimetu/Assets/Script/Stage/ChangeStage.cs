@@ -7,7 +7,7 @@ using UniRx;
 
 public class ChangeStage : MonoBehaviour {
 	private bool playerStay;
-//	public GameObject canvas;
+	//	public GameObject canvas;
 	[SerializeField, Header("再生するタイムライン")]
 	private PlayableDirector playableDirector;
 	[SerializeField]

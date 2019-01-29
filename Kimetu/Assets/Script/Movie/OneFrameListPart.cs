@@ -7,13 +7,15 @@ public class OneFrameListPart : MoviePart {
 	private MoviePart[] parts;
 
 	public override IEnumerator MovieUpdate() {
-		foreach(var part in parts) {
+		foreach (var part in parts) {
 			var enumer = part.MovieUpdate();
+
 			while (enumer.MoveNext()) {
 				//ここでWaitForSecondsやnullを無視する
 				;
 			}
 		}
+
 		yield return null;
 	}
 

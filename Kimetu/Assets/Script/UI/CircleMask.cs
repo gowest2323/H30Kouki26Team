@@ -29,21 +29,25 @@ public class CircleMask : MonoBehaviour {
 	void Start () {
 		this.foreImage = fore.GetComponent<RectTransform>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-#if UNITY_EDITOR
-		if(debugMode) {
+		#if UNITY_EDITOR
+
+		if (debugMode) {
 			SetParcent(debugParcent);
 		}
-#endif
+
+		#endif
 	}
 
 	public void SetParcent(float p) {
 		p = 1f - Mathf.Clamp01(p);
-		if(foreImage == null) {
+
+		if (foreImage == null) {
 			this.foreImage = fore.GetComponent<RectTransform>();
 		}
+
 		var curPos = foreImage.anchoredPosition;
 		var newPos = curPos;
 		newPos.y = (height * p * -1);

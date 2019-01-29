@@ -21,7 +21,8 @@ public class SceneChangeByButton : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(change) { return; }
+		if (change) { return; }
+
 		if (Input.GetButton(type.GetInputName())) {
 			this.change = true;
 			SceneChanger.Instance().Change(sceneName, new FadeData(1f, 1f, Color.black));

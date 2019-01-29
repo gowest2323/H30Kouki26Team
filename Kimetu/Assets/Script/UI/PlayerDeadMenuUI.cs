@@ -20,7 +20,7 @@ public class PlayerDeadMenuUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		if (!Input.GetButton(InputMap.Type.AButton.GetInputName()) ||
-		    triggered) {
+				triggered) {
 			return;
 		}
 

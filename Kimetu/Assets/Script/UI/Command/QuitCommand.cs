@@ -6,12 +6,12 @@ public class QuitCommand : MonoBehaviour, IExecuteCommand {
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	public IEnumerator OnExecute() {

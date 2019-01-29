@@ -104,10 +104,11 @@ public class PlayerAnimation : CharacterAnimation {
 		animator.SetBool("GuardWalk", false);
 	}
 	public void StartGuardWalkAnimation() {
-		if(!animator.GetBool("Guard")) {
+		if (!animator.GetBool("Guard")) {
 			StartGuardAnimation();
 			//StopWalkAnimation();
 		}
+
 		animator.SetBool("GuardWalk", true);
 	}
 	public void StopGuardWalkAnimation() {

@@ -16,10 +16,10 @@ public class AndCommand : MonoBehaviour, IExecuteCommand {
 		this.firstCmd = first.GetComponent<IExecuteCommand>();
 		this.secondCmd = second.GetComponent<IExecuteCommand>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	public IEnumerator OnExecute() {

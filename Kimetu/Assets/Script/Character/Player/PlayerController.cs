@@ -36,27 +36,30 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private Rengeki rengeki;
 
-    private bool isAvoid = false;//回避か
-    private ChangeStage changeStage;
+	private bool isAvoid = false;//回避か
+	private ChangeStage changeStage;
 
-    // Use this for initialization
-    void Start() {
-		if(cameraController == null) {
+	// Use this for initialization
+	void Start() {
+		if (cameraController == null) {
 			this.cameraController = Camera.main.GetComponent<CameraController>();
 		}
-		if(kirinuke == null) {
+
+		if (kirinuke == null) {
 			this.kirinuke = GetComponent<Kirinuke>();
 		}
+
 		if (rengeki == null) {
 			this.rengeki = GetComponent<Rengeki>();
 		}
+
 		Assert.IsTrue(pauseManager != null);
 		this.action = GetComponent<PlayerAction>();
 		longPressDetector.OnLongPressingOverTime += OnKyuuseiButtonPushStart;
 		longPressDetector.OnLongPressEnd += OnKyuuseiButtonPushEnd;
 		isKyuusei = false;
 		status = GetComponent<PlayerStatus>();
-        changeStage = FindObjectOfType<ChangeStage>();
+		changeStage = FindObjectOfType<ChangeStage>();
 	}
 
 	private void OnKyuuseiButtonPushStart(float elapsed) {
@@ -71,12 +74,14 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if(kirinuke.isRunning || rengeki.turnNow || rengeki.actionNow || rengeki.moveNow) {
+		if (kirinuke.isRunning || rengeki.turnNow || rengeki.actionNow || rengeki.moveNow) {
 			return;
 		}
-		if(SceneChanger.Instance().isChanging) {
+
+		if (SceneChanger.Instance().isChanging) {
 			return;
 		}
+
 		if (inputDisableElapsed < inputDisableSeconds) {
 			inputDisableElapsed += Time.deltaTime;
 			return;
@@ -116,35 +121,41 @@ public class PlayerController : MonoBehaviour {
 
 		if (Input.GetButton(InputMap.Type.AButton.GetInputName())) {
 			if (holdLong <= pressButton) {
-                isAvoid = false;
-                Dash();
-                //Debug.Log("長押し");
-            } else if (holdShort <= pressButton) {
-                isAvoid = true;
+				isAvoid = false;
+				Dash();
+				//Debug.Log("長押し");
+			} else if (holdShort <= pressButton) {
+				isAvoid = true;
 				//Debug.Log("押し");
 			}
 		} else {
-#if UNITY_EDITOR
-			if(Input.GetKeyDown(KeyCode.Space)) {
+			#if UNITY_EDITOR
+
+			if (Input.GetKeyDown(KeyCode.Space)) {
 				isAvoid = true;
 			}
-#endif
+
+			#endif
 		}
 
 		if (Input.GetButtonUp(InputMap.Type.AButton.GetInputName())) {
-            if (isAvoid && !pauseManager.isReturnFromPause) Avoid();
-            pressButton = 0;
-            isAvoid = false;
-            pauseManager.isReturnFromPause = false;
-        } else {
-#if UNITY_EDITOR
+			if (isAvoid && !pauseManager.isReturnFromPause) Avoid();
+
+			pressButton = 0;
+			isAvoid = false;
+			pauseManager.isReturnFromPause = false;
+		} else {
+			#if UNITY_EDITOR
+
 			if (Input.GetKeyUp(KeyCode.Space)) {
 				if (isAvoid && !pauseManager.isReturnFromPause) Avoid();
+
 				pressButton = 0;
 				isAvoid = false;
 				pauseManager.isReturnFromPause = false;
 			}
-#endif
+
+			#endif
 		}
 	}
 
@@ -159,9 +170,9 @@ public class PlayerController : MonoBehaviour {
 			0,
 			Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
 		);
-#if UNITY_EDITOR
+		#if UNITY_EDITOR
 		dir = GetKeyboardDirection(dir);
-#endif
+		#endif
 		action.Move(dir, !cameraController.IsLockOn());
 		cameraController.playerDir = dir;
 	}
@@ -172,26 +183,31 @@ public class PlayerController : MonoBehaviour {
 		} else if (Input.GetKey(KeyCode.S)) {
 			dir.z = -1;
 		}
+
 		if (Input.GetKey(KeyCode.A)) {
 			dir.x = -1;
 		} else if (Input.GetKey(KeyCode.D)) {
 			dir.x = 1;
 		}
+
 		dir = dir.normalized;
 		return dir;
 	}
 
 	private void Attack() {
 		if (isKyuusei) return;
-        //ボタンが押されている && (次のステージへ行くためのアレがない || アレに触れていない)
+
+		//ボタンが押されている && (次のステージへ行くためのアレがない || アレに触れていない)
 		if (Input.GetButtonUp(InputMap.Type.XButton.GetInputName()) && (changeStage == null || !changeStage.toNextStage)) {
 			action.Attack();
 		} else {
-#if UNITY_EDITOR
+			#if UNITY_EDITOR
+
 			if (Input.GetKeyDown(KeyCode.Z) && (changeStage == null || !changeStage.toNextStage)) {
 				action.Attack();
 			}
-#endif
+
+			#endif
 		}
 	}
 
@@ -223,7 +239,7 @@ public class PlayerController : MonoBehaviour {
 			Input.GetAxis(InputMap.Type.LStick_Vertical.GetInputName())
 		);
 
-        action.Avoid(dir);
+		action.Avoid(dir);
 	}
 
 	private void Guard() {
@@ -241,7 +257,9 @@ public class PlayerController : MonoBehaviour {
 		} else if (Input.GetButtonUp(InputMap.Type.LButton.GetInputName())) {
 			action.GuardEnd();
 		}
-#if UNITY_EDITOR
+
+		#if UNITY_EDITOR
+
 		if (Input.GetKeyDown(KeyCode.LeftShift)) {
 			//if (!cameraController.IsLockOn())
 			//	cameraController.PositionToPlayerBack();
@@ -250,6 +268,7 @@ public class PlayerController : MonoBehaviour {
 		} else if (Input.GetKeyUp(KeyCode.LeftShift)) {
 			action.GuardEnd();
 		}
-#endif
+
+		#endif
 	}
 }

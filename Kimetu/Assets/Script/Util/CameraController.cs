@@ -48,58 +48,57 @@ public class CameraController : MonoBehaviour {
 	private bool isCheckingTargetChange = false;//ターゲット変更チェック中か？
 
 
-    bool isPierceMove = false;// 吸生カメラ中か
+	bool isPierceMove = false;// 吸生カメラ中か
 
-    private PlayerState prePlayerState;// 前フレームのPlayerState
-    private PlayerState curPlayerState;// 現フレームのPlayerState
-    //private List<MeshRenderer> hitsMeshRenderer = new List<MeshRenderer>();//非表示メッシュレンダラー格納リスト
+	private PlayerState prePlayerState;// 前フレームのPlayerState
+	private PlayerState curPlayerState;// 現フレームのPlayerState
+	//private List<MeshRenderer> hitsMeshRenderer = new List<MeshRenderer>();//非表示メッシュレンダラー格納リスト
 
-    private bool isCounterMove = false;// はじきカメラ中か
-    private bool preIsSlow = false;// 前フレームのisSlowNow
-    private bool curIsSlow = false;// 現フレームのisSlowNow
+	private bool isCounterMove = false;// はじきカメラ中か
+	private bool preIsSlow = false;// 前フレームのisSlowNow
+	private bool curIsSlow = false;// 現フレームのisSlowNow
 
-    private PlayerStatus playerStatus;
+	private PlayerStatus playerStatus;
 
-    // Use this for initialization
-    private void Start() {
-        GetPlayerIfNull();
+	// Use this for initialization
+	private void Start() {
+		GetPlayerIfNull();
 		offset = transform.position - player.transform.position;
 		isLockOn = false;
 		interval = false;
 		GetIsInveted();
 		intervalTime = 0;
-        playerStatus = player.GetComponent<PlayerStatus>();
+		playerStatus = player.GetComponent<PlayerStatus>();
 
-        // 回転・位置の初期化
-        PositionToPlayerBack();
+		// 回転・位置の初期化
+		PositionToPlayerBack();
 	}
 
 	// Update is called once per frame
 	private void Update() {
-        //死亡したらカメラ操作を切る
-        if (playerStatus.IsDead())
-        {
-            isLockOn = false;
-            interval = false;
-            return;
-        }
+		//死亡したらカメラ操作を切る
+		if (playerStatus.IsDead()) {
+			isLockOn = false;
+			interval = false;
+			return;
+		}
 
-        curPlayerState = player.GetComponent<PlayerAction>().state;
-        curIsSlow = Slow.Instance.isSlowNow;
+		curPlayerState = player.GetComponent<PlayerAction>().state;
+		curIsSlow = Slow.Instance.isSlowNow;
 
-        DefaultControl();
+		DefaultControl();
 		IsLockOnChange();
 		CheckLockonMode();
 		LockOn();
 		Interval();
-        PierceCamera();
-        CheckPierceState();
-        CounterCamera();
-        CheckCounterSlow();
+		PierceCamera();
+		CheckPierceState();
+		CounterCamera();
+		CheckCounterSlow();
 
-        prePlayerState = curPlayerState;
-        preIsSlow = curIsSlow;
-    }
+		prePlayerState = curPlayerState;
+		preIsSlow = curIsSlow;
+	}
 
 	/// <summary>
 	/// カメラ設定を更新します。
@@ -112,7 +111,7 @@ public class CameraController : MonoBehaviour {
 		GetIsInveted();
 	}
 
-    private void DefaultControl() {
+	private void DefaultControl() {
 		if (coroutineCount > 0 || finished || isPierceMove || isCounterMove) {
 			return;
 		}
@@ -121,24 +120,27 @@ public class CameraController : MonoBehaviour {
 		//Debug.Log("DefaultControl");
 		float hor = Input.GetAxis(InputMap.Type.RStick_Horizontal.GetInputName());
 		float ver = Input.GetAxis(InputMap.Type.RStick_Vertical.GetInputName());
-#if UNITY_EDITOR
+		#if UNITY_EDITOR
+
 		if (Input.GetKey(KeyCode.UpArrow)) {
 			ver = 1;
 		} else if (Input.GetKey(KeyCode.DownArrow)) {
 			ver = -1;
 		}
+
 		if (Input.GetKey(KeyCode.LeftArrow)) {
 			hor = -1;
 		} else if (Input.GetKey(KeyCode.RightArrow)) {
 			hor = 1;
 		}
-#endif
+
+		#endif
 		// カメラの回転(transform.rotation)の更新
 		// 垂直回転してから水平回転する合成回転とします
 
 		//回転計算
 		if (Mathf.Abs(hor) >= 0.1f ||                                           //カメラの水平操作がある時
-                player.GetComponent<PlayerAction>().state == PlayerState.Defence ) { //防御中
+				player.GetComponent<PlayerAction>().state == PlayerState.Defence ) { //防御中
 			if (!isInverted_LeftRight) {
 				//カメラの操作に任せる
 				transform.RotateAround(player.transform.position, Vector3.up, hor * turnSpeed);
@@ -205,7 +207,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void LockOn() {
-		if (!isLockOn || nearObj == null || isCounterMove || isPierceMove) {					 
+		if (!isLockOn || nearObj == null || isCounterMove || isPierceMove) {
 			StopLockOnStart();
 			this.finished = false;
 			return;
@@ -277,9 +279,9 @@ public class CameraController : MonoBehaviour {
 			else
 				transform.position += (Vector3.up * lockonCameraAngleY);
 
-            //回転をプレイヤーへ適用
-            SetPlayerRotation();
-        }
+			//回転をプレイヤーへ適用
+			SetPlayerRotation();
+		}
 
 		yield return waitOne;
 		this.coroutineCount--;
@@ -313,12 +315,12 @@ public class CameraController : MonoBehaviour {
 			else
 				nearObj = SearchTagWithDirection(gameObject, "Enemy");
 
-			if (nearObj == null || 
-                (nearObj != null && nearObj.GetComponent<EnemyStatus>().IsDead()) ) { /*二重ターゲット死亡チェック*/
+			if (nearObj == null ||
+					(nearObj != null && nearObj.GetComponent<EnemyStatus>().IsDead()) ) { /*二重ターゲット死亡チェック*/
 				isLockOn = false;
 				interval = false;
 			}
-        }
+		}
 	}
 
 	private void Interval() {
@@ -482,197 +484,201 @@ public class CameraController : MonoBehaviour {
 			distanceW = 0;
 		}
 
-        return distanceW = distanceW > defaultDistance ? defaultDistance : distanceW;
+		return distanceW = distanceW > defaultDistance ? defaultDistance : distanceW;
 	}
 
 	//カメラがプレイヤーの背後に戻す
 	public void PositionToPlayerBack() {
-        //1fボス部屋でプレイヤーを参照するよりさきに
-        //このメソッドが呼び出されることにより NullReferenceException が発生していたため
-        GetPlayerIfNull();
-        //回転
-        vRotation = Quaternion.Euler(20, 0, 0);                                     // 垂直回転(X軸を軸とする回転)は、20度見下ろす回転
-        hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);// 水平回転(Y軸を軸とする回転)は、プレイヤーの向きに合わせ
-        transform.rotation = hRotation * vRotation;                                 // 最終的なカメラの回転は、垂直回転してから水平回転する合成回転
+		//1fボス部屋でプレイヤーを参照するよりさきに
+		//このメソッドが呼び出されることにより NullReferenceException が発生していたため
+		GetPlayerIfNull();
+		//回転
+		vRotation = Quaternion.Euler(20, 0, 0);                                     // 垂直回転(X軸を軸とする回転)は、20度見下ろす回転
+		hRotation = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0);// 水平回転(Y軸を軸とする回転)は、プレイヤーの向きに合わせ
+		transform.rotation = hRotation * vRotation;                                 // 最終的なカメラの回転は、垂直回転してから水平回転する合成回転
 
-        // 位置
-        nowDistance = defaultDistance;
+		// 位置
+		nowDistance = defaultDistance;
 		transform.position = player.transform.position - transform.rotation * Vector3.forward * nowDistance;
 	}
 
-    /// <summary>
-    /// 回転をプレイヤーへ適用
-    /// </summary>
-    private void SetPlayerRotation()
-    {
-        var euler = transform.rotation.eulerAngles;
-        hRotation = Quaternion.Euler(0, euler.y, 0);
-        vRotation = Quaternion.Euler(euler.x, 0, 0);
-    }
+	/// <summary>
+	/// 回転をプレイヤーへ適用
+	/// </summary>
+	private void SetPlayerRotation() {
+		var euler = transform.rotation.eulerAngles;
+		hRotation = Quaternion.Euler(0, euler.y, 0);
+		vRotation = Quaternion.Euler(euler.x, 0, 0);
+	}
 
-    /// <summary>
-    /// はじきカメラ
-    /// </summary>
-    private void CounterCamera() {
-        if (isCounterMove) return;
+	/// <summary>
+	/// はじきカメラ
+	/// </summary>
+	private void CounterCamera() {
+		if (isCounterMove) return;
 
-        if (curIsSlow) {
-            isCounterMove = true;
+		if (curIsSlow) {
+			isCounterMove = true;
 
-            //プレイヤーと壁の距離を取る
-            float defaultRightRange = 3;
-            float defaultBackRange = 1.5f;
-            //はじきカメラ経路終点設定
-            Vector3 direction2EndPos = (-player.transform.forward * defaultBackRange + player.transform.right * defaultRightRange);
-            Vector3 endPos = player.transform.position + new Vector3(0, 1.5f, 0) + direction2EndPos;
-            float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
-            Ray counterRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
-            RaycastHit counterHit;
-            if (Physics.Raycast(counterRay, out counterHit, distance2EndPos, LayerMask.GetMask("Stage")))
-            {
-                endPos = counterHit.point;
-            }
+			//プレイヤーと壁の距離を取る
+			float defaultRightRange = 3;
+			float defaultBackRange = 1.5f;
+			//はじきカメラ経路終点設定
+			Vector3 direction2EndPos = (-player.transform.forward * defaultBackRange + player.transform.right * defaultRightRange);
+			Vector3 endPos = player.transform.position + new Vector3(0, 1.5f, 0) + direction2EndPos;
+			float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
+			Ray counterRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
+			RaycastHit counterHit;
 
-            Vector3 defaultPos = transform.position;
-            //カメラ経路を設定
-            Vector3[] tmpPos = new Vector3[] { defaultPos,
-                                                endPos };
-            //DOTweenでカメラを動かす
-            transform.DOLocalPath(tmpPos, 3f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
-        }
-    }
+			if (Physics.Raycast(counterRay, out counterHit, distance2EndPos, LayerMask.GetMask("Stage"))) {
+				endPos = counterHit.point;
+			}
 
-    /// <summary>
-    /// はじきのスローチェック
-    /// </summary>
-    private void CheckCounterSlow() {
-        if (isCounterMove) {
-            //プレイヤーを注目
-            transform.LookAt(player.transform.position + new Vector3(0, 1.5f, 0) + (player.transform.forward * 0.5f), Vector3.up);
-            SetPlayerRotation();
-        }
+			Vector3 defaultPos = transform.position;
+			//カメラ経路を設定
+			Vector3[] tmpPos = new Vector3[] { defaultPos,
+											   endPos
+											 };
+			//DOTweenでカメラを動かす
+			transform.DOLocalPath(tmpPos, 3f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
+		}
+	}
 
-        if (preIsSlow && !curIsSlow) {
-            isCounterMove = false;
-            //if (hitsMeshRenderer.Count != 0) {
-            //    foreach (var rh in hitsMeshRenderer) {
-            //        rh.enabled = true;
-            //    }
-            //    hitsMeshRenderer.Clear();
-            //}
-            SetPlayerRotation();
-        }
-    }
+	/// <summary>
+	/// はじきのスローチェック
+	/// </summary>
+	private void CheckCounterSlow() {
+		if (isCounterMove) {
+			//プレイヤーを注目
+			transform.LookAt(player.transform.position + new Vector3(0, 1.5f, 0) + (player.transform.forward * 0.5f), Vector3.up);
+			SetPlayerRotation();
+		}
 
-    /// <summary>
-    /// 吸生カメラ
-    /// </summary>
-    private void PierceCamera() {
-        if (isPierceMove) return;
+		if (preIsSlow && !curIsSlow) {
+			isCounterMove = false;
+			//if (hitsMeshRenderer.Count != 0) {
+			//    foreach (var rh in hitsMeshRenderer) {
+			//        rh.enabled = true;
+			//    }
+			//    hitsMeshRenderer.Clear();
+			//}
+			SetPlayerRotation();
+		}
+	}
 
-        //吸生状態
-        if (player.GetComponent<PlayerAction>().state == PlayerState.Pierce) {
-            isPierceMove = true;
-            PositionToPlayerBack();//一回初期位置に戻す
-            Vector3 defaultPos = transform.position;
+	/// <summary>
+	/// 吸生カメラ
+	/// </summary>
+	private void PierceCamera() {
+		if (isPierceMove) return;
 
-            //プレイヤーと壁の距離を取る
-            float defaultRightRange = 2;
-            float defaultForwardRange = 2;
+		//吸生状態
+		if (player.GetComponent<PlayerAction>().state == PlayerState.Pierce) {
+			isPierceMove = true;
+			PositionToPlayerBack();//一回初期位置に戻す
+			Vector3 defaultPos = transform.position;
 
-            //吸生カメラ経路終点設定
-            Vector3 direction2EndPos = player.transform.right * (defaultRightRange * 0.75f) + player.transform.forward * defaultForwardRange;
-            Vector3 direction2EndPosREV = -player.transform.right * (defaultRightRange * 0.75f) + player.transform.forward * defaultForwardRange;
+			//プレイヤーと壁の距離を取る
+			float defaultRightRange = 2;
+			float defaultForwardRange = 2;
 
-            Vector3 endPos = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPos;
-            Vector3 endPosREV = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPosREV;
+			//吸生カメラ経路終点設定
+			Vector3 direction2EndPos = player.transform.right * (defaultRightRange * 0.75f) + player.transform.forward * defaultForwardRange;
+			Vector3 direction2EndPosREV = -player.transform.right * (defaultRightRange * 0.75f) + player.transform.forward * defaultForwardRange;
 
-            float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
-            Ray pierceRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
-            RaycastHit pierceHit;
-            if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos, LayerMask.GetMask("Stage")))
-            {
-                endPos = pierceHit.point;
-                if (pierceHit.distance <= 1f) endPos = endPosREV;
-            }
+			Vector3 endPos = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPos;
+			Vector3 endPosREV = player.transform.position + new Vector3(0, 1f, 0) + direction2EndPosREV;
 
-            //吸生カメラ経路中点設定
-            Ray rightRay = new Ray(player.transform.position + new Vector3(0, 1, 0), player.transform.right);
-            RaycastHit rightHit;
-            float rightRange = defaultRightRange;
-            if (Physics.Raycast(rightRay, out rightHit, defaultRightRange + 1, LayerMask.GetMask("Stage")))
-            {
-                rightRange = rightHit.distance <= defaultRightRange ? rightHit.distance : defaultRightRange;
-                if (rightHit.distance <= 1f) rightRange = -defaultRightRange;
-            }
+			float distance2EndPos = Vector3.Distance(player.transform.position + new Vector3(0, 1, 0), endPos);
+			Ray pierceRay = new Ray(player.transform.position + new Vector3(0, 1, 0), direction2EndPos.normalized);
+			RaycastHit pierceHit;
 
-            //カメラ経路を設定
-            Vector3[] tmpPos = new Vector3[] { defaultPos,
-                                                player.transform.position + new Vector3(0, 1.5f, 0) + player.transform.right*rightRange,
-                                                endPos };
-            //DOTweenでカメラを動かす
-            transform.DOLocalPath(tmpPos, 1.5f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
-        }
-    }
+			if (Physics.Raycast(pierceRay, out pierceHit, distance2EndPos, LayerMask.GetMask("Stage"))) {
+				endPos = pierceHit.point;
 
-    /// <summary>
-    /// 吸生状態チェック
-    /// </summary>
-    private void CheckPierceState() {
-        //吸生カメラ中
-        if (isPierceMove) {
-            //プレイヤーを注目
-            transform.LookAt(player.transform.position + new Vector3(0, 1, 0), Vector3.up);
-        }
-        //吸生状態終了時
-        if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce) {
-            isPierceMove = false;
-            //if (hitsMeshRenderer.Count != 0) {
-            //    foreach (var rh in hitsMeshRenderer) {
-            //        rh.enabled = true;
-            //    }
-            //    hitsMeshRenderer.Clear();
-            //}
-            //位置をデフォに
-            PositionToPlayerBack();
-        }
-    }
+				if (pierceHit.distance <= 1f) endPos = endPosREV;
+			}
 
-    /// <summary>
-    /// プレイヤーのY1のところからカメラまでの距離
-    /// </summary>
-    /// <returns></returns>
-    private float Distance_Player2Camera() {
-        return Vector3.Distance(new Vector3(player.transform.position.x, 1, player.transform.position.z),
-                                transform.position);
-    }
+			//吸生カメラ経路中点設定
+			Ray rightRay = new Ray(player.transform.position + new Vector3(0, 1, 0), player.transform.right);
+			RaycastHit rightHit;
+			float rightRange = defaultRightRange;
 
-    /// <summary>
-    /// プレイヤーとの間にステージがあったら表示しない（簡易めり込み対策）
-    /// </summary>
-    /*private void NotDisplayStageBetweenWithPlayer() {
-        Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
+			if (Physics.Raycast(rightRay, out rightHit, defaultRightRange + 1, LayerMask.GetMask("Stage"))) {
+				rightRange = rightHit.distance <= defaultRightRange ? rightHit.distance : defaultRightRange;
 
-        RaycastHit hit;
+				if (rightHit.distance <= 1f) rightRange = -defaultRightRange;
+			}
 
-        if (Physics.Raycast(ray, out hit, Distance_Player2Camera() + 1, LayerMask.GetMask("Stage"))) {
-            MeshRenderer pMeshR = hit.transform.parent.parent.GetComponent<MeshRenderer>();
-            if (pMeshR.enabled) {
-                hitsMeshRenderer.Add(pMeshR);
-                pMeshR.enabled = false;
-            }
-        }
-        else {
-            if (hitsMeshRenderer.Count != 0) {
-                foreach (var rh in hitsMeshRenderer) {
-                    rh.enabled = true;
-                }
-                hitsMeshRenderer.Clear();
-            }
-        }
-    }*/
+			//カメラ経路を設定
+			Vector3[] tmpPos = new Vector3[] { defaultPos,
+											   player.transform.position + new Vector3(0, 1.5f, 0) + player.transform.right * rightRange,
+											   endPos
+											 };
+			//DOTweenでカメラを動かす
+			transform.DOLocalPath(tmpPos, 1.5f, PathType.CatmullRom, PathMode.Full3D, 10, Color.green).SetEase(Ease.OutQuart);
+		}
+	}
 
-    private void OnDrawGizmos() {
+	/// <summary>
+	/// 吸生状態チェック
+	/// </summary>
+	private void CheckPierceState() {
+		//吸生カメラ中
+		if (isPierceMove) {
+			//プレイヤーを注目
+			transform.LookAt(player.transform.position + new Vector3(0, 1, 0), Vector3.up);
+		}
+
+		//吸生状態終了時
+		if (prePlayerState == PlayerState.Pierce && curPlayerState != PlayerState.Pierce) {
+			isPierceMove = false;
+			//if (hitsMeshRenderer.Count != 0) {
+			//    foreach (var rh in hitsMeshRenderer) {
+			//        rh.enabled = true;
+			//    }
+			//    hitsMeshRenderer.Clear();
+			//}
+			//位置をデフォに
+			PositionToPlayerBack();
+		}
+	}
+
+	/// <summary>
+	/// プレイヤーのY1のところからカメラまでの距離
+	/// </summary>
+	/// <returns></returns>
+	private float Distance_Player2Camera() {
+		return Vector3.Distance(new Vector3(player.transform.position.x, 1, player.transform.position.z),
+								transform.position);
+	}
+
+	/// <summary>
+	/// プレイヤーとの間にステージがあったら表示しない（簡易めり込み対策）
+	/// </summary>
+	/*private void NotDisplayStageBetweenWithPlayer() {
+	    Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
+
+	    RaycastHit hit;
+
+	    if (Physics.Raycast(ray, out hit, Distance_Player2Camera() + 1, LayerMask.GetMask("Stage"))) {
+	        MeshRenderer pMeshR = hit.transform.parent.parent.GetComponent<MeshRenderer>();
+	        if (pMeshR.enabled) {
+	            hitsMeshRenderer.Add(pMeshR);
+	            pMeshR.enabled = false;
+	        }
+	    }
+	    else {
+	        if (hitsMeshRenderer.Count != 0) {
+	            foreach (var rh in hitsMeshRenderer) {
+	                rh.enabled = true;
+	            }
+	            hitsMeshRenderer.Clear();
+	        }
+	    }
+	}*/
+
+	private void OnDrawGizmos() {
 		Gizmos.color = Color.yellow;
 		Ray ray = new Ray(player.transform.position + new Vector3(0, 1, 0), -transform.forward);
 
@@ -681,11 +687,11 @@ public class CameraController : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, defaultDistance + 1, LayerMask.GetMask("Stage"))) {
 			Gizmos.DrawLine(transform.position, hit.point);
 		}
-    }
+	}
 
-    private void GetPlayerIfNull() {
-        if (player == null) {
-            this.player = GameObject.FindGameObjectWithTag(TagName.Player.String());
-        }
-    }
+	private void GetPlayerIfNull() {
+		if (player == null) {
+			this.player = GameObject.FindGameObjectWithTag(TagName.Player.String());
+		}
+	}
 }

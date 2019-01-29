@@ -11,7 +11,7 @@ public class CachedMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour {
 	public static T Instance { private set; get; }
 
 	void Awake() {
-		if(Instance == null) {
+		if (Instance == null) {
 			Instance = (T)FindObjectOfType (typeof(T));
 			GameObject.DontDestroyOnLoad(Instance);
 			StartUp();

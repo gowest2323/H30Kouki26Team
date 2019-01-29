@@ -25,45 +25,52 @@ public class BlendColorRuntime : MonoBehaviour {
 	void Start () {
 		this.targetMaterials = new List<Material>();
 		var renderers = GetComponentsInChildren<Renderer>();
+
 		foreach (var renderer in renderers) {
 			Debug.Log("renderer: " + renderer.gameObject.name);
 			var materials = renderer.materials;
 			var baseName = renderer.gameObject.name;
+
 			foreach (var material in materials) {
 				targetMaterials.Add(material);
 			}
 		}
+
 		this.colorID = Shader.PropertyToID("_BlendColor");
 		this.alphaID = Shader.PropertyToID("_BlendAlpha");
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		#if UNITY_EDITOR
-		if(debugMode) {
+
+		if (debugMode) {
 			SetColor(debugColor);
 			SetAlpha(debugAlpha);
 		}
+
 		#endif
 	}
 
 	public void SetColor(Color color) {
-		var flo = new float[]{color.r, color.g, color.b, 1};
-		foreach(var mat in targetMaterials) {
+		var flo = new float[] {color.r, color.g, color.b, 1};
+
+		foreach (var mat in targetMaterials) {
 			mat.SetFloatArray(colorID, flo);
 		}
 	}
 
 	public void SetAlpha(float a) {
-		foreach(var mat in targetMaterials) {
+		foreach (var mat in targetMaterials) {
 			mat.SetFloat(alphaID, a);
 		}
 	}
 
 	public void StartAnimation(Color color, float minAlpha, float maxAlpha, float seconds) {
-		if(animationNow) {
+		if (animationNow) {
 			return;
 		}
+
 		StartCoroutine(AnimationUpdate(color, minAlpha, maxAlpha, seconds));
 	}
 
@@ -72,15 +79,17 @@ public class BlendColorRuntime : MonoBehaviour {
 		SetColor(color);
 		SetAlpha(minAlpha);
 		var offset = 0f;
-		while(offset < seconds) {
+
+		while (offset < seconds) {
 			var t = Time.time;
 			yield return new WaitForEndOfFrame();
 			offset += (Time.time - t);
 			var parcent = offset / seconds;
 			var alpha = minAlpha + ((maxAlpha - minAlpha) * parcent);
 			SetAlpha(alpha);
-		Debug.Log("offset:" + offset);
+			Debug.Log("offset:" + offset);
 		}
+
 		SetAlpha(maxAlpha);
 		yield return null;
 		SetAlpha(0);

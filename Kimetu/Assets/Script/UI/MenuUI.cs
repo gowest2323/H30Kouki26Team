@@ -41,10 +41,11 @@ public class MenuUI : MonoBehaviour {
 	/// MenuUIの `Update` の実装を公開します。
 	/// </summary>
 	public void InputUpdate() {
-		if(freeze) {
+		if (freeze) {
 			return;
 		}
-		if(this.orientation == Orientation.Vertical) {
+
+		if (this.orientation == Orientation.Vertical) {
 			if (InputMap.Direction.Up.IsDetectedInput()) {
 				Select(this.selected - 1);
 			} else if (InputMap.Direction.Down.IsDetectedInput()) {
@@ -57,15 +58,17 @@ public class MenuUI : MonoBehaviour {
 				Select(this.selected + 1);
 			}
 		}
+
 		ExecuteCommand();
 	}
 
 	private void ExecuteCommand() {
-		if(!executeCommand ||
-		   !Input.GetButtonDown(executeButton.GetInputName()) ||
-		   selected == -1) {
-			   return;
+		if (!executeCommand ||
+				!Input.GetButtonDown(executeButton.GetInputName()) ||
+				selected == -1) {
+			return;
 		}
+
 		StartCoroutine(ExecuteWait(elements[selected].gameObject.GetComponent<IExecuteCommand>()));
 	}
 
@@ -78,13 +81,17 @@ public class MenuUI : MonoBehaviour {
 	private void Select(int index) {
 		//押しっぱなしにするとすごいことになるので
 		if (Time.unscaledTime - time < 0.2f) { return; }
+
 		//インデックスが循環するように
 		if (index < 0) { index = elements.Length - 1; }
+
 		if (index >= elements.Length) { index = 0;}
+
 		//前回の選択要素を更新
-		if(selected != -1) {
+		if (selected != -1) {
 			elements[selected].OnLostFocus();
 		}
+
 		//今回の選択によって更新
 		elements[index].OnFocus();
 		this.selected = index;

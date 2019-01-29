@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour {
 	public bool isPause { private set; get; }
-    public bool isReturnFromPause { set; get; }
+	public bool isReturnFromPause { set; get; }
 	private CameraController cameraController;
-    private PlayerStatus playerStatus;
+	private PlayerStatus playerStatus;
 
 	private void Start() {
 		isPause = false;
 		this.cameraController = Camera.main.gameObject.GetComponent<CameraController>();
-        this.playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
+		this.playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStatus>();
 	}
 
 	/// <summary>
@@ -21,7 +21,7 @@ public class PauseManager : MonoBehaviour {
 	/// </summary>
 	public void Pause() {
 		isPause = true;
-        isReturnFromPause = false;
+		isReturnFromPause = false;
 		CoroutineManager.Instance.StopAllCoroutineEx(false);
 		Time.timeScale = 0.0f;
 		//ポーズシーンを追加読み込み
@@ -37,7 +37,7 @@ public class PauseManager : MonoBehaviour {
 		CoroutineManager.Instance.StartAllCoroutineEx();
 		//ポーズシーンを削除
 		SceneManager.UnloadSceneAsync("Pause");
-        isReturnFromPause = true;
+		isReturnFromPause = true;
 		isPause = false;
 	}
 
@@ -45,9 +45,9 @@ public class PauseManager : MonoBehaviour {
 		if (isPause) return;
 
 		if (Input.GetButtonDown(InputMap.GetInputName(InputMap.Type.StartButton)) &&
-            !Fade.Instance().isFading &&
-            !SceneChanger.Instance().isChanging &&
-            !playerStatus.IsDead()) {
+				!Fade.Instance().isFading &&
+				!SceneChanger.Instance().isChanging &&
+				!playerStatus.IsDead()) {
 			Pause();
 		}
 	}

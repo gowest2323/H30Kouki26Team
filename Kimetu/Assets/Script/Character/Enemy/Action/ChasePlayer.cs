@@ -33,9 +33,9 @@ public class ChasePlayer : ActionBase {
 		cancelFlag = false;
 		//NavMeshを動かす
 		NavMeshStart();
-        //アニメーションによって移動した後は座標が違うことがあるため現在の座標で更新
-        agent.Warp(rootTransform.position);
-        isNearPlayer = false;
+		//アニメーションによって移動した後は座標が違うことがあるため現在の座標で更新
+		agent.Warp(rootTransform.position);
+		isNearPlayer = false;
 		enemyAnimation.StartRunAnimation();
 
 		while (!IsEndChase()) {

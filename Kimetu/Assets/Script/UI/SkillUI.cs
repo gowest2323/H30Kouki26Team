@@ -29,17 +29,22 @@ public class SkillUI : MonoBehaviour {
 	void Start () {
 		this.startObserver = Slow.Instance.onStart.Subscribe(OnSlowStart);
 		this.endObserver = Slow.Instance.onEnd.Subscribe(OnSlowEnd);
-		if(root == null) {
+
+		if (root == null) {
 			this.root = transform.FindRec("Root");
 		}
+
 		//kirinuke, rengekiを設定
 		var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
-		if(kirinuke == null) {
+
+		if (kirinuke == null) {
 			this.kirinuke = player.GetComponent<Kirinuke>();
 		}
-		if(rengeki == null) {
+
+		if (rengeki == null) {
 			this.rengeki = player.GetComponent<Rengeki>();
 		}
+
 		rengeki.onPush.Subscribe((e) => {
 			rengekiImage.fillAmount = e.parcent;
 			//rengekiMask.SetParcent(e.parcent);
@@ -59,9 +64,9 @@ public class SkillUI : MonoBehaviour {
 			//攻撃中ではない
 			//ならば切り抜けを実行する
 			if (Slow.Instance.isSlowNow &&
-			  !kirinuke.isRunning &&
-			  !rengeki.moveNow &&
-			  !rengeki.actionNow) {
+					!kirinuke.isRunning &&
+					!rengeki.moveNow &&
+					!rengeki.actionNow) {
 				kirinuke.StartKirinuke();
 			}
 		};
@@ -70,10 +75,10 @@ public class SkillUI : MonoBehaviour {
 		};
 		root.SetActive(false);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 

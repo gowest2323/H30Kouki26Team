@@ -8,14 +8,15 @@ public class DisableMeshOnRuntime : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(meshRenderer == null) {
+		if (meshRenderer == null) {
 			this.meshRenderer = GetComponent<MeshRenderer>();
 		}
+
 		GameObject.Destroy(meshRenderer);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 }

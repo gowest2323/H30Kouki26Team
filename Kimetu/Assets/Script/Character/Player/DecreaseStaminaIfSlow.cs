@@ -12,11 +12,11 @@ public class DecreaseStaminaIfSlow : MonoBehaviour {
 	private float slowElapsed;
 	// Use this for initialization
 	void Start () {
-		if(status == null) {
+		if (status == null) {
 			this.status = GetComponent<PlayerStatus>();
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		DecreaseSlowStamina();

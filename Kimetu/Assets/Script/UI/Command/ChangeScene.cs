@@ -11,7 +11,8 @@ public class ChangeScene : MonoBehaviour, IExecuteCommand {
 
 	public IEnumerator OnExecute() {
 		SceneChanger.Instance().Change(sceneName, fade);
-		while(true) {
+
+		while (true) {
 			yield return null;
 		}
 	}

@@ -35,7 +35,7 @@ public class BeamShot : MonoBehaviour {
 	}
 
 	private void Start() {
-		if(startOnAwake) {
+		if (startOnAwake) {
 			StartShot();
 		}
 	}

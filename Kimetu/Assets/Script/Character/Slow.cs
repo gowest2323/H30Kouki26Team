@@ -81,9 +81,11 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 			Debug.Log("slow " + anim.gameObject.name);
 			anim.speed = slowSpeed;
 		}
+
 		//一フレームづつ待機
 		this.elapsed = 0f;
-		while(elapsed < waitSeconds) {
+
+		while (elapsed < waitSeconds) {
 			var t = Time.time;
 			yield return null;
 			this.elapsed = Mathf.Min(waitSeconds, elapsed + (Time.time - t));

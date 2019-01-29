@@ -46,6 +46,7 @@ public class OpeningMovie : MonoBehaviour {
 	/// </summary>
 	private void ChangeNextScene() {
 		if (isEnd) return;
+
 		isEnd = true;
 		StartCoroutine(changeScene.OnExecute());
 	}

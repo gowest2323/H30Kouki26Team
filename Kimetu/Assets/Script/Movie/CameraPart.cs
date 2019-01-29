@@ -7,7 +7,7 @@ public abstract class CameraPart : MoviePart {
 	protected GameObject targetCamera;
 	// Use this for initialization
 	protected override void Start() {
-		if(targetCamera == null) {
+		if (targetCamera == null) {
 			this.targetCamera = Camera.main.gameObject;
 		}
 	}

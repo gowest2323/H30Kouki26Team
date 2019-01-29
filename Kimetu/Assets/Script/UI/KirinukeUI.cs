@@ -16,22 +16,25 @@ public class KirinukeUI : LongPressUI {
 	public override void Start () {
 		base.Start();
 		var player = GameObject.FindGameObjectWithTag(TagName.Player.String());
-		if(kirinuke == null) {
+
+		if (kirinuke == null) {
 			this.kirinuke = player.GetComponent<Kirinuke>();
 		}
-		if(rengeki == null) {
+
+		if (rengeki == null) {
 			this.rengeki = player.GetComponent<Rengeki>();
 		}
+
 		GetLongPressDetector().OnLongPressTrigger += (e) => {
 			//スロー中に長押しが完了
 			//切り抜け中ではない
 			//回り込み中ではない
 			//攻撃中ではない
 			//ならば切り抜けを実行する
-			if(Slow.Instance.isSlowNow && 
-			  !kirinuke.isRunning &&
-			  !rengeki.moveNow &&
-			  !rengeki.actionNow) {
+			if (Slow.Instance.isSlowNow &&
+					!kirinuke.isRunning &&
+					!rengeki.moveNow &&
+					!rengeki.actionNow) {
 				kirinuke.StartKirinuke();
 			}
 		};

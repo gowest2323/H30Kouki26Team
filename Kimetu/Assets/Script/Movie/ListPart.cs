@@ -7,7 +7,7 @@ public class ListPart : MoviePart {
 	private MoviePart[] parts;
 
 	public override IEnumerator MovieUpdate() {
-		foreach(var part in parts) {
+		foreach (var part in parts) {
 			yield return part.MovieUpdate();
 		}
 	}

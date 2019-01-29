@@ -201,11 +201,11 @@ public static class InputMap {
 	/// <returns><c>true</c>, if key down debug was gotten, <c>false</c> otherwise.</returns>
 	/// <param name="code">Code.</param>
 	public static bool GetKeyDownDebug(KeyCode code) {
-#if UNITY_EDITOR
+		#if UNITY_EDITOR
 		return Input.GetKeyDown(code);
-#else
+		#else
 		return false;
-#endif
+		#endif
 	}
 
 	/// <summary>
@@ -215,11 +215,11 @@ public static class InputMap {
 	/// <returns><c>true</c>, if key up debug was gotten, <c>false</c> otherwise.</returns>
 	/// <param name="code">Code.</param>
 	public static bool GetKeyUpDebug(KeyCode code) {
-#if UNITY_EDITOR
+		#if UNITY_EDITOR
 		return Input.GetKeyUp(code);
-#else
+		#else
 		return false;
-#endif
+		#endif
 	}
 
 	/// <summary>
@@ -229,10 +229,10 @@ public static class InputMap {
 	/// <returns><c>true</c>, if key debug was gotten, <c>false</c> otherwise.</returns>
 	/// <param name="code">Code.</param>
 	public static bool GetKeyDebug(KeyCode code) {
-#if UNITY_EDITOR
+		#if UNITY_EDITOR
 		return Input.GetKey(code);
-#else
+		#else
 		return false;
-#endif
+		#endif
 	}
 }

@@ -20,19 +20,21 @@ public class SetunaMovie : MonoBehaviour {
 	void Start () {
 		StartCoroutine(MovieUpdate());
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	private IEnumerator MovieUpdate() {
-		foreach(var part in parts) {
-			if(part == null) {
+		foreach (var part in parts) {
+			if (part == null) {
 				continue;
 			}
+
 			yield return part.MovieUpdate();
 		}
+
 		yield return new WaitForSeconds(1f);
 		SceneChanger.Instance().Change(scene, fadedata);
 	}

@@ -33,21 +33,23 @@ public class TerminalUI : MonoBehaviour {
 		ToggleEditor(false);
 		StartCoroutine(BlinkText(header, defaultHeaderColor));
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.Slash)) {
+		if (Input.GetKeyDown(KeyCode.Slash)) {
 			ToggleEditor();
 		}
+
 		if (!show) {
 			return;
 		}
+
 		InputText();
 	}
 
 	private void InputText() {
 		InputKeyArray(KeyCode.A, KeyCode.Z, (key) => {
-			if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
+			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
 				return key.ToString();
 			} else {
 				return key.ToString().ToLower();
@@ -68,26 +70,31 @@ public class TerminalUI : MonoBehaviour {
 		//InputKey(KeyCode.Asterisk, "*");
 		//InputKey(KeyCode.Slash, "/");
 		InputKey(KeyCode.Space, " ");
+
 		//バックスペース押しっぱなしで消せるように
-		if(editor.text.Length > 0 &&
-		   Input.GetKey(KeyCode.Backspace) && deleteAccept) {
+		if (editor.text.Length > 0 &&
+				Input.GetKey(KeyCode.Backspace) && deleteAccept) {
 			editor.text = editor.text.Substring(0, editor.text.Length - 1);
 			this.deleteAccept = false;
 			this.deleteElapsed = 0;
 		}
-		if(!deleteAccept && deleteElapsed < deleteWait) {
+
+		if (!deleteAccept && deleteElapsed < deleteWait) {
 			this.deleteElapsed += Time.deltaTime;
 			this.deleteAccept = deleteElapsed >= deleteWait;
 		}
+
 		ExecuteCommand();
 	}
 
 	private void ExecuteCommand() {
-		if(!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter)) {
+		if (!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter)) {
 			return;
 		}
+
 		//エンターでコマンドを実行
 		var words = editor.text.Split(' ');
+
 		if (words.Length == 1) {
 			TerminalRegistry.instance.Invoke(words[0], new string[] { });
 		} else {
@@ -95,11 +102,13 @@ public class TerminalUI : MonoBehaviour {
 			System.Array.Copy(words, 1, args, 0, args.Length);
 			TerminalRegistry.instance.Invoke(words[0], args);
 		}
+
 		editor.text = "";
 	}
 
-	private void InputKeyArray(KeyCode start, KeyCode end, System.Func<KeyCode,string> outKeyString) {
+	private void InputKeyArray(KeyCode start, KeyCode end, System.Func<KeyCode, string> outKeyString) {
 		var iter = start;
+
 		while (iter <= end) {
 			var key = (KeyCode)iter;
 			InputKey(key, outKeyString(key));
@@ -122,10 +131,11 @@ public class TerminalUI : MonoBehaviour {
 	}
 
 	private void ToggleEditor(bool enable) {
-		if(enable) {
+		if (enable) {
 			this.header.text = defaultHeaderText;
 			this.editor.text = defaultEditorText;
 		}
+
 		root.gameObject.SetActive(enable);
 		this.show = enable;
 	}
@@ -133,6 +143,7 @@ public class TerminalUI : MonoBehaviour {
 	private IEnumerator BlinkText(Text text, Color baseColor) {
 		var changeColor = baseColor;
 		changeColor.a = 0f;
+
 		while (true) {
 			text.color = baseColor;
 			yield return new WaitForSeconds(0.5f);

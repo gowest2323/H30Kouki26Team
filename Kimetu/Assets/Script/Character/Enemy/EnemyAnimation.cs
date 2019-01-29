@@ -61,19 +61,23 @@ public class EnemyAnimation : CharacterAnimation {
 	}
 
 	public void PlayEnemyVoice(Voice v) {
-		switch(v) {
+		switch (v) {
 			case Voice.SetunaRen2Attack01:
 				PlayVoice(AudioManager.Instance.GetSE(AudioName.setuna_ha_niren_01.String()));
 				break;
+
 			case Voice.SetunaRen2Attack02:
 				PlayVoice(AudioManager.Instance.GetSE(AudioName.setuna_ha_niren_01.String()));
 				break;
+
 			case Voice.SetunaRen3Attack01:
 				PlayVoice(AudioManager.Instance.GetSE(AudioName.setuna_hu_sanren_02.String()));
 				break;
+
 			case Voice.SetunaRen3Attack02:
 				PlayVoice(AudioManager.Instance.GetSE(AudioName.setuna_hu_sanren_02.String()));
 				break;
+
 			case Voice.SetunaRen3Attack03:
 				PlayVoice(AudioManager.Instance.GetSE(AudioName.setuna_hu_sanren_02.String()));
 				break;
@@ -81,7 +85,7 @@ public class EnemyAnimation : CharacterAnimation {
 	}
 
 	private void PlayVoice(AudioClip clip) {
-		if(pauseVoice) {
+		if (pauseVoice) {
 			audioSource.UnPause();
 			pauseVoice = false;
 		} else {

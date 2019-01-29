@@ -23,15 +23,19 @@ public class WalkPart : MoviePart {
 		var start = target.transform.position;
 		var end = walkTo.transform.position;
 		enemyAnimation.StartRunAnimation();
-		while(offset < seconds) {
+
+		while (offset < seconds) {
 			var t = Time.time;
 			yield return null;
 			offset += (Time.time - t);
-			if(asyncCoroutine == null && (offset / seconds) > 0.7f) {
+
+			if (asyncCoroutine == null && (offset / seconds) > 0.7f) {
 				asyncCoroutine = StartCoroutine(asyncNestMovie.MovieUpdate());
 			}
+
 			target.transform.position = Vector3.Lerp(start, end, offset / seconds);
 		}
+
 		target.transform.position = end;
 		enemyAnimation.StopRunAnimation();
 	}

@@ -190,6 +190,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		if (!isGuard) {
 			if (changeRotation || isAvoid) { transform.rotation = Quaternion.LookRotation(dir, Vector3.up) * playerCamera.hRotation; }
+
 			playerAnimation.StartWalkAnimation();
 		} else {
 			SetGuardMoveDirection(dir);
@@ -282,6 +283,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//攻撃可能なら攻撃開始
 		playerAnimation.StopWalkAnimation();
+
 		if (attackSequence.Attack() == AttackResult.OK) {
 			state = PlayerState.Attack;
 		}
@@ -298,11 +300,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		//ダメージ中はガードしない
 		if (state == PlayerState.Damage) return;
-        //吸生中ならガードしないしない
-        if (state == PlayerState.Pierce) return;
 
-        //スタミナが０ならガードできない
-        if (status.GetStamina() == 0) return;
+		//吸生中ならガードしないしない
+		if (state == PlayerState.Pierce) return;
+
+		//スタミナが０ならガードできない
+		if (status.GetStamina() == 0) return;
 
 		AudioManager.Instance.PlayPlayerSE(AudioName.bougyokamae.String());
 		this.isGuard = true;
@@ -633,10 +636,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		if (status.IsDead()) return;
 
 		if (state == PlayerState.Damage) return;
-        //吸生中なら回避しないしない
-        if (state == PlayerState.Pierce) return;
 
-        if (this.state == PlayerState.Avoid) {
+		//吸生中なら回避しないしない
+		if (state == PlayerState.Pierce) return;
+
+		if (this.state == PlayerState.Avoid) {
 			return;
 		}
 
@@ -764,7 +768,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 	private void GuardStartIfPressedLButton() {
 		this.state = PlayerState.Idle;
-		if(Input.GetButton(InputMap.Type.LButton.GetInputName())) {
+
+		if (Input.GetButton(InputMap.Type.LButton.GetInputName())) {
 			this.state = PlayerState.Defence;
 			this.isGuard = true;
 			playerAnimation.CancelAvoidAnimation();
@@ -789,6 +794,7 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			EffectManager.Instance.PlayerMoveEffectCreate(gameObject, true);
 
 			Ray ray = new Ray(transform.position + new Vector3(0, 1, 0), dir.normalized);
+
 			if (Physics.Raycast(ray, out hit, rayDistance, mask)) {
 				Debug.Log("stageに当たった");
 				var otherPos = hit.collider.transform.position + Vector3.up;

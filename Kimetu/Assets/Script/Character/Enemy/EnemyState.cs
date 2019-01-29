@@ -11,7 +11,7 @@ public enum EnemyState {
 	Search, //索敵時
 	Damage, //被弾時
 	MoveNear, //接近中
-    MoveDefaultPosition, //デフォルトの場所に移動中
+	MoveDefaultPosition, //デフォルトの場所に移動中
 	Death, //倒れている
 }
 

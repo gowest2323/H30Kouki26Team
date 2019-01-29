@@ -17,10 +17,12 @@ public class AttackAction : ActionBase {
 
 	public override IEnumerator Action() {
 		var wait = new WaitForSeconds(1f);
+
 		if (!isSetuna && !SceneChanger.Instance().isChanging) {
 			AudioManager.Instance.PlayEnemySE(AudioName.oni_oaa_preAttack_03.String());
 			yield return wait;
 		}
+
 		yield return enemyAttack.Attack();
 	}
 

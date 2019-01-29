@@ -8,13 +8,13 @@ public class CreateIfDebug : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-#if DEBUG
+		#if DEBUG
 		GameObject.Instantiate(prefab);
-#endif
+		#endif
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 }

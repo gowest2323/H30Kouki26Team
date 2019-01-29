@@ -16,17 +16,17 @@ public class PageUI : MonoBehaviour {
 	private int selected;
 	private float lasttime;
 
-    [SerializeField]
-    private bool isShowPageNum = false;
+	[SerializeField]
+	private bool isShowPageNum = false;
 
-    [SerializeField]
-    private Text pageNumText;
+	[SerializeField]
+	private Text pageNumText;
 
-    // Use this for initialization
-    void Start () {
+	// Use this for initialization
+	void Start () {
 		this.lasttime = -2;
 		Select(startPage);
-        ShowPageNum(startPage);
+		ShowPageNum(startPage);
 	}
 
 	// Update is called once per frame
@@ -36,19 +36,24 @@ public class PageUI : MonoBehaviour {
 		} else if (InputMap.Direction.Right.IsDetectedInput()) {
 			Select(selected + 1);
 		}
-        ShowPageNum(selected);
+
+		ShowPageNum(selected);
 	}
 
 	public void Select(int pageIndex) {
-		if((Time.unscaledTime - lasttime) < 0.2f) {
+		if ((Time.unscaledTime - lasttime) < 0.2f) {
 			return;
 		}
+
 		this.lasttime = Time.unscaledTime;
+
 		if (circleSelect) {
 			if (pageIndex < 0) pageIndex = pages.Length - 1;
+
 			if (pageIndex >= pages.Length) pageIndex = 0;
 		} else {
 			if (pageIndex < 0) pageIndex = 0;
+
 			if (pageIndex >= pages.Length) pageIndex = pages.Length - 1;
 		}
 
@@ -60,8 +65,7 @@ public class PageUI : MonoBehaviour {
 		this.selected = pageIndex;
 	}
 
-    private void ShowPageNum(int index)
-    {
-        if (isShowPageNum) pageNumText.text = (index + 1).ToString();
-    }
+	private void ShowPageNum(int index) {
+		if (isShowPageNum) pageNumText.text = (index + 1).ToString();
+	}
 }

@@ -9,12 +9,12 @@ public class MenuElement : MonoBehaviour {
 
 	// Use this for initialization
 	protected virtual void Awake () {
-		
+
 	}
 
 	// Update is called once per frame
 	protected virtual void Update () {
-		
+
 	}
 
 	/// <summary>

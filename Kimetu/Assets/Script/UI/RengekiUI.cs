@@ -21,15 +21,18 @@ public class RengekiUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(root == null) {
+		if (root == null) {
 			this.root = transform.FindRec("LBack");
 		}
-		if(pushSlider == null) {
+
+		if (pushSlider == null) {
 			this.pushSlider = root.transform.FindRec("LSlider").GetComponent<Slider>();
 		}
+
 		if (rengeki == null) {
 			this.rengeki = GameObject.FindGameObjectWithTag(TagName.Player.String()).GetComponent<Rengeki>();
 		}
+
 		root.SetActive(false);
 		rengeki.onPush.Subscribe((e) => {
 			pushSlider.value = e.parcent;
@@ -37,10 +40,10 @@ public class RengekiUI : MonoBehaviour {
 		this.startObserver = Slow.Instance.onStart.Subscribe(OnSlowStart);
 		this.endObserver = Slow.Instance.onEnd.Subscribe(OnSlowEnd);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	private void OnDestroy() {

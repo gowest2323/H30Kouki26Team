@@ -12,7 +12,8 @@ public class KyuseiUI : LongPressUI {
 
 	public override void Start() {
 		base.Start();
-		if(action == null) {
+
+		if (action == null) {
 			this.action = GameObject.FindGameObjectWithTag(TagName.Player.String()).GetComponent<PlayerAction>();
 		}
 	}

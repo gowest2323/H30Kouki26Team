@@ -9,10 +9,10 @@ public class ResumeFromPauseCommand : MonoBehaviour, IExecuteCommand {
 	void Start () {
 		this.pauseManager = GameObject.FindGameObjectWithTag(TagName.PauseManager.String()).GetComponent<PauseManager>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	public IEnumerator OnExecute() {

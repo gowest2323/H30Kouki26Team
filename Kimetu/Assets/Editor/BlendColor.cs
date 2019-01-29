@@ -15,6 +15,7 @@ public class BlendColor {
 		var renderers = gameObject.GetComponentsInChildren<Renderer>();
 		DeleteDirectoryIfNotExists("Assets/Material/BlendColor/" + gameObject.name);
 		CreateDirectoryIfNotExists("Assets/Material/BlendColor/" + gameObject.name);
+
 		//全てのマテリアルを複製する
 		foreach (var renderer in renderers) {
 			Debug.Log("renderer: " + renderer.gameObject.name);
@@ -31,6 +32,7 @@ public class BlendColor {
 				AssetDatabase.CreateAsset(mymat, "Assets/Material/BlendColor/" + gameObject.name + "/" + GetSafeFileName(baseName) + "@" + material.name + ".mat");
 			}
 		}
+
 		AssetDatabase.Refresh();
 	}
 	private static string GetSafeFileName(string s) {

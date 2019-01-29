@@ -34,7 +34,7 @@ public class TableUI : MonoBehaviour {
 		this.selectedCol = -1;
 		Select(0, 0);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		InputUpdate();
@@ -44,41 +44,47 @@ public class TableUI : MonoBehaviour {
 	/// MenuUIの `Update` の実装を公開します。
 	/// </summary>
 	public void InputUpdate() {
-		if(freeze) {
+		if (freeze) {
 			return;
 		}
+
 		int rv = 0;
 		int cv = 0;
+
 		//縦の移動
 		if (InputMap.Direction.Up.IsDetectedInput()) {
 			rv = -1;
 		} else if (InputMap.Direction.Down.IsDetectedInput()) {
 			rv = 1;
 		}
+
 		//横の移動
 		if (InputMap.Direction.Left.IsDetectedInput()) {
 			cv = -1;
 		} else if (InputMap.Direction.Right.IsDetectedInput()) {
 			cv = 1;
 		}
-		if(rv != 0 || cv != 0) {
+
+		if (rv != 0 || cv != 0) {
 			Select(selectedRow + rv, selectedCol + cv);
 		}
+
 		ExecuteCommand();
 	}
 
 	private void ExecuteCommand() {
-		if(!executeCommand ||
-		   !Input.GetButtonDown(executeButton.GetInputName()) ||
-		   IsInvalidSelect()) {
-			   return;
+		if (!executeCommand ||
+				!Input.GetButtonDown(executeButton.GetInputName()) ||
+				IsInvalidSelect()) {
+			return;
 		}
+
 		StartCoroutine(ExecuteWait(grid[selectedRow].elements[selectedCol].gameObject.GetComponent<IExecuteCommand>()));
 	}
 
 	private bool IsInvalidSelect() {
 		return selectedRow >= rowCount ||
-		       selectedRow < 0 ||
+			   selectedRow < 0 ||
 			   selectedCol >= colCount ||
 			   selectedCol < 0;
 	}
@@ -92,15 +98,19 @@ public class TableUI : MonoBehaviour {
 	private void Select(int row, int col) {
 		//押しっぱなしにするとすごいことになるので
 		if (Time.unscaledTime - time < 0.2f) { return; }
+
 		//インデックスが循環するように
-		if(row < 0) row = rowCount - 1;
-		else if(row >= rowCount) row = 0;
-		if(col < 0) col = colCount - 1;
-		else if(col >= colCount) col = 0;
+		if (row < 0) row = rowCount - 1;
+		else if (row >= rowCount) row = 0;
+
+		if (col < 0) col = colCount - 1;
+		else if (col >= colCount) col = 0;
+
 		//前回の選択要素を更新
-		if(selectedRow != -1 && selectedCol != -1) {
+		if (selectedRow != -1 && selectedCol != -1) {
 			grid[selectedRow].elements[selectedCol].OnLostFocus();
 		}
+
 		//今回の選択によって更新
 		grid[row].elements[col].OnFocus();
 		this.selectedRow = row;
@@ -133,13 +143,15 @@ public class TableUIEditor : Editor {
 		var rowc = self.GetRowCount();
 		var colc = self.GetColCount();
 		var grid = self.GetGrid();
-		if(rowc != grid.Length) {
+
+		if (rowc != grid.Length) {
 			EditorGUILayout.HelpBox("行列が正しく設定されていません", MessageType.Error);
 		} else {
-			for(int i=0; i<grid.Length; i++) {
+			for (int i = 0; i < grid.Length; i++) {
 				var elems = grid[i].elements;
-				if(colc != elems.Length) {
-				EditorGUILayout.HelpBox("行列が正しく設定されていません", MessageType.Error);
+
+				if (colc != elems.Length) {
+					EditorGUILayout.HelpBox("行列が正しく設定されていません", MessageType.Error);
 					break;
 				}
 			}

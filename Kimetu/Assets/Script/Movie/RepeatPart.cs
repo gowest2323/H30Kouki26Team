@@ -10,7 +10,7 @@ public class RepeatPart : MoviePart {
 	private MoviePart part;
 
 	public override IEnumerator MovieUpdate() {
-		for(int i=0; i<count; i++) {
+		for (int i = 0; i < count; i++) {
 			yield return part.MovieUpdate();
 		}
 	}

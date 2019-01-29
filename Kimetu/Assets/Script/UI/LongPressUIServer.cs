@@ -12,12 +12,12 @@ public class LongPressUIServer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	/// <summary>
@@ -28,9 +28,11 @@ public class LongPressUIServer : MonoBehaviour {
 	/// <returns></returns>
 	public bool Hold(out string key) {
 		key = "";
-		if(locked) {
+
+		if (locked) {
 			return false;
 		}
+
 		key = Guid.NewGuid().ToString();
 		this.currentKey = key;
 		this.locked = true;
@@ -44,9 +46,10 @@ public class LongPressUIServer : MonoBehaviour {
 	/// <param name="key"></param>
 	/// <returns></returns>
 	public string Release(string key) {
-		if(key == null || key.Length == 0 || currentKey != key) {
+		if (key == null || key.Length == 0 || currentKey != key) {
 			return key;
 		}
+
 		this.locked = false;
 		return "";
 	}

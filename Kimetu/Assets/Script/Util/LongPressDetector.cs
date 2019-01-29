@@ -77,7 +77,8 @@ public class LongPressDetector : MonoBehaviour {
 
 			if (elapsed > pushSeconds) {
 				OnLongPressingOverTime(elapsed);
-				if(!triggered) {
+
+				if (!triggered) {
 					OnLongPressTrigger(elapsed);
 					this.triggered = true;
 				}

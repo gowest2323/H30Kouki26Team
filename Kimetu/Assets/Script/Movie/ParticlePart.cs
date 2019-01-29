@@ -16,9 +16,11 @@ public class ParticlePart : MoviePart {
 		var obj = GameObject.Instantiate(particle);
 		obj.transform.position = point.transform.position;
 		var part = obj.GetComponent<ParticleSystem>();
-		if(!part.main.playOnAwake) {
+
+		if (!part.main.playOnAwake) {
 			part.Play();
 		}
+
 		yield return next.MovieUpdate();
 		part.Stop();
 		yield break;
