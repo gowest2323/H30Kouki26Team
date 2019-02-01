@@ -168,7 +168,8 @@ public class PlayerAnimation : CharacterAnimation {
 
 		AudioManager.Instance.PlayEnemySE(AudioName.oni_aa_kyusei_06.String());
 		var effect = GameObject.Instantiate(healEffectPrefab);
-		AudioManager.Instance.PlayPlayerSE(AudioName.kyusei.String());
+		var audioNames = new AudioName[] { AudioName.kaede_kyusei_sitotu_1, AudioName.kaede_kyusei_sitotu_2 };
+		AudioManager.Instance.PlayPlayerSE(audioNames[UnityEngine.Random.Range(0, audioNames.Length)].String());
 		effect.transform.position = transform.position;
 		GameObject.Destroy(effect, 2f);
 	}
