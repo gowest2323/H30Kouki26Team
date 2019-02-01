@@ -17,6 +17,7 @@ public enum SceneName {
 	Option,
 	OpeningMovie,
 	LastBossMovie,
+	Ending,
 }
 public static class SceneNameManager {
 	public static Dictionary<SceneName, string> scenenames = new Dictionary<SceneName, string> {
@@ -33,6 +34,7 @@ public static class SceneNameManager {
 		{SceneName.Option, "Option"},
 		{SceneName.OpeningMovie, "OpeningMovie"},
 		{SceneName.LastBossMovie, "LastBossMovie"},
+		{SceneName.Ending, "Ending"},
 	};
 
 	public static Dictionary<SceneName, string> sceneUInames = new Dictionary<SceneName, string> {

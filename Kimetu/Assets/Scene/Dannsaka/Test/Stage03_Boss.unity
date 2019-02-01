@@ -1048,7 +1048,7 @@ Prefab:
     - target: {fileID: 114087020175875802, guid: fbd5f037b21dc4afcad27236b354a59e,
         type: 2}
       propertyPath: nextSceneName
-      value: 0
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4067438044125260, guid: fbd5f037b21dc4afcad27236b354a59e, type: 2}
       propertyPath: m_LocalRotation.y
