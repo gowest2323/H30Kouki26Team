@@ -8,6 +8,7 @@ public class Sword : Weapon {
 	private int defaultPower;
 	private PlayerAnimation playerAnimation; //プレイヤーのアニメーション管理
 	private Dictionary<GameObject, int> countDict;
+	private PlayerAttackSequence sequence;
 
 	protected override void Start() {
 		base.Start();
@@ -15,6 +16,7 @@ public class Sword : Weapon {
 		UnityEngine.Assertions.Assert.IsNotNull(player, "Player用のパラメータが割り当てられていません。");
 		this.countDict = new Dictionary<GameObject, int>();
 		this.defaultPower = power = player.normalAttackPower;
+		this.sequence = GetComponentInParent<PlayerAttackSequence>();
 	}
 
 	/// <summary>
@@ -52,13 +54,30 @@ public class Sword : Weapon {
 				return;
 			}
 
-			AudioManager.Instance.PlayPlayerSE(AudioName.CutHit.String());
+			PlaySE(sequence.phase);
 
 			//衝突したときの最近点を衝突点とする
 			Vector3 hitPos = other.ClosestPointOnBounds(this.transform.position);
 			DamageSource damage = new DamageSource(hitPos, power, holderObjectDamagable);
 			//相手に当たったと通知
 			other.gameObject.GetComponent<IDamageable>().OnHit(damage);
+		}
+	}
+
+	private void PlaySE(int num) {
+		switch(num) {
+			case 0:
+				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_attack_1.String());
+				break;
+			case 1:
+				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_attack_2.String());
+				break;
+			case 2:
+				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_attack_3.String());
+				break;
+			case 3:
+				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_attack_4.String());
+				break;
 		}
 	}
 
