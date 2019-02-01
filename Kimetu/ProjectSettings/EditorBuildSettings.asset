@@ -53,4 +53,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/BuildScene/LastBossMovie.unity
     guid: 76e93e9c24fa94c0f8386bfe00d33e80
+  - enabled: 1
+    path: Assets/Scene/BuildScene/Ending.unity
+    guid: c846791f76ea045daa4a095c31e0af27
   m_configObjects: {}
