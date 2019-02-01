@@ -47,6 +47,7 @@ public class Rengeki : MonoBehaviour {
 	public bool moveNow { private set; get; }
 	public bool turnNow { private set; get; }
 	public bool actionNow { private set; get; }
+	public int comboIndex { private set; get; }
 
 	private float slowRemine;
 	private bool triggered;
@@ -90,7 +91,7 @@ public class Rengeki : MonoBehaviour {
 		if (sword == null) {
 			this.sword = GetComponentInChildren<Sword>();
 		}
-
+		this.comboIndex = -1;
 		this.push = new Subject<RengekiPushEvent>();
 		this.start = new Subject<bool>();
 		this.end = new Subject<bool>();
@@ -251,7 +252,7 @@ public class Rengeki : MonoBehaviour {
 				breakByDamage = true;
 				break;
 			}
-
+			this.comboIndex = i;
 			sword.AttackStart();
 			playerAnimation.StartAttackAnimation(i);
 			yield return new WaitForSeconds(actionOne);
@@ -259,6 +260,7 @@ public class Rengeki : MonoBehaviour {
 			//yield return playerAnimation.WaitAnimation("kaede", "attack" + (i + 1));
 			//yield return new WaitForSeconds(ATTACK_LENGTH * (1 / Slow.Instance.GetPlayerSpeed()));
 		}
+		this.comboIndex = -1;
 
 		//yield return playerAnimation.WaitAnimation("kaede", "attack4_idle");
 		yield return new WaitForSeconds(actionOne);

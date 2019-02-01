@@ -9,6 +9,8 @@ public class Sword : Weapon {
 	private PlayerAnimation playerAnimation; //プレイヤーのアニメーション管理
 	private Dictionary<GameObject, int> countDict;
 	private PlayerAttackSequence sequence;
+	private Kirinuke kirinuke;
+	private Rengeki rengeki;
 
 	protected override void Start() {
 		base.Start();
@@ -17,6 +19,8 @@ public class Sword : Weapon {
 		this.countDict = new Dictionary<GameObject, int>();
 		this.defaultPower = power = player.normalAttackPower;
 		this.sequence = GetComponentInParent<PlayerAttackSequence>();
+		this.kirinuke = GetComponentInParent<Kirinuke>();
+		this.rengeki = GetComponentInParent<Rengeki>();
 	}
 
 	/// <summary>
@@ -65,7 +69,20 @@ public class Sword : Weapon {
 	}
 
 	private void PlaySE(int num) {
-		switch(num) {
+		//切り抜けは無理やり攻撃アニメーションを発生させているため
+		//phaseはマイナスになる
+		//それを検出して修正する
+		if(num < 0 && kirinuke.isRunning) {
+			num = 0;
+		}
+		//↑と同じ理由によりインデックスを調整する
+		//こちらでは連続攻撃の何回目であるかを直接参照する
+		if (num < 0 && rengeki.actionNow) {
+			num = rengeki.comboIndex;
+		}
+		//AttackSequeneのフェーズ番号をみて、
+		//現在の攻撃の段階に応じた音を鳴らす。
+		switch (num) {
 			case 0:
 				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_attack_1.String());
 				break;
