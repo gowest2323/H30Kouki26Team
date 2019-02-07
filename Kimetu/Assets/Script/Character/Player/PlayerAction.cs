@@ -889,7 +889,6 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		var offset = 0f;
 		//開始位置
 		var startPos = transform.position;
-		Ray ray = new Ray(transform.position + Vector3.up, -transform.forward);
 		RaycastHit hit;
 		float dis;
 		//var col = GetComponent<Collider>();
@@ -905,11 +904,12 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			var percent = offset / knockbackMoveTime;
 			EffectManager.Instance.PlayerMoveEffectCreate(gameObject, true);
 
+			Ray ray = new Ray(transform.position + Vector3.up, -transform.forward);
 			if (Physics.Raycast(ray.origin, ray.direction, out hit, rayDistance, LayerMask.GetMask("Stage"))) {
 				var selfPos = transform.position + Vector3.up;
 				var otherPos = hit.collider.transform.position;
 				otherPos.y = selfPos.y;
-				dis = Vector3.Distance(selfPos, otherPos);
+				dis = Vector3.Distance(ray.origin, hit.point);
 				Debug.Log("ノックバック");
 
 				if (dis < limitRayDistance) {
