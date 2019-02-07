@@ -548,7 +548,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 			//弾き時に二回音が再生されるのを修正
 			if (!Slow.Instance.isSlowNow) {
 				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_ha_hajiki_09.String());
-				AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
+				//AudioManager.Instance.PlayPlayerSE(AudioName.hajiki.String());
+				AudioManager.Instance.PlayPlayerSE(AudioName.kaede_hajiki_2.String());
 				Debug.Log("counter succeed");
 				damageSource.attackCharacter.Countered();
 				//波紋を作成
