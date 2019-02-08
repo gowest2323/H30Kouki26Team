@@ -21,6 +21,10 @@ public class SkillUI : MonoBehaviour {
 	[SerializeField]
 	private Rengeki rengeki;
 
+	[SerializeField]
+	private PlayerStatus playerStatus;
+
+
 
 	private System.IDisposable startObserver;
 	private System.IDisposable endObserver;
@@ -44,6 +48,13 @@ public class SkillUI : MonoBehaviour {
 		if (rengeki == null) {
 			this.rengeki = player.GetComponent<Rengeki>();
 		}
+		if(playerStatus == null) {
+			this.playerStatus = player.GetComponent<PlayerStatus>();
+		}
+		//プレイヤーがダメージを受けたらゲージをリセット
+		playerStatus.onDamage.TakeUntilDestroy(gameObject).Subscribe((e) => {
+			kirinukeDetector.Cancel();
+		});
 
 		rengeki.onPush.Subscribe((e) => {
 			rengekiImage.fillAmount = e.parcent;
