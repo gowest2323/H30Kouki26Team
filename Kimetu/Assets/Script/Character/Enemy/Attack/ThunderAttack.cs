@@ -35,6 +35,7 @@ public class ThunderAttack : EnemyAttack, IAttackEventHandler, IColliderHitRecie
 	private TriggerHitSender colliderHitSender;
 
 	protected override void Start() {
+		power = parameter.GetPower(attackType);
 		topTransform = GetTopTransform();
 		agent = GetComponentInParent<NavMeshAgent>();
 		isHit = false;
