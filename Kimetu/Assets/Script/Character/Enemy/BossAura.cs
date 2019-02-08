@@ -22,7 +22,7 @@ public class BossAura : AuraParticle {
 			//GameObject.Destroy
 			auraParticle.Stop();
 			Destroy(auraParticle.gameObject, 5f);
-			auraParticle = GameObject.Instantiate(auraBossDyingState, transform.FindRec(auraPositionName).transform);
+			auraParticle = GameObject.Instantiate(auraBossDyingState,auraPos.transform);
 			//auraParticle.Play();
 			isSwitchParticle = true;
 		}
