@@ -78,7 +78,7 @@ public class Slow : SingletonMonoBehaviour<Slow> {
 
 		//アニメーションリストの再生速度をスローに
 		foreach (var anim in slowAnimList) {
-			Debug.Log("slow " + anim.gameObject.name);
+			//Debug.Log("slow " + anim.gameObject.name);
 			anim.speed = slowSpeed;
 		}
 
