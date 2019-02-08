@@ -27,7 +27,7 @@ public class BlendColorRuntime : MonoBehaviour {
 		var renderers = GetComponentsInChildren<Renderer>();
 
 		foreach (var renderer in renderers) {
-			Debug.Log("renderer: " + renderer.gameObject.name);
+			//Debug.Log("renderer: " + renderer.gameObject.name);
 			var materials = renderer.materials;
 			var baseName = renderer.gameObject.name;
 
@@ -87,7 +87,7 @@ public class BlendColorRuntime : MonoBehaviour {
 			var parcent = offset / seconds;
 			var alpha = minAlpha + ((maxAlpha - minAlpha) * parcent);
 			SetAlpha(alpha);
-			Debug.Log("offset:" + offset);
+			//Debug.Log("offset:" + offset);
 		}
 
 		SetAlpha(maxAlpha);
