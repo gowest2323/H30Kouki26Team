@@ -98,7 +98,8 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 	private float damageColorAlpha = 0.5f;
 	[SerializeField]
 	private float damageEffectSeconds = 0.5f;
-
+	[SerializeField]
+	private Kirinuke kirinuke;
 
 	void Start() {
 		if (playerCamera == null) {
@@ -107,6 +108,9 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 
 		if (replEffectGenerator == null) {
 			this.replEffectGenerator = GameObject.Find("ReplEffectGenerator").GetComponent<ReplEffectGenerator>();
+		}
+		if(kirinuke == null) {
+			this.kirinuke = GetComponent<Kirinuke>();
 		}
 
 		this.status = GetComponent<PlayerStatus>();
@@ -506,7 +510,11 @@ public class PlayerAction : MonoBehaviour, IDamageable, ICharacterAnimationProvi
 		if (SceneChanger.Instance().isChanging) {
 			return;
 		}
-
+		//切り抜け中は攻撃を受けないように
+		//(硬直して操作できなくなってしまうため)
+		if(kirinuke.isRunning) {
+			return;
+		}
 		/*
 		//回避中に攻撃が当たってしまうのでとりあえずコメントアウト
 		if (!damageSource.canCounter)
