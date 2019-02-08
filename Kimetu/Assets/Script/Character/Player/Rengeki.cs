@@ -245,6 +245,7 @@ public class Rengeki : MonoBehaviour {
 		Debug.Log("speed:" + playerAnimation.speed);
 		var breakByDamage = false;
 		this.actionNow = true;
+        playerAnimation.StopWalkAnimation();
 
 		for (int i = 0; i < 4; i++) {
 			//ダメージを受けたら中断
